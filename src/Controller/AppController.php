@@ -37,6 +37,20 @@ class AppController extends Controller {
  */
 	public function initialize() {
 		$this->loadComponent('Flash');
+		$this->loadComponent('Crud.Crud',
+			[ 'actions' =>
+				[ 'Crud.Index'
+				, 'Crud.Add'
+				, 'Crud.Edit'
+				, 'Crud.View'
+				, 'Crud.Delete'
+				]
+			, 'listeners' =>
+				[ 'Crud.Api'
+				, 'Crud.RelatedModels'
+				]
+			]
+		);
 	}
 
 }
