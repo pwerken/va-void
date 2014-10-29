@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Event\Event;
 
 /**
  * CharactersConditions Controller
@@ -10,92 +11,32 @@ use App\Controller\AppController;
  */
 class CharactersConditionsController extends AppController {
 
-/**
- * Index method
- *
- * @return void
- */
 	public function index() {
-		$this->paginate = [
-			'contain' => ['Characters', 'Conditions']
-		];
-		$this->set('charactersConditions', $this->paginate($this->CharactersConditions));
+		$this->Crud->on('beforePaginate', function(Event $event) {
+			$this->paginate =
+				[ 'contain' => [ 'Characters', 'Conditions' ]
+				];
+		});
+		return $this->Crud->execute();
 	}
 
-/**
- * View method
- *
- * @param string $id
- * @return void
- * @throws \Cake\Network\Exception\NotFoundException
- */
 	public function view($id = null) {
-		$charactersCondition = $this->CharactersConditions->get($id, [
-			'contain' => ['Characters', 'Conditions']
-		]);
-		$this->set('charactersCondition', $charactersCondition);
+		$this->Crud->on('beforeFind', function(Event $event) {
+			$event->subject->query->contain([ 'Characters', 'Conditions' ]);
+		});
+		return $this->Crud->execute();
 	}
 
-/**
- * Add method
- *
- * @return void
- */
 	public function add() {
-		$charactersCondition = $this->CharactersConditions->newEntity($this->request->data);
-		if ($this->request->is('post')) {
-			if ($this->CharactersConditions->save($charactersCondition)) {
-				$this->Flash->success('The characters condition has been saved.');
-				return $this->redirect(['action' => 'index']);
-			} else {
-				$this->Flash->error('The characters condition could not be saved. Please, try again.');
-			}
-		}
-		$characters = $this->CharactersConditions->Characters->find('list');
-		$conditions = $this->CharactersConditions->Conditions->find('list');
-		$this->set(compact('charactersCondition', 'characters', 'conditions'));
+		$this->Crud->listener('relatedModels')->relatedModels(
+				[ 'Characters', 'Conditions' ]);
+		$this->Crud->execute();
 	}
 
-/**
- * Edit method
- *
- * @param string $id
- * @return void
- * @throws \Cake\Network\Exception\NotFoundException
- */
 	public function edit($id = null) {
-		$charactersCondition = $this->CharactersConditions->get($id, [
-			'contain' => []
-		]);
-		if ($this->request->is(['patch', 'post', 'put'])) {
-			$charactersCondition = $this->CharactersConditions->patchEntity($charactersCondition, $this->request->data);
-			if ($this->CharactersConditions->save($charactersCondition)) {
-				$this->Flash->success('The characters condition has been saved.');
-				return $this->redirect(['action' => 'index']);
-			} else {
-				$this->Flash->error('The characters condition could not be saved. Please, try again.');
-			}
-		}
-		$characters = $this->CharactersConditions->Characters->find('list');
-		$conditions = $this->CharactersConditions->Conditions->find('list');
-		$this->set(compact('charactersCondition', 'characters', 'conditions'));
+		$this->Crud->listener('relatedModels')->relatedModels(
+				[ 'Characters', 'Conditions' ]);
+		$this->Crud->execute();
 	}
 
-/**
- * Delete method
- *
- * @param string $id
- * @return void
- * @throws \Cake\Network\Exception\NotFoundException
- */
-	public function delete($id = null) {
-		$charactersCondition = $this->CharactersConditions->get($id);
-		$this->request->allowMethod(['post', 'delete']);
-		if ($this->CharactersConditions->delete($charactersCondition)) {
-			$this->Flash->success('The characters condition has been deleted.');
-		} else {
-			$this->Flash->error('The characters condition could not be deleted. Please, try again.');
-		}
-		return $this->redirect(['action' => 'index']);
-	}
 }

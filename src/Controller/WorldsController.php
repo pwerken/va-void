@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Event\Event;
 
 /**
  * Worlds Controller
@@ -10,85 +11,24 @@ use App\Controller\AppController;
  */
 class WorldsController extends AppController {
 
-/**
- * Index method
- *
- * @return void
- */
-	public function index() {
-		$this->set('worlds', $this->paginate($this->Worlds));
-	}
-
-/**
- * View method
- *
- * @param string $id
- * @return void
- * @throws \Cake\Network\Exception\NotFoundException
- */
 	public function view($id = null) {
-		$world = $this->Worlds->get($id, [
-			'contain' => ['Characters']
-		]);
-		$this->set('world', $world);
+		$this->Crud->on('beforeFind', function(Event $event) {
+			$event->subject->query->contain([ 'Characters' ]);
+		});
+		return $this->Crud->execute();
 	}
 
-/**
- * Add method
- *
- * @return void
- */
 	public function add() {
-		$world = $this->Worlds->newEntity($this->request->data);
-		if ($this->request->is('post')) {
-			if ($this->Worlds->save($world)) {
-				$this->Flash->success('The world has been saved.');
-				return $this->redirect(['action' => 'index']);
-			} else {
-				$this->Flash->error('The world could not be saved. Please, try again.');
-			}
-		}
-		$this->set(compact('world'));
+		$this->Crud->listener('relatedModels')->relatedModels([ 'Characters' ]);
+		$this->Crud->execute();
 	}
 
-/**
- * Edit method
- *
- * @param string $id
- * @return void
- * @throws \Cake\Network\Exception\NotFoundException
- */
 	public function edit($id = null) {
-		$world = $this->Worlds->get($id, [
-			'contain' => []
-		]);
-		if ($this->request->is(['patch', 'post', 'put'])) {
-			$world = $this->Worlds->patchEntity($world, $this->request->data);
-			if ($this->Worlds->save($world)) {
-				$this->Flash->success('The world has been saved.');
-				return $this->redirect(['action' => 'index']);
-			} else {
-				$this->Flash->error('The world could not be saved. Please, try again.');
-			}
-		}
-		$this->set(compact('world'));
+		$this->Crud->on('beforeFind', function(Event $event) {
+			$event->subject->query->contain([ 'Characters' ]);
+		});
+		$this->Crud->listener('relatedModels')->relatedModels([ 'Characters' ]);
+		return $this->Crud->execute();
 	}
 
-/**
- * Delete method
- *
- * @param string $id
- * @return void
- * @throws \Cake\Network\Exception\NotFoundException
- */
-	public function delete($id = null) {
-		$world = $this->Worlds->get($id);
-		$this->request->allowMethod(['post', 'delete']);
-		if ($this->Worlds->delete($world)) {
-			$this->Flash->success('The world has been deleted.');
-		} else {
-			$this->Flash->error('The world could not be deleted. Please, try again.');
-		}
-		return $this->redirect(['action' => 'index']);
-	}
 }

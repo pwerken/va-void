@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Event\Event;
 
 /**
  * AttributesItems Controller
@@ -10,92 +11,32 @@ use App\Controller\AppController;
  */
 class AttributesItemsController extends AppController {
 
-/**
- * Index method
- *
- * @return void
- */
 	public function index() {
-		$this->paginate = [
-			'contain' => ['Attributes', 'Items']
-		];
-		$this->set('attributesItems', $this->paginate($this->AttributesItems));
+		$this->Crud->on('beforePaginate', function(Event $event) {
+			$this->paginate =
+				[ 'contain' => [ 'Attributes', 'Items' ]
+				];
+		});
+		return $this->Crud->execute();
 	}
 
-/**
- * View method
- *
- * @param string $id
- * @return void
- * @throws \Cake\Network\Exception\NotFoundException
- */
 	public function view($id = null) {
-		$attributesItem = $this->AttributesItems->get($id, [
-			'contain' => ['Attributes', 'Items']
-		]);
-		$this->set('attributesItem', $attributesItem);
+		$this->Crud->on('beforeFind', function(Event $event) {
+			$event->subject->query->contain([ 'Attributes', 'Items' ]);
+		});
+		return $this->Crud->execute();
 	}
 
-/**
- * Add method
- *
- * @return void
- */
 	public function add() {
-		$attributesItem = $this->AttributesItems->newEntity($this->request->data);
-		if ($this->request->is('post')) {
-			if ($this->AttributesItems->save($attributesItem)) {
-				$this->Flash->success('The attributes item has been saved.');
-				return $this->redirect(['action' => 'index']);
-			} else {
-				$this->Flash->error('The attributes item could not be saved. Please, try again.');
-			}
-		}
-		$attributes = $this->AttributesItems->Attributes->find('list');
-		$items = $this->AttributesItems->Items->find('list');
-		$this->set(compact('attributesItem', 'attributes', 'items'));
+		$this->Crud->listener('relatedModels')->relatedModels(
+				[ 'Attributes', 'Items' ]);
+		$this->Crud->execute();
 	}
 
-/**
- * Edit method
- *
- * @param string $id
- * @return void
- * @throws \Cake\Network\Exception\NotFoundException
- */
 	public function edit($id = null) {
-		$attributesItem = $this->AttributesItems->get($id, [
-			'contain' => []
-		]);
-		if ($this->request->is(['patch', 'post', 'put'])) {
-			$attributesItem = $this->AttributesItems->patchEntity($attributesItem, $this->request->data);
-			if ($this->AttributesItems->save($attributesItem)) {
-				$this->Flash->success('The attributes item has been saved.');
-				return $this->redirect(['action' => 'index']);
-			} else {
-				$this->Flash->error('The attributes item could not be saved. Please, try again.');
-			}
-		}
-		$attributes = $this->AttributesItems->Attributes->find('list');
-		$items = $this->AttributesItems->Items->find('list');
-		$this->set(compact('attributesItem', 'attributes', 'items'));
+		$this->Crud->listener('relatedModels')->relatedModels(
+				[ 'Attributes', 'Items' ]);
+		$this->Crud->execute();
 	}
 
-/**
- * Delete method
- *
- * @param string $id
- * @return void
- * @throws \Cake\Network\Exception\NotFoundException
- */
-	public function delete($id = null) {
-		$attributesItem = $this->AttributesItems->get($id);
-		$this->request->allowMethod(['post', 'delete']);
-		if ($this->AttributesItems->delete($attributesItem)) {
-			$this->Flash->success('The attributes item has been deleted.');
-		} else {
-			$this->Flash->error('The attributes item could not be deleted. Please, try again.');
-		}
-		return $this->redirect(['action' => 'index']);
-	}
 }

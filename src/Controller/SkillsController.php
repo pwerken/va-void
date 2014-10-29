@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Event\Event;
 
 /**
  * Skills Controller
@@ -10,92 +11,35 @@ use App\Controller\AppController;
  */
 class SkillsController extends AppController {
 
-/**
- * Index method
- *
- * @return void
- */
 	public function index() {
-		$this->paginate = [
-			'contain' => ['Manatypes']
-		];
-		$this->set('skills', $this->paginate($this->Skills));
+		$this->Crud->on('beforePaginate', function(Event $event) {
+			$this->paginate =
+				[ 'contain' => [ 'Manatypes' ]
+				];
+		});
+		return $this->Crud->execute();
 	}
 
-/**
- * View method
- *
- * @param string $id
- * @return void
- * @throws \Cake\Network\Exception\NotFoundException
- */
 	public function view($id = null) {
-		$skill = $this->Skills->get($id, [
-			'contain' => ['Manatypes', 'Characters']
-		]);
-		$this->set('skill', $skill);
+		$this->Crud->on('beforeFind', function(Event $event) {
+			$event->subject->query->contain([ 'Manatypes', 'Characters' ]);
+		});
+		return $this->Crud->execute();
 	}
 
-/**
- * Add method
- *
- * @return void
- */
 	public function add() {
-		$skill = $this->Skills->newEntity($this->request->data);
-		if ($this->request->is('post')) {
-			if ($this->Skills->save($skill)) {
-				$this->Flash->success('The skill has been saved.');
-				return $this->redirect(['action' => 'index']);
-			} else {
-				$this->Flash->error('The skill could not be saved. Please, try again.');
-			}
-		}
-		$manatypes = $this->Skills->Manatypes->find('list');
-		$characters = $this->Skills->Characters->find('list');
-		$this->set(compact('skill', 'manatypes', 'characters'));
+		$this->Crud->listener('relatedModels')->relatedModels(
+				[ 'Manatypes', 'Characters' ]);
+		$this->Crud->execute();
 	}
 
-/**
- * Edit method
- *
- * @param string $id
- * @return void
- * @throws \Cake\Network\Exception\NotFoundException
- */
 	public function edit($id = null) {
-		$skill = $this->Skills->get($id, [
-			'contain' => ['Characters']
-		]);
-		if ($this->request->is(['patch', 'post', 'put'])) {
-			$skill = $this->Skills->patchEntity($skill, $this->request->data);
-			if ($this->Skills->save($skill)) {
-				$this->Flash->success('The skill has been saved.');
-				return $this->redirect(['action' => 'index']);
-			} else {
-				$this->Flash->error('The skill could not be saved. Please, try again.');
-			}
-		}
-		$manatypes = $this->Skills->Manatypes->find('list');
-		$characters = $this->Skills->Characters->find('list');
-		$this->set(compact('skill', 'manatypes', 'characters'));
+		$this->Crud->on('beforeFind', function(Event $event) {
+			$event->subject->query->contain([ 'Characters' ]);
+		});
+		$this->Crud->listener('relatedModels')->relatedModels(
+				[ 'Manatypes', 'Characters' ]);
+		return $this->Crud->execute();
 	}
 
-/**
- * Delete method
- *
- * @param string $id
- * @return void
- * @throws \Cake\Network\Exception\NotFoundException
- */
-	public function delete($id = null) {
-		$skill = $this->Skills->get($id);
-		$this->request->allowMethod(['post', 'delete']);
-		if ($this->Skills->delete($skill)) {
-			$this->Flash->success('The skill has been deleted.');
-		} else {
-			$this->Flash->error('The skill could not be deleted. Please, try again.');
-		}
-		return $this->redirect(['action' => 'index']);
-	}
 }
