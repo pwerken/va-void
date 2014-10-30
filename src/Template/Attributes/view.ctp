@@ -38,7 +38,7 @@
 		<tr>
 			<th><?= __('Id') ?></th>
 			<th><?= __('Name') ?></th>
-			<th><?= __('Dscription') ?></th>
+			<th><?= __('Description') ?></th>
 			<th><?= __('Player Text') ?></th>
 			<th><?= __('Cs Text') ?></th>
 			<th><?= __('Character Id') ?></th>
@@ -51,7 +51,7 @@
 		<tr>
 			<td><?= h($items->id) ?></td>
 			<td><?= h($items->name) ?></td>
-			<td><?= h($items->dscription) ?></td>
+			<td><?= h($items->description) ?></td>
 			<td><?= h($items->player_text) ?></td>
 			<td><?= h($items->cs_text) ?></td>
 			<td><?= h($items->character_id) ?></td>

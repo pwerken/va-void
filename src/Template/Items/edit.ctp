@@ -15,7 +15,7 @@
 		<legend><?= __('Edit Item') ?></legend>
 	<?php
 		echo $this->Form->input('name');
-		echo $this->Form->input('dscription');
+		echo $this->Form->input('description');
 		echo $this->Form->input('player_text');
 		echo $this->Form->input('cs_text');
 		echo $this->Form->input('character_id', ['options' => $characters]);

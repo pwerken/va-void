@@ -14,7 +14,7 @@
 		<tr>
 			<th><?= $this->Paginator->sort('id') ?></th>
 			<th><?= $this->Paginator->sort('name') ?></th>
-			<th><?= $this->Paginator->sort('dscription') ?></th>
+			<th><?= $this->Paginator->sort('description') ?></th>
 			<th><?= $this->Paginator->sort('character_id') ?></th>
 			<th><?= $this->Paginator->sort('expiry') ?></th>
 			<th><?= $this->Paginator->sort('created') ?></th>
@@ -27,7 +27,7 @@
 		<tr>
 			<td><?= $this->Number->format($item->id) ?></td>
 			<td><?= h($item->name) ?></td>
-			<td><?= h($item->dscription) ?></td>
+			<td><?= h($item->description) ?></td>
 			<td>
 				<?= $item->has('character') ? $this->Html->link($item->character->name, ['controller' => 'Characters', 'action' => 'view', $item->character->id]) : '' ?>
 			</td>

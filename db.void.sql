@@ -184,7 +184,7 @@ DROP TABLE IF EXISTS `items`;
 CREATE TABLE IF NOT EXISTS `items` (
   `id` int(10) unsigned NOT NULL COMMENT 'ITIN',
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `dscription` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `player_text` text COLLATE utf8_unicode_ci,
   `cs_text` text COLLATE utf8_unicode_ci,
   `character_id` int(10) unsigned DEFAULT NULL,

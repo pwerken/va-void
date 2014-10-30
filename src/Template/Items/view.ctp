@@ -17,8 +17,8 @@
 		<div class="large-5 columns strings">
 			<h6 class="subheader"><?= __('Name') ?></h6>
 			<p><?= h($item->name) ?></p>
-			<h6 class="subheader"><?= __('Dscription') ?></h6>
-			<p><?= h($item->dscription) ?></p>
+			<h6 class="subheader"><?= __('Description') ?></h6>
+			<p><?= h($item->description) ?></p>
 			<h6 class="subheader"><?= __('Character') ?></h6>
 			<p><?= $item->has('character') ? $this->Html->link($item->character->name, ['controller' => 'Characters', 'action' => 'view', $item->character->id]) : '' ?></p>
 		</div>

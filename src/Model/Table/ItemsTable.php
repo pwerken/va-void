@@ -44,7 +44,7 @@ class ItemsTable extends Table {
 			->allowEmpty('id', 'create')
 			->validatePresence('name', 'create')
 			->notEmpty('name')
-			->allowEmpty('dscription')
+			->allowEmpty('description')
 			->allowEmpty('player_text')
 			->allowEmpty('cs_text')
 			->add('character_id', 'valid', ['rule' => 'numeric'])

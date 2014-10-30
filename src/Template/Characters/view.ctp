@@ -76,7 +76,6 @@
 		<tr>
 			<th><?= __('Id') ?></th>
 			<th><?= __('Name') ?></th>
-			<th><?= __('Dscription') ?></th>
 			<th><?= __('Player Text') ?></th>
 			<th><?= __('Cs Text') ?></th>
 			<th><?= __('Character Id') ?></th>
@@ -88,8 +87,8 @@
 		<?php foreach ($character->items as $items): ?>
 		<tr>
 			<td><?= h($items->id) ?></td>
-			<td><?= h($items->name) ?></td>
-			<td><?= h($items->dscription) ?></td>
+			<td><i><?= h($items->name) ?></i><br>
+				<?= h($items->description) ?></td>
 			<td><?= h($items->player_text) ?></td>
 			<td><?= h($items->cs_text) ?></td>
 			<td><?= h($items->character_id) ?></td>

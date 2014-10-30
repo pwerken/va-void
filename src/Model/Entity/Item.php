@@ -15,7 +15,7 @@ class Item extends Entity {
  */
 	protected $_accessible = [
 		'name' => true,
-		'dscription' => true,
+		'description' => true,
 		'player_text' => true,
 		'cs_text' => true,
 		'character_id' => true,
