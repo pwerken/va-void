@@ -10,12 +10,9 @@
 	<table cellpadding="0" cellspacing="0">
 	<thead>
 		<tr>
-			<th><?= $this->Paginator->sort('id') ?></th>
-			<th><?= $this->Paginator->sort('username') ?></th>
-			<th><?= $this->Paginator->sort('password') ?></th>
-			<th><?= $this->Paginator->sort('first_name') ?></th>
-			<th><?= $this->Paginator->sort('insertion') ?></th>
-			<th><?= $this->Paginator->sort('last_name') ?></th>
+			<th><?= $this->Paginator->sort('id', 'Plin') ?></th>
+			<th><?= $this->Paginator->sort('first_name') ?>
+			  / <?= $this->Paginator->sort('last_name') ?></th>
 			<th><?= $this->Paginator->sort('date_of_birth') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
@@ -24,11 +21,7 @@
 	<?php foreach ($players as $player): ?>
 		<tr>
 			<td><?= $this->Number->format($player->id) ?></td>
-			<td><?= h($player->username) ?></td>
-			<td><?= h($player->password) ?></td>
-			<td><?= h($player->first_name) ?></td>
-			<td><?= h($player->insertion) ?></td>
-			<td><?= h($player->last_name) ?></td>
+			<td><?= h($player->full_name) ?></td>
 			<td><?= h($player->date_of_birth) ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['action' => 'view', $player->id]) ?>

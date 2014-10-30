@@ -25,4 +25,10 @@ class Player extends Entity {
 		'characters' => true,
 	];
 
+	protected function _getFullName() {
+		return $this->_properties['first_name'] . ' '
+				. (empty($this->_properties['insertion'])
+					? '' : $this->_properties['insertion'] . ' ')
+				.  $this->_properties['last_name'];
+	}
 }

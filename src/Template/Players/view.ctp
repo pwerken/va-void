@@ -10,13 +10,9 @@
 	</ul>
 </div>
 <div class="players view large-10 medium-9 columns">
-	<h2><?= h($player->id) ?></h2>
+	<h2><?= h($player->full_name) ?></h2>
 	<div class="row">
 		<div class="large-5 columns strings">
-			<h6 class="subheader"><?= __('Username') ?></h6>
-			<p><?= h($player->username) ?></p>
-			<h6 class="subheader"><?= __('Password') ?></h6>
-			<p><?= h($player->password) ?></p>
 			<h6 class="subheader"><?= __('First Name') ?></h6>
 			<p><?= h($player->first_name) ?></p>
 			<h6 class="subheader"><?= __('Insertion') ?></h6>
@@ -25,7 +21,7 @@
 			<p><?= h($player->last_name) ?></p>
 		</div>
 		<div class="large-2 large-offset-1 columns numbers end">
-			<h6 class="subheader"><?= __('Id') ?></h6>
+			<h6 class="subheader"><?= __('Plin') ?></h6>
 			<p><?= $this->Number->format($player->id) ?></p>
 		</div>
 		<div class="large-2 columns dates end">
@@ -56,34 +52,28 @@
 	<?php if (!empty($player->characters)): ?>
 	<table cellpadding="0" cellspacing="0">
 		<tr>
-			<th><?= __('Id') ?></th>
-			<th><?= __('Player Id') ?></th>
 			<th><?= __('Chin') ?></th>
 			<th><?= __('Name') ?></th>
 			<th><?= __('Xp') ?></th>
-			<th><?= __('Faction Id') ?></th>
-			<th><?= __('Belief Id') ?></th>
-			<th><?= __('Group Id') ?></th>
-			<th><?= __('World Id') ?></th>
+			<th><?= __('Faction') ?></th>
+			<th><?= __('Belief') ?></th>
+			<th><?= __('Group') ?></th>
+			<th><?= __('World') ?></th>
 			<th><?= __('Status') ?></th>
-			<th><?= __('Comments') ?></th>
 			<th><?= __('Created') ?></th>
 			<th><?= __('Modified') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
 		<?php foreach ($player->characters as $characters): ?>
 		<tr>
-			<td><?= h($characters->id) ?></td>
-			<td><?= h($characters->player_id) ?></td>
 			<td><?= h($characters->chin) ?></td>
 			<td><?= h($characters->name) ?></td>
 			<td><?= h($characters->xp) ?></td>
-			<td><?= h($characters->faction_id) ?></td>
-			<td><?= h($characters->belief_id) ?></td>
-			<td><?= h($characters->group_id) ?></td>
-			<td><?= h($characters->world_id) ?></td>
+			<td><?= $characters->has('faction') ?  $this->Html->link($characters->faction->name, ['controller' => 'Factions', 'action' => 'view', $characters->faction->id]) : '' ?></td>
+			<td><?= $characters->has('belief') ? $this->Html->link($characters->belief->name, ['controller' => 'Believes', 'action' => 'view', $characters->belief->id]) : '' ?></td>
+			<td><?= $characters->has('group') ? $this->Html->link($characters->group->name, ['controller' => 'Groups', 'action' => 'view', $characters->group->id]) : '' ?></td>
+			<td><?= $characters->has('world') ? $this->Html->link($characters->world->name, ['controller' => 'Worlds', 'action' => 'view', $characters->world->id]) : '' ?></td>
 			<td><?= h($characters->status) ?></td>
-			<td><?= h($characters->comments) ?></td>
 			<td><?= h($characters->created) ?></td>
 			<td><?= h($characters->modified) ?></td>
 			<td class="actions">
