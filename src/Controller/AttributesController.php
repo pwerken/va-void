@@ -2,7 +2,6 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Cake\Event\Event;
 
 /**
  * Attributes Controller
@@ -11,24 +10,19 @@ use Cake\Event\Event;
  */
 class AttributesController extends AppController {
 
-	public function view($id = null) {
-		$this->Crud->on('beforeFind', function(Event $event) {
-			$event->subject->query->contain([ 'Items' ]);
-		});
-		return $this->Crud->execute();
-	}
+	public function initialize() {
+		parent::initialize();
 
-	public function add() {
-		$this->Crud->listener('relatedModels')->relatedModels([ 'Items' ]);
-		$this->Crud->execute();
-	}
+		$this->Crud->action('view')->config(
+			[ 'contain' => [ 'Items' ] ]);
 
-	public function edit($id = null) {
-		$this->Crud->on('beforeFind', function(Event $event) {
-			$event->subject->query->contain([ 'Items' ]);
-		});
-		$this->Crud->listener('relatedModels')->relatedModels([ 'Items' ]);
-		$this->Crud->execute();
+		$this->Crud->action('add')->config(
+			[ 'relatedModels' => [ 'Items' ] ]);
+
+		$this->Crud->action('edit')->config(
+			[ 'contain' => [ 'Items' ]
+			, 'relatedModels' => [ 'Items' ]
+			]);
 	}
 
 }

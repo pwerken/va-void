@@ -2,7 +2,6 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Cake\Event\Event;
 
 /**
  * Groups Controller
@@ -11,11 +10,11 @@ use Cake\Event\Event;
  */
 class GroupsController extends AppController {
 
-	public function view($id = null) {
-		$this->Crud->on('beforeFind', function(Event $event) {
-			$event->subject->query->contain([ 'Characters' ]);
-		});
-		return $this->Crud->execute();
+	public function initialize() {
+		parent::initialize();
+
+		$this->Crud->action('view')->config(
+			[ 'contain' => [ 'Characters' ] ]);
 	}
 
 }

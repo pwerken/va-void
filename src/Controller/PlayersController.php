@@ -2,7 +2,6 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Cake\Event\Event;
 
 /**
  * Players Controller
@@ -11,17 +10,18 @@ use Cake\Event\Event;
  */
 class PlayersController extends AppController {
 
-	public function view($id = null) {
-		$this->Crud->on('beforeFind', function(Event $event) {
-			$event->subject->query->contain(
+	public function initialize() {
+		parent::initialize();
+
+		$this->Crud->action('view')->config(
+			[ 'contain' =>
 				[ 'Characters' =>
 					[ 'Factions'
 					, 'Believes'
 					, 'Groups'
 					, 'Worlds'
-					]
-				]);
-		});
-		return $this->Crud->execute();
+				]	]
+			]);
 	}
+
 }

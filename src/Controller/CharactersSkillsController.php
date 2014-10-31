@@ -2,7 +2,6 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Cake\Event\Event;
 
 /**
  * CharactersSkills Controller
@@ -11,32 +10,20 @@ use Cake\Event\Event;
  */
 class CharactersSkillsController extends AppController {
 
-	public function index() {
-		$this->Crud->on('beforePaginate', function(Event $event) {
-			$this->paginate =
-				[ 'contain' => [ 'Characters', 'Skills' ]
-				];
-		});
-		return $this->Crud->execute();
-	}
+	public function initialize() {
+		parent::initialize();
 
-	public function view($id = null) {
-		$this->Crud->on('beforeFind', function(Event $event) {
-			$event->subject->query->contain([ 'Characters', 'Skills' ]);
-		});
-		return $this->Crud->execute();
-	}
+		$this->Crud->action('index')->config(
+			[ 'contain' => [ 'Characters', 'Skills' ] ]);
 
-	public function add() {
-		$this->Crud->listener('relatedModels')->relatedModels(
-				[ 'Characters', 'Skills' ]);
-		$this->Crud->execute();
-	}
+		$this->Crud->action('view')->config(
+			[ 'contain' => [ 'Characters', 'Skills' ] ]);
 
-	public function edit($id = null) {
-		$this->Crud->listener('relatedModels')->relatedModels(
-				[ 'Characters', 'Skills' ]);
-		$this->Crud->execute();
+		$this->Crud->action('add')->config(
+			[ 'relatedModels' => [ 'Characters', 'Skills' ] ]);
+
+		$this->Crud->action('edit')->config(
+			[ 'relatedModels' => [ 'Characters', 'Skills' ] ]);
 	}
 
 }

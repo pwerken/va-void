@@ -2,7 +2,6 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Cake\Event\Event;
 
 /**
  * Characters Controller
@@ -11,24 +10,20 @@ use Cake\Event\Event;
  */
 class CharactersController extends AppController {
 
-	public function index() {
-		$this->Crud->on('beforePaginate', function(Event $event) {
-			$this->paginate =
-				[ 'contain' =>
-					[ 'Players'
-					, 'Factions'
-					, 'Believes'
-					, 'Groups'
-					, 'Worlds'
-					]
-				];
-		});
-		return $this->Crud->execute();
-	}
+	public function initialize() {
+		parent::initialize();
 
-	public function view($id = null) {
-		$this->Crud->on('beforeFind', function(Event $event) {
-			$event->subject->query->contain(
+		$this->Crud->action('index')->config(
+			[ 'contain' =>
+				[ 'Players'
+				, 'Factions'
+				, 'Believes'
+				, 'Groups'
+				, 'Worlds'
+			]	]);
+
+		$this->Crud->action('view')->config(
+			[ 'contain' =>
 				[ 'Players'
 				, 'Factions'
 				, 'Believes'
@@ -36,16 +31,13 @@ class CharactersController extends AppController {
 				, 'Worlds'
 				, 'Conditions'
 				, 'Powers'
-				, 'Skills'
+				, 'Skills' => [ 'Manatypes' ]
 				, 'Spells'
 				, 'Items'
-				]);
-		});
-		return $this->Crud->execute();
-	}
+			]	]);
 
-	public function add() {
-		$this->Crud->listener('relatedModels')->relatedModels(
+		$this->Crud->action('add')->config(
+			[ 'relatedModels' =>
 				[ 'Players'
 				, 'Factions'
 				, 'Believes'
@@ -55,20 +47,16 @@ class CharactersController extends AppController {
 				, 'Powers'
 				, 'Skills'
 				, 'Spells'
-				]);
-		$this->Crud->execute();
-	}
+			]	]);
 
-	public function edit($id = null) {
-		$this->Crud->on('beforeFind', function(Event $event) {
-			$event->subject->query->contain(
+		$this->Crud->action('edit')->config(
+			[ 'contain' =>
 				[ 'Conditions'
 				, 'Powers'
 				, 'Skills'
 				, 'Spells'
-				]);
-		});
-		$this->Crud->listener('relatedModels')->relatedModels(
+				]
+			, 'relatedModels' =>
 				[ 'Players'
 				, 'Factions'
 				, 'Believes'
@@ -78,8 +66,7 @@ class CharactersController extends AppController {
 				, 'Powers'
 				, 'Skills'
 				, 'Spells'
-				]);
-		$this->Crud->execute();
+			]	]);
 	}
 
 }

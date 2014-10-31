@@ -15,6 +15,7 @@
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Event\Event;
 
 /**
  * Application Controller
@@ -51,6 +52,15 @@ class AppController extends Controller {
 				]
 			]
 		);
+
+		$this->Crud->on('beforeFind', function(Event $event) {
+			$contain = $this->Crud->action()->config('contain');
+			$event->subject->query->contain($contain);
+		});
+		$this->Crud->on('beforePaginate', function(Event $event) {
+			$contain = $this->Crud->action()->config('contain');
+			$this->paginate['contain'] = $contain;
+		});
 	}
 
 }
