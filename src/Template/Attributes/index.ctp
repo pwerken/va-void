@@ -19,7 +19,7 @@
 	<tbody>
 	<?php foreach ($attributes as $attribute): ?>
 		<tr>
-			<td><?= $this->Number->format($attribute->id) ?></td>
+			<td><?= h($attribute->id) ?></td>
 			<td><?= h($attribute->name) ?></td>
 			<td><?= h($attribute->code) ?></td>
 			<td class="actions">

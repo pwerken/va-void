@@ -18,7 +18,7 @@
 	<tbody>
 	<?php foreach ($worlds as $world): ?>
 		<tr>
-			<td><?= $this->Number->format($world->id) ?></td>
+			<td><?= h($world->id) ?></td>
 			<td><?= h($world->name) ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['action' => 'view', $world->id]) ?>

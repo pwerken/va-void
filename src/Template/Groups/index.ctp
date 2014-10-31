@@ -18,7 +18,7 @@
 	<tbody>
 	<?php foreach ($groups as $group): ?>
 		<tr>
-			<td><?= $this->Number->format($group->id) ?></td>
+			<td><?= h($group->id) ?></td>
 			<td><?= h($group->name) ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['action' => 'view', $group->id]) ?>

@@ -10,20 +10,16 @@
 	<table cellpadding="0" cellspacing="0">
 	<thead>
 		<tr>
-			<th><?= $this->Paginator->sort('id') ?></th>
+			<th><?= $this->Paginator->sort('id', __('Poin')) ?></th>
 			<th><?= $this->Paginator->sort('name') ?></th>
-			<th><?= $this->Paginator->sort('created') ?></th>
-			<th><?= $this->Paginator->sort('modified') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
 	</thead>
 	<tbody>
 	<?php foreach ($conditions as $condition): ?>
 		<tr>
-			<td><?= $this->Number->format($condition->id) ?></td>
+			<td><?= h($condition->id) ?></td>
 			<td><?= h($condition->name) ?></td>
-			<td><?= h($condition->created) ?></td>
-			<td><?= h($condition->modified) ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['action' => 'view', $condition->id]) ?>
 				<?= $this->Html->link(__('Edit'), ['action' => 'edit', $condition->id]) ?>

@@ -20,7 +20,7 @@
 	<tbody>
 	<?php foreach ($spells as $spell): ?>
 		<tr>
-			<td><?= $this->Number->format($spell->id) ?></td>
+			<td><?= h($spell->id) ?></td>
 			<td><?= h($spell->name) ?></td>
 			<td><?= h($spell->short) ?></td>
 			<td><?= h($spell->spiritual) ?></td>

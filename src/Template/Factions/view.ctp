@@ -18,7 +18,7 @@
 		</div>
 		<div class="large-2 large-offset-1 columns numbers end">
 			<h6 class="subheader"><?= __('Id') ?></h6>
-			<p><?= $this->Number->format($faction->id) ?></p>
+			<p><?= h($faction->id) ?></p>
 		</div>
 	</div>
 </div>
@@ -28,36 +28,28 @@
 	<?php if (!empty($faction->characters)): ?>
 	<table cellpadding="0" cellspacing="0">
 		<tr>
-			<th><?= __('Id') ?></th>
-			<th><?= __('Player Id') ?></th>
+			<th><?= __('Plin') ?></th>
 			<th><?= __('Chin') ?></th>
 			<th><?= __('Name') ?></th>
 			<th><?= __('Xp') ?></th>
-			<th><?= __('Faction Id') ?></th>
-			<th><?= __('Belief Id') ?></th>
-			<th><?= __('Group Id') ?></th>
-			<th><?= __('World Id') ?></th>
+			<th><?= __('Faction') ?></th>
+			<th><?= __('Belief') ?></th>
+			<th><?= __('Group') ?></th>
+			<th><?= __('World') ?></th>
 			<th><?= __('Status') ?></th>
-			<th><?= __('Comments') ?></th>
-			<th><?= __('Created') ?></th>
-			<th><?= __('Modified') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
 		<?php foreach ($faction->characters as $characters): ?>
 		<tr>
-			<td><?= h($characters->id) ?></td>
 			<td><?= h($characters->player_id) ?></td>
 			<td><?= h($characters->chin) ?></td>
 			<td><?= h($characters->name) ?></td>
 			<td><?= h($characters->xp) ?></td>
-			<td><?= h($characters->faction_id) ?></td>
-			<td><?= h($characters->belief_id) ?></td>
-			<td><?= h($characters->group_id) ?></td>
-			<td><?= h($characters->world_id) ?></td>
+			<td><?= $characters->has('faction') ? $this->Html->link($characters->faction->name, ['controller' => 'Factions', 'action' => 'view', $characters->faction->id]) : '' ?></td>
+			<td><?= $characters->has('belief') ? $this->Html->link($characters->belief->name, ['controller' => 'Believes', 'action' => 'view', $characters->belief->id]) : '' ?></td>
+			<td><?= $characters->has('group') ? $this->Html->link($characters->group->name, ['controller' => 'Groups', 'action' => 'view', $characters->group->id]) : '' ?></td>
+			<td><?= $characters->has('world') ? $this->Html->link($characters->world->name, ['controller' => 'Worlds', 'action' => 'view', $characters->world->id]) : '' ?></td>
 			<td><?= h($characters->status) ?></td>
-			<td><?= h($characters->comments) ?></td>
-			<td><?= h($characters->created) ?></td>
-			<td><?= h($characters->modified) ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['controller' => 'Characters', 'action' => 'view', $characters->id]) ?>
 				<?= $this->Html->link(__('Edit'), ['controller' => 'Characters', 'action' => 'edit', $characters->id]) ?>

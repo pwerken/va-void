@@ -32,7 +32,7 @@
 	<div class="row">
 		<div class="large-5 columns strings">
 			<h6 class="subheader"><?= __('Player') ?></h6>
-			<p><?= $character->has('player') ? $this->Html->link($character->player->id, ['controller' => 'Players', 'action' => 'view', $character->player->id]) : '' ?></p>
+			<p><?= $character->has('player') ? $this->Html->link($character->player->full_name, ['controller' => 'Players', 'action' => 'view', $character->player->id]) : '' ?></p>
 			<h6 class="subheader"><?= __('Name') ?></h6>
 			<p><?= h($character->name) ?></p>
 			<h6 class="subheader"><?= __('Faction') ?></h6>
@@ -47,18 +47,18 @@
 			<p><?= h($character->status) ?></p>
 		</div>
 		<div class="large-2 large-offset-1 columns numbers end">
-			<h6 class="subheader"><?= __('Id') ?></h6>
-			<p><?= $this->Number->format($character->id) ?></p>
+			<h6 class="subheader"><?= __('Plin') ?></h6>
+			<p><?= $character->has('player') ?  h($character->player->id) : '' ?></p>
 			<h6 class="subheader"><?= __('Chin') ?></h6>
-			<p><?= $this->Number->format($character->chin) ?></p>
+			<p><?= h($character->chin) ?></p>
 			<h6 class="subheader"><?= __('Xp') ?></h6>
 			<p><?= $this->Number->format($character->xp) ?></p>
 		</div>
 		<div class="large-2 columns dates end">
 			<h6 class="subheader"><?= __('Created') ?></h6>
-			<p><?= h($character->created) ?></p>
+			<p><?= $character->has('created') ? $character->created->format('d-m-Y H:i:s') : '' ?></p>
 			<h6 class="subheader"><?= __('Modified') ?></h6>
-			<p><?= h($character->modified) ?></p>
+			<p><?= $character->has('modified') ? $character->modified->format('d-m-Y H:i:s') : '' ?></p>
 		</div>
 	</div>
 	<div class="row texts">
@@ -74,14 +74,10 @@
 	<?php if (!empty($character->items)): ?>
 	<table cellpadding="0" cellspacing="0">
 		<tr>
-			<th><?= __('Id') ?></th>
+			<th><?= __('Itin') ?></th>
 			<th><?= __('Name') ?></th>
 			<th><?= __('Player Text') ?></th>
-			<th><?= __('Cs Text') ?></th>
-			<th><?= __('Character Id') ?></th>
 			<th><?= __('Expiry') ?></th>
-			<th><?= __('Created') ?></th>
-			<th><?= __('Modified') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
 		<?php foreach ($character->items as $items): ?>
@@ -90,11 +86,7 @@
 			<td><i><?= h($items->name) ?></i><br>
 				<?= h($items->description) ?></td>
 			<td><?= h($items->player_text) ?></td>
-			<td><?= h($items->cs_text) ?></td>
-			<td><?= h($items->character_id) ?></td>
-			<td><?= h($items->expiry) ?></td>
-			<td><?= h($items->created) ?></td>
-			<td><?= h($items->modified) ?></td>
+			<td><?= $items->has('expiry') ? $items->expiry->format('d-m-Y') : __('Permanent') ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['controller' => 'Items', 'action' => 'view', $items->id]) ?>
 				<?= $this->Html->link(__('Edit'), ['controller' => 'Items', 'action' => 'edit', $items->id]) ?>
@@ -108,49 +100,14 @@
 </div>
 <div class="related row">
 	<div class="column large-12">
-	<h4 class="subheader"><?= __('Related Conditions') ?></h4>
-	<?php if (!empty($character->conditions)): ?>
-	<table cellpadding="0" cellspacing="0">
-		<tr>
-			<th><?= __('Id') ?></th>
-			<th><?= __('Name') ?></th>
-			<th><?= __('Player Text') ?></th>
-			<th><?= __('Cs Text') ?></th>
-			<th><?= __('Created') ?></th>
-			<th><?= __('Modified') ?></th>
-			<th class="actions"><?= __('Actions') ?></th>
-		</tr>
-		<?php foreach ($character->conditions as $conditions): ?>
-		<tr>
-			<td><?= h($conditions->id) ?></td>
-			<td><?= h($conditions->name) ?></td>
-			<td><?= h($conditions->player_text) ?></td>
-			<td><?= h($conditions->cs_text) ?></td>
-			<td><?= h($conditions->created) ?></td>
-			<td><?= h($conditions->modified) ?></td>
-			<td class="actions">
-				<?= $this->Html->link(__('View'), ['controller' => 'Conditions', 'action' => 'view', $conditions->id]) ?>
-				<?= $this->Html->link(__('Edit'), ['controller' => 'Conditions', 'action' => 'edit', $conditions->id]) ?>
-				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Conditions', 'action' => 'delete', $conditions->id], ['confirm' => __('Are you sure you want to delete # {0}?', $conditions->id)]) ?>
-			</td>
-		</tr>
-		<?php endforeach; ?>
-	</table>
-	<?php endif; ?>
-	</div>
-</div>
-<div class="related row">
-	<div class="column large-12">
 	<h4 class="subheader"><?= __('Related Powers') ?></h4>
 	<?php if (!empty($character->powers)): ?>
 	<table cellpadding="0" cellspacing="0">
 		<tr>
-			<th><?= __('Id') ?></th>
+			<th><?= __('Poin') ?></th>
 			<th><?= __('Name') ?></th>
 			<th><?= __('Player Text') ?></th>
-			<th><?= __('Cs Text') ?></th>
-			<th><?= __('Created') ?></th>
-			<th><?= __('Modified') ?></th>
+			<th><?= __('Expiry') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
 		<?php foreach ($character->powers as $powers): ?>
@@ -158,9 +115,7 @@
 			<td><?= h($powers->id) ?></td>
 			<td><?= h($powers->name) ?></td>
 			<td><?= h($powers->player_text) ?></td>
-			<td><?= h($powers->cs_text) ?></td>
-			<td><?= h($powers->created) ?></td>
-			<td><?= h($powers->modified) ?></td>
+			<td><?= is_object($powers->_joinData['expiry']) ?  $powers->_joinData['expiry']->format('d-m-Y') : __('Permanent') ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['controller' => 'Powers', 'action' => 'view', $powers->id]) ?>
 				<?= $this->Html->link(__('Edit'), ['controller' => 'Powers', 'action' => 'edit', $powers->id]) ?>
@@ -174,26 +129,51 @@
 </div>
 <div class="related row">
 	<div class="column large-12">
+	<h4 class="subheader"><?= __('Related Conditions') ?></h4>
+	<?php if (!empty($character->conditions)): ?>
+	<table cellpadding="0" cellspacing="0">
+		<tr>
+			<th><?= __('Coin') ?></th>
+			<th><?= __('Name') ?></th>
+			<th><?= __('Player Text') ?></th>
+			<th><?= __('Expiry') ?></th>
+			<th class="actions"><?= __('Actions') ?></th>
+		</tr>
+		<?php foreach ($character->conditions as $conditions): ?>
+		<tr>
+			<td><?= h($conditions->id) ?></td>
+			<td><?= h($conditions->name) ?></td>
+			<td><?= h($conditions->player_text) ?></td>
+			<td><?= is_object($conditions->_joinData['expiry']) ?  $conditions->_joinData['expiry']->format('d-m-Y') : __('Permanent') ?></td>
+			<td class="actions">
+				<?= $this->Html->link(__('View'), ['controller' => 'Conditions', 'action' => 'view', $conditions->id]) ?>
+				<?= $this->Html->link(__('Edit'), ['controller' => 'Conditions', 'action' => 'edit', $conditions->id]) ?>
+				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Conditions', 'action' => 'delete', $conditions->id], ['confirm' => __('Are you sure you want to delete # {0}?', $conditions->id)]) ?>
+			</td>
+		</tr>
+		<?php endforeach; ?>
+	</table>
+	<?php endif; ?>
+	</div>
+</div>
+<div class="related row">
+	<div class="column large-12">
 	<h4 class="subheader"><?= __('Related Skills') ?></h4>
 	<?php if (!empty($character->skills)): ?>
 	<table cellpadding="0" cellspacing="0">
 		<tr>
-			<th><?= __('Id') ?></th>
 			<th><?= __('Name') ?></th>
 			<th><?= __('Cost') ?></th>
-			<th><?= __('Manatype Id') ?></th>
-			<th><?= __('Mana Amount') ?></th>
-			<th><?= __('Sort Order') ?></th>
+			<th><?= __('Mana') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
+		<?php $sum = 0; ?>
 		<?php foreach ($character->skills as $skills): ?>
+		<?php	$sum += $skills->cost; ?>
 		<tr>
-			<td><?= h($skills->id) ?></td>
 			<td><?= h($skills->name) ?></td>
 			<td><?= h($skills->cost) ?></td>
-			<td><?= h($skills->manatype_id) ?></td>
-			<td><?= h($skills->mana_amount) ?></td>
-			<td><?= h($skills->sort_order) ?></td>
+			<td><?= $skills->has('manatype') ? h($skills->mana_amount) . ' ' . h($skills->manatype->name) : '' ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['controller' => 'Skills', 'action' => 'view', $skills->id]) ?>
 				<?= $this->Html->link(__('Edit'), ['controller' => 'Skills', 'action' => 'edit', $skills->id]) ?>
@@ -201,6 +181,14 @@
 			</td>
 		</tr>
 		<?php endforeach; ?>
+		<?php if($sum > 0): ?>
+		<tr>
+			<td><b><?= __('Total') ?></b></td>
+			<td><?= h($sum) ?> / <?=$character->xp ?></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<?php endif; ?>
 	</table>
 	<?php endif; ?>
 	</div>
@@ -211,17 +199,15 @@
 	<?php if (!empty($character->spells)): ?>
 	<table cellpadding="0" cellspacing="0">
 		<tr>
-			<th><?= __('Id') ?></th>
 			<th><?= __('Name') ?></th>
-			<th><?= __('Short') ?></th>
+			<th><?= __('Level') ?></th>
 			<th><?= __('Spiritual') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
 		<?php foreach ($character->spells as $spells): ?>
 		<tr>
-			<td><?= h($spells->id) ?></td>
 			<td><?= h($spells->name) ?></td>
-			<td><?= h($spells->short) ?></td>
+			<td><?= $this->Number->format($spells->_joinData['level']) ?></td>
 			<td><?= h($spells->spiritual) ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['controller' => 'Spells', 'action' => 'view', $spells->id]) ?>

@@ -22,7 +22,7 @@
 		</div>
 		<div class="large-2 columns dates end">
 			<h6 class="subheader"><?= __('Expiry') ?></h6>
-			<p><?= h($charactersCondition->expiry) ?></p>
+			<p><?= $charactersCondition->has('expiry') ? '' : $charactersCondition->expiry->format('d-m-Y') ?></p>
 		</div>
 	</div>
 </div>

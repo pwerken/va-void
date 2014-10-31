@@ -20,19 +20,19 @@
 			<h6 class="subheader"><?= __('Description') ?></h6>
 			<p><?= h($item->description) ?></p>
 			<h6 class="subheader"><?= __('Character') ?></h6>
-			<p><?= $item->has('character') ? $this->Html->link($item->character->name, ['controller' => 'Characters', 'action' => 'view', $item->character->id]) : '' ?></p>
+			<p><?= $item->has('character') ? $this->Html->link($item->character->player_id.'-'.$item->character->chin.' '.$item->character->name, ['controller' => 'Characters', 'action' => 'view', $item->character->id]) : '' ?></p>
 		</div>
 		<div class="large-2 large-offset-1 columns numbers end">
-			<h6 class="subheader"><?= __('Id') ?></h6>
-			<p><?= $this->Number->format($item->id) ?></p>
+			<h6 class="subheader"><?= __('Itin') ?></h6>
+			<p><?= h($item->id) ?></p>
 		</div>
 		<div class="large-2 columns dates end">
 			<h6 class="subheader"><?= __('Expiry') ?></h6>
-			<p><?= h($item->expiry) ?></p>
+			<p><?= $item->has('expiry') ? $item->expiry->format('d-m-Y') : __('Permanent') ?></td>
 			<h6 class="subheader"><?= __('Created') ?></h6>
-			<p><?= h($item->created) ?></p>
+			<p><?= $item->has('created') ? $item->created->format('d-m-Y H:i:s') : '' ?></p>
 			<h6 class="subheader"><?= __('Modified') ?></h6>
-			<p><?= h($item->modified) ?></p>
+			<p><?= $item->has('modified') ? $item->modified->format('d-m-Y H:i:s') : '' ?></p>
 		</div>
 	</div>
 	<div class="row texts">
@@ -54,15 +54,13 @@
 	<?php if (!empty($item->attributes)): ?>
 	<table cellpadding="0" cellspacing="0">
 		<tr>
-			<th><?= __('Id') ?></th>
 			<th><?= __('Name') ?></th>
-			<th><?= __('LorType') ?></th>
+			<th><?= __('Type') ?></th>
 			<th><?= __('Code') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
 		<?php foreach ($item->attributes as $attributes): ?>
 		<tr>
-			<td><?= h($attributes->id) ?></td>
 			<td><?= h($attributes->name) ?></td>
 			<td><?= h($attributes->lorType) ?></td>
 			<td><?= h($attributes->code) ?></td>

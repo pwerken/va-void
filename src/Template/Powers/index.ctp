@@ -10,20 +10,16 @@
 	<table cellpadding="0" cellspacing="0">
 	<thead>
 		<tr>
-			<th><?= $this->Paginator->sort('id') ?></th>
+			<th><?= $this->Paginator->sort('id', __('Poin')) ?></th>
 			<th><?= $this->Paginator->sort('name') ?></th>
-			<th><?= $this->Paginator->sort('created') ?></th>
-			<th><?= $this->Paginator->sort('modified') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
 	</thead>
 	<tbody>
 	<?php foreach ($powers as $power): ?>
 		<tr>
-			<td><?= $this->Number->format($power->id) ?></td>
+			<td><?= h($power->id) ?></td>
 			<td><?= h($power->name) ?></td>
-			<td><?= h($power->created) ?></td>
-			<td><?= h($power->modified) ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['action' => 'view', $power->id]) ?>
 				<?= $this->Html->link(__('Edit'), ['action' => 'edit', $power->id]) ?>

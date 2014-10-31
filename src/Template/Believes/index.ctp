@@ -18,7 +18,7 @@
 	<tbody>
 	<?php foreach ($believes as $belief): ?>
 		<tr>
-			<td><?= $this->Number->format($belief->id) ?></td>
+			<td><?= h($belief->id) ?></td>
 			<td><?= h($belief->name) ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['action' => 'view', $belief->id]) ?>

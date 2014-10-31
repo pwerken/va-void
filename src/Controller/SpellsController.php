@@ -13,9 +13,6 @@ class SpellsController extends AppController {
 	public function initialize() {
 		parent::initialize();
 
-		$this->Crud->action('view')->config(
-			[ 'contain' => [ 'Characters' ] ]);
-
 		$this->Crud->action('add')->config(
 			[ 'relatedModels' => [ 'Characters' ] ]);
 

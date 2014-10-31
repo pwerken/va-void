@@ -18,7 +18,7 @@
 		</div>
 		<div class="large-2 large-offset-1 columns numbers end">
 			<h6 class="subheader"><?= __('Id') ?></h6>
-			<p><?= $this->Number->format($manatype->id) ?></p>
+			<p><?= h($manatype->id) ?></p>
 		</div>
 	</div>
 </div>

@@ -18,7 +18,7 @@
 	<tbody>
 	<?php foreach ($manatypes as $manatype): ?>
 		<tr>
-			<td><?= $this->Number->format($manatype->id) ?></td>
+			<td><?= h($manatype->id) ?></td>
 			<td><?= h($manatype->name) ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['action' => 'view', $manatype->id]) ?>

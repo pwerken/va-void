@@ -12,11 +12,9 @@
 	<table cellpadding="0" cellspacing="0">
 	<thead>
 		<tr>
-			<th><?= $this->Paginator->sort('id') ?></th>
 			<th><?= $this->Paginator->sort('name') ?></th>
 			<th><?= $this->Paginator->sort('cost') ?></th>
-			<th><?= $this->Paginator->sort('manatype_id') ?></th>
-			<th><?= $this->Paginator->sort('mana_amount') ?></th>
+			<th><?= __('Mana') ?></th>
 			<th><?= $this->Paginator->sort('sort_order') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
@@ -24,13 +22,11 @@
 	<tbody>
 	<?php foreach ($skills as $skill): ?>
 		<tr>
-			<td><?= $this->Number->format($skill->id) ?></td>
 			<td><?= h($skill->name) ?></td>
 			<td><?= $this->Number->format($skill->cost) ?></td>
 			<td>
-				<?= $skill->has('manatype') ? $this->Html->link($skill->manatype->name, ['controller' => 'Manatypes', 'action' => 'view', $skill->manatype->id]) : '' ?>
+				<?= $skill->has('manatype') ? $this->Number->format($skill->mana_amount) . ' ' . h($skill->manatype->name) : '' ?>
 			</td>
-			<td><?= $this->Number->format($skill->mana_amount) ?></td>
 			<td><?= $this->Number->format($skill->sort_order) ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['action' => 'view', $skill->id]) ?>

@@ -14,14 +14,13 @@ class WorldsController extends AppController {
 		parent::initialize();
 
 		$this->Crud->action('view')->config(
-			[ 'contain' => [ 'Characters' ] ]);
-
-		$this->Crud->action('add')->config(
-			[ 'relatedModels' => [ 'Characters' ] ]);
-
-		$this->Crud->action('edit')->config(
-			[ 'contain' => [ 'Characters' ]
-			, 'relatedModels' => [ 'Characters' ]
+			[ 'contain' =>
+				[ 'Characters' =>
+					[ 'Factions'
+					, 'Believes'
+					, 'Groups'
+					, 'Worlds'
+				]	]
 			]);
 	}
 

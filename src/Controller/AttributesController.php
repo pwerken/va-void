@@ -14,7 +14,7 @@ class AttributesController extends AppController {
 		parent::initialize();
 
 		$this->Crud->action('view')->config(
-			[ 'contain' => [ 'Items' ] ]);
+			[ 'contain' => [ 'Items' => [ 'Characters' ] ] ]);
 
 		$this->Crud->action('add')->config(
 			[ 'relatedModels' => [ 'Items' ] ]);

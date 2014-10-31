@@ -17,10 +17,10 @@ class SkillsController extends AppController {
 			[ 'contain' => [ 'Manatypes' ] ]);
 
 		$this->Crud->action('view')->config(
-			[ 'contain' => [ 'Characters', 'Manatypes' ] ]);
+			[ 'contain' => [ 'Manatypes' ] ]);
 
 		$this->Crud->action('add')->config(
-			[ 'relatedModels' => [ 'Characters', 'Manatypes' ] ]);
+			[ 'relatedModels' => [ 'Manatypes' ] ]);
 
 		$this->Crud->action('edit')->config(
 			[ 'contain' => [ 'Characters' ]

@@ -20,7 +20,7 @@
 		</div>
 		<div class="large-2 large-offset-1 columns numbers end">
 			<h6 class="subheader"><?= __('Id') ?></h6>
-			<p><?= $this->Number->format($attribute->id) ?></p>
+			<p><?= h($attribute->id) ?></p>
 		</div>
 	</div>
 	<div class="row texts">
@@ -36,28 +36,24 @@
 	<?php if (!empty($attribute->items)): ?>
 	<table cellpadding="0" cellspacing="0">
 		<tr>
-			<th><?= __('Id') ?></th>
-			<th><?= __('Name') ?></th>
-			<th><?= __('Description') ?></th>
+			<th><?= __('Itin') ?></th>
+			<th>
+				<i><?= __('Name') ?></i><br>
+				<?= __('Description') ?>
+			</th>
 			<th><?= __('Player Text') ?></th>
-			<th><?= __('Cs Text') ?></th>
-			<th><?= __('Character Id') ?></th>
+			<th><?= __('Character') ?></th>
 			<th><?= __('Expiry') ?></th>
-			<th><?= __('Created') ?></th>
-			<th><?= __('Modified') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
 		<?php foreach ($attribute->items as $items): ?>
 		<tr>
 			<td><?= h($items->id) ?></td>
-			<td><?= h($items->name) ?></td>
-			<td><?= h($items->description) ?></td>
+			<td><i><?= h($items->name) ?></i><br>
+				<?= h($items->description) ?></td>
 			<td><?= h($items->player_text) ?></td>
-			<td><?= h($items->cs_text) ?></td>
-			<td><?= h($items->character_id) ?></td>
-			<td><?= h($items->expiry) ?></td>
-			<td><?= h($items->created) ?></td>
-			<td><?= h($items->modified) ?></td>
+			<td><?= $items->has('character') ? $this->Html->link($items->character->player_id.'-'.$items->character->chin.' '.$items->character->name, ['controller' => 'Characters', 'action' => 'view', $items->character->id]) : '' ?></td>
+			<td><?= is_object($items->expiry) ? $items->expiry->format('d-m-Y') : __('Permanent') ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['controller' => 'Items', 'action' => 'view', $items->id]) ?>
 				<?= $this->Html->link(__('Edit'), ['controller' => 'Items', 'action' => 'edit', $items->id]) ?>

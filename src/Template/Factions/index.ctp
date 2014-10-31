@@ -18,7 +18,7 @@
 	<tbody>
 	<?php foreach ($factions as $faction): ?>
 		<tr>
-			<td><?= $this->Number->format($faction->id) ?></td>
+			<td><?= h($faction->id) ?></td>
 			<td><?= h($faction->name) ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['action' => 'view', $faction->id]) ?>

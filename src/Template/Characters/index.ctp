@@ -28,24 +28,24 @@
 	<table cellpadding="0" cellspacing="0">
 	<thead>
 		<tr>
-			<th><?= $this->Paginator->sort('id') ?></th>
-			<th><?= $this->Paginator->sort('player_id') ?></th>
+			<th><?= $this->Paginator->sort('player_id', __('Plin')) ?></th>
 			<th><?= $this->Paginator->sort('chin') ?></th>
 			<th><?= $this->Paginator->sort('name') ?></th>
 			<th><?= $this->Paginator->sort('xp') ?></th>
-			<th><?= $this->Paginator->sort('faction_id') ?></th>
-			<th><?= $this->Paginator->sort('belief_id') ?></th>
+			<th><?= $this->Paginator->sort('faction_id', __('Faction')) ?></th>
+			<th><?= $this->Paginator->sort('belief_id', __('Belief')) ?></th>
+			<th><?= $this->Paginator->sort('group_id', __('Group')) ?></th>
+			<th><?= $this->Paginator->sort('world_id', __('World')) ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
 	</thead>
 	<tbody>
 	<?php foreach ($characters as $character): ?>
 		<tr>
-			<td><?= $this->Number->format($character->id) ?></td>
 			<td>
 				<?= $character->has('player') ? $this->Html->link($character->player->id, ['controller' => 'Players', 'action' => 'view', $character->player->id]) : '' ?>
 			</td>
-			<td><?= $this->Number->format($character->chin) ?></td>
+			<td><?= h($character->chin) ?></td>
 			<td><?= h($character->name) ?></td>
 			<td><?= $this->Number->format($character->xp) ?></td>
 			<td>
@@ -53,6 +53,12 @@
 			</td>
 			<td>
 				<?= $character->has('belief') ? $this->Html->link($character->belief->name, ['controller' => 'Believes', 'action' => 'view', $character->belief->id]) : '' ?>
+			</td>
+			<td>
+				<?= $character->has('group') ? $this->Html->link($character->group->name, ['controller' => 'Groups', 'action' => 'view', $character->group->id]) : '' ?>
+			</td>
+			<td>
+				<?= $character->has('world') ? $this->Html->link($character->world->name, ['controller' => 'Worlds', 'action' => 'view', $character->world->id]) : '' ?>
 			</td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['action' => 'view', $character->id]) ?>

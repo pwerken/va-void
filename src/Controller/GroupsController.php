@@ -14,7 +14,14 @@ class GroupsController extends AppController {
 		parent::initialize();
 
 		$this->Crud->action('view')->config(
-			[ 'contain' => [ 'Characters' ] ]);
+			[ 'contain' =>
+				[ 'Characters' =>
+					[ 'Factions'
+					, 'Believes'
+					, 'Groups'
+					, 'Worlds'
+				]	]
+			]);
 	}
 
 }

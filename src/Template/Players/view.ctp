@@ -22,15 +22,15 @@
 		</div>
 		<div class="large-2 large-offset-1 columns numbers end">
 			<h6 class="subheader"><?= __('Plin') ?></h6>
-			<p><?= $this->Number->format($player->id) ?></p>
+			<p><?= h($player->id) ?></p>
 		</div>
 		<div class="large-2 columns dates end">
 			<h6 class="subheader"><?= __('Date Of Birth') ?></h6>
-			<p><?= h($player->date_of_birth) ?></p>
+			<p><?= $player->has('date_of_birth') ? $player->date_of_birth->format('d-m-Y') : '' ?></p>
 			<h6 class="subheader"><?= __('Created') ?></h6>
-			<p><?= h($player->created) ?></p>
+			<p><?= $player->has('created') ? $player->created->format('d-m-Y H:i:s') : '' ?></p>
 			<h6 class="subheader"><?= __('Modified') ?></h6>
-			<p><?= h($player->modified) ?></p>
+			<p><?= $player->has('modified') ? $player->modified->format('d-m-Y H:i:s') : '' ?></p>
 		</div>
 	</div>
 	<div class="row texts">
@@ -52,6 +52,7 @@
 	<?php if (!empty($player->characters)): ?>
 	<table cellpadding="0" cellspacing="0">
 		<tr>
+			<th><?= __('Plin') ?></th>
 			<th><?= __('Chin') ?></th>
 			<th><?= __('Name') ?></th>
 			<th><?= __('Xp') ?></th>
@@ -60,22 +61,19 @@
 			<th><?= __('Group') ?></th>
 			<th><?= __('World') ?></th>
 			<th><?= __('Status') ?></th>
-			<th><?= __('Created') ?></th>
-			<th><?= __('Modified') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
 		<?php foreach ($player->characters as $characters): ?>
 		<tr>
+			<td><?= h($player->id) ?></td>
 			<td><?= h($characters->chin) ?></td>
 			<td><?= h($characters->name) ?></td>
 			<td><?= h($characters->xp) ?></td>
-			<td><?= $characters->has('faction') ?  $this->Html->link($characters->faction->name, ['controller' => 'Factions', 'action' => 'view', $characters->faction->id]) : '' ?></td>
+			<td><?= $characters->has('faction') ? $this->Html->link($characters->faction->name, ['controller' => 'Factions', 'action' => 'view', $characters->faction->id]) : '' ?></td>
 			<td><?= $characters->has('belief') ? $this->Html->link($characters->belief->name, ['controller' => 'Believes', 'action' => 'view', $characters->belief->id]) : '' ?></td>
 			<td><?= $characters->has('group') ? $this->Html->link($characters->group->name, ['controller' => 'Groups', 'action' => 'view', $characters->group->id]) : '' ?></td>
 			<td><?= $characters->has('world') ? $this->Html->link($characters->world->name, ['controller' => 'Worlds', 'action' => 'view', $characters->world->id]) : '' ?></td>
 			<td><?= h($characters->status) ?></td>
-			<td><?= h($characters->created) ?></td>
-			<td><?= h($characters->modified) ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['controller' => 'Characters', 'action' => 'view', $characters->id]) ?>
 				<?= $this->Html->link(__('Edit'), ['controller' => 'Characters', 'action' => 'edit', $characters->id]) ?>
