@@ -175,4 +175,6 @@ Plugin::load('Crud');
 
 DispatcherFactory::add('Asset');
 DispatcherFactory::add('Routing');
+DispatcherFactory::add('NoExtensions');
+DispatcherFactory::add('ForceJson', ['for' => '/api']);
 DispatcherFactory::add('ControllerFactory');
