@@ -1,30 +1,33 @@
 ToDo-list:
  - Code base
-   - [*] setup CakePHP 3.0
-   - [*] created database layout
-   - [*] add CRUD plugin
+   - [x] setup CakePHP 3.0
+   - [x] created database layout
+   - [x] add CRUD plugin
    - [ ] add search functions: player/character/item/power/condition
    - [ ] add authenticate/authorize/login
    - [ ] share/publish repository on github
  - User interface
    - [ ] test if the add/edit actions work with CRUD
    - [ ] add validator rules
-   - [*] clean up Template/*.ctp's
+   - [x] clean up Template/*.ctp's
    - [ ] fancier edit form for character skills
    - [ ] infobalie uitcheck forms
  - Expand route.php
-   - [/] add /api prefix
-   - [*] always return json under /api (without requiring a file extension)
+   - [x] add /api prefix
+   - [x] always return json under /api (without requiring a file extension)
    - [ ] clean up json output
    - [ ] accept json for add/edit actions
    - [ ] characters url routing: from .../:id to .../:plin/:chin
    - [ ] restructure urls/controllers (relations, nesting)
  - Reduce CRUD-plugin boilerplating
-   - [*] configurable per view query 'contain' information
-   - [*] configure per view 'relatedModels'
+   - [x] configurable per view query 'contain' information
+   - [x] configure per view 'relatedModels'
  - Lammy printing
    - [ ] create/manage printing queue
    - [ ] output pdf with print job
  - Automate import of Access
-   - [ ] import Access data to MySQL (1:1, no conversion)
+   - [x] import Access data to MySQL (1:1, no conversion)
    - [ ] convert MySQL imported data to database layout
+ - Item attributes
+   - [ ] rename lorType field
+   - [ ] dummy lore code handling/generation
