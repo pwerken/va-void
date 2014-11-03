@@ -298,7 +298,8 @@ ALTER TABLE `attributes`
 -- Indexes for table `attributes_items`
 --
 ALTER TABLE `attributes_items`
- ADD PRIMARY KEY (`attribute_id`,`item_id`), ADD KEY `attributes_items_item_key` (`item_id`);
+ ADD PRIMARY KEY (`attribute_id`,`item_id`),
+ ADD KEY `attributes_items_item_key` (`item_id`);
 
 --
 -- Indexes for table `believes`
@@ -312,6 +313,7 @@ ALTER TABLE `believes`
 ALTER TABLE `characters`
  ADD PRIMARY KEY (`id`),
  ADD KEY `player_idx` (`player_id`),
+ ADD KEY `characterx` (`player_id`, `chin`),
  ADD KEY `belief_idx` (`belief_id`),
  ADD KEY `faction_idx` (`faction_id`),
  ADD KEY `group_idx` (`group_id`),

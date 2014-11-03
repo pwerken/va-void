@@ -27,7 +27,7 @@ ToDo-list:
    - [ ] output pdf with print job
  - Automate import of Access
    - [x] import Access data to MySQL (1:1, no conversion)
-   - [ ] convert MySQL imported data to database layout
+   - [x] convert MySQL imported data to database layout
  - Item attributes
    - [ ] rename lorType field
    - [ ] dummy lore code handling/generation
