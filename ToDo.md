@@ -11,6 +11,7 @@ ToDo-list:
    - [ ] add validator rules
    - [x] clean up Template/*.ctp's
    - [ ] fancier edit form for character skills
+   - [ ] date input fields: text+calendar
    - [ ] infobalie uitcheck forms
  - Expand route.php
    - [x] add /api prefix
