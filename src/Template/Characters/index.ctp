@@ -36,6 +36,7 @@
 			<th><?= $this->Paginator->sort('belief_id', __('Belief')) ?></th>
 			<th><?= $this->Paginator->sort('group_id', __('Group')) ?></th>
 			<th><?= $this->Paginator->sort('world_id', __('World')) ?></th>
+			<th><?= __('Status') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
 	</thead>
@@ -60,6 +61,7 @@
 			<td>
 				<?= $character->has('world') ? $this->Html->link($character->world->name, ['controller' => 'Worlds', 'action' => 'view', $character->world->id]) : '' ?>
 			</td>
+			<td><?= h($character->status) ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['action' => 'view', $character->id]) ?>
 				<?= $this->Html->link(__('Edit'), ['action' => 'edit', $character->id]) ?>
