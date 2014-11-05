@@ -12,14 +12,25 @@
 	<fieldset>
 		<legend><?= __('Edit Player') ?></legend>
 	<?php
-		echo $this->Form->input('account_type');
-		echo $this->Form->input('username');
-		echo $this->Form->input('password');
+		echo $this->Form->input('account_type',
+				[ 'type' => 'select'
+				, 'options' =>	[ 'P' => __('Participant')
+								, 'R' => __('Referee')
+								, 'I' => __('Infobalie')
+								, 'S' => __('Super')
+				]				]);
+#		echo $this->Form->input('username');
+#		echo $this->Form->input('password');
 		echo $this->Form->input('first_name');
 		echo $this->Form->input('insertion');
 		echo $this->Form->input('last_name');
-		echo $this->Form->input('gender');
-		echo $this->Form->input('date_of_birth');
+		echo $this->Form->input('gender',
+				[ 'type' => 'select'
+				, 'options' => [ 'M' => __('Male'), 'F' => __('Female')]
+				, 'empty' => true
+				]);
+		echo $this->Form->input('date_of_birth',
+				[ 'minYear' => date('Y') - 90 ]);
 	?>
 	</fieldset>
 <?= $this->Form->button(__('Submit')) ?>
