@@ -4,12 +4,18 @@
 	"homepage": "http://cakephp.org",
 	"type": "project",
 	"license": "MIT",
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/pwerken/cakephp-crud"
+		}
+	],
 	"require": {
 		"php": ">=5.4.16",
 		"cakephp/cakephp": "3.0.*-dev",
 		"mobiledetect/mobiledetectlib": "2.*",
 		"cakephp/debug_kit": "3.0.*-dev",
-		"friendsofcake/crud": "dev-cake3"
+		"friendsofcake/crud": "dev-cake3-pwerken"
 	},
 	"require-dev": {
 		"d11wtq/boris": "1.0.*"
