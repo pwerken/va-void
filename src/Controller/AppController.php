@@ -55,6 +55,18 @@ class AppController extends Controller {
 				]
 			]
 		);
+
+		array_walk($this->request->data, array($this, 'removeEmptyDate'));
 	}
 
+	function removeEmptyDate(&$value, $key) {
+		if(!is_array($value)) return;
+		if(count($value) == 3 &&
+			isset($value['year'], $value['month'], $value['day']) &&
+			strlen(implode($value)) == 0) {
+			$value = null;
+		} else {
+			array_walk($value, array($this, 'removeEmptyDate'));
+		}
+	}
 }

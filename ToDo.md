@@ -5,6 +5,7 @@ ToDo-list:
    - [x] add CRUD plugin
    - [ ] add search functions: player/character/item/power/condition
    - [ ] add authenticate/authorize/login
+   - [ ] project license
    - [ ] share/publish repository on github
  - User interface
    - [ ] test if the add/edit actions work with CRUD
@@ -32,3 +33,5 @@ ToDo-list:
  - Item attributes
    - [ ] rename lorType field
    - [ ] dummy lore code handling/generation
+ - CakePHP 3.0
+   - [ ] report/fix bug with setting nullable Date field

@@ -29,8 +29,14 @@
 				, 'options' => [ 'M' => __('Male'), 'F' => __('Female')]
 				, 'empty' => true
 				]);
+
+		$val = $player->date_of_birth;
 		echo $this->Form->input('date_of_birth',
-				[ 'minYear' => date('Y') - 90 ]);
+				[ 'minYear' => date('Y') - 90
+				, 'maxYear' => date('Y')
+				, 'empty' => true
+				, 'val' => is_null($val) ? '' : $val
+				]);
 	?>
 	</fieldset>
 <?= $this->Form->button(__('Submit')) ?>
