@@ -15,8 +15,8 @@
 			<th><?= $this->Paginator->sort('id', __('Itin')) ?></th>
 			<th><?= $this->Paginator->sort('name') ?><br>
 				<?= $this->Paginator->sort('description') ?></th>
-			<th><?= $this->Paginator->sort('character_id') ?></th>
-			<th><?= $this->Paginator->sort('expiry') ?></th>
+			<th><?= $this->Paginator->sort('expiry') ?><br>
+				<?= $this->Paginator->sort('character_id') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
 	</thead>
@@ -24,12 +24,15 @@
 	<?php foreach ($items as $item): ?>
 		<tr>
 			<td><?= h($item->id) ?></td>
-			<td><i><?= h($item->name) ?></i><br>
+			<td>
+				<i><?= h($item->name) ?></i>
+			<br>
 				<?= h($item->description) ?></td>
 			<td>
+				<?= $item->has('expiry') ? $item->expiry->format('d-m-Y') : __('Permanent') ?>
+			<br>
 				<?= $item->has('character') ? $this->Html->link($item->character->name, ['controller' => 'Characters', 'action' => 'view', $item->character->id]) : '' ?>
 			</td>
-			<td><?= h($item->expiry) ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['action' => 'view', $item->id]) ?>
 				<?= $this->Html->link(__('Edit'), ['action' => 'edit', $item->id]) ?>

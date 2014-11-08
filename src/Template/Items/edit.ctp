@@ -16,10 +16,19 @@
 	<?php
 		echo $this->Form->input('name');
 		echo $this->Form->input('description');
-		echo $this->Form->input('player_text');
-		echo $this->Form->input('cs_text');
-		echo $this->Form->input('character_id', ['options' => $characters]);
-		echo $this->Form->input('expiry');
+		echo $this->Form->input('player_text', [ 'rows' => 5 ]);
+		echo $this->Form->input('cs_text', [ 'rows' => 5 ]);
+		echo $this->Form->input('character_id',
+			[ 'options' => $characters
+			, 'empty' => true
+			]);
+		$val = $item->expiry;
+		echo $this->Form->input('expiry',
+				[ 'minYear' => date('Y')
+				, 'maxYear' => date('Y') + 5
+				, 'empty' => true
+				, 'val' => is_null($val) ? '' : $val
+				]);
 		echo $this->Form->input('attributes._ids', ['options' => $attributes]);
 	?>
 	</fieldset>
