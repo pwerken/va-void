@@ -33,5 +33,8 @@ ToDo-list:
  - Item attributes
    - [ ] rename lorType field
    - [ ] dummy lore code handling/generation
- - CakePHP 3.0
-   - [ ] report/fix bug with setting nullable Date field
+ - Upstream
+   - [ ] CakePHP 3.0: report bug with setting nullable Date field
+   - [ ] CakePHP 3.0: edit/add _joinData isn't marshalled by default
+   - [ ] Crud cake3: configurable 'contain' relation
+   - [ ] Crud cake3: Composite primary key support
