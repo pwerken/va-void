@@ -69,9 +69,9 @@
 			<td><?= $characters->has('world') ? $this->Html->link($characters->world->name, ['controller' => 'Worlds', 'action' => 'view', $characters->world->id]) : '' ?></td>
 			<td><?= h($characters->status) ?></td>
 			<td class="actions">
-				<?= $this->Html->link(__('View'), ['controller' => 'Characters', 'action' => 'view', $characters->id]) ?>
-				<?= $this->Html->link(__('Edit'), ['controller' => 'Characters', 'action' => 'edit', $characters->id]) ?>
-				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Characters', 'action' => 'delete', $characters->id], ['confirm' => __('Are you sure you want to delete # {0}?', $characters->id)]) ?>
+				<?= $this->Html->link(__('View'), ['controller' => 'Characters', 'action' => 'view', $characters->player_id, $characters->chin]) ?>
+				<?= $this->Html->link(__('Edit'), ['controller' => 'Characters', 'action' => 'edit', $characters->player_id, $characters->chin]) ?>
+				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Characters', 'action' => 'delete', $characters->player_id, $characters->chin], ['confirm' => __('Are you sure you want to delete # {0}?', $characters->player_id, $characters->chin)]) ?>
 			</td>
 		</tr>
 		<?php endforeach; ?>

@@ -52,7 +52,8 @@
 			<td><i><?= h($items->name) ?></i><br>
 				<?= h($items->description) ?></td>
 			<td><?= h($items->player_text) ?></td>
-			<td><?= $items->has('character') ? $this->Html->link($items->character->player_id.'-'.$items->character->chin.' '.$items->character->name, ['controller' => 'Characters', 'action' => 'view', $items->character->id]) : '' ?></td>
+			<td><?= $items->has('character') ?
+			$this->Html->link($items->character->player_id.'-'.$items->character->chin.' '.$items->character->name, ['controller' => 'Characters', 'action' => 'view', $items->character->player_id, $item->character->chin]) : '' ?></td>
 			<td><?= is_object($items->expiry) ? $items->expiry->format('d-m-Y') : __('Permanent') ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['controller' => 'Items', 'action' => 'view', $items->id]) ?>

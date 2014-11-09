@@ -19,7 +19,7 @@ ToDo-list:
    - [x] always return json under /api (without requiring a file extension)
    - [ ] clean up json output
    - [ ] accept json for add/edit actions
-   - [ ] characters url routing: from .../:id to .../:plin/:chin
+   - [x] characters url routing: from .../:id to .../:plin/:chin
    - [ ] restructure urls/controllers (relations, nesting)
  - Reduce CRUD-plugin boilerplating
    - [x] configurable per view query 'contain' information

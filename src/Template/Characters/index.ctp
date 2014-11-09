@@ -63,9 +63,9 @@
 			</td>
 			<td><?= h($character->status) ?></td>
 			<td class="actions">
-				<?= $this->Html->link(__('View'), ['action' => 'view', $character->id]) ?>
-				<?= $this->Html->link(__('Edit'), ['action' => 'edit', $character->id]) ?>
-				<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $character->id], ['confirm' => __('Are you sure you want to delete # {0}?', $character->id)]) ?>
+				<?= $this->Html->link(__('View'), ['action' => 'view', $character->player_id, $character->chin]) ?>
+				<?= $this->Html->link(__('Edit'), ['action' => 'edit', $character->player_id, $character->chin]) ?>
+				<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $character->player_id, $character->chin], ['confirm' => __('Are you sure you want to delete # {0}~{1}?', $character->player_id, $character->chin)]) ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>

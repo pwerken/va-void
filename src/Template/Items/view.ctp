@@ -20,7 +20,7 @@
 			<h6 class="subheader"><?= __('Description') ?></h6>
 			<p><?= h($item->description) ?></p>
 			<h6 class="subheader"><?= __('Character') ?></h6>
-			<p><?= $item->has('character') ? $this->Html->link($item->character->player_id.'-'.$item->character->chin.' '.$item->character->name, ['controller' => 'Characters', 'action' => 'view', $item->character->id]) : '' ?></p>
+			<p><?= $item->has('character') ?  $this->Html->link($item->character->player_id.'-'.$item->character->chin.' '.$item->character->name, ['controller' => 'Characters', 'action' => 'view', $item->character->player_id, $item->character->chin]) : '' ?></p>
 		</div>
 		<div class="large-2 large-offset-1 columns numbers end">
 			<h6 class="subheader"><?= __('Itin') ?></h6>

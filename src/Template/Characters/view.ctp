@@ -1,8 +1,8 @@
 <div class="actions columns large-2 medium-3">
 	<h3><?= __('Actions') ?></h3>
 	<ul class="side-nav">
-		<li><?= $this->Html->link(__('Edit Character'), ['action' => 'edit', $character->id]) ?> </li>
-		<li><?= $this->Form->postLink(__('Delete Character'), ['action' => 'delete', $character->id], ['confirm' => __('Are you sure you want to delete # {0}?', $character->id)]) ?> </li>
+		<li><?= $this->Html->link(__('Edit Character'), ['action' => 'edit', $character->player_id, $character->chin]) ?> </li>
+		<li><?= $this->Form->postLink(__('Delete Character'), ['action' => 'delete', $character->player_id, $character->chin], ['confirm' => __('Are you sure you want to delete # {0}~{1}?', $character->player_id, $character->chin)]) ?></li>
 		<li><?= $this->Html->link(__('List Characters'), ['action' => 'index']) ?> </li>
 		<li><?= $this->Html->link(__('New Character'), ['action' => 'add']) ?> </li>
 		<li><?= $this->Html->link(__('List Players'), ['controller' => 'Players', 'action' => 'index']) ?> </li>
