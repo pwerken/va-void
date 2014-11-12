@@ -20,7 +20,7 @@ $config = [
  *   will be auto detected.
  * - dir - Name of app directory.
  * - webroot - The webroot directory.
- * - www_root - The file path to webroot.
+ * - wwwRoot - The file path to webroot.
  * - baseUrl - To configure CakePHP to *not* use mod_rewrite and to
  *   use CakePHP pretty URLs, remove these .htaccess
  *   files:
@@ -40,7 +40,7 @@ $config = [
 		'base' => false,
 		'dir' => 'src',
 		'webroot' => 'webroot',
-		'www_root' => WWW_ROOT,
+		'wwwRoot' => WWW_ROOT,
 		// 'baseUrl' => env('SCRIPT_NAME'),
 		'fullBaseUrl' => false,
 		'imageBaseUrl' => 'img/',
@@ -200,6 +200,8 @@ $config = [
 /**
  * Connection information used by the ORM to connect
  * to your application's datastores.
+ * Drivers include Mysql Postgres Sqlite Sqlserver
+ * See vendor\cakephp\cakephp\src\Database\Driver for complete list
  */
 	'Datasources' => [
 		'default' => [
@@ -207,6 +209,12 @@ $config = [
 			'driver' => 'Cake\Database\Driver\Mysql',
 			'persistent' => false,
 			'host' => 'localhost',
+			/*
+			* CakePHP will use the default DB port based on the driver selected 
+			* MySQL on MAMP uses port 8889, MAMP users will want to uncomment 
+			* the following line and set the port accordingly
+			*/
+			//'port' => 'nonstandard_port_number',
 			'username' => 'my_app',
 			'password' => 'secret',
 			'database' => 'my_app',
@@ -242,6 +250,7 @@ $config = [
 			'driver' => 'Cake\Database\Driver\Mysql',
 			'persistent' => false,
 			'host' => 'localhost',
+			//'port' => 'nonstandard_port_number',
 			'username' => 'my_app',
 			'password' => 'secret',
 			'database' => 'test_myapp',
@@ -282,7 +291,7 @@ $config = [
  * - `cookie` - The name of the cookie to use. Defaults to 'CAKEPHP'.
  * - `cookiePath` - The url path for which session cookie is set. Maps to the
  *   `session.cookie_path` php.ini config. Defaults to base path of app.
- * - `timeout` - The time in minutes the session should be valid for. 
+ * - `timeout` - The time in minutes the session should be valid for.
  *    Pass 0 to disable checking timeout.
  * - `defaults` - The default configuration set to use as a basis for your session.
  *    There are four built-in options: php, cake, cache, database.
