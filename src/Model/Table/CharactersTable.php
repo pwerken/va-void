@@ -41,14 +41,18 @@ class CharactersTable extends Table {
 			'foreignKey' => 'character_id',
 		]);
 		$this->belongsToMany('Conditions', [
+			'className' => 'ConditonsTable',
 			'foreignKey' => 'character_id',
 			'targetForeignKey' => 'condition_id',
 			'joinTable' => 'characters_conditions',
+			'through' => 'CharactersConditions',
 		]);
 		$this->belongsToMany('Powers', [
+			'className' => 'PowersTable',
 			'foreignKey' => 'character_id',
 			'targetForeignKey' => 'power_id',
 			'joinTable' => 'characters_powers',
+			'through' => 'CharactersPowers',
 		]);
 		$this->belongsToMany('Skills', [
 			'foreignKey' => 'character_id',
@@ -56,9 +60,11 @@ class CharactersTable extends Table {
 			'joinTable' => 'characters_skills',
 		]);
 		$this->belongsToMany('Spells', [
+			'className' => 'SpellsTable',
 			'foreignKey' => 'character_id',
 			'targetForeignKey' => 'spell_id',
 			'joinTable' => 'characters_spells',
+			'through' => 'CharactersSpells',
 		]);
 	}
 

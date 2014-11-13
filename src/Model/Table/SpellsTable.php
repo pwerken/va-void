@@ -22,9 +22,11 @@ class SpellsTable extends Table {
 		$this->primaryKey('id');
 
 		$this->belongsToMany('Characters', [
+			'className' => 'CharactersTable',
 			'foreignKey' => 'spell_id',
 			'targetForeignKey' => 'character_id',
 			'joinTable' => 'characters_spells',
+			'through' => 'CharactersSpells',
 		]);
 	}
 

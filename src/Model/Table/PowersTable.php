@@ -23,9 +23,11 @@ class PowersTable extends Table {
 		$this->addBehavior('Timestamp');
 
 		$this->belongsToMany('Characters', [
+			'className' => 'CharactersTable',
 			'foreignKey' => 'power_id',
 			'targetForeignKey' => 'character_id',
 			'joinTable' => 'characters_powers',
+			'through' => 'CharactersPowers',
 		]);
 	}
 
