@@ -20,13 +20,13 @@ class SpellsTable extends Table {
 		$this->table('spells');
 		$this->displayField('name');
 		$this->primaryKey('id');
-
 		$this->belongsToMany('Characters', [
+			'alias' => 'Characters',
 			'className' => 'CharactersTable',
 			'foreignKey' => 'spell_id',
 			'targetForeignKey' => 'character_id',
 			'joinTable' => 'characters_spells',
-			'through' => 'CharactersSpells',
+			'through' => 'CharactersSpells'
 		]);
 	}
 
@@ -40,12 +40,12 @@ class SpellsTable extends Table {
 		$validator
 			->add('id', 'valid', ['rule' => 'numeric'])
 			->allowEmpty('id', 'create')
-			->validatePresence('name', 'create')
+			->requirePresence('name', 'create')
 			->notEmpty('name')
-			->validatePresence('short', 'create')
+			->requirePresence('short', 'create')
 			->notEmpty('short')
 			->add('spiritual', 'valid', ['rule' => 'boolean'])
-			->validatePresence('spiritual', 'create')
+			->requirePresence('spiritual', 'create')
 			->notEmpty('spiritual');
 
 		return $validator;

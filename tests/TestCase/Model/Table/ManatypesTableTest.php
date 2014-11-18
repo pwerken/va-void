@@ -16,8 +16,24 @@ class ManatypesTableTest extends TestCase {
  * @var array
  */
 	public $fixtures = [
-		'app.manatypes',
-		'app.skills'
+		'Manatypes' => 'app.manatypes',
+		'Skills' => 'app.skills',
+		'Characters' => 'app.characters',
+		'Players' => 'app.players',
+		'Factions' => 'app.factions',
+		'Believes' => 'app.believes',
+		'Groups' => 'app.groups',
+		'Worlds' => 'app.worlds',
+		'Items' => 'app.items',
+		'Attributes' => 'app.attributes',
+		'AttributesItems' => 'app.attributes_items',
+		'Conditions' => 'app.conditions',
+		'CharactersConditions' => 'app.characters_conditions',
+		'Powers' => 'app.powers',
+		'CharactersPowers' => 'app.characters_powers',
+		'CharactersSkills' => 'app.characters_skills',
+		'Spells' => 'app.spells',
+		'CharactersSpells' => 'app.characters_spells'
 	];
 
 /**
@@ -28,7 +44,9 @@ class ManatypesTableTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 		$config = TableRegistry::exists('Manatypes') ? [] : ['className' => 'App\Model\Table\ManatypesTable'];
+
 		$this->Manatypes = TableRegistry::get('Manatypes', $config);
+
 	}
 
 /**

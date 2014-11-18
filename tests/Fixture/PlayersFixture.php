@@ -16,7 +16,7 @@ class PlayersFixture extends TestFixture {
  */
 	public $fields = [
 		'id' => ['type' => 'integer', 'length' => 10, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => 'PLIN', 'precision' => null, 'autoIncrement' => null],
-		'account_type' => ['type' => 'text', 'length' => null, 'null' => false, 'default' => 'Participant', 'comment' => 'authorisation information', 'precision' => null],
+		'account_type' => ['type' => 'text', 'length' => null, 'null' => false, 'default' => null, 'comment' => 'authorisation information', 'precision' => null],
 		'username' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
 		'password' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
 		'first_name' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
@@ -49,9 +49,9 @@ class PlayersFixture extends TestFixture {
 			'insertion' => 'Lorem ipsum dolor sit amet',
 			'last_name' => 'Lorem ipsum dolor sit amet',
 			'gender' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-			'date_of_birth' => '2014-10-29',
-			'created' => '2014-10-29 18:32:12',
-			'modified' => '2014-10-29 18:32:12'
+			'date_of_birth' => '2014-11-17',
+			'created' => '2014-11-17 21:54:18',
+			'modified' => '2014-11-17 21:54:18'
 		],
 	];
 

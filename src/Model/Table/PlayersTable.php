@@ -21,9 +21,9 @@ class PlayersTable extends Table {
 		$this->displayField('id');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
-
 		$this->hasMany('Characters', [
-			'foreignKey' => 'player_id',
+			'alias' => 'Characters',
+			'foreignKey' => 'player_id'
 		]);
 	}
 
@@ -37,7 +37,7 @@ class PlayersTable extends Table {
 		$validator
 			->add('id', 'valid', ['rule' => 'numeric'])
 			->allowEmpty('id', 'create')
-			->validatePresence('account_type', 'create')
+			->requirePresence('account_type', 'create')
 			->notEmpty('account_type')
 			->allowEmpty('username')
 			->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table'])

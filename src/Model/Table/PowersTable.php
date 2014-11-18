@@ -21,13 +21,13 @@ class PowersTable extends Table {
 		$this->displayField('name');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
-
 		$this->belongsToMany('Characters', [
+			'alias' => 'Characters',
 			'className' => 'CharactersTable',
 			'foreignKey' => 'power_id',
 			'targetForeignKey' => 'character_id',
 			'joinTable' => 'characters_powers',
-			'through' => 'CharactersPowers',
+			'through' => 'CharactersPowers'
 		]);
 	}
 
@@ -41,9 +41,9 @@ class PowersTable extends Table {
 		$validator
 			->add('id', 'valid', ['rule' => 'numeric'])
 			->allowEmpty('id', 'create')
-			->validatePresence('name', 'create')
+			->requirePresence('name', 'create')
 			->notEmpty('name')
-			->validatePresence('player_text', 'create')
+			->requirePresence('player_text', 'create')
 			->notEmpty('player_text')
 			->allowEmpty('cs_text');
 

@@ -16,21 +16,24 @@ class FactionsTableTest extends TestCase {
  * @var array
  */
 	public $fixtures = [
-		'app.factions',
-		'app.characters',
-		'app.players',
-		'app.believes',
-		'app.groups',
-		'app.worlds',
-		'app.items',
-		'app.conditions',
-		'app.characters_conditions',
-		'app.powers',
-		'app.characters_powers',
-		'app.skills',
-		'app.characters_skills',
-		'app.spells',
-		'app.characters_spells'
+		'Factions' => 'app.factions',
+		'Characters' => 'app.characters',
+		'Players' => 'app.players',
+		'Believes' => 'app.believes',
+		'Groups' => 'app.groups',
+		'Worlds' => 'app.worlds',
+		'Items' => 'app.items',
+		'Attributes' => 'app.attributes',
+		'AttributesItems' => 'app.attributes_items',
+		'Conditions' => 'app.conditions',
+		'CharactersConditions' => 'app.characters_conditions',
+		'Powers' => 'app.powers',
+		'CharactersPowers' => 'app.characters_powers',
+		'Skills' => 'app.skills',
+		'Manatypes' => 'app.manatypes',
+		'CharactersSkills' => 'app.characters_skills',
+		'Spells' => 'app.spells',
+		'CharactersSpells' => 'app.characters_spells'
 	];
 
 /**
@@ -41,7 +44,9 @@ class FactionsTableTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 		$config = TableRegistry::exists('Factions') ? [] : ['className' => 'App\Model\Table\FactionsTable'];
+
 		$this->Factions = TableRegistry::get('Factions', $config);
+
 	}
 
 /**

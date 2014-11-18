@@ -16,23 +16,24 @@ class ItemsTableTest extends TestCase {
  * @var array
  */
 	public $fixtures = [
-		'app.items',
-		'app.characters',
-		'app.players',
-		'app.factions',
-		'app.believes',
-		'app.groups',
-		'app.worlds',
-		'app.conditions',
-		'app.characters_conditions',
-		'app.powers',
-		'app.characters_powers',
-		'app.skills',
-		'app.characters_skills',
-		'app.spells',
-		'app.characters_spells',
-		'app.attributes',
-		'app.attributes_items'
+		'Items' => 'app.items',
+		'Characters' => 'app.characters',
+		'Players' => 'app.players',
+		'Factions' => 'app.factions',
+		'Believes' => 'app.believes',
+		'Groups' => 'app.groups',
+		'Worlds' => 'app.worlds',
+		'Conditions' => 'app.conditions',
+		'CharactersConditions' => 'app.characters_conditions',
+		'Powers' => 'app.powers',
+		'CharactersPowers' => 'app.characters_powers',
+		'Skills' => 'app.skills',
+		'Manatypes' => 'app.manatypes',
+		'CharactersSkills' => 'app.characters_skills',
+		'Spells' => 'app.spells',
+		'CharactersSpells' => 'app.characters_spells',
+		'Attributes' => 'app.attributes',
+		'AttributesItems' => 'app.attributes_items'
 	];
 
 /**
@@ -43,7 +44,9 @@ class ItemsTableTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 		$config = TableRegistry::exists('Items') ? [] : ['className' => 'App\Model\Table\ItemsTable'];
+
 		$this->Items = TableRegistry::get('Items', $config);
+
 	}
 
 /**

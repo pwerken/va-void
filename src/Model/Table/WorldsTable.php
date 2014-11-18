@@ -20,9 +20,9 @@ class WorldsTable extends Table {
 		$this->table('worlds');
 		$this->displayField('name');
 		$this->primaryKey('id');
-
 		$this->hasMany('Characters', [
-			'foreignKey' => 'world_id',
+			'alias' => 'Characters',
+			'foreignKey' => 'world_id'
 		]);
 	}
 
@@ -36,7 +36,7 @@ class WorldsTable extends Table {
 		$validator
 			->add('id', 'valid', ['rule' => 'numeric'])
 			->allowEmpty('id', 'create')
-			->validatePresence('name', 'create')
+			->requirePresence('name', 'create')
 			->notEmpty('name');
 
 		return $validator;

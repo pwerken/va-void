@@ -16,9 +16,24 @@ class AttributesTableTest extends TestCase {
  * @var array
  */
 	public $fixtures = [
-		'app.attributes',
-		'app.items',
-		'app.attributes_items'
+		'Attributes' => 'app.attributes',
+		'Items' => 'app.items',
+		'Characters' => 'app.characters',
+		'Players' => 'app.players',
+		'Factions' => 'app.factions',
+		'Believes' => 'app.believes',
+		'Groups' => 'app.groups',
+		'Worlds' => 'app.worlds',
+		'Conditions' => 'app.conditions',
+		'CharactersConditions' => 'app.characters_conditions',
+		'Powers' => 'app.powers',
+		'CharactersPowers' => 'app.characters_powers',
+		'Skills' => 'app.skills',
+		'Manatypes' => 'app.manatypes',
+		'CharactersSkills' => 'app.characters_skills',
+		'Spells' => 'app.spells',
+		'CharactersSpells' => 'app.characters_spells',
+		'AttributesItems' => 'app.attributes_items'
 	];
 
 /**
@@ -29,7 +44,9 @@ class AttributesTableTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 		$config = TableRegistry::exists('Attributes') ? [] : ['className' => 'App\Model\Table\AttributesTable'];
+
 		$this->Attributes = TableRegistry::get('Attributes', $config);
+
 	}
 
 /**

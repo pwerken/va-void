@@ -17,7 +17,7 @@ class ItemsFixture extends TestFixture {
 	public $fields = [
 		'id' => ['type' => 'integer', 'length' => 10, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => 'ITIN', 'precision' => null, 'autoIncrement' => null],
 		'name' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
-		'dscription' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
+		'description' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
 		'player_text' => ['type' => 'text', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
 		'cs_text' => ['type' => 'text', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
 		'character_id' => ['type' => 'integer', 'length' => 10, 'unsigned' => true, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
@@ -45,13 +45,13 @@ class ItemsFixture extends TestFixture {
 		[
 			'id' => 1,
 			'name' => 'Lorem ipsum dolor sit amet',
-			'dscription' => 'Lorem ipsum dolor sit amet',
+			'description' => 'Lorem ipsum dolor sit amet',
 			'player_text' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'cs_text' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'character_id' => 1,
-			'expiry' => '2014-10-29',
-			'created' => '2014-10-29 18:32:12',
-			'modified' => '2014-10-29 18:32:12'
+			'expiry' => '2014-11-17',
+			'created' => '2014-11-17 21:54:17',
+			'modified' => '2014-11-17 21:54:17'
 		],
 	];
 

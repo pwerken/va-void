@@ -20,9 +20,9 @@ class GroupsTable extends Table {
 		$this->table('groups');
 		$this->displayField('name');
 		$this->primaryKey('id');
-
 		$this->hasMany('Characters', [
-			'foreignKey' => 'group_id',
+			'alias' => 'Characters',
+			'foreignKey' => 'group_id'
 		]);
 	}
 
@@ -36,7 +36,7 @@ class GroupsTable extends Table {
 		$validator
 			->add('id', 'valid', ['rule' => 'numeric'])
 			->allowEmpty('id', 'create')
-			->validatePresence('name', 'create')
+			->requirePresence('name', 'create')
 			->notEmpty('name');
 
 		return $validator;

@@ -16,23 +16,9 @@ class PowersTableTest extends TestCase {
  * @var array
  */
 	public $fixtures = [
-		'app.powers',
-		'app.characters',
-		'app.players',
-		'app.factions',
-		'app.believes',
-		'app.groups',
-		'app.worlds',
-		'app.items',
-		'app.attributes',
-		'app.attributes_items',
-		'app.conditions',
-		'app.characters_conditions',
-		'app.characters_powers',
-		'app.skills',
-		'app.characters_skills',
-		'app.spells',
-		'app.characters_spells'
+		'Powers' => 'app.powers',
+		'Characters' => 'app.characters',
+		'CharactersPowers' => 'app.characters_powers'
 	];
 
 /**
@@ -43,7 +29,9 @@ class PowersTableTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 		$config = TableRegistry::exists('Powers') ? [] : ['className' => 'App\Model\Table\PowersTable'];
+
 		$this->Powers = TableRegistry::get('Powers', $config);
+
 	}
 
 /**

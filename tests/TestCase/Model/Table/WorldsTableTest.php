@@ -16,24 +16,24 @@ class WorldsTableTest extends TestCase {
  * @var array
  */
 	public $fixtures = [
-		'app.worlds',
-		'app.characters',
-		'app.players',
-		'app.factions',
-		'app.believes',
-		'app.groups',
-		'app.items',
-		'app.attributes',
-		'app.attributes_items',
-		'app.conditions',
-		'app.characters_conditions',
-		'app.powers',
-		'app.characters_powers',
-		'app.skills',
-		'app.manatypes',
-		'app.characters_skills',
-		'app.spells',
-		'app.characters_spells'
+		'Worlds' => 'app.worlds',
+		'Characters' => 'app.characters',
+		'Players' => 'app.players',
+		'Factions' => 'app.factions',
+		'Believes' => 'app.believes',
+		'Groups' => 'app.groups',
+		'Items' => 'app.items',
+		'Attributes' => 'app.attributes',
+		'AttributesItems' => 'app.attributes_items',
+		'Conditions' => 'app.conditions',
+		'CharactersConditions' => 'app.characters_conditions',
+		'Powers' => 'app.powers',
+		'CharactersPowers' => 'app.characters_powers',
+		'Skills' => 'app.skills',
+		'Manatypes' => 'app.manatypes',
+		'CharactersSkills' => 'app.characters_skills',
+		'Spells' => 'app.spells',
+		'CharactersSpells' => 'app.characters_spells'
 	];
 
 /**
@@ -44,7 +44,9 @@ class WorldsTableTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 		$config = TableRegistry::exists('Worlds') ? [] : ['className' => 'App\Model\Table\WorldsTable'];
+
 		$this->Worlds = TableRegistry::get('Worlds', $config);
+
 	}
 
 /**

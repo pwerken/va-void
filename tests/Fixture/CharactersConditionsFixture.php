@@ -40,7 +40,7 @@ class CharactersConditionsFixture extends TestFixture {
 		[
 			'character_id' => 1,
 			'condition_id' => 1,
-			'expiry' => '2014-10-29'
+			'expiry' => '2014-11-17'
 		],
 	];
 

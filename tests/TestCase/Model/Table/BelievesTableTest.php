@@ -16,8 +16,24 @@ class BelievesTableTest extends TestCase {
  * @var array
  */
 	public $fixtures = [
-		'app.believes',
-		'app.characters'
+		'Believes' => 'app.believes',
+		'Characters' => 'app.characters',
+		'Players' => 'app.players',
+		'Factions' => 'app.factions',
+		'Groups' => 'app.groups',
+		'Worlds' => 'app.worlds',
+		'Items' => 'app.items',
+		'Attributes' => 'app.attributes',
+		'AttributesItems' => 'app.attributes_items',
+		'Conditions' => 'app.conditions',
+		'CharactersConditions' => 'app.characters_conditions',
+		'Powers' => 'app.powers',
+		'CharactersPowers' => 'app.characters_powers',
+		'Skills' => 'app.skills',
+		'Manatypes' => 'app.manatypes',
+		'CharactersSkills' => 'app.characters_skills',
+		'Spells' => 'app.spells',
+		'CharactersSpells' => 'app.characters_spells'
 	];
 
 /**
@@ -28,7 +44,9 @@ class BelievesTableTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 		$config = TableRegistry::exists('Believes') ? [] : ['className' => 'App\Model\Table\BelievesTable'];
+
 		$this->Believes = TableRegistry::get('Believes', $config);
+
 	}
 
 /**

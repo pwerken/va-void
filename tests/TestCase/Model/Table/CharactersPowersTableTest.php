@@ -2,13 +2,13 @@
 namespace App\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
-use App\Model\Table\GroupsTable;
+use App\Model\Table\CharactersPowersTable;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\GroupsTable Test Case
+ * App\Model\Table\CharactersPowersTable Test Case
  */
-class GroupsTableTest extends TestCase {
+class CharactersPowersTableTest extends TestCase {
 
 /**
  * Fixtures
@@ -16,11 +16,12 @@ class GroupsTableTest extends TestCase {
  * @var array
  */
 	public $fixtures = [
-		'Groups' => 'app.groups',
+		'CharactersPowers' => 'app.characters_powers',
 		'Characters' => 'app.characters',
 		'Players' => 'app.players',
 		'Factions' => 'app.factions',
 		'Believes' => 'app.believes',
+		'Groups' => 'app.groups',
 		'Worlds' => 'app.worlds',
 		'Items' => 'app.items',
 		'Attributes' => 'app.attributes',
@@ -28,7 +29,6 @@ class GroupsTableTest extends TestCase {
 		'Conditions' => 'app.conditions',
 		'CharactersConditions' => 'app.characters_conditions',
 		'Powers' => 'app.powers',
-		'CharactersPowers' => 'app.characters_powers',
 		'Skills' => 'app.skills',
 		'Manatypes' => 'app.manatypes',
 		'CharactersSkills' => 'app.characters_skills',
@@ -43,9 +43,9 @@ class GroupsTableTest extends TestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		$config = TableRegistry::exists('Groups') ? [] : ['className' => 'App\Model\Table\GroupsTable'];
+		$config = TableRegistry::exists('CharactersPowers') ? [] : ['className' => 'App\Model\Table\CharactersPowersTable'];
 
-		$this->Groups = TableRegistry::get('Groups', $config);
+		$this->CharactersPowers = TableRegistry::get('CharactersPowers', $config);
 
 	}
 
@@ -55,7 +55,7 @@ class GroupsTableTest extends TestCase {
  * @return void
  */
 	public function tearDown() {
-		unset($this->Groups);
+		unset($this->CharactersPowers);
 
 		parent::tearDown();
 	}

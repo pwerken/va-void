@@ -21,14 +21,15 @@ class ItemsTable extends Table {
 		$this->displayField('name');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
-
 		$this->belongsTo('Characters', [
-			'foreignKey' => 'character_id',
+			'alias' => 'Characters',
+			'foreignKey' => 'character_id'
 		]);
 		$this->belongsToMany('Attributes', [
+			'alias' => 'Attributes',
 			'foreignKey' => 'item_id',
 			'targetForeignKey' => 'attribute_id',
-			'joinTable' => 'attributes_items',
+			'joinTable' => 'attributes_items'
 		]);
 	}
 
@@ -42,7 +43,7 @@ class ItemsTable extends Table {
 		$validator
 			->add('id', 'valid', ['rule' => 'numeric'])
 			->allowEmpty('id', 'create')
-			->validatePresence('name', 'create')
+			->requirePresence('name', 'create')
 			->notEmpty('name')
 			->allowEmpty('description')
 			->allowEmpty('player_text')

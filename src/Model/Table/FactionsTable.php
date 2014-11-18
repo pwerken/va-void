@@ -20,9 +20,9 @@ class FactionsTable extends Table {
 		$this->table('factions');
 		$this->displayField('name');
 		$this->primaryKey('id');
-
 		$this->hasMany('Characters', [
-			'foreignKey' => 'faction_id',
+			'alias' => 'Characters',
+			'foreignKey' => 'faction_id'
 		]);
 	}
 
@@ -36,7 +36,7 @@ class FactionsTable extends Table {
 		$validator
 			->add('id', 'valid', ['rule' => 'numeric'])
 			->allowEmpty('id', 'create')
-			->validatePresence('name', 'create')
+			->requirePresence('name', 'create')
 			->notEmpty('name');
 
 		return $validator;

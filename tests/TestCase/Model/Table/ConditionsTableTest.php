@@ -16,21 +16,9 @@ class ConditionsTableTest extends TestCase {
  * @var array
  */
 	public $fixtures = [
-		'app.conditions',
-		'app.characters',
-		'app.players',
-		'app.factions',
-		'app.believes',
-		'app.groups',
-		'app.worlds',
-		'app.items',
-		'app.characters_conditions',
-		'app.powers',
-		'app.characters_powers',
-		'app.skills',
-		'app.characters_skills',
-		'app.spells',
-		'app.characters_spells'
+		'Conditions' => 'app.conditions',
+		'Characters' => 'app.characters',
+		'CharactersConditions' => 'app.characters_conditions'
 	];
 
 /**
@@ -41,7 +29,9 @@ class ConditionsTableTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 		$config = TableRegistry::exists('Conditions') ? [] : ['className' => 'App\Model\Table\ConditionsTable'];
+
 		$this->Conditions = TableRegistry::get('Conditions', $config);
+
 	}
 
 /**

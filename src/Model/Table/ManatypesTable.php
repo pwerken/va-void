@@ -20,9 +20,9 @@ class ManatypesTable extends Table {
 		$this->table('manatypes');
 		$this->displayField('name');
 		$this->primaryKey('id');
-
 		$this->hasMany('Skills', [
-			'foreignKey' => 'manatype_id',
+			'alias' => 'Skills',
+			'foreignKey' => 'manatype_id'
 		]);
 	}
 
@@ -36,7 +36,7 @@ class ManatypesTable extends Table {
 		$validator
 			->add('id', 'valid', ['rule' => 'numeric'])
 			->allowEmpty('id', 'create')
-			->validatePresence('name', 'create')
+			->requirePresence('name', 'create')
 			->notEmpty('name');
 
 		return $validator;

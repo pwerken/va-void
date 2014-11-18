@@ -21,50 +21,59 @@ class CharactersTable extends Table {
 		$this->displayField('name');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
-
 		$this->belongsTo('Players', [
-			'foreignKey' => 'player_id',
+			'alias' => 'Players',
+			'foreignKey' => 'player_id'
 		]);
 		$this->belongsTo('Factions', [
-			'foreignKey' => 'faction_id',
+			'alias' => 'Factions',
+			'foreignKey' => 'faction_id'
 		]);
 		$this->belongsTo('Believes', [
-			'foreignKey' => 'belief_id',
+			'alias' => 'Believes',
+			'foreignKey' => 'belief_id'
 		]);
 		$this->belongsTo('Groups', [
-			'foreignKey' => 'group_id',
+			'alias' => 'Groups',
+			'foreignKey' => 'group_id'
 		]);
 		$this->belongsTo('Worlds', [
-			'foreignKey' => 'world_id',
+			'alias' => 'Worlds',
+			'foreignKey' => 'world_id'
 		]);
 		$this->hasMany('Items', [
-			'foreignKey' => 'character_id',
+			'alias' => 'Items',
+			'foreignKey' => 'character_id'
 		]);
 		$this->belongsToMany('Conditions', [
+			'alias' => 'Conditions',
 			'className' => 'ConditonsTable',
 			'foreignKey' => 'character_id',
 			'targetForeignKey' => 'condition_id',
 			'joinTable' => 'characters_conditions',
-			'through' => 'CharactersConditions',
+			'through' => 'CharactersConditions'
 		]);
 		$this->belongsToMany('Powers', [
+			'alias' => 'Powers',
 			'className' => 'PowersTable',
 			'foreignKey' => 'character_id',
 			'targetForeignKey' => 'power_id',
 			'joinTable' => 'characters_powers',
-			'through' => 'CharactersPowers',
+			'through' => 'CharactersPowers'
 		]);
 		$this->belongsToMany('Skills', [
+			'alias' => 'Skills',
 			'foreignKey' => 'character_id',
 			'targetForeignKey' => 'skill_id',
-			'joinTable' => 'characters_skills',
+			'joinTable' => 'characters_skills'
 		]);
 		$this->belongsToMany('Spells', [
+			'alias' => 'Spells',
 			'className' => 'SpellsTable',
 			'foreignKey' => 'character_id',
 			'targetForeignKey' => 'spell_id',
 			'joinTable' => 'characters_spells',
-			'through' => 'CharactersSpells',
+			'through' => 'CharactersSpells'
 		]);
 	}
 
@@ -79,27 +88,27 @@ class CharactersTable extends Table {
 			->add('id', 'valid', ['rule' => 'numeric'])
 			->allowEmpty('id', 'create')
 			->add('player_id', 'valid', ['rule' => 'numeric'])
-			->validatePresence('player_id', 'create')
+			->requirePresence('player_id', 'create')
 			->notEmpty('player_id')
 			->add('chin', 'valid', ['rule' => 'numeric'])
-			->validatePresence('chin', 'create')
+			->requirePresence('chin', 'create')
 			->notEmpty('chin')
-			->validatePresence('name', 'create')
+			->requirePresence('name', 'create')
 			->notEmpty('name')
 			->add('xp', 'valid', ['rule' => 'decimal'])
-			->validatePresence('xp', 'create')
+			->requirePresence('xp', 'create')
 			->notEmpty('xp')
 			->add('faction_id', 'valid', ['rule' => 'numeric'])
-			->validatePresence('faction_id', 'create')
+			->requirePresence('faction_id', 'create')
 			->notEmpty('faction_id')
 			->add('belief_id', 'valid', ['rule' => 'numeric'])
-			->validatePresence('belief_id', 'create')
+			->requirePresence('belief_id', 'create')
 			->notEmpty('belief_id')
 			->add('group_id', 'valid', ['rule' => 'numeric'])
-			->validatePresence('group_id', 'create')
+			->requirePresence('group_id', 'create')
 			->notEmpty('group_id')
 			->add('world_id', 'valid', ['rule' => 'numeric'])
-			->validatePresence('world_id', 'create')
+			->requirePresence('world_id', 'create')
 			->notEmpty('world_id')
 			->allowEmpty('status')
 			->allowEmpty('comments');

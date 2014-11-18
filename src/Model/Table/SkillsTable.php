@@ -20,14 +20,15 @@ class SkillsTable extends Table {
 		$this->table('skills');
 		$this->displayField('name');
 		$this->primaryKey('id');
-
 		$this->belongsTo('Manatypes', [
-			'foreignKey' => 'manatype_id',
+			'alias' => 'Manatypes',
+			'foreignKey' => 'manatype_id'
 		]);
 		$this->belongsToMany('Characters', [
+			'alias' => 'Characters',
 			'foreignKey' => 'skill_id',
 			'targetForeignKey' => 'character_id',
-			'joinTable' => 'characters_skills',
+			'joinTable' => 'characters_skills'
 		]);
 	}
 
@@ -41,10 +42,10 @@ class SkillsTable extends Table {
 		$validator
 			->add('id', 'valid', ['rule' => 'numeric'])
 			->allowEmpty('id', 'create')
-			->validatePresence('name', 'create')
+			->requirePresence('name', 'create')
 			->notEmpty('name')
 			->add('cost', 'valid', ['rule' => 'numeric'])
-			->validatePresence('cost', 'create')
+			->requirePresence('cost', 'create')
 			->notEmpty('cost')
 			->add('manatype_id', 'valid', ['rule' => 'numeric'])
 			->allowEmpty('manatype_id')

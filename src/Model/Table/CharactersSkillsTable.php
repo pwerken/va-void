@@ -6,9 +6,9 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * CharactersSpells Model
+ * CharactersSkills Model
  */
-class CharactersSpellsTable extends Table {
+class CharactersSkillsTable extends Table {
 
 /**
  * Initialize method
@@ -17,16 +17,16 @@ class CharactersSpellsTable extends Table {
  * @return void
  */
 	public function initialize(array $config) {
-		$this->table('characters_spells');
+		$this->table('characters_skills');
 		$this->displayField('character_id');
-		$this->primaryKey(['character_id', 'spell_id']);
+		$this->primaryKey(['character_id', 'skill_id']);
 		$this->belongsTo('Characters', [
 			'alias' => 'Characters',
 			'foreignKey' => 'character_id'
 		]);
-		$this->belongsTo('Spells', [
-			'alias' => 'Spells',
-			'foreignKey' => 'spell_id'
+		$this->belongsTo('Skills', [
+			'alias' => 'Skills',
+			'foreignKey' => 'skill_id'
 		]);
 	}
 
@@ -40,11 +40,8 @@ class CharactersSpellsTable extends Table {
 		$validator
 			->add('character_id', 'valid', ['rule' => 'numeric'])
 			->allowEmpty('character_id', 'create')
-			->add('spell_id', 'valid', ['rule' => 'numeric'])
-			->allowEmpty('spell_id', 'create')
-			->add('level', 'valid', ['rule' => 'numeric'])
-			->requirePresence('level', 'create')
-			->notEmpty('level');
+			->add('skill_id', 'valid', ['rule' => 'numeric'])
+			->allowEmpty('skill_id', 'create');
 
 		return $validator;
 	}

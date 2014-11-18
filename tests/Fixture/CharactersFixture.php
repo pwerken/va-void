@@ -34,6 +34,7 @@ class CharactersFixture extends TestFixture {
 			'group_idx' => ['type' => 'index', 'columns' => ['group_id'], 'length' => []],
 			'world_idx' => ['type' => 'index', 'columns' => ['world_id'], 'length' => []],
 			'faction_idx' => ['type' => 'index', 'columns' => ['faction_id'], 'length' => []],
+			'characterx' => ['type' => 'index', 'columns' => ['player_id', 'chin'], 'length' => []],
 		],
 		'_constraints' => [
 			'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
@@ -66,8 +67,8 @@ class CharactersFixture extends TestFixture {
 			'world_id' => 1,
 			'status' => 'Lorem ipsum dolor sit amet',
 			'comments' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-			'created' => '2014-10-29 18:32:11',
-			'modified' => '2014-10-29 18:32:11'
+			'created' => '2014-11-17 21:54:17',
+			'modified' => '2014-11-17 21:54:17'
 		],
 	];
 
