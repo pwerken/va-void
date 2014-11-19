@@ -34,6 +34,7 @@ class Character extends Entity {
 		'powers' => true,
 		'skills' => true,
 		'spells' => true,
+		'_joinData' => true,
 	];
 
 }

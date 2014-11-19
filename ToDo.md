@@ -35,6 +35,6 @@ ToDo-list:
    - [ ] dummy lore code handling/generation
  - Upstream
    - [ ] CakePHP 3.0: report bug with setting nullable Date field
-   - [ ] CakePHP 3.0: edit/add _joinData isn't marshalled by default
+   - [ ] CakePHP 3.0: fix _joinData mass assignment guard
    - [ ] Crud cake3: configurable 'contain' relation
-   - [ ] Crud cake3: Composite primary key support
+   - [ ] Crud cake3: composite primary key support

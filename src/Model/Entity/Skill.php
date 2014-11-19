@@ -21,6 +21,7 @@ class Skill extends Entity {
 		'sort_order' => true,
 		'manatype' => true,
 		'characters' => true,
+		'_joinData' => true,
 	];
 
 }

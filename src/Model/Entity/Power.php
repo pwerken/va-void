@@ -18,6 +18,7 @@ class Power extends Entity {
 		'player_text' => true,
 		'cs_text' => true,
 		'characters' => true,
+		'_joinData' => true,
 	];
 
 }
