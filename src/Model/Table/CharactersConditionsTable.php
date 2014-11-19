@@ -20,14 +20,8 @@ class CharactersConditionsTable extends Table {
 		$this->table('characters_conditions');
 		$this->displayField('character_id');
 		$this->primaryKey(['character_id', 'condition_id']);
-		$this->belongsTo('Characters', [
-			'alias' => 'Characters',
-			'foreignKey' => 'character_id'
-		]);
-		$this->belongsTo('Conditions', [
-			'alias' => 'Conditions',
-			'foreignKey' => 'condition_id'
-		]);
+		$this->belongsTo('Characters');
+		$this->belongsTo('Conditions');
 	}
 
 /**

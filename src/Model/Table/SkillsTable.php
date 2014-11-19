@@ -20,16 +20,8 @@ class SkillsTable extends Table {
 		$this->table('skills');
 		$this->displayField('name');
 		$this->primaryKey('id');
-		$this->belongsTo('Manatypes', [
-			'alias' => 'Manatypes',
-			'foreignKey' => 'manatype_id'
-		]);
-		$this->belongsToMany('Characters', [
-			'alias' => 'Characters',
-			'foreignKey' => 'skill_id',
-			'targetForeignKey' => 'character_id',
-			'joinTable' => 'characters_skills'
-		]);
+		$this->belongsTo('Manatypes');
+		$this->belongsToMany('Characters');
 	}
 
 /**

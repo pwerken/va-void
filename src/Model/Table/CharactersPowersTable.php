@@ -20,14 +20,8 @@ class CharactersPowersTable extends Table {
 		$this->table('characters_powers');
 		$this->displayField('character_id');
 		$this->primaryKey(['character_id', 'power_id']);
-		$this->belongsTo('Characters', [
-			'alias' => 'Characters',
-			'foreignKey' => 'character_id'
-		]);
-		$this->belongsTo('Powers', [
-			'alias' => 'Powers',
-			'foreignKey' => 'power_id'
-		]);
+		$this->belongsTo('Characters');
+		$this->belongsTo('Powers');
 	}
 
 /**

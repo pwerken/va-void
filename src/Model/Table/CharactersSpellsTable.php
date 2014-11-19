@@ -20,14 +20,8 @@ class CharactersSpellsTable extends Table {
 		$this->table('characters_spells');
 		$this->displayField('character_id');
 		$this->primaryKey(['character_id', 'spell_id']);
-		$this->belongsTo('Characters', [
-			'alias' => 'Characters',
-			'foreignKey' => 'character_id'
-		]);
-		$this->belongsTo('Spells', [
-			'alias' => 'Spells',
-			'foreignKey' => 'spell_id'
-		]);
+		$this->belongsTo('Characters');
+		$this->belongsTo('Spells');
 	}
 
 /**

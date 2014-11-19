@@ -21,14 +21,7 @@ class ConditionsTable extends Table {
 		$this->displayField('name');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
-		$this->belongsToMany('Characters', [
-			'alias' => 'Characters',
-			'className' => 'CharactersTable',
-			'foreignKey' => 'condition_id',
-			'targetForeignKey' => 'character_id',
-			'joinTable' => 'characters_conditions',
-			'through' => 'CharactersConditions'
-		]);
+		$this->belongsToMany('Characters');
 	}
 
 /**

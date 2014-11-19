@@ -20,14 +20,7 @@ class SpellsTable extends Table {
 		$this->table('spells');
 		$this->displayField('name');
 		$this->primaryKey('id');
-		$this->belongsToMany('Characters', [
-			'alias' => 'Characters',
-			'className' => 'CharactersTable',
-			'foreignKey' => 'spell_id',
-			'targetForeignKey' => 'character_id',
-			'joinTable' => 'characters_spells',
-			'through' => 'CharactersSpells'
-		]);
+		$this->belongsToMany('Characters');
 	}
 
 /**

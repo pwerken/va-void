@@ -20,10 +20,7 @@ class WorldsTable extends Table {
 		$this->table('worlds');
 		$this->displayField('name');
 		$this->primaryKey('id');
-		$this->hasMany('Characters', [
-			'alias' => 'Characters',
-			'foreignKey' => 'world_id'
-		]);
+		$this->hasMany('Characters');
 	}
 
 /**

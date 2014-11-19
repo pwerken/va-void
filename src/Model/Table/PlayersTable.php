@@ -21,10 +21,7 @@ class PlayersTable extends Table {
 		$this->displayField('id');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
-		$this->hasMany('Characters', [
-			'alias' => 'Characters',
-			'foreignKey' => 'player_id'
-		]);
+		$this->hasMany('Characters');
 	}
 
 /**

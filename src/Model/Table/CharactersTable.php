@@ -21,60 +21,16 @@ class CharactersTable extends Table {
 		$this->displayField('name');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
-		$this->belongsTo('Players', [
-			'alias' => 'Players',
-			'foreignKey' => 'player_id'
-		]);
-		$this->belongsTo('Factions', [
-			'alias' => 'Factions',
-			'foreignKey' => 'faction_id'
-		]);
-		$this->belongsTo('Believes', [
-			'alias' => 'Believes',
-			'foreignKey' => 'belief_id'
-		]);
-		$this->belongsTo('Groups', [
-			'alias' => 'Groups',
-			'foreignKey' => 'group_id'
-		]);
-		$this->belongsTo('Worlds', [
-			'alias' => 'Worlds',
-			'foreignKey' => 'world_id'
-		]);
-		$this->hasMany('Items', [
-			'alias' => 'Items',
-			'foreignKey' => 'character_id'
-		]);
-		$this->belongsToMany('Conditions', [
-			'alias' => 'Conditions',
-			'className' => 'ConditonsTable',
-			'foreignKey' => 'character_id',
-			'targetForeignKey' => 'condition_id',
-			'joinTable' => 'characters_conditions',
-			'through' => 'CharactersConditions'
-		]);
-		$this->belongsToMany('Powers', [
-			'alias' => 'Powers',
-			'className' => 'PowersTable',
-			'foreignKey' => 'character_id',
-			'targetForeignKey' => 'power_id',
-			'joinTable' => 'characters_powers',
-			'through' => 'CharactersPowers'
-		]);
-		$this->belongsToMany('Skills', [
-			'alias' => 'Skills',
-			'foreignKey' => 'character_id',
-			'targetForeignKey' => 'skill_id',
-			'joinTable' => 'characters_skills'
-		]);
-		$this->belongsToMany('Spells', [
-			'alias' => 'Spells',
-			'className' => 'SpellsTable',
-			'foreignKey' => 'character_id',
-			'targetForeignKey' => 'spell_id',
-			'joinTable' => 'characters_spells',
-			'through' => 'CharactersSpells'
-		]);
+		$this->belongsTo('Players');
+		$this->belongsTo('Factions');
+		$this->belongsTo('Believes');
+		$this->belongsTo('Groups');
+		$this->belongsTo('Worlds');
+		$this->hasMany('Items');
+		$this->belongsToMany('Conditions');
+		$this->belongsToMany('Powers');
+		$this->belongsToMany('Skills');
+		$this->belongsToMany('Spells');
 	}
 
 /**

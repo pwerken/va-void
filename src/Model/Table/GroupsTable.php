@@ -20,10 +20,7 @@ class GroupsTable extends Table {
 		$this->table('groups');
 		$this->displayField('name');
 		$this->primaryKey('id');
-		$this->hasMany('Characters', [
-			'alias' => 'Characters',
-			'foreignKey' => 'group_id'
-		]);
+		$this->hasMany('Characters');
 	}
 
 /**

@@ -20,10 +20,7 @@ class BelievesTable extends Table {
 		$this->table('believes');
 		$this->displayField('name');
 		$this->primaryKey('id');
-		$this->hasMany('Characters', [
-			'alias' => 'Characters',
-			'foreignKey' => 'belief_id'
-		]);
+		$this->hasMany('Characters');
 	}
 
 /**

@@ -20,14 +20,8 @@ class AttributesItemsTable extends Table {
 		$this->table('attributes_items');
 		$this->displayField('attribute_id');
 		$this->primaryKey(['attribute_id', 'item_id']);
-		$this->belongsTo('Attributes', [
-			'alias' => 'Attributes',
-			'foreignKey' => 'attribute_id'
-		]);
-		$this->belongsTo('Items', [
-			'alias' => 'Items',
-			'foreignKey' => 'item_id'
-		]);
+		$this->belongsTo('Attributes');
+		$this->belongsTo('Items');
 	}
 
 /**

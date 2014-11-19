@@ -21,16 +21,8 @@ class ItemsTable extends Table {
 		$this->displayField('name');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
-		$this->belongsTo('Characters', [
-			'alias' => 'Characters',
-			'foreignKey' => 'character_id'
-		]);
-		$this->belongsToMany('Attributes', [
-			'alias' => 'Attributes',
-			'foreignKey' => 'item_id',
-			'targetForeignKey' => 'attribute_id',
-			'joinTable' => 'attributes_items'
-		]);
+		$this->belongsTo('Characters');
+		$this->belongsToMany('Attributes');
 	}
 
 /**

@@ -20,10 +20,7 @@ class ManatypesTable extends Table {
 		$this->table('manatypes');
 		$this->displayField('name');
 		$this->primaryKey('id');
-		$this->hasMany('Skills', [
-			'alias' => 'Skills',
-			'foreignKey' => 'manatype_id'
-		]);
+		$this->hasMany('Skills');
 	}
 
 /**

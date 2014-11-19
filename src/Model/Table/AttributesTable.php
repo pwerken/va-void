@@ -20,12 +20,7 @@ class AttributesTable extends Table {
 		$this->table('attributes');
 		$this->displayField('name');
 		$this->primaryKey('id');
-		$this->belongsToMany('Items', [
-			'alias' => 'Items',
-			'foreignKey' => 'attribute_id',
-			'targetForeignKey' => 'item_id',
-			'joinTable' => 'attributes_items'
-		]);
+		$this->belongsToMany('Items');
 	}
 
 /**

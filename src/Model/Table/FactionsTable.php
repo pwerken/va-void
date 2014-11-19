@@ -20,10 +20,7 @@ class FactionsTable extends Table {
 		$this->table('factions');
 		$this->displayField('name');
 		$this->primaryKey('id');
-		$this->hasMany('Characters', [
-			'alias' => 'Characters',
-			'foreignKey' => 'faction_id'
-		]);
+		$this->hasMany('Characters');
 	}
 
 /**
