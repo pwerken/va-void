@@ -24,7 +24,7 @@ class ItemsController extends AppController {
 
 		$this->Crud->action('edit')->config(
 			[ 'contain' => [ 'Attributes' ]
-			, 'relatedModels' => [ 'Characters', 'Attributes' ]
+			, 'relatedModels' => [ 'Characters' ]
 			]);
 	}
 

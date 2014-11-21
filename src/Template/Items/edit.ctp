@@ -19,9 +19,10 @@
 		echo $this->Form->input('player_text', [ 'rows' => 5 ]);
 		echo $this->Form->input('cs_text', [ 'rows' => 5 ]);
 		echo $this->Form->input('character_id',
-			[ 'options' => $characters
-			, 'empty' => true
-			]);
+				[ 'options' => $characters
+				, 'empty' => true
+				]);
+
 		$val = $item->expiry;
 		echo $this->Form->input('expiry',
 				[ 'minYear' => date('Y')
@@ -29,7 +30,41 @@
 				, 'empty' => true
 				, 'val' => is_null($val) ? '' : $val
 				]);
-		echo $this->Form->input('attributes._ids', ['options' => $attributes]);
+
+        $rows = \Cake\ORM\TableRegistry::get('attributes')
+					->find()
+					->where(['lorType NOT LIKE' => 'random'])
+					->order(['name'])
+					->toArray();
+		$options = [];
+		foreach($rows as $row)
+			$options[$row['lorType']][$row['id']]
+					= $row['code'].': '.$row['name'];
+
+		$attr_ids = [];
+		foreach($item->attributes as $attr)
+			$attr_ids[$attr['lorType']][] = $attr['id'];
+
+		$fields =	[ __('Special')		=> 'special'
+					, __('Magical')		=> 'magic'
+					, __('Spiritual')	=> 'spirit'
+					, __('Value')		=>  'value'
+					, __('Material #1')	=> 'material'
+					, __('Material #2')	=> 'material'
+					, __('Forgery')		=> 'forgery'
+					, __('Damage #1')	=> 'damage'
+					, __('Damage #2')	=> 'damage'
+					];
+		$i = 0;
+		foreach($fields as $label => $attr) {
+			echo $this->Form->input('attributes._ids.'.$i++,
+					[ 'type' => 'select', 'empty' => true
+					, 'label' => $label
+					, 'options' => $options[$attr]
+					, 'val' => isset($attr_ids[$attr][0])
+							? array_shift($attr_ids[$attr]) : ''
+					]);
+		}
 	?>
 	</fieldset>
 <?= $this->Form->button(__('Submit')) ?>
