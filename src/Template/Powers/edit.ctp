@@ -20,7 +20,8 @@
 	<fieldset>
 		<legend><?= __('Related Characters') ?></legend>
 	<?php
-		foreach($power->characters as $i => $character) {
+		$i = 0;
+		foreach($power->characters as $character) {
 			if($i > 0) echo "<hr>\n";
 			echo $this->Form->input("characters.$i.id",
 				[ 'type' => 'select'
@@ -37,6 +38,7 @@
 				, 'empty' => true
 				, 'default' => is_null($expiry) ? '' : $expiry
 				]);
+			$i++;
 		}
 	?>
 	</fieldset>

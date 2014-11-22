@@ -57,7 +57,7 @@
 			<td><?= h($characters->player_id) ?></td>
 			<td><?= h($characters->chin) ?></td>
 			<td><?= h($characters->name) ?></td>
-			<td><?= is_object($characters->_joinData['expiry']) ? $characters->_joinData['expiry']->format('d-m-Y') : '' ?></td>
+			<td><?= is_object($characters->_joinData['expiry']) ? $characters->_joinData['expiry']->format('d-m-Y') : __('Permanent') ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['controller' => 'Characters', 'action' => 'view', $characters->player_id, $characters->chin]) ?>
 				<?= $this->Html->link(__('Edit'), ['controller' => 'Characters', 'action' => 'edit', $characters->player_id, $characters->chin]) ?>

@@ -29,6 +29,7 @@ class ConditionsController extends AppController {
 		$this->Crud->action('edit')->config(
 			[ 'contain' => [ 'Characters' ]
 			, 'relatedModels' => [ 'Characters' ]
+			, 'patchOptions' => [ 'associated' => [ 'Characters._joinData' ] ]
 			]);
 	}
 

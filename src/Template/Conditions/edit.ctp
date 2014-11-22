@@ -13,9 +13,33 @@
 		<legend><?= __('Edit Condition') ?></legend>
 	<?php
 		echo $this->Form->input('name');
-		echo $this->Form->input('player_text');
-		echo $this->Form->input('cs_text');
-		echo $this->Form->input('characters._ids', ['options' => $characters]);
+		echo $this->Form->input('player_text', [ 'rows' => 5 ]);
+		echo $this->Form->input('cs_text', [ 'rows' => 5 ]);
+	?>
+	</fieldset>
+	<fieldset>
+		<legend><?= __('Related Characters') ?></legend>
+	<?php
+		$i = 0;
+		foreach($condition->characters as $character) {
+			if($i > 0) echo "<hr>\n";
+			echo $this->Form->input("characters.$i.id",
+				[ 'type' => 'select'
+				, 'label' => __('Character')
+				, 'options' => $characters
+				, 'empty' => true
+				, 'required' => false
+				]);
+
+			$expiry = $character->_joinData['expiry'];
+			echo $this->Form->input("characters.$i._joinData.expiry",
+				[ 'type' => 'date'
+				, 'label' => __('Expiry')
+				, 'empty' => true
+				, 'default' => is_null($expiry) ? '' : $expiry
+				]);
+			$i++;
+		}
 	?>
 	</fieldset>
 <?= $this->Form->button(__('Submit')) ?>

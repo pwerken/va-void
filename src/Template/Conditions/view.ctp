@@ -49,12 +49,7 @@
 			<th><?= __('Plin') ?></th>
 			<th><?= __('Chin') ?></th>
 			<th><?= __('Name') ?></th>
-			<th><?= __('Xp') ?></th>
-			<th><?= __('Faction') ?></th>
-			<th><?= __('Belief') ?></th>
-			<th><?= __('Group') ?></th>
-			<th><?= __('World') ?></th>
-			<th><?= __('Status') ?></th>
+			<th><?= __('Expiry') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
 		<?php foreach ($condition->characters as $characters): ?>
@@ -62,12 +57,7 @@
 			<td><?= h($characters->player_id) ?></td>
 			<td><?= h($characters->chin) ?></td>
 			<td><?= h($characters->name) ?></td>
-			<td><?= h($characters->xp) ?></td>
-			<td><?= $characters->has('faction') ? $this->Html->link($characters->faction->name, ['controller' => 'Factions', 'action' => 'view', $characters->faction->id]) : '' ?></td>
-			<td><?= $characters->has('belief') ? $this->Html->link($characters->belief->name, ['controller' => 'Believes', 'action' => 'view', $characters->belief->id]) : '' ?></td>
-			<td><?= $characters->has('group') ? $this->Html->link($characters->group->name, ['controller' => 'Groups', 'action' => 'view', $characters->group->id]) : '' ?></td>
-			<td><?= $characters->has('world') ? $this->Html->link($characters->world->name, ['controller' => 'Worlds', 'action' => 'view', $characters->world->id]) : '' ?></td>
-			<td><?= h($characters->status) ?></td>
+			<td><?= is_object($characters->_joinData['expiry']) ? $characters->_joinData['expiry']->format('d-m-Y') : __('Permanent') ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['controller' => 'Characters', 'action' => 'view', $characters->player_id, $characters->chin]) ?>
 				<?= $this->Html->link(__('Edit'), ['controller' => 'Characters', 'action' => 'edit', $characters->player_id, $characters->chin]) ?>
