@@ -33,7 +33,7 @@
 		echo $this->Form->input('player_id', ['options' => $players]);
 		echo $this->Form->input('chin');
 		echo $this->Form->input('name');
-		echo $this->Form->input('xp');
+		echo $this->Form->input('xp', ['step' => '0.5']);
 		echo $this->Form->input('faction_id', ['options' => $factions]);
 		echo $this->Form->input('belief_id', ['options' => $believes]);
 		echo $this->Form->input('group_id', ['options' => $groups]);
