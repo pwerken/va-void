@@ -4,6 +4,7 @@ namespace App\Model\Table;
 use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use App\Model\Entity\Player;
 
 /**
  * Players Model
@@ -18,7 +19,7 @@ class PlayersTable extends Table {
  */
 	public function initialize(array $config) {
 		$this->table('players');
-		$this->displayField('id');
+		$this->displayField('fullName');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
 		$this->hasMany('Characters');
@@ -33,15 +34,15 @@ class PlayersTable extends Table {
 	public function validationDefault(Validator $validator) {
 		$validator
 			->add('id', 'valid', ['rule' => 'numeric'])
-			->allowEmpty('id', 'create')
-			->requirePresence('account_type', 'create')
-			->notEmpty('account_type')
+			->notEmpty('id')
+			->add('account_type', 'valid', ['rule' => ['inList', Player::labelsAccountTypes(true)]] )
 			->allowEmpty('username')
 			->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table'])
 			->allowEmpty('password')
-			->allowEmpty('first_name')
+			->notEmpty('first_name')
 			->allowEmpty('insertion')
-			->allowEmpty('last_name')
+			->notEmpty('last_name')
+			->add('gender', 'valid', ['rule' => ['inList', Player::labelsGenders(true)]])
 			->allowEmpty('gender')
 			->add('date_of_birth', 'valid', ['rule' => 'date'])
 			->allowEmpty('date_of_birth');

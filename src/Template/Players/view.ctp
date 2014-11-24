@@ -1,3 +1,8 @@
+<?php
+
+use App\Model\Entity\Player;
+
+?>
 <div class="actions columns large-2 medium-3">
 	<h3><?= __('Actions') ?></h3>
 	<ul class="side-nav">
@@ -36,13 +41,13 @@
 	<div class="row texts">
 		<div class="columns large-9">
 			<h6 class="subheader"><?= __('Account Type') ?></h6>
-			<?= $this->Text->autoParagraph(h($player->account_type)); ?>
+			<p><?= Player::labelAccountType($player->account_type); ?></p>
 		</div>
 	</div>
 	<div class="row texts">
 		<div class="columns large-9">
 			<h6 class="subheader"><?= __('Gender') ?></h6>
-			<?= $this->Text->autoParagraph(h($player->gender)); ?>
+			<p><?= Player::labelGender($player->gender); ?></p>
 		</div>
 	</div>
 </div>
