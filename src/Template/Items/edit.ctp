@@ -31,15 +31,15 @@
 				, 'val' => is_null($val) ? '' : $val
 				]);
 
-        $rows = \Cake\ORM\TableRegistry::get('attributes')
-					->find()
+        $options = \Cake\ORM\TableRegistry::get('attributes')
+					->find('list',
+						[ 'idField' => 'id'
+						, 'valueField' => 'name'
+						, 'groupField' => 'lorType'
+						])
 					->where(['lorType NOT LIKE' => 'random'])
 					->order(['name'])
 					->toArray();
-		$options = [];
-		foreach($rows as $row)
-			$options[$row['lorType']][$row['id']]
-					= $row['code'].': '.$row['name'];
 
 		$attr_ids = [];
 		foreach($item->attributes as $attr)
