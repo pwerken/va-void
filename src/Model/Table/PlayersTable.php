@@ -19,7 +19,7 @@ class PlayersTable extends Table {
  */
 	public function initialize(array $config) {
 		$this->table('players');
-		$this->displayField('fullName');
+		$this->displayField('displayName');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
 		$this->hasMany('Characters');

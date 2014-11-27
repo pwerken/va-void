@@ -24,4 +24,9 @@ class Item extends Entity {
 		'attributes' => true,
 	];
 
+	protected function _getDisplayName() {
+		return $this->_properties['id']
+			. ': ' . $this->_properties['name'];
+	}
+
 }

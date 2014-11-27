@@ -18,7 +18,7 @@ class PowersTable extends Table {
  */
 	public function initialize(array $config) {
 		$this->table('powers');
-		$this->displayField('name');
+		$this->displayField('displayName');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
 		$this->belongsToMany('Characters');

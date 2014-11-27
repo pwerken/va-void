@@ -37,4 +37,9 @@ class Character extends Entity {
 		'_joinData' => true,
 	];
 
+	protected function _getDisplayName() {
+		return $this->_properties['player_id']
+			. '-' . $this->_properties['chin']
+			. ': ' . $this->_properties['name'];
+	}
 }

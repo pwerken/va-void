@@ -21,4 +21,9 @@ class Power extends Entity {
 		'_joinData' => true,
 	];
 
+	protected function _getDisplayName() {
+		return $this->_properties['id']
+			. ': ' . $this->_properties['name'];
+	}
+
 }

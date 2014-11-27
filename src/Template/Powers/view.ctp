@@ -46,17 +46,13 @@
 	<?php if (!empty($power->characters)): ?>
 	<table cellpadding="0" cellspacing="0">
 		<tr>
-			<th><?= __('Plin') ?></th>
-			<th><?= __('Chin') ?></th>
 			<th><?= __('Name') ?></th>
 			<th><?= __('Expiry') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
 		<?php foreach ($power->characters as $characters): ?>
 		<tr>
-			<td><?= h($characters->player_id) ?></td>
-			<td><?= h($characters->chin) ?></td>
-			<td><?= h($characters->name) ?></td>
+			<td><?= h($characters->displayName) ?></td>
 			<td><?= is_object($characters->_joinData['expiry']) ? $characters->_joinData['expiry']->format('d-m-Y') : __('Permanent') ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['controller' => 'Characters', 'action' => 'view', $characters->player_id, $characters->chin]) ?>

@@ -18,7 +18,7 @@ class ConditionsTable extends Table {
  */
 	public function initialize(array $config) {
 		$this->table('conditions');
-		$this->displayField('name');
+		$this->displayField('displayName');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
 		$this->belongsToMany('Characters');

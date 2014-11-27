@@ -57,8 +57,6 @@ use App\Model\Entity\Player;
 	<?php if (!empty($player->characters)): ?>
 	<table cellpadding="0" cellspacing="0">
 		<tr>
-			<th><?= __('Plin') ?></th>
-			<th><?= __('Chin') ?></th>
 			<th><?= __('Name') ?></th>
 			<th><?= __('Xp') ?></th>
 			<th><?= __('Faction') ?></th>
@@ -70,9 +68,7 @@ use App\Model\Entity\Player;
 		</tr>
 		<?php foreach ($player->characters as $characters): ?>
 		<tr>
-			<td><?= h($player->id) ?></td>
-			<td><?= h($characters->chin) ?></td>
-			<td><?= h($characters->name) ?></td>
+			<td><?= h($characters->displayName) ?></td>
 			<td><?= h($characters->xp) ?></td>
 			<td><?= $characters->has('faction') ? $this->Html->link($characters->faction->name, ['controller' => 'Factions', 'action' => 'view', $characters->faction->id]) : '' ?></td>
 			<td><?= $characters->has('belief') ? $this->Html->link($characters->belief->name, ['controller' => 'Believes', 'action' => 'view', $characters->belief->id]) : '' ?></td>

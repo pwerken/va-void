@@ -18,7 +18,7 @@ class CharactersTable extends Table {
  */
 	public function initialize(array $config) {
 		$this->table('characters');
-		$this->displayField('name');
+		$this->displayField('displayName');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
 		$this->belongsTo('Players');

@@ -31,6 +31,10 @@ class Player extends Entity {
 					? '' : $this->_properties['insertion'] . ' ')
 				.  $this->_properties['last_name'];
 	}
+	protected function _getDisplayName() {
+		return $this->_properties['id']
+			. ': ' . self::_getFullName();
+	}
 
 	public static function labelsAccountTypes($keys = false) {
 		static $data = null;
