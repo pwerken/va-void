@@ -13,6 +13,7 @@ ToDo-list:
    - [x] clean up Template/*.ctp's
    - [ ] fancier edit form for character skills
    - [ ] date input fields: text+calendar
+   - [ ] select => combobox (with search)
    - [ ] infobalie uitcheck forms
  - Expand route.php
    - [x] add /api prefix
