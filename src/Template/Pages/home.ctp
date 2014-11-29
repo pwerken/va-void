@@ -39,13 +39,69 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 	<?= $this->Html->css('cake.css') ?>
 </head>
 <body class="home">
-	<header>
-		<div class="header-image">
-			<?= $this->Html->image('http://cakephp.org/img/cake-logo.png') ?>
-			<h1>Get the Ovens Ready</h1>
-		</div>
-	</header>
 	<div id="content">
+		<div class="row">
+			<div class="actions columns large-2 medium-3">
+				<ul class="side-nav">
+<li><?= $this->Html->link(__('List Players'), ['controller' => 'Players', 'action' => 'index']) ?> </li>
+<li><?= $this->Html->link(__('List Characters'), ['controller' => 'Characters', 'action' => 'index']) ?> </li>
+<li><?= $this->Html->link(__('List Factions'), ['controller' => 'Factions', 'action' => 'index']) ?> </li>
+<li><?= $this->Html->link(__('List Believes'), ['controller' => 'Believes', 'action' => 'index']) ?> </li>
+<li><?= $this->Html->link(__('List Groups'), ['controller' => 'Groups', 'action' => 'index']) ?> </li>
+<li><?= $this->Html->link(__('List Worlds'), ['controller' => 'Worlds', 'action' => 'index']) ?> </li>
+<li><?= $this->Html->link(__('List Items'), ['controller' => 'Items', 'action' => 'index']) ?> </li>
+<li><?= $this->Html->link(__('List Conditions'), ['controller' => 'Conditions', 'action' => 'index']) ?> </li>
+<li><?= $this->Html->link(__('List Powers'), ['controller' => 'Powers', 'action' => 'index']) ?> </li>
+<li><?= $this->Html->link(__('List Skills'), ['controller' => 'Skills', 'action' => 'index']) ?> </li>
+<li><?= $this->Html->link(__('List Spells'), ['controller' => 'Spells', 'action' => 'index']) ?> </li>
+				</ul>
+			</div>
+			<div class="characters index large-10 medium-9 columns">
+<table cellpadding="0" cellspacing="0">
+<thead>
+	<tr>
+		<th>Path</th>
+		<th>Description</th>
+		<th>Actions</th>
+	</tr>
+</thead>
+<tbody>
+<?php
+	$items =
+		[	[ 'controller' => 'Players', 'id' => [ 987 ]
+			, 'description' => 'Peter van de Werken' ]
+		,	[ 'controller' => 'Characters', 'id' => [ 987, 2 ]
+			, 'description' => 'Azuma' ]
+		,	[ 'controller' => 'Items', 'id' => [ 724 ]
+			, 'description' => 'Parta' ]
+		,	[ 'controller' => 'Powers', 'id' => [ 2462 ]
+			, 'description' => 'Purify Body (2)' ]
+		,	[ 'controller' => 'Conditions', 'id' => [ 3137 ]
+			, 'description' => 'Mark of Nimpf' ]
+		];
+
+	foreach ($items as $item): ?>
+	<tr>
+		<td><?= h($item['controller']) ?>
+		  / <?= implode($item['id'], ' / ') ?></td>
+		<td><?= h($item['description']) ?></td>
+		<td class="actions">
+			<?= $this->Html->link(__('View'),
+					[ 'controller' => $item['controller']
+					, 'action' => 'view' ]
+					+ $item['id']) ?>
+			<?= $this->Html->link(__('Edit'),
+					[ 'controller' => $item['controller']
+					, 'action' => 'edit']
+					+ $item['id']) ?>
+		</td>
+	</tr>
+<?php endforeach; ?>
+</tbody>
+</table>
+			</div>
+		</div>
+		<hr/>
 		<?php
 		if (Configure::read('debug')):
 			Debugger::checkSecurityKeys();
