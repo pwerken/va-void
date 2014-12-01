@@ -15,7 +15,7 @@ class Attribute extends Entity {
  */
 	protected $_accessible = [
 		'name' => true,
-		'lorType' => true,
+		'category' => true,
 		'code' => true,
 		'items' => true,
 	];

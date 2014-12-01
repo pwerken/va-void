@@ -55,14 +55,14 @@
 	<table cellpadding="0" cellspacing="0">
 		<tr>
 			<th><?= __('Name') ?></th>
-			<th><?= __('Type') ?></th>
+			<th><?= __('Category') ?></th>
 			<th><?= __('Code') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
 		<?php foreach ($item->attributes as $attributes): ?>
 		<tr>
 			<td><?= h($attributes->name) ?></td>
-			<td><?= h($attributes->lorType) ?></td>
+			<td><?= h($attributes->category) ?></td>
 			<td><?= h($attributes->code) ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['controller' => 'Attributes', 'action' => 'view', $attributes->id]) ?>

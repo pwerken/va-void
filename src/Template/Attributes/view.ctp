@@ -25,8 +25,8 @@
 	</div>
 	<div class="row texts">
 		<div class="columns large-9">
-			<h6 class="subheader"><?= __('LorType') ?></h6>
-			<?= $this->Text->autoParagraph(h($attribute->lorType)); ?>
+			<h6 class="subheader"><?= __('Category') ?></h6>
+			<?= $this->Text->autoParagraph(h($attribute->category)); ?>
 		</div>
 	</div>
 </div>

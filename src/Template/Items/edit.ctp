@@ -35,20 +35,20 @@
 					->find('list',
 						[ 'idField' => 'id'
 						, 'valueField' => 'name'
-						, 'groupField' => 'lorType'
+						, 'groupField' => 'category'
 						])
-					->where(['lorType NOT LIKE' => 'random'])
+					->where(['category NOT LIKE' => 'random'])
 					->order(['name'])
 					->toArray();
 
 		$attr_ids = [];
 		foreach($item->attributes as $attr)
-			$attr_ids[$attr['lorType']][] = $attr['id'];
+			$attr_ids[$attr['category']][] = $attr['id'];
 
 		$fields =	[ __('Special')		=> 'special'
 					, __('Magical')		=> 'magic'
 					, __('Spiritual')	=> 'spirit'
-					, __('Value')		=>  'value'
+					, __('Value')		=> 'value'
 					, __('Material #1')	=> 'material'
 					, __('Material #2')	=> 'material'
 					, __('Forgery')		=> 'forgery'

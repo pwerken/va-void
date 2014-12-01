@@ -13,7 +13,7 @@
 		<legend><?= __('Edit Attribute') ?></legend>
 	<?php
 		echo $this->Form->input('name');
-		echo $this->Form->input('lorType');
+		echo $this->Form->input('category');
 		echo $this->Form->input('code');
 		echo $this->Form->input('items._ids', ['options' => $items]);
 	?>

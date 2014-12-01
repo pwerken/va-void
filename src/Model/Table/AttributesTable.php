@@ -34,7 +34,7 @@ class AttributesTable extends Table {
 			->add('id', 'valid', ['rule' => 'numeric'])
 			->allowEmpty('id', 'create')
 			->allowEmpty('name')
-			->allowEmpty('lorType')
+			->allowEmpty('category')
 			->requirePresence('code', 'create')
 			->notEmpty('code');
 

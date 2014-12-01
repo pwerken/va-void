@@ -32,7 +32,7 @@ ToDo-list:
    - [x] import Access data to MySQL (1:1, no conversion)
    - [x] convert MySQL imported data to database layout
  - Item attributes
-   - [ ] rename lorType field
+   - [x] rename lorType field
    - [ ] dummy lore code handling/generation
  - Upstream
    - [ ] CakePHP 3.0: report bug with setting nullable Date field

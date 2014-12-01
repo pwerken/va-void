@@ -32,7 +32,7 @@ DROP TABLE IF EXISTS `attributes`;
 CREATE TABLE IF NOT EXISTS `attributes` (
   `id` int(10) unsigned NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `lorType` text COLLATE utf8_unicode_ci,
+  `category` text COLLATE utf8_unicode_ci,
   `code` varchar(2) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
