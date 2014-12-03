@@ -165,14 +165,12 @@ Request::addDetector('tablet', function ($request) {
  * Plugin::load('DebugKit'); //Loads a single plugin named DebugKit
  *
  */
-
 Plugin::load('DebugKit', ['bootstrap' => true]);
 Plugin::load('Crud');
 
 /**
  * Connect middleware/dispatcher filters.
  */
-
 DispatcherFactory::add('Asset');
 DispatcherFactory::add('Routing');
 DispatcherFactory::add('NoExtensions');
