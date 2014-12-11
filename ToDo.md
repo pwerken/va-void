@@ -15,11 +15,14 @@ ToDo-list:
    - [ ] date input fields: text+calendar
    - [ ] select => combobox (with search)
    - [ ] infobalie uitcheck forms
- - Expand route.php
+ - /api json output
    - [x] add /api prefix
-   - [x] always return json under /api (without requiring a file extension)
+   - [ ] add all controller under /api
+   - [x] always return json under /api (without .json extension)
    - [ ] clean up json output
+   - [ ] disable pagination on listings
    - [ ] accept json for add/edit actions
+ - Expand route.php
    - [x] characters url routing: from .../:id to .../:plin/:chin
    - [ ] restructure urls/controllers (relations, nesting)
  - Reduce CRUD-plugin boilerplating
@@ -37,5 +40,6 @@ ToDo-list:
  - Upstream
    - [ ] CakePHP 3.0: report bug with setting nullable Date field
    - [ ] CakePHP 3.0: fix _joinData mass assignment guard
-   - [ ] Crud cake3: configurable 'contain' relation
    - [ ] Crud cake3: composite primary key support
+   - [ ] Crud cake3: configurable 'contain' relation
+   - [ ] Crud cake3: configurable 'patchEntity' options
