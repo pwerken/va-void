@@ -6,26 +6,28 @@ ToDo-list:
    - [ ] add search functions: player/character/item/power/condition
    - [ ] add authenticate/authorize/login
    - [ ] project license
-   - [ ] share/publish repository on github
+   - [ ] update README.md
+   - [x] share/publish repository on github
+ - /api json output
+   - [x] add /api prefix
+   - [x] always return json under /api (without .json extension)
+   - [ ] add all controllers under /api
+   - [ ] create all json view ctp's
+   - [ ] disable pagination on listings
+   - [ ] accept json for add/edit actions
+ - Expand route.php
+   - [x] characters url routing: from .../:id to .../:plin/:chin
+   - [ ] restructure urls/controllers (relations, nesting)
  - User interface
-   - [ ] test if the add/edit actions work with CRUD
    - [ ] add validator rules
+   - [x] test if the add/edit actions work with CRUD
+   - [ ] add/edit _joinData fields to forms
    - [x] clean up Template/*.ctp's
    - [ ] fancier edit form for character skills
    - [ ] date input fields: text+calendar
    - [ ] select => combobox (with search)
    - [ ] infobalie uitcheck forms
    - [ ] make a proper home.ctp for /
- - /api json output
-   - [x] add /api prefix
-   - [ ] add all controller under /api
-   - [x] always return json under /api (without .json extension)
-   - [ ] clean up json output
-   - [ ] disable pagination on listings
-   - [ ] accept json for add/edit actions
- - Expand route.php
-   - [x] characters url routing: from .../:id to .../:plin/:chin
-   - [ ] restructure urls/controllers (relations, nesting)
  - Reduce CRUD-plugin boilerplating
    - [x] configurable per view query 'contain' information
    - [x] configure per view 'relatedModels'
