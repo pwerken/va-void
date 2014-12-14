@@ -1,9 +1,9 @@
 <?php
-
-$output = array();
+$output = [];
 $output['url'] = '/api/players';
+$output['list'] = [];
 foreach($players as $player) {
-	$output['data'][] = $this->Snippet->player($player);
+	$output['list'][] = $this->Snippet->player($player);
 }
 
 echo $this->Snippet->json_encode($output);
