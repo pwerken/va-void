@@ -15,6 +15,7 @@ ToDo-list:
    - [ ] date input fields: text+calendar
    - [ ] select => combobox (with search)
    - [ ] infobalie uitcheck forms
+   - [ ] make a proper home.ctp for /
  - /api json output
    - [x] add /api prefix
    - [ ] add all controller under /api
