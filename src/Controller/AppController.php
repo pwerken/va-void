@@ -29,6 +29,8 @@ class AppController extends Controller {
 
 	use \Crud\Controller\ControllerTrait;
 
+	public $helpers = [ 'Snippet' ];
+
 /**
  * Initialization hook method.
  *
