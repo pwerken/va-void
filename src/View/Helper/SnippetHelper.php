@@ -1,6 +1,7 @@
 <?php
 namespace App\View\Helper;
 
+use Cake\Core\Configure;
 use Cake\View\Helper;
 use Cake\View\View;
 use App\Model\Entity\Character;
@@ -19,12 +20,6 @@ class SnippetHelper extends Helper {
  */
 	protected $_defaultConfig = [];
 
-	public function date($obj, $field) {
-		if(!$obj->has($field))
-			return null;
-
-		return $obj->$field->format('d-m-Y');
-	}
 
 	public function character(Character $character) {
 		$url = '/api/characters/'.$character->player_id.'/'.$character->chin;

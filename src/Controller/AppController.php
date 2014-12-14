@@ -29,7 +29,7 @@ class AppController extends Controller {
 
 	use \Crud\Controller\ControllerTrait;
 
-	public $helpers = [ 'Snippet' ];
+	public $helpers = [ 'Date', 'Snippet' ];
 
 /**
  * Initialization hook method.
