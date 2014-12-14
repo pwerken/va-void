@@ -60,7 +60,47 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <table cellpadding="0" cellspacing="0">
 <thead>
 	<tr>
-		<th>Path</th>
+		<th>Path (json api)</th>
+		<th>Description</th>
+		<th>Actions</th>
+	</tr>
+</thead>
+<tbody>
+<?php
+	$items =
+		[	[ 'controller' => 'Players', 'id' => [ 987 ]
+			, 'description' => 'Peter van de Werken' ]
+		,	[ 'controller' => 'Characters', 'id' => [ 987, 2 ]
+			, 'description' => 'Azuma' ]
+		,	[ 'controller' => 'Items', 'id' => [ 724 ]
+			, 'description' => 'Parta' ]
+		,	[ 'controller' => 'Powers', 'id' => [ 2462 ]
+			, 'description' => 'Purify Body (2)' ]
+		,	[ 'controller' => 'Conditions', 'id' => [ 3137 ]
+			, 'description' => 'Mark of Nimpf' ]
+		];
+
+	foreach ($items as $item):
+		$urlList = '/api/' . strtolower($item['controller']);
+		$urlItem = $urlList . '/' . implode('/', $item['id']);
+		?>
+	<tr>
+		<td> / api / <?= h(strtolower($item['controller'])) ?>
+		  / <?= implode($item['id'], ' / ') ?></td>
+		<td><?= h($item['description']) ?></td>
+		<td class="actions">
+			<?= $this->Html->link(__('Index'), $urlList) ?>
+			<?= $this->Html->link(__('View'), $urlItem) ?>
+		</td>
+	</tr>
+<?php endforeach; ?>
+</tbody>
+</table>
+<hr/>
+<table cellpadding="0" cellspacing="0">
+<thead>
+	<tr>
+		<th>Path (classic)</th>
 		<th>Description</th>
 		<th>Actions</th>
 	</tr>
@@ -82,10 +122,13 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
 	foreach ($items as $item): ?>
 	<tr>
-		<td><?= h($item['controller']) ?>
+		<td>/ <?= h($item['controller']) ?>
 		  / <?= implode($item['id'], ' / ') ?></td>
 		<td><?= h($item['description']) ?></td>
 		<td class="actions">
+			<?= $this->Html->link(__('Index'),
+					[ 'controller' => $item['controller']
+					, 'action' => 'index' ]) ?>
 			<?= $this->Html->link(__('View'),
 					[ 'controller' => $item['controller']
 					, 'action' => 'view' ]
