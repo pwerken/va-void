@@ -29,7 +29,7 @@
 			<br>
 				<?= h($item->description) ?></td>
 			<td>
-				<?= $item->has('expiry') ? $item->expiry->format('d-m-Y') : __('Permanent') ?>
+				<?= $this->Date->dmy($item->expiry) ?>
 			<br>
 				<?= $item->has('character') ? $this->Html->link($item->character->name, ['controller' => 'Characters', 'action' => 'view', $item->character->id]) : '' ?>
 			</td>

@@ -36,18 +36,18 @@
 			<th><?= __('Sort Order') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
-		<?php foreach ($manatype->skills as $skills): ?>
+		<?php foreach ($manatype->skills as $skill): ?>
 		<tr>
-			<td><?= h($skills->id) ?></td>
-			<td><?= h($skills->name) ?></td>
-			<td><?= h($skills->cost) ?></td>
-			<td><?= h($skills->manatype_id) ?></td>
-			<td><?= h($skills->mana_amount) ?></td>
-			<td><?= h($skills->sort_order) ?></td>
+			<td><?= h($skill->id) ?></td>
+			<td><?= h($skill->name) ?></td>
+			<td><?= h($skill->cost) ?></td>
+			<td><?= h($skill->manatype_id) ?></td>
+			<td><?= h($skill->mana_amount) ?></td>
+			<td><?= h($skill->sort_order) ?></td>
 			<td class="actions">
-				<?= $this->Html->link(__('View'), ['controller' => 'Skills', 'action' => 'view', $skills->id]) ?>
-				<?= $this->Html->link(__('Edit'), ['controller' => 'Skills', 'action' => 'edit', $skills->id]) ?>
-				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Skills', 'action' => 'delete', $skills->id], ['confirm' => __('Are you sure you want to delete # {0}?', $skills->id)]) ?>
+				<?= $this->Html->link(__('View'), ['controller' => 'Skills', 'action' => 'view', $skill->id]) ?>
+				<?= $this->Html->link(__('Edit'), ['controller' => 'Skills', 'action' => 'edit', $skill->id]) ?>
+				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Skills', 'action' => 'delete', $skill->id], ['confirm' => __('Are you sure you want to delete # {0}?', $skill->id)]) ?>
 			</td>
 		</tr>
 		<?php endforeach; ?>

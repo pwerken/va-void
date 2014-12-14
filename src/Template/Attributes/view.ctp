@@ -46,19 +46,18 @@
 			<th><?= __('Expiry') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
-		<?php foreach ($attribute->items as $items): ?>
+		<?php foreach ($attribute->items as $item): ?>
 		<tr>
-			<td><?= h($items->id) ?></td>
-			<td><i><?= h($items->name) ?></i><br>
-				<?= h($items->description) ?></td>
-			<td><?= h($items->player_text) ?></td>
-			<td><?= $items->has('character') ?
-			$this->Html->link($items->character->player_id.'-'.$items->character->chin.' '.$items->character->name, ['controller' => 'Characters', 'action' => 'view', $items->character->player_id, $item->character->chin]) : '' ?></td>
-			<td><?= is_object($items->expiry) ? $items->expiry->format('d-m-Y') : __('Permanent') ?></td>
+			<td><?= h($item->id) ?></td>
+			<td><i><?= h($item->name) ?></i><br>
+				<?= h($item->description) ?></td>
+			<td><?= h($item->player_text) ?></td>
+			<td><?= $item->has('character') ? $this->Html->link($item->character->player_id.'-'.$item->character->chin.' '.$item->character->name, ['controller' => 'Characters', 'action' => 'view', $item->character->player_id, $item->character->chin]) : '' ?></td>
+			<td><?= $this->Date->dmy($item->expiry) ?></td>
 			<td class="actions">
-				<?= $this->Html->link(__('View'), ['controller' => 'Items', 'action' => 'view', $items->id]) ?>
-				<?= $this->Html->link(__('Edit'), ['controller' => 'Items', 'action' => 'edit', $items->id]) ?>
-				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Items', 'action' => 'delete', $items->id], ['confirm' => __('Are you sure you want to delete # {0}?', $items->id)]) ?>
+				<?= $this->Html->link(__('View'), ['controller' => 'Items', 'action' => 'view', $item->id]) ?>
+				<?= $this->Html->link(__('Edit'), ['controller' => 'Items', 'action' => 'edit', $item->id]) ?>
+				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Items', 'action' => 'delete', $item->id], ['confirm' => __('Are you sure you want to delete # {0}?', $item->id)]) ?>
 			</td>
 		</tr>
 		<?php endforeach; ?>

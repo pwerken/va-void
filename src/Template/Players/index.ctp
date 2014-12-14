@@ -22,7 +22,7 @@
 		<tr>
 			<td><?= h($player->id) ?></td>
 			<td><?= h($player->full_name) ?></td>
-			<td><?= $player->has('date_of_birth') ? $player->date_of_birth->format('d-m-Y') : '' ?></td>
+			<td><?= $this->Date->dmy($player->date_of_birth) ?></td>
 			<td class="actions">
 				<?= $this->Html->link(__('View'), ['action' => 'view', $player->id]) ?>
 				<?= $this->Html->link(__('Edit'), ['action' => 'edit', $player->id]) ?>

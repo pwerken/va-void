@@ -56,9 +56,9 @@
 		</div>
 		<div class="large-2 columns dates end">
 			<h6 class="subheader"><?= __('Created') ?></h6>
-			<p><?= $character->has('created') ? $character->created->format('d-m-Y H:i:s') : '' ?></p>
+			<p><?= $this->Date->full($character->created) ?></p>
 			<h6 class="subheader"><?= __('Modified') ?></h6>
-			<p><?= $character->has('modified') ? $character->modified->format('d-m-Y H:i:s') : '' ?></p>
+			<p><?= $this->Date->full($character->modified) ?></p>
 		</div>
 	</div>
 	<div class="row texts">
@@ -80,17 +80,17 @@
 			<th><?= __('Expiry') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
-		<?php foreach ($character->items as $items): ?>
+		<?php foreach ($character->items as $item): ?>
 		<tr>
-			<td><?= h($items->id) ?></td>
-			<td><i><?= h($items->name) ?></i><br>
-				<?= h($items->description) ?></td>
-			<td><?= h($items->player_text) ?></td>
-			<td><?= $items->has('expiry') ? $items->expiry->format('d-m-Y') : __('Permanent') ?></td>
+			<td><?= h($item->id) ?></td>
+			<td><i><?= h($item->name) ?></i><br>
+				<?= h($item->description) ?></td>
+			<td><?= h($item->player_text) ?></td>
+			<td><?= $this->Date->dmy($item->expiry) ?></td>
 			<td class="actions">
-				<?= $this->Html->link(__('View'), ['controller' => 'Items', 'action' => 'view', $items->id]) ?>
-				<?= $this->Html->link(__('Edit'), ['controller' => 'Items', 'action' => 'edit', $items->id]) ?>
-				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Items', 'action' => 'delete', $items->id], ['confirm' => __('Are you sure you want to delete # {0}?', $items->id)]) ?>
+				<?= $this->Html->link(__('View'), ['controller' => 'Items', 'action' => 'view', $item->id]) ?>
+				<?= $this->Html->link(__('Edit'), ['controller' => 'Items', 'action' => 'edit', $item->id]) ?>
+				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Items', 'action' => 'delete', $item->id], ['confirm' => __('Are you sure you want to delete # {0}?', $item->id)]) ?>
 			</td>
 		</tr>
 		<?php endforeach; ?>
@@ -110,16 +110,16 @@
 			<th><?= __('Expiry') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
-		<?php foreach ($character->powers as $powers): ?>
+		<?php foreach ($character->powers as $power): ?>
 		<tr>
-			<td><?= h($powers->id) ?></td>
-			<td><?= h($powers->name) ?></td>
-			<td><?= h($powers->player_text) ?></td>
-			<td><?= is_object($powers->_joinData['expiry']) ?  $powers->_joinData['expiry']->format('d-m-Y') : __('Permanent') ?></td>
+			<td><?= h($power->id) ?></td>
+			<td><?= h($power->name) ?></td>
+			<td><?= h($power->player_text) ?></td>
+			<td><?= $this->Date->dmy($power->_joinData['expiry']) ?></td>
 			<td class="actions">
-				<?= $this->Html->link(__('View'), ['controller' => 'Powers', 'action' => 'view', $powers->id]) ?>
-				<?= $this->Html->link(__('Edit'), ['controller' => 'Powers', 'action' => 'edit', $powers->id]) ?>
-				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Powers', 'action' => 'delete', $powers->id], ['confirm' => __('Are you sure you want to delete # {0}?', $powers->id)]) ?>
+				<?= $this->Html->link(__('View'), ['controller' => 'Powers', 'action' => 'view', $power->id]) ?>
+				<?= $this->Html->link(__('Edit'), ['controller' => 'Powers', 'action' => 'edit', $power->id]) ?>
+				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Powers', 'action' => 'delete', $power->id], ['confirm' => __('Are you sure you want to delete # {0}?', $power->id)]) ?>
 			</td>
 		</tr>
 		<?php endforeach; ?>
@@ -139,16 +139,16 @@
 			<th><?= __('Expiry') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
-		<?php foreach ($character->conditions as $conditions): ?>
+		<?php foreach ($character->conditions as $condition): ?>
 		<tr>
-			<td><?= h($conditions->id) ?></td>
-			<td><?= h($conditions->name) ?></td>
-			<td><?= h($conditions->player_text) ?></td>
-			<td><?= is_object($conditions->_joinData['expiry']) ?  $conditions->_joinData['expiry']->format('d-m-Y') : __('Permanent') ?></td>
+			<td><?= h($condition->id) ?></td>
+			<td><?= h($condition->name) ?></td>
+			<td><?= h($condition->player_text) ?></td>
+			<td><?= $this->Date->dmy($condition->_joinData['expiry']) ?></td>
 			<td class="actions">
-				<?= $this->Html->link(__('View'), ['controller' => 'Conditions', 'action' => 'view', $conditions->id]) ?>
-				<?= $this->Html->link(__('Edit'), ['controller' => 'Conditions', 'action' => 'edit', $conditions->id]) ?>
-				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Conditions', 'action' => 'delete', $conditions->id], ['confirm' => __('Are you sure you want to delete # {0}?', $conditions->id)]) ?>
+				<?= $this->Html->link(__('View'), ['controller' => 'Conditions', 'action' => 'view', $condition->id]) ?>
+				<?= $this->Html->link(__('Edit'), ['controller' => 'Conditions', 'action' => 'edit', $condition->id]) ?>
+				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Conditions', 'action' => 'delete', $condition->id], ['confirm' => __('Are you sure you want to delete # {0}?', $condition->id)]) ?>
 			</td>
 		</tr>
 		<?php endforeach; ?>
@@ -168,16 +168,16 @@
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
 		<?php $sum = 0; ?>
-		<?php foreach ($character->skills as $skills): ?>
-		<?php	$sum += $skills->cost; ?>
+		<?php foreach ($character->skills as $skill): ?>
+		<?php	$sum += $skill->cost; ?>
 		<tr>
-			<td><?= h($skills->name) ?></td>
-			<td><?= h($skills->cost) ?></td>
-			<td><?= $skills->has('manatype') ? h($skills->mana_amount) . ' ' . h($skills->manatype->name) : '' ?></td>
+			<td><?= h($skill->name) ?></td>
+			<td><?= h($skill->cost) ?></td>
+			<td><?= $skill->has('manatype') ? h($skill->mana_amount) . ' ' . h($skill->manatype->name) : '' ?></td>
 			<td class="actions">
-				<?= $this->Html->link(__('View'), ['controller' => 'Skills', 'action' => 'view', $skills->id]) ?>
-				<?= $this->Html->link(__('Edit'), ['controller' => 'Skills', 'action' => 'edit', $skills->id]) ?>
-				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Skills', 'action' => 'delete', $skills->id], ['confirm' => __('Are you sure you want to delete # {0}?', $skills->id)]) ?>
+				<?= $this->Html->link(__('View'), ['controller' => 'Skills', 'action' => 'view', $skill->id]) ?>
+				<?= $this->Html->link(__('Edit'), ['controller' => 'Skills', 'action' => 'edit', $skill->id]) ?>
+				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Skills', 'action' => 'delete', $skill->id], ['confirm' => __('Are you sure you want to delete # {0}?', $skill->id)]) ?>
 			</td>
 		</tr>
 		<?php endforeach; ?>
@@ -204,15 +204,15 @@
 			<th><?= __('Spiritual') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
-		<?php foreach ($character->spells as $spells): ?>
+		<?php foreach ($character->spells as $spell): ?>
 		<tr>
-			<td><?= h($spells->name) ?></td>
-			<td><?= $this->Number->format($spells->_joinData['level']) ?></td>
-			<td><?= h($spells->spiritual) ?></td>
+			<td><?= h($spell->name) ?></td>
+			<td><?= $this->Number->format($spell->_joinData['level']) ?></td>
+			<td><?= h($spell->spiritual) ?></td>
 			<td class="actions">
-				<?= $this->Html->link(__('View'), ['controller' => 'Spells', 'action' => 'view', $spells->id]) ?>
-				<?= $this->Html->link(__('Edit'), ['controller' => 'Spells', 'action' => 'edit', $spells->id]) ?>
-				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Spells', 'action' => 'delete', $spells->id], ['confirm' => __('Are you sure you want to delete # {0}?', $spells->id)]) ?>
+				<?= $this->Html->link(__('View'), ['controller' => 'Spells', 'action' => 'view', $spell->id]) ?>
+				<?= $this->Html->link(__('Edit'), ['controller' => 'Spells', 'action' => 'edit', $spell->id]) ?>
+				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Spells', 'action' => 'delete', $spell->id], ['confirm' => __('Are you sure you want to delete # {0}?', $spell->id)]) ?>
 			</td>
 		</tr>
 		<?php endforeach; ?>

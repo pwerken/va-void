@@ -8,7 +8,7 @@ $output['first_name'] = $player->first_name;
 $output['insertion'] = $player->insertion;
 $output['last_name'] = $player->last_name;
 $output['gender'] = $player->gender;
-$output['date_of_birth'] = $this->Date->dmy($player, 'date_of_birth');
+$output['date_of_birth'] = $this->Date->dmy($player->date_of_birth);
 
 $output['characters'] = array();
 $output['characters']['url'] = $output['url'].'/characters/';

@@ -31,11 +31,11 @@ use App\Model\Entity\Player;
 		</div>
 		<div class="large-2 columns dates end">
 			<h6 class="subheader"><?= __('Date Of Birth') ?></h6>
-			<p><?= $player->has('date_of_birth') ? $player->date_of_birth->format('d-m-Y') : '' ?></p>
+			<p><?= $this->Date->dmy($player->date_of_birth) ?></p>
 			<h6 class="subheader"><?= __('Created') ?></h6>
-			<p><?= $player->has('created') ? $player->created->format('d-m-Y H:i:s') : '' ?></p>
+			<p><?= $this->Date->full($player->created) ?></p>
 			<h6 class="subheader"><?= __('Modified') ?></h6>
-			<p><?= $player->has('modified') ? $player->modified->format('d-m-Y H:i:s') : '' ?></p>
+			<p><?= $this->Date->full($player->modified) ?></p>
 		</div>
 	</div>
 	<div class="row texts">
@@ -66,19 +66,19 @@ use App\Model\Entity\Player;
 			<th><?= __('Status') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
-		<?php foreach ($player->characters as $characters): ?>
+		<?php foreach ($player->characters as $character): ?>
 		<tr>
-			<td><?= h($characters->displayName) ?></td>
-			<td><?= h($characters->xp) ?></td>
-			<td><?= $characters->has('faction') ? $this->Html->link($characters->faction->name, ['controller' => 'Factions', 'action' => 'view', $characters->faction->id]) : '' ?></td>
-			<td><?= $characters->has('belief') ? $this->Html->link($characters->belief->name, ['controller' => 'Believes', 'action' => 'view', $characters->belief->id]) : '' ?></td>
-			<td><?= $characters->has('group') ? $this->Html->link($characters->group->name, ['controller' => 'Groups', 'action' => 'view', $characters->group->id]) : '' ?></td>
-			<td><?= $characters->has('world') ? $this->Html->link($characters->world->name, ['controller' => 'Worlds', 'action' => 'view', $characters->world->id]) : '' ?></td>
-			<td><?= h($characters->status) ?></td>
+			<td><?= h($character->displayName) ?></td>
+			<td><?= h($character->xp) ?></td>
+			<td><?= $character->has('faction') ? $this->Html->link($character->faction->name, ['controller' => 'Factions', 'action' => 'view', $character->faction->id]) : '' ?></td>
+			<td><?= $character->has('belief') ? $this->Html->link($character->belief->name, ['controller' => 'Believes', 'action' => 'view', $character->belief->id]) : '' ?></td>
+			<td><?= $character->has('group') ? $this->Html->link($character->group->name, ['controller' => 'Groups', 'action' => 'view', $character->group->id]) : '' ?></td>
+			<td><?= $character->has('world') ? $this->Html->link($character->world->name, ['controller' => 'Worlds', 'action' => 'view', $character->world->id]) : '' ?></td>
+			<td><?= h($character->status) ?></td>
 			<td class="actions">
-				<?= $this->Html->link(__('View'), ['controller' => 'Characters', 'action' => 'view', $characters->player_id, $characters->chin]) ?>
-				<?= $this->Html->link(__('Edit'), ['controller' => 'Characters', 'action' => 'edit', $characters->player_id, $characters->chin]) ?>
-				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Characters', 'action' => 'delete', $characters->player_id, $characters->chin], ['confirm' => __('Are you sure you want to delete # {0}?', $characters->player_id, $characters->chin)]) ?>
+				<?= $this->Html->link(__('View'), ['controller' => 'Characters', 'action' => 'view', $character->player_id, $character->chin]) ?>
+				<?= $this->Html->link(__('Edit'), ['controller' => 'Characters', 'action' => 'edit', $character->player_id, $character->chin]) ?>
+				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Characters', 'action' => 'delete', $character->player_id, $character->chin], ['confirm' => __('Are you sure you want to delete # {0}?', $character->player_id, $character->chin)]) ?>
 			</td>
 		</tr>
 		<?php endforeach; ?>

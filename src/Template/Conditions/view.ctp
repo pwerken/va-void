@@ -22,9 +22,9 @@
 		</div>
 		<div class="large-2 columns dates end">
 			<h6 class="subheader"><?= __('Created') ?></h6>
-			<p><?= $condition->has('created') ? $condition->created->format('d-m-Y H:i:s') : '' ?></p>
+			<p><?= $this->Date->full($condition->created) ?></p>
 			<h6 class="subheader"><?= __('Modified') ?></h6>
-			<p><?= $condition->has('modified') ? $condition->modified->format('d-m-Y H:i:s') : '' ?></p>
+			<p><?= $this->Date->full($condition->modified) ?></p>
 		</div>
 	</div>
 	<div class="row texts">
@@ -50,14 +50,14 @@
 			<th><?= __('Expiry') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
-		<?php foreach ($condition->characters as $characters): ?>
+		<?php foreach ($condition->characters as $character): ?>
 		<tr>
-			<td><?= h($characters->displayName) ?></td>
-			<td><?= is_object($characters->_joinData['expiry']) ? $characters->_joinData['expiry']->format('d-m-Y') : __('Permanent') ?></td>
+			<td><?= h($character->displayName) ?></td>
+			<td><?= $this->Date->dmy($character->_joinData['expiry']) ?></td>
 			<td class="actions">
-				<?= $this->Html->link(__('View'), ['controller' => 'Characters', 'action' => 'view', $characters->player_id, $characters->chin]) ?>
-				<?= $this->Html->link(__('Edit'), ['controller' => 'Characters', 'action' => 'edit', $characters->player_id, $characters->chin]) ?>
-				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Characters', 'action' => 'delete', $characters->player_id, $characters->chin], ['confirm' => __('Are you sure you want to delete # {0}?', $characters->player_id, $characters->chin)]) ?>
+				<?= $this->Html->link(__('View'), ['controller' => 'Characters', 'action' => 'view', $character->player_id, $character->chin]) ?>
+				<?= $this->Html->link(__('Edit'), ['controller' => 'Characters', 'action' => 'edit', $character->player_id, $character->chin]) ?>
+				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Characters', 'action' => 'delete', $character->player_id, $character->chin], ['confirm' => __('Are you sure you want to delete # {0}?', $character->player_id, $character->chin)]) ?>
 			</td>
 		</tr>
 		<?php endforeach; ?>

@@ -28,11 +28,11 @@
 		</div>
 		<div class="large-2 columns dates end">
 			<h6 class="subheader"><?= __('Expiry') ?></h6>
-			<p><?= $item->has('expiry') ? $item->expiry->format('d-m-Y') : __('Permanent') ?></td>
+			<p><?= $this->Date->dmy($item->expiry) ?></p>
 			<h6 class="subheader"><?= __('Created') ?></h6>
-			<p><?= $item->has('created') ? $item->created->format('d-m-Y H:i:s') : '' ?></p>
+			<p><?= $this->Date->full($item->created) ?></p>
 			<h6 class="subheader"><?= __('Modified') ?></h6>
-			<p><?= $item->has('modified') ? $item->modified->format('d-m-Y H:i:s') : '' ?></p>
+			<p><?= $this->Date->full($item->modified) ?></p>
 		</div>
 	</div>
 	<div class="row texts">
@@ -59,15 +59,15 @@
 			<th><?= __('Code') ?></th>
 			<th class="actions"><?= __('Actions') ?></th>
 		</tr>
-		<?php foreach ($item->attributes as $attributes): ?>
+		<?php foreach ($item->attributes as $attribute): ?>
 		<tr>
-			<td><?= h($attributes->name) ?></td>
-			<td><?= h($attributes->category) ?></td>
-			<td><?= h($attributes->code) ?></td>
+			<td><?= h($attribute->name) ?></td>
+			<td><?= h($attribute->category) ?></td>
+			<td><?= h($attribute->code) ?></td>
 			<td class="actions">
-				<?= $this->Html->link(__('View'), ['controller' => 'Attributes', 'action' => 'view', $attributes->id]) ?>
-				<?= $this->Html->link(__('Edit'), ['controller' => 'Attributes', 'action' => 'edit', $attributes->id]) ?>
-				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Attributes', 'action' => 'delete', $attributes->id], ['confirm' => __('Are you sure you want to delete # {0}?', $attributes->id)]) ?>
+				<?= $this->Html->link(__('View'), ['controller' => 'Attributes', 'action' => 'view', $attribute->id]) ?>
+				<?= $this->Html->link(__('Edit'), ['controller' => 'Attributes', 'action' => 'edit', $attribute->id]) ?>
+				<?= $this->Form->postLink(__('Delete'), ['controller' => 'Attributes', 'action' => 'delete', $attribute->id], ['confirm' => __('Are you sure you want to delete # {0}?', $attribute->id)]) ?>
 			</td>
 		</tr>
 		<?php endforeach; ?>
