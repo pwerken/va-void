@@ -15,11 +15,19 @@ class DateHelper extends TimeHelper {
  */
 	protected $_defaultConfig = [];
 
-	public function dmy($obj, $field) {
-		if(!$obj->has($field))
+	public function dmy($date) {
+		return $this->_formatHelper($date, 'd-m-Y');
+	}
+
+	public function full($date) {
+		return $this->_formatHelper($date, 'd-m-Y H:i:s');
+	}
+
+	private function _formatHelper($date, $format) {
+		if($date === null)
 			return null;
 
-		return $obj->$field->format('d-m-Y');
+		return $date->format($format);
 	}
 
 }
