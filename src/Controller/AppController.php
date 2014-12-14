@@ -50,8 +50,7 @@ class AppController extends Controller {
 				, 'Crud.Delete'
 				]
 			, 'listeners' =>
-				[ 'Crud.Api'
-				, 'Crud.RelatedModels'
+				[ 'Crud.RelatedModels'
 				]
 			]
 		);
