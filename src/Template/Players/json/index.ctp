@@ -1,12 +1,9 @@
 <?php
-use Cake\Core\Configure;
-
-$url = '/api/players';
 
 $output = array();
-$output['url'] = $url;
+$output['url'] = '/api/players';
 foreach($players as $player) {
 	$output['data'][] = $this->Snippet->player($player);
 }
 
-echo json_encode($output, Configure::read('debug') ? JSON_PRETTY_PRINT : 0);
+echo $this->Snippet->json_encode($output);

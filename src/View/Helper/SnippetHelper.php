@@ -20,6 +20,10 @@ class SnippetHelper extends Helper {
  */
 	protected $_defaultConfig = [];
 
+	public function json_encode($data) {
+		$option = Configure::read('debug') ? JSON_PRETTY_PRINT : 0;
+		return json_encode($data, $option);
+	}
 
 	public function character(Character $character) {
 		$url = '/api/characters/'.$character->player_id.'/'.$character->chin;
