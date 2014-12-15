@@ -1,39 +1,41 @@
 <?php
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
+class Player extends JsonEntity {
 
-/**
- * Player Entity.
- */
-class Player extends Entity {
+	protected $_accessible =
+		[ 'account_type' => true
+		, 'username' => true
+		, 'password' => true
+		, 'first_name' => true
+		, 'insertion' => true
+		, 'last_name' => true
+		, 'gender' => true
+		, 'date_of_birth' => true
+		, 'characters' => true
+		];
 
-/**
- * Fields that can be mass assigned using newEntity() or patchEntity().
- *
- * @var array
- */
-	protected $_accessible = [
-		'account_type' => true,
-		'username' => true,
-		'password' => true,
-		'first_name' => true,
-		'insertion' => true,
-		'last_name' => true,
-		'gender' => true,
-		'date_of_birth' => true,
-		'characters' => true,
-	];
+	protected $_virtual =
+		[ 'full_name' ];
 
+	protected $_hidden =
+		[ 'password' ];
+
+	protected $_json_aliases =
+		[ 'id' => 'plin' ];
+
+	protected $_json_short =
+		[ 'id', 'full_name' ];
+
+	protected function _getDisplayName() {
+		return $this->_properties['id']
+			. ': ' . self::_getFullName();
+	}
 	protected function _getFullName() {
 		return $this->_properties['first_name'] . ' '
 				. (empty($this->_properties['insertion'])
 					? '' : $this->_properties['insertion'] . ' ')
 				.  $this->_properties['last_name'];
-	}
-	protected function _getDisplayName() {
-		return $this->_properties['id']
-			. ': ' . self::_getFullName();
 	}
 
 	public static function labelsAccountTypes($keys = false) {

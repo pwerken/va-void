@@ -1,32 +1,31 @@
 <?php
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
+class Item extends JsonEntity {
 
-/**
- * Item Entity.
- */
-class Item extends Entity {
+	protected $_accessible =
+		[ 'name' => true
+		, 'description' => true
+		, 'player_text' => true
+		, 'cs_text' => true
+		, 'character_id' => true
+		, 'expiry' => true
+		, 'character_id' => true
+		, 'character' => true
+		, 'attributes' => true
+		];
 
-/**
- * Fields that can be mass assigned using newEntity() or patchEntity().
- *
- * @var array
- */
-	protected $_accessible = [
-		'name' => true,
-		'description' => true,
-		'player_text' => true,
-		'cs_text' => true,
-		'character_id' => true,
-		'expiry' => true,
-		'character' => true,
-		'attributes' => true,
-	];
+	protected $_hidden =
+		[ 'character_id', 'cs_text' ];
+
+	protected $_json_aliases =
+		[ 'id' => 'itin' ];
+
+	protected $_json_short =
+		[ 'id', 'name', 'expiry', 'character' ];
 
 	protected function _getDisplayName() {
 		return $this->_properties['id']
 			. ': ' . $this->_properties['name'];
 	}
-
 }

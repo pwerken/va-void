@@ -14,8 +14,11 @@
  */
 namespace App\Controller;
 
+use App\Model\Entity\JsonEntity;
 use Cake\Controller\Controller;
+use Cake\Core\Configure;
 use Cake\Event\Event;
+use Cake\ORM\ResultSet;
 
 /**
  * Application Controller
@@ -29,7 +32,7 @@ class AppController extends Controller {
 
 	use \Crud\Controller\ControllerTrait;
 
-	public $helpers = [ 'Date', 'Snippet' ];
+	public $helpers = [ 'Date' ];
 
 /**
  * Initialization hook method.
@@ -60,7 +63,7 @@ class AppController extends Controller {
 		array_walk($this->request->data, array($this, 'removeEmptyDate'));
 	}
 
-	function removeEmptyDate(&$value, $key) {
+	private function removeEmptyDate(&$value, $key) {
 		if(!is_array($value)) return;
 		if(count($value) == 3 &&
 			isset($value['year'], $value['month'], $value['day']) &&
@@ -68,6 +71,31 @@ class AppController extends Controller {
 			$value = null;
 		} else {
 			array_walk($value, array($this, 'removeEmptyDate'));
+		}
+	}
+
+	public function beforeRender(Event $event) {
+		parent::beforeRender($event);
+
+		if($this->request->is('json')) {
+			$objName = $this->viewVars['viewVar'];
+			$obj = $this->viewVars[$objName];
+
+			if($obj instanceof JsonEntity) {
+				$this->set($objName, $obj->jsonFull());
+				$this->set('_serialize', $objName);
+				return;
+			}
+			if($obj instanceof ResultSet) {
+				$output = [];
+				$output['url'] = $this->request->here;
+				foreach($obj as $item) {
+					$output['list'][] = $item->jsonShort();
+				}
+				$this->set($objName, $output);
+				$this->set('_serialize', $objName);
+				return;
+			}
 		}
 	}
 }
