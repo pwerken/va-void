@@ -50,6 +50,8 @@ Router::scope('/', function ($routes) {
 		$routes->resources('Players');
 		$routes->resources('Characters');
 		$routes->resources('Items');
+		$routes->resources('Conditions');
+		$routes->resources('Powers');
 	});
 
 /**
