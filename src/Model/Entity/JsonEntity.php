@@ -21,24 +21,49 @@ class JsonEntity extends Entity {
 	}
 
 	public function jsonShort() {
+		if(empty($this->_json_short))
+			return [];
+
 		return $this->_jsonArray($this->_json_short);
 	}
 
 	private function _jsonArray($properties) {
+		$url = $this->jsonUrl();
+
 		$result = [];
-		$result['url'] = $this->jsonUrl();
+		if(!empty($url))
+			$result['url'] = $url;
+
 		foreach($properties as $property) {
 			$value = $this->get($property);
 
 			if(is_array($value)) {
 				$list = [];
-				$list['url'] = $result['url'].'/'.$property;
-				foreach($value as &$sub)
-					$list['list'][] = $this->_jsonSubValue($sub);
+				$list['url'] = $url.'/'.$property;
+				foreach($value as $sub) {
+					if(!($sub instanceof JsonEntity)) {
+						$list['list'][] = $sub;
+						continue;
+					}
 
+					$suburl = $url.substr($sub->jsonUrl(), 4);
+					$subarr = self::_jsonSubValue($sub);
+
+					$join = [];
+					if($sub->has('_joinData'))
+						$join = self::_jsonSubValue($sub->_joinData);
+
+					if(empty($join)) {
+						$join = $subarr;
+					} else {
+						$join['url'] = $suburl;
+						$join[Inflector::singularize($property)] = $subarr;
+					}
+					$list['list'][] = $join;
+				}
 				$value = $list;
 			} else {
-				$value = $this->_jsonSubValue($value);
+				$value = self::_jsonSubValue($value);
 			}
 
 			if($value instanceof Time) {
@@ -58,12 +83,12 @@ class JsonEntity extends Entity {
 		}
 		return $result;
 	}
-	private function _jsonSubValue($value) {
-		if($value instanceof EntityInterface)
-			return NULL;
+
+	private static function _jsonSubValue($value) {
 		if($value instanceof JsonEntity)
 			return $value->jsonShort();
-
+		if($value instanceof EntityInterface)
+			return NULL;
 		return $value;
 	}
 
