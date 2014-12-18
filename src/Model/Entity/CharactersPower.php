@@ -1,22 +1,15 @@
 <?php
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
+class CharactersPower extends JsonEntity {
 
-/**
- * CharactersPower Entity.
- */
-class CharactersPower extends Entity {
+	protected $_accessible =
+		[ 'expiry' => true
+		, 'character' => true
+		, 'power' => true
+		];
 
-/**
- * Fields that can be mass assigned using newEntity() or patchEntity().
- *
- * @var array
- */
-	protected $_accessible = [
-		'expiry' => true,
-		'character' => true,
-		'power' => true,
-	];
+	protected $_json_short =
+		[ 'expiry' ];
 
 }

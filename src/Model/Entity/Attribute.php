@@ -1,23 +1,18 @@
 <?php
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
+class Attribute extends JsonEntity {
 
-/**
- * Attribute Entity.
- */
-class Attribute extends Entity {
+	protected $_accessible =
+		[ 'name' => true
+		, 'category' => true
+		, 'code' => true
+		, 'items' => true
+		];
 
-/**
- * Fields that can be mass assigned using newEntity() or patchEntity().
- *
- * @var array
- */
-	protected $_accessible = [
-		'name' => true,
-		'category' => true,
-		'code' => true,
-		'items' => true,
-	];
+	protected $_json_short =
+		[ 'id'
+		, 'name'
+		];
 
 }

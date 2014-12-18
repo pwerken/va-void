@@ -1,21 +1,14 @@
 <?php
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
+class Faction extends JsonEntity {
 
-/**
- * Faction Entity.
- */
-class Faction extends Entity {
+	protected $_accessible =
+		[ 'name' => true
+		, 'characters' => true
+		];
 
-/**
- * Fields that can be mass assigned using newEntity() or patchEntity().
- *
- * @var array
- */
-	protected $_accessible = [
-		'name' => true,
-		'characters' => true,
-	];
+	protected $_json_short =
+		[ 'id', 'name' ];
 
 }
