@@ -1,27 +1,25 @@
 <?php
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
+class Skill extends JsonEntity {
 
-/**
- * Skill Entity.
- */
-class Skill extends Entity {
+	protected $_accessible =
+		[ 'name' => true
+		, 'cost' => true
+		, 'manatype_id' => true
+		, 'mana_amount' => true
+		, 'sort_order' => true
+		, 'manatype' => true
+		, 'characters' => true
+		, '_joinData' => true
+		];
 
-/**
- * Fields that can be mass assigned using newEntity() or patchEntity().
- *
- * @var array
- */
-	protected $_accessible = [
-		'name' => true,
-		'cost' => true,
-		'manatype_id' => true,
-		'mana_amount' => true,
-		'sort_order' => true,
-		'manatype' => true,
-		'characters' => true,
-		'_joinData' => true,
-	];
+	protected $_json_short =
+		[ 'id'
+		, 'name'
+		, 'cost'
+		, 'mana_amount'
+		, 'manatype'
+		];
 
 }

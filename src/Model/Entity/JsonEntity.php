@@ -11,9 +11,7 @@ class JsonEntity extends Entity {
 	protected $_json_short = [ ];
 
 	public function jsonUrl() {
-		$array = explode('\\', Inflector::tableize(get_class($this)));
-		$className = array_pop($array);
-		return '/api/'.$className.'/'.$this->get('id');
+		return '/api/'.$this->_getClassName().'/'.$this->get('id');
 	}
 
 	public function jsonFull() {
@@ -40,6 +38,7 @@ class JsonEntity extends Entity {
 			if(is_array($value)) {
 				$list = [];
 				$list['url'] = $url.'/'.$property;
+				$list['list'] = [];
 				foreach($value as $sub) {
 					if(!($sub instanceof JsonEntity)) {
 						$list['list'][] = $sub;
@@ -55,6 +54,7 @@ class JsonEntity extends Entity {
 
 					if(empty($join)) {
 						$join = $subarr;
+						unset($join[Inflector::singularize($this->_getClassName())]);
 					} else {
 						$join['url'] = $suburl;
 						$join[Inflector::singularize($property)] = $subarr;
@@ -84,6 +84,10 @@ class JsonEntity extends Entity {
 		return $result;
 	}
 
+	private function _getClassName() {
+		$array = explode('\\', Inflector::tableize(get_class($this)));
+		return array_pop($array);
+	}
 	private static function _jsonSubValue($value) {
 		if($value instanceof JsonEntity)
 			return $value->jsonShort();

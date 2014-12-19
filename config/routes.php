@@ -52,6 +52,13 @@ Router::scope('/', function ($routes) {
 		$routes->resources('Items');
 		$routes->resources('Conditions');
 		$routes->resources('Powers');
+		$routes->resources('Skills');
+
+		$routes->resources('Believes');
+		$routes->resources('Factions');
+		$routes->resources('Groups');
+		$routes->resources('Spells');
+		$routes->resources('Worlds');
 	});
 
 /**

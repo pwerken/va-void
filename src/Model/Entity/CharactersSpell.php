@@ -1,22 +1,14 @@
 <?php
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
+class CharactersSpell extends JsonEntity {
 
-/**
- * CharactersSpell Entity.
- */
-class CharactersSpell extends Entity {
+	protected $_accessible =
+		[ 'level' => true
+		, 'character' => true
+		, 'spell' => true
+		];
 
-/**
- * Fields that can be mass assigned using newEntity() or patchEntity().
- *
- * @var array
- */
-	protected $_accessible = [
-		'level' => true,
-		'character' => true,
-		'spell' => true,
-	];
-
+	protected $_json_short =
+		[ 'level' ];
 }

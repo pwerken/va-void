@@ -1,21 +1,11 @@
 <?php
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
+class CharactersSkill extends JsonEntity {
 
-/**
- * CharactersSkill Entity.
- */
-class CharactersSkill extends Entity {
-
-/**
- * Fields that can be mass assigned using newEntity() or patchEntity().
- *
- * @var array
- */
-	protected $_accessible = [
-		'character' => true,
-		'skill' => true,
-	];
+	protected $_accessible =
+		[ 'character' => true
+		, 'skill' => true
+		];
 
 }

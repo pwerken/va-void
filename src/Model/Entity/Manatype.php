@@ -1,21 +1,15 @@
 <?php
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
+class Manatype extends JsonEntity {
 
-/**
- * Manatype Entity.
- */
-class Manatype extends Entity {
+	protected $_accessible =
+		[ 'name' => true
+		, 'skills' => true
+		];
 
-/**
- * Fields that can be mass assigned using newEntity() or patchEntity().
- *
- * @var array
- */
-	protected $_accessible = [
-		'name' => true,
-		'skills' => true,
-	];
+	public function jsonShort() {
+		return $this->get('name');
+	}
 
 }
