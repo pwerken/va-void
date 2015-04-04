@@ -29,7 +29,7 @@ class PowersController extends AppController {
 		$this->Crud->action('edit')->config(
 			[ 'contain' => [ 'Characters' ]
 			, 'relatedModels' => [ 'Characters' ]
-			, 'patchOptions' => [ 'associated' => [ 'Characters._joinData' ] ]
+			, 'saveOptions' => [ 'associated' => [ 'Characters._joinData' ] ]
 			]);
 	}
 
