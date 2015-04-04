@@ -33,6 +33,11 @@ require ROOT . DS . 'vendor' . DS . 'autoload.php';
  */
 require CORE_PATH . 'config' . DS . 'bootstrap.php';
 
+// You can remove this if you are confident you have intl installed.
+if (!extension_loaded('intl')) {
+    trigger_error('You must enable the intl extension to use CakePHP.', E_USER_ERROR);
+}
+
 use Cake\Cache\Cache;
 use Cake\Console\ConsoleErrorHandler;
 use Cake\Core\App;
@@ -57,10 +62,10 @@ use Cake\Utility\Security;
  * that changes from configuration that does not. This makes deployment simpler.
  */
 try {
-	Configure::config('default', new PhpConfig());
-	Configure::load('app', 'default', false);
+    Configure::config('default', new PhpConfig());
+    Configure::load('app', 'default', false);
 } catch (\Exception $e) {
-	die($e->getMessage() . "\n");
+    die($e->getMessage() . "\n");
 }
 
 // Load an environment local configuration file.
@@ -72,8 +77,8 @@ try {
 // for a very very long time, as we don't want
 // to refresh the cache while users are doing requests.
 if (!Configure::read('debug')) {
-	Configure::write('Cache._cake_model_.duration', '+99 years');
-	Configure::write('Cache._cake_core_.duration', '+99 years');
+    Configure::write('Cache._cake_model_.duration', '+1 years');
+    Configure::write('Cache._cake_core_.duration', '+1 years');
 }
 
 /**
@@ -98,14 +103,14 @@ ini_set('intl.default_locale', 'en_US');
  */
 $isCli = php_sapi_name() === 'cli';
 if ($isCli) {
-	(new ConsoleErrorHandler(Configure::consume('Error')))->register();
+    (new ConsoleErrorHandler(Configure::read('Error')))->register();
 } else {
-	(new ErrorHandler(Configure::consume('Error')))->register();
+    (new ErrorHandler(Configure::read('Error')))->register();
 }
 
 // Include the CLI bootstrap overrides.
 if ($isCli) {
-	require __DIR__ . '/bootstrap_cli.php';
+    require __DIR__ . '/bootstrap_cli.php';
 }
 
 /**
@@ -115,16 +120,16 @@ if ($isCli) {
  * If you define fullBaseUrl in your config file you can remove this.
  */
 if (!Configure::read('App.fullBaseUrl')) {
-	$s = null;
-	if (env('HTTPS')) {
-		$s = 's';
-	}
+    $s = null;
+    if (env('HTTPS')) {
+        $s = 's';
+    }
 
-	$httpHost = env('HTTP_HOST');
-	if (isset($httpHost)) {
-		Configure::write('App.fullBaseUrl', 'http' . $s . '://' . $httpHost);
-	}
-	unset($httpHost, $s);
+    $httpHost = env('HTTP_HOST');
+    if (isset($httpHost)) {
+        Configure::write('App.fullBaseUrl', 'http' . $s . '://' . $httpHost);
+    }
+    unset($httpHost, $s);
 }
 
 Cache::config(Configure::consume('Cache'));
@@ -135,23 +140,31 @@ Log::config(Configure::consume('Log'));
 Security::salt(Configure::consume('Security.salt'));
 
 /**
+ * The default crypto extension in 3.0 is OpenSSL.
+ * If you are migrating from 2.x uncomment this code to
+ * use a more compatible Mcrypt based implementation
+ */
+// Security::engine(new \Cake\Utility\Crypto\Mcrypt());
+
+/**
  * Setup detectors for mobile and tablet.
  */
 Request::addDetector('mobile', function ($request) {
-	$detector = new \Detection\MobileDetect();
-	return $detector->isMobile();
+    $detector = new \Detection\MobileDetect();
+    return $detector->isMobile();
 });
 Request::addDetector('tablet', function ($request) {
-	$detector = new \Detection\MobileDetect();
-	return $detector->isTablet();
+    $detector = new \Detection\MobileDetect();
+    return $detector->isTablet();
 });
 
 /**
- * Custom Inflector rules, can be set to correctly pluralize or singularize table, model, controller names or whatever other
- * string is passed to the inflection functions
+ * Custom Inflector rules, can be set to correctly pluralize or singularize
+ * table, model, controller names or whatever other string is passed to the
+ * inflection functions.
  *
  * Inflector::rules('plural', ['/^(inflect)or$/i' => '\1ables']);
- * Inflector::rules('irregular' => ['red' => 'redlings']);
+ * Inflector::rules('irregular', ['red' => 'redlings']);
  * Inflector::rules('uninflected', ['dontinflectme']);
  * Inflector::rules('transliteration', ['/å/' => 'aa']);
  */
@@ -162,10 +175,17 @@ Request::addDetector('tablet', function ($request) {
  * advanced ways of loading plugins
  *
  * Plugin::loadAll(); // Loads all plugins at once
- * Plugin::load('DebugKit'); //Loads a single plugin named DebugKit
+ * Plugin::load('Migrations'); //Loads a single plugin named Migrations
  *
  */
-Plugin::load('DebugKit', ['bootstrap' => true]);
+
+Plugin::load('Migrations');
+
+// Only try to load DebugKit in development mode
+// Debug Kit should not be installed on a production system
+if (Configure::read('debug')) {
+    Plugin::load('DebugKit', ['bootstrap' => true]);
+}
 Plugin::load('Crud');
 
 /**
