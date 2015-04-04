@@ -63,20 +63,6 @@ class AppController extends Controller
 
 		if($this->request->is('json'))
 			$this->request->data = $this->request->input('json_decode', true);
-		if(!is_null($this->request->data))
-			array_walk($this->request->data, array($this, 'removeEmptyDate'));
-	}
-
-	private function removeEmptyDate(&$value, $key)
-	{
-		if(!is_array($value)) return;
-		if(count($value) == 3 &&
-			isset($value['year'], $value['month'], $value['day']) &&
-			strlen(implode($value)) == 0) {
-			$value = null;
-		} else {
-			array_walk($value, array($this, 'removeEmptyDate'));
-		}
 	}
 
 	public function beforeRender(Event $event)
