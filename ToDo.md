@@ -41,8 +41,5 @@ ToDo-list:
    - [x] rename lorType field
    - [ ] dummy lore code handling/generation
  - Upstream
-   - [ ] CakePHP 3.0: report bug with setting nullable Date field
    - [ ] CakePHP 3.0: fix _joinData mass assignment guard
-   - [ ] Crud cake3: composite primary key support
    - [ ] Crud cake3: configurable 'contain' relation
-   - [ ] Crud cake3: configurable 'patchEntity' options

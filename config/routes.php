@@ -56,7 +56,19 @@ Router::scope('/', function ($routes) {
 
     $routes->scope('/api', function ($routes) {
         $routes->resources('Players');
-        $routes->resources('Characters');
+        $routes->resources('Characters',
+                [ 'connectOptions' =>
+                    [ 'plin' => '[0-9]+'
+                    , 'chin' => '[0-9]+'
+                    , 'pass' => ['plin', 'chin']
+                    ]
+                , 'map' =>
+                    [ 'view' =>
+                        [ 'action' => 'view'
+                        , 'method' => 'GET'
+                        , 'path' => ':plin/:chin'
+                ]   ]   ]);
+
         $routes->resources('Items');
         $routes->resources('Conditions');
         $routes->resources('Powers');
