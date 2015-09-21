@@ -87,9 +87,8 @@ return [
         ],
 
         /**
-         * Configure the cache used for general framework caching. Path information,
-         * object listings, and translation cache files are stored with this
-         * configuration.
+         * Configure the cache used for general framework caching.
+         * Translation cache files are stored with this configuration.
          */
         '_cake_core_' => [
             'className' => 'File',
@@ -150,15 +149,11 @@ return [
     /**
      * Email configuration.
      *
-     * You can configure email transports and email delivery profiles here.
-     *
      * By defining transports separately from delivery profiles you can easily
      * re-use transport configuration across multiple profiles.
      *
      * You can specify multiple configurations for production, development and
      * testing.
-     *
-     * ### Configuring transports
      *
      * Each transport needs a `className`. Valid options are as follows:
      *
@@ -167,16 +162,8 @@ return [
      *  Debug  - Do not send the email, just return the result
      *
      * You can add custom transports (or override existing transports) by adding the
-     * appropriate file to src/Network/Email.  Transports should be named
+     * appropriate file to src/Mailer/Transport.  Transports should be named
      * 'YourTransport.php', where 'Your' is the name of the transport.
-     *
-     * ### Configuring delivery profiles
-     *
-     * Delivery profiles allow you to predefine various properties about email
-     * messages from your application and give the settings a name. This saves
-     * duplication across your application and makes maintenance and development
-     * easier. Each profile accepts a number of keys. See `Cake\Network\Email\Email`
-     * for more information.
      */
     'EmailTransport' => [
         'default' => [
@@ -192,6 +179,15 @@ return [
         ],
     ],
 
+    /**
+     * Email delivery profiles
+     *
+     * Delivery profiles allow you to predefine various properties about email
+     * messages from your application and give the settings a name. This saves
+     * duplication across your application and makes maintenance and development
+     * easier. Each profile accepts a number of keys. See `Cake\Network\Email\Email`
+     * for more information.
+     */
     'Email' => [
         'default' => [
             'transport' => 'default',
@@ -225,6 +221,7 @@ return [
             'encoding' => 'utf8',
             'timezone' => 'UTC',
             'cacheMetadata' => true,
+            'log' => false,
 
             /**
              * Set identifier quoting to true if you are using reserved words or
@@ -262,6 +259,7 @@ return [
             'timezone' => 'UTC',
             'cacheMetadata' => true,
             'quoteIdentifiers' => false,
+            'log' => false,
             //'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
         ],
     ],
@@ -285,7 +283,6 @@ return [
     ],
 
     /**
-     *
      * Session configuration.
      *
      * Contains an array of settings to use for session configuration. The
@@ -299,6 +296,9 @@ return [
      *   `session.cookie_path` php.ini config. Defaults to base path of app.
      * - `timeout` - The time in minutes the session should be valid for.
      *    Pass 0 to disable checking timeout.
+     *    Please note that php.ini's session.gc_maxlifetime must be equal to or greater
+     *    than the largest Session['timeout'] in all served websites for it to have the
+     *    desired effect.
      * - `defaults` - The default configuration set to use as a basis for your session.
      *    There are four built-in options: php, cake, cache, database.
      * - `handler` - Can be used to enable a custom session handler. Expects an

@@ -20,7 +20,7 @@ use Cake\Log\Log;
 use Psy\Shell as PsyShell;
 
 /**
- * Simple console wrapper around Boris.
+ * Simple console wrapper around Psy\Shell.
  */
 class ConsoleShell extends Shell
 {
@@ -65,7 +65,7 @@ class ConsoleShell extends Shell
      */
     public function getOptionParser()
     {
-        $parser = new ConsoleOptionParser('console', false);
+        $parser = new ConsoleOptionParser('console');
         $parser->description(
             'This shell provides a REPL that you can use to interact ' .
             'with your application in an interactive fashion. You can use ' .

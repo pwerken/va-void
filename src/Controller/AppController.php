@@ -40,13 +40,16 @@ class AppController extends Controller
 	 *
 	 * Use this method to add common initialization code like loading components.
 	 *
+	 * e.g. `$this->loadcomponent('security');`
+	 *
 	 * @return void
 	 */
 	public function initialize()
 	{
 		parent::initialize();
-		$this->loadComponent('Flash');
+
 		$this->loadComponent('RequestHandler');
+		$this->loadComponent('Flash');
 		$this->loadComponent('Crud.Crud',
 			[ 'actions' =>
 				[ 'Crud.Index'
@@ -65,6 +68,12 @@ class AppController extends Controller
 			$this->request->data = $this->request->input('json_decode', true);
 	}
 
+	/**
+	 * Before render callback.
+	 *
+	 * @param \Cake\Event\Event $event The beforeRender event.
+	 * @return void
+	 */
 	public function beforeRender(Event $event)
 	{
 		parent::beforeRender($event);

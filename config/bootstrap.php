@@ -44,10 +44,11 @@ use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\Core\Plugin;
+use Cake\Database\Type;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\ErrorHandler;
 use Cake\Log\Log;
-use Cake\Network\Email\Email;
+use Cake\Mailer\Email;
 use Cake\Network\Request;
 use Cake\Routing\DispatcherFactory;
 use Cake\Utility\Inflector;
@@ -196,3 +197,10 @@ DispatcherFactory::add('Routing');
 DispatcherFactory::add('NoExtensions');
 DispatcherFactory::add('ForceJson', ['for' => '/api']);
 DispatcherFactory::add('ControllerFactory');
+
+/**
+ * Enable default locale format parsing.
+ * This is needed for matching the auto-localized string output of Time() class when parsing dates.
+ */
+Type::build('date')->useLocaleParser();
+Type::build('datetime')->useLocaleParser();

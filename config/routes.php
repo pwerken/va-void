@@ -32,7 +32,7 @@ use Cake\Utility\Inflector;
  * - InflectedRoute
  * - DashedRoute
  *
- * If no call is made to `Router::defaultRouteClass`, the class used is
+ * If no call is made to `Router::defaultRouteClass()`, the class used is
  * `Route` (`Cake\Routing\Route\Route`)
  *
  * Note that `Route` does not do any inflections on URLs which will result in
@@ -40,7 +40,7 @@ use Cake\Utility\Inflector;
  * `:action` markers.
  *
  */
-Router::defaultRouteClass('Route');
+Router::defaultRouteClass('DashedRoute');
 
 Router::scope('/', function ($routes) {
     /**
@@ -154,9 +154,9 @@ function rest($routes, $name, $subs = [], $rels = []) {
     /**
      * Connect catchall routes for all controllers.
      *
-     * Using the argument `InflectedRoute`, the `fallbacks` method is a shortcut for
-     *    `$routes->connect('/:controller', ['action' => 'index'], ['routeClass' => 'InflectedRoute']);`
-     *    `$routes->connect('/:controller/:action/*', [], ['routeClass' => 'InflectedRoute']);`
+     * Using the argument `DashedRoute`, the `fallbacks` method is a shortcut for
+     *    `$routes->connect('/:controller', ['action' => 'index'], ['routeClass' => 'DashedRoute']);`
+     *    `$routes->connect('/:controller/:action/*', [], ['routeClass' => 'DashedRoute']);`
      *
      * Any route class can be used with this method, such as:
      * - DashedRoute
@@ -167,7 +167,7 @@ function rest($routes, $name, $subs = [], $rels = []) {
      * You can remove these routes once you've connected the
      * routes you want in your application.
      */
-    $routes->fallbacks('InflectedRoute');
+    $routes->fallbacks('DashedRoute');
 });
 
 /**
