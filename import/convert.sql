@@ -17,13 +17,13 @@ DELETE FROM `void-api`.`groups`;
 DELETE FROM `void-api`.`worlds`;
 DELETE FROM `void-api`.`players`;
 
-ALTER TABLE `void-api`.`believes` auto_increment = 1;
+ALTER TABLE `void-api`.`believes`   auto_increment = 1;
 ALTER TABLE `void-api`.`characters` auto_increment = 1;
-ALTER TABLE `void-api`.`factions` auto_increment = 1;
-ALTER TABLE `void-api`.`groups` auto_increment = 1;
-ALTER TABLE `void-api`.`skills` auto_increment = 1;
-ALTER TABLE `void-api`.`spells` auto_increment = 1;
-ALTER TABLE `void-api`.`worlds` auto_increment = 1;
+ALTER TABLE `void-api`.`factions`   auto_increment = 1;
+ALTER TABLE `void-api`.`groups`     auto_increment = 1;
+ALTER TABLE `void-api`.`skills`     auto_increment = 1;
+ALTER TABLE `void-api`.`spells`     auto_increment = 1;
+ALTER TABLE `void-api`.`worlds`     auto_increment = 1;
 
 INSERT INTO `void-api`.`players`
     ( `id`, `first_name`, `insertion`, `last_name`
@@ -39,9 +39,9 @@ INSERT INTO `void-api`.`groups` ( `id`, `name` )
 SELECT `grpID`, `grpName` FROM `va`.`Tbl_Groups`;
 
 INSERT INTO `void-api`.`factions` ( `id`, `name` )
+VALUES ( 0, '-');
 SELECT `facID`, `facName` FROM `va`.`TblLkp_Faction`;
 INSERT INTO `void-api`.`factions` ( `id`, `name` )
-VALUES ( 0, '-');
 
 INSERT INTO `void-api`.`believes` ( `id`, `name` )
 SELECT `belID`, `belName` FROM `va`.`Tbl_Beliefs`;
@@ -50,7 +50,7 @@ INSERT INTO `void-api`.`characters` ( `id`, `player_id`, `chin`, `name`, `xp`
     , `faction_id`, `belief_id`, `group_id`, `world_id`, `status`, `comments`
     , `modified` )
 SELECT `chaID`, `plaPLIN`, `chaCHIN`, `chaName`, `Total Points`
-    , IFNULL(`facID`, 0)
+    , IF(`facID` IS NULL, 1, `facID` + 1)
     , IFNULL(`chaBeliefIDFK`, 1)
     , IFNULL(`chaGroupIDFK`, 1)
     , IFNULL(`chaWorldIDFK`, 1)
@@ -93,7 +93,7 @@ SELECT `pwrSPIN`, `pwrName`, `pwrDescription`, `pwrCSText`
   FROM `va`.`Tbl_Powers`
  WHERE `pwrCond` = 1 AND `pwrID` != 83 AND `pwrID` != 334;
 
-INSERT INTO `void-api`.`attributes` ( `id`, `name`, `lorType`, `code` )
+INSERT INTO `void-api`.`attributes` ( `id`, `name`, `category`, `code` )
 SELECT `lorID`, `lorDescr`, `lorType`, `lorCode`
   FROM `va`.`Tbl_LoreSkills`;
 
