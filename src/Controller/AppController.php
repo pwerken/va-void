@@ -87,7 +87,7 @@ class AppController extends Controller
 				$this->set('_serialize', $objName);
 				return;
 			}
-			if($obj instanceof ResultSet) {
+			if(is_array($obj) || $obj instanceof ResultSet) {
 				$output = [];
 				$output['url'] = $this->request->here;
 				foreach($obj as $item) {
