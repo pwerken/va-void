@@ -99,4 +99,19 @@ class AppController extends Controller
 			}
 		}
 	}
+
+	/**
+	 * Disable pagination.
+	 *
+	 * @param \Cake\ORM\Query|null $qyery Query to execute
+	 * @return \Cake\ORM\ResultSet Query results
+	 * paginate
+	 */
+	public function paginate($query = null)
+	{
+		if($this->request->is('json'))
+			return $query->all();
+
+		return parent::paginate($query);
+	}
 }

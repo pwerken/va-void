@@ -13,7 +13,7 @@ ToDo-list:
    - [x] always return json under /api (without .json extension)
    - [ ] add all controllers under /api
    - [ ] create all json view ctp's
-   - [ ] disable pagination on listings
+   - [x] disable pagination on listings
    - [ ] accept json for add/edit actions
  - Expand route.php
    - [x] characters url routing: from .../:id to .../:plin/:chin
