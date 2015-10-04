@@ -114,4 +114,25 @@ class AppController extends Controller
 
 		return parent::paginate($query);
 	}
+
+	protected function argsOrder($from, $to, $array)
+	{
+		$lookup = array_flip(str_split($from));
+		$output = [];
+		foreach(str_split($to) as $key) {
+			$output[] = $array[$lookup[$key]];
+		}
+		return $output;
+	}
+	protected function argsCharId($args)
+	{
+		$this->loadModel('Characters');
+		if(count($args) >= 2) {
+			$plin = array_shift($args);
+			$chin = array_shift($args);
+			$char = $this->Characters->plinChin($plin, $chin);
+			array_unshift($args, $char);
+		}
+		return $args;
+	}
 }

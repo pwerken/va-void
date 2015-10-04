@@ -72,4 +72,11 @@ class CharactersTable extends Table {
 		return $validator;
 	}
 
+	public function plinChin($plin, $chin) {
+		return $this->findByPlayerIdAndChin($plin, $chin)
+					->select(['id'])
+					->first()
+					->id;
+	}
+
 }

@@ -70,18 +70,7 @@ class CharactersController extends AppController {
 			]	]);
 
 		$this->Crud->on('beforeHandle', function(\Cake\Event\Event $event) {
-			$args = $event->subject->args;
-			if(count($args) >= 2) {
-				$plin = array_shift($args);
-				$chin = array_shift($args);
-				$char = $this->Characters->find()
-							->where(['player_id' => $plin, 'chin' => $chin])
-							->select(['id'])
-							->first();
-
-				array_unshift($args, $char ? $char->id : null);
-				$event->subject->args = $args;
-			}
+			$event->subject->args = $this->argsCharId($event->subject->args);
 		});
 	}
 
