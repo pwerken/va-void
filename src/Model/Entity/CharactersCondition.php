@@ -9,6 +9,11 @@ class CharactersCondition extends JsonEntity {
 		, 'condition' => true
 		];
 
+	protected $_hidden =
+		[ 'character_id'
+		, 'condition_id'
+		];
+
 	protected $_json_short =
 		[ 'expiry' ];
 

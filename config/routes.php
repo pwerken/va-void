@@ -105,8 +105,6 @@ function rest($routes, $name, $subs = [], $rels = []) {
 	}
 
 	foreach($rels as $rel) {
-		$lcRel = Inflector::underscore($rel);
-
 		$routeOptions2 = $routeOptions;
 		$path = [];
 		foreach(getKeys($rel) as $key) {
@@ -123,24 +121,35 @@ function rest($routes, $name, $subs = [], $rels = []) {
 				, 'delete'  => [ '_method' => [ 'DELETE' ]      , 'path' => $path ]
 				];
 
+		$controller = [ $name, $rel ];
+		sort($controller);
+		$controller = implode($controller);
+		$lcNest = Inflector::underscore($rel);
+		$single = Inflector::singularize($name);
+
 		foreach($map as $method => $params) {
-			$params['controller'] = $name;
-			$params['action'] = $lcRel.ucFirst($method);
+			$params['controller'] = $controller;
+			$params['action'] = lcfirst($single).ucfirst($method);
 
-			$urlRel = $url . '/' . $lcRel . '/' . $params['path'];
-
-			$routes->connect($urlRel, $params, $routeOptions2);
+			$urlNest = $url . '/' . $lcNest . '/' . $params['path'];
+			if(empty($params['path']))
+				$routes->connect($urlNest, $params, $routeOptions);
+			else
+				$routes->connect($urlNest, $params, $routeOptions2);
 		}
 	}
 }
 
         rest($routes, 'Players');
         rest($routes, 'Characters'
-                        , [ 'Items']
+                        , [ 'Items' ]
                         , [ 'Conditions', 'Powers', 'Skills' ]
                         );
         rest($routes, 'Items');
-        rest($routes, 'Conditions');
+        rest($routes, 'Conditions'
+						, [ ]
+						, [ 'Characters' ]
+						);
         rest($routes, 'Powers');
         rest($routes, 'Skills');
 
