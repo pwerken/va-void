@@ -1,3 +1,4 @@
+SELECT "delete..." AS '';
 DELETE FROM `void-api`.`attributes_items`;
 DELETE FROM `void-api`.`characters_conditions`;
 DELETE FROM `void-api`.`characters_powers`;
@@ -25,6 +26,9 @@ ALTER TABLE `void-api`.`skills`     auto_increment = 1;
 ALTER TABLE `void-api`.`spells`     auto_increment = 1;
 ALTER TABLE `void-api`.`worlds`     auto_increment = 1;
 
+SELECT "import..." AS '';
+
+SELECT " PLAYERS" AS '';
 INSERT INTO `void-api`.`players`
     ( `id`, `first_name`, `insertion`, `last_name`
     , `gender`, `date_of_birth`, `modified` )
@@ -32,20 +36,25 @@ SELECT `plaPLIN`, `plaFirstName`, `plaInsertion`, `plaLastName`,
     `plaGender`, `plaDateOfBirth`, `plaLastupdate`
   FROM `va`.`Tbl_Players`;
 
+SELECT " WORLDS" AS '';
 INSERT INTO `void-api`.`worlds` ( `id`, `name` )
 SELECT `wldID`, `wldName` FROM `va`.`Tbl_Worlds`;
 
+SELECT " GROUPS" AS '';
 INSERT INTO `void-api`.`groups` ( `id`, `name` )
 SELECT `grpID`, `grpName` FROM `va`.`Tbl_Groups`;
 
+SELECT " FACTIONS" AS '';
 INSERT INTO `void-api`.`factions` ( `id`, `name` )
-VALUES ( 0, '-');
-SELECT `facID`, `facName` FROM `va`.`TblLkp_Faction`;
+VALUES ( 1, '-' );
 INSERT INTO `void-api`.`factions` ( `id`, `name` )
+SELECT `facID` + 1, `facName` FROM `va`.`TblLkp_Faction`;
 
+SELECT " BELIEVES" AS '';
 INSERT INTO `void-api`.`believes` ( `id`, `name` )
 SELECT `belID`, `belName` FROM `va`.`Tbl_Beliefs`;
 
+SELECT " CHARACTERS" AS '';
 INSERT INTO `void-api`.`characters` ( `id`, `player_id`, `chin`, `name`, `xp`
     , `faction_id`, `belief_id`, `group_id`, `world_id`, `status`, `comments`
     , `modified` )
@@ -63,49 +72,59 @@ SELECT `chaID`, `plaPLIN`, `chaCHIN`, `chaName`, `Total Points`
     ON (`Tbl_Characters`.`chaFaction` = `TblLkp_Faction`.`facName`)
  WHERE 1;
 
+SELECT " ITEMS" AS '';
 INSERT INTO `void-api`.`items` ( `id`, `name`, `description`, `player_text`
     , `cs_text`, `character_id`, `expiry`)
 SELECT `itmITIN`, `itmName`, `itmDescription`, `itmPlayerText`, `itmCSText`
     , `itmchaIDFK`, `itmExpireDate`
   FROM `va`.`Tbl_Items`;
 
+SELECT " MANA" AS '';
 INSERT INTO `void-api`.`manatypes` ( `id`, `name` )
 SELECT `mnaID`, `mnaName`
   FROM `va`.`TblLkp_Mana`;
 
+SELECT " CASTING" AS '';
 INSERT INTO `void-api`.`spells` ( `id`, `name`, `short`, `spiritual` )
 SELECT `casID`, `casName`, `casShort`, `casSpiritual`
   FROM `va`.`TblLkp_Casting`;
 
+SELECT " SKILLS" AS '';
 INSERT INTO `void-api`.`skills` ( `id`, `name`, `cost`, `manatype_id`
     , `mana_amount`, `sort_order` )
 SELECT `skiID`, `skiName`, `skiCost`, `skiManaType`, `skiMana`, `skiOrd`
   FROM `va`.`Tbl_Skills`;
 
+SELECT " POWERS" AS '';
 INSERT INTO `void-api`.`powers` ( `id`, `name`, `player_text`, `cs_text` )
 SELECT `pwrSPIN`, `pwrName`, `pwrDescription`, `pwrCSText`
   FROM `va`.`Tbl_Powers`
  WHERE `pwrCond` = 0;
 
+SELECT " CONDITIONS" AS '';
 -- ignore duplicate COIN's: 2270, 2280
 INSERT INTO `void-api`.`conditions` ( `id`, `name`, `player_text`, `cs_text` )
 SELECT `pwrSPIN`, `pwrName`, `pwrDescription`, `pwrCSText`
   FROM `va`.`Tbl_Powers`
  WHERE `pwrCond` = 1 AND `pwrID` != 83 AND `pwrID` != 334;
 
+SELECT " ATTRIBUTES" AS '';
 INSERT INTO `void-api`.`attributes` ( `id`, `name`, `category`, `code` )
 SELECT `lorID`, `lorDescr`, `lorType`, `lorCode`
   FROM `va`.`Tbl_LoreSkills`;
 
+SELECT " CHARACTERS - SPELLS" AS '';
 INSERT INTO `void-api`.`characters_spells`
     ( `character_id`, `spell_id`, `level` )
 SELECT `ccChaIDFK`, `ccCasIDFK`, `ccLevel`
   FROM `va`.`Tbl_CharacterCasting`;
 
+SELECT " CHARACTERS - SKILLS" AS '';
 INSERT INTO `void-api`.`characters_skills` ( `character_id`, `skill_id` )
 SELECT `csChaIDFK`, `csSkiIDFK`
   FROM `va`.`Tbl_CharacterSkills`;
 
+SELECT " CHARACTERS - POWERS" AS '';
 INSERT INTO `void-api`.`characters_powers`
     ( `character_id`, `power_id`, `expiry` )
 SELECT `ciChaIDFK`, `pwrSPIN`, `ciExpireDate`
@@ -113,6 +132,7 @@ SELECT `ciChaIDFK`, `pwrSPIN`, `ciExpireDate`
   JOIN `va`.`Tbl_Powers` ON ( `pwrID` = `ciPwrIDFK` )
 WHERE `pwrCond` = 0;
 
+SELECT " CHARACTERS - CONDITIONS" AS '';
 INSERT INTO `void-api`.`characters_conditions`
     ( `character_id`, `condition_id`, `expiry` )
 SELECT `ciChaIDFK`, `pwrSPIN`, `ciExpireDate`
@@ -120,6 +140,7 @@ SELECT `ciChaIDFK`, `pwrSPIN`, `ciExpireDate`
   JOIN `va`.`Tbl_Powers` ON ( `pwrID` = `ciPwrIDFK` )
 WHERE `pwrCond` = 1;
 
+SELECT " ITEM - CODES" AS '';
 UPDATE `va`.`Tbl_Items` SET `itmCodeMat2` = '0'
 WHERE `va`.`Tbl_Items`.`itmCodeMat1` = `va`.`Tbl_Items`.`itmCodeMat2`;
 
@@ -169,9 +190,12 @@ SELECT DISTINCT `itmCodeDam2`, `itmITIN`
  WHERE `itmCodeDam2` > 0 AND `itmCodeDam2` < 6347;
 
 -- clean up
+SELECT "clean up ..." AS '';
 
+SELECT " manatypes" AS '';
 DELETE FROM `void-api`.`manatypes` WHERE `id` = 7;
 
+SELECT " attributes" AS '';
 DELETE FROM `void-api`.`attributes` WHERE `id` = 5922;
 DELETE FROM `void-api`.`attributes` WHERE `id` = 6245;
 UPDATE `void-api`.`attributes` SET `id` = 7000+`id` WHERE `id` < 2000;
@@ -183,6 +207,7 @@ UPDATE `void-api`.`attributes` SET `id`
         , ORD(SUBSTR(`code`,2,1)) - 55
         , ORD(SUBSTR(`code`,2,1)) - 48);
 
+SELECT " believes" AS '';
 SET @a:=0;
 UPDATE `void-api`.`characters` SET `belief_id` = 5 WHERE `belief_id` = 1;
 DELETE FROM `void-api`.`believes` WHERE `id` = 1;
@@ -192,6 +217,7 @@ ALTER TABLE `void-api`.`believes` MODIFY COLUMN `id` INT(10) UNSIGNED;
 ALTER TABLE `void-api`.`believes`
     MODIFY COLUMN `id` INT(10) UNSIGNED AUTO_INCREMENT;
 
+SELECT " groups" AS '';
 SET @a:=0;
 UPDATE `void-api`.`groups` SET `name` = "-" WHERE `id` = 1;
 UPDATE `void-api`.`groups` SET `id` = @a:=@a+1 ORDER BY `id`;
@@ -199,6 +225,7 @@ ALTER TABLE `void-api`.`groups` MODIFY COLUMN `id` INT(10) UNSIGNED;
 ALTER TABLE `void-api`.`groups`
     MODIFY COLUMN `id` INT(10) UNSIGNED AUTO_INCREMENT;
 
+SELECT " worlds" AS '';
 SET @a:=0;
 UPDATE `void-api`.`characters` SET `world_id` = 5 WHERE `world_id` = 1;
 DELETE FROM `void-api`.`worlds` WHERE `id` = 1;
@@ -208,6 +235,7 @@ ALTER TABLE `void-api`.`worlds` MODIFY COLUMN `id` INT(10) UNSIGNED;
 ALTER TABLE `void-api`.`worlds`
     MODIFY COLUMN `id` INT(10) UNSIGNED AUTO_INCREMENT;
 
+SELECT " characters" AS '';
 SET @a:=0;
 UPDATE `void-api`.`characters` SET `id` = `id` + 5000;
 UPDATE `void-api`.`characters` SET `id` = @a:=@a+1 ORDER BY `player_id`, `chin`;
@@ -215,6 +243,7 @@ ALTER TABLE `void-api`.`characters` MODIFY COLUMN `id` INT(10) UNSIGNED;
 ALTER TABLE `void-api`.`characters`
     MODIFY COLUMN `id` INT(10) UNSIGNED AUTO_INCREMENT;
 
+SELECT " skills" AS '';
 SET @a:=0;
 UPDATE `void-api`.`skills` SET `id` = `id` + 1000;
 UPDATE `void-api`.`skills` SET `id` = @a:=@a+1 ORDER BY `sort_order`, `name`;
