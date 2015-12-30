@@ -44,7 +44,7 @@ class CharactersConditionsController extends AppController {
 	}
 
 	public function characterView($plin, $chin, $coin) {
-		$this->Crud->on('beforeHandle', function(\Cake\Event\Event $event) {
+		$this->Crud->on('beforeHandle', function(Event $event) {
 			$event->subject->args = $this->argsCharId($event->subject->args);
 		});
 		return $this->Crud->execute();
@@ -59,7 +59,7 @@ class CharactersConditionsController extends AppController {
 	}
 
 	public function conditionView($coin, $plin, $chin) {
-		$this->Crud->on('beforeHandle', function(\Cake\Event\Event $event) {
+		$this->Crud->on('beforeHandle', function(Event $event) {
 			$args = $this->argsOrder("cab", "abc", $event->subject->args);
 			$args = $this->argsCharId($args);
 			$event->subject->args = $args;

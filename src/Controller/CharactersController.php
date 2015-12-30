@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Event\Event;
 use Crud\Event\Subject;
 
 /**
@@ -69,7 +70,7 @@ class CharactersController extends AppController {
 				, 'Spells'
 			]	]);
 
-		$this->Crud->on('beforeHandle', function(\Cake\Event\Event $event) {
+		$this->Crud->on('beforeHandle', function(Event $event) {
 			$event->subject->args = $this->argsCharId($event->subject->args);
 		});
 	}
