@@ -98,8 +98,8 @@ function rest($routes, $name, $subs = [], $rels = []) {
 
 		$params = [];
 		$params['_method'] = 'GET';
-		$params['controller'] = $name;
-		$params['action'] = $sub.'Index';
+		$params['controller'] = $sub;
+		$params['action'] = Inflector::singularize($name).'Index';
 
 		$routes->connect($url . '/' . $sub, $params, $routeOptions);
 	}
