@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Event\Event;
 
 /**
  * Items Controller
@@ -26,6 +27,20 @@ class ItemsController extends AppController {
 			[ 'contain' => [ 'Attributes' ]
 			, 'relatedModels' => [ 'Characters' ]
 			]);
+
+		$this->Crud->mapAction('characterIndex',
+			[ 'className' => 'Crud.Index'
+			, 'contain' => [ 'Characters' ]
+			]);
 	}
 
+	public function characterIndex($plin, $chin) {
+		$this->Crud->on('beforePaginate',
+			function(Event $event) use ($plin, $chin) {
+				$this->loadModel('Characters');
+				$event->subject->query->where(['character_id' =>
+					$this->Characters->plinChin($plin, $chin)]);
+		});
+		return $this->Crud->execute();
+	}
 }
