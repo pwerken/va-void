@@ -21,7 +21,7 @@ use Cake\Network\Exception\NotFoundException;
 $this->layout = false;
 
 if (!Configure::read('debug')):
-    throw new NotFoundException();
+    throw new NotFoundException('Please replace Pages/home.ctp with your own version.');
 endif;
 
 $cakeDescription = 'CakePHP: the rapid development php framework';
@@ -146,6 +146,11 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         </div>
         <hr/>
         <div class="row">
+            <div class="row">
+                <div class="columns large-12 ctp-warning checks">
+                    <p>Please be aware that this page will not be shown if you turn off debug mode unless you disable the NotFoundException in src/Template/Pages/home.ctp.</p>
+                </div>
+            </div>
             <?php Debugger::checkSecurityKeys(); ?>
             <div id="url-rewriting-warning" class="columns large-12 url-rewriting checks">
                 <p class="problem">URL rewriting is not properly configured on your server.</p>
@@ -157,10 +162,10 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                 </p>
             </div>
             <div class="columns large-5 platform checks">
-                <?php if (version_compare(PHP_VERSION, '5.4.16', '>=')): ?>
-                    <p class="success">Your version of PHP is 5.4.16 or higher.</p>
+                <?php if (version_compare(PHP_VERSION, '5.5.9', '>=')): ?>
+                    <p class="success">Your version of PHP is 5.5.9 or higher.</p>
                 <?php else: ?>
-                    <p class="problem">Your version of PHP is too low. You need PHP 5.4.16 or higher to use CakePHP.</p>
+                    <p class="problem">Your version of PHP is too low. You need PHP 5.5.9 or higher to use CakePHP.</p>
                 <?php endif; ?>
 
                 <?php if (extension_loaded('mbstring')): ?>

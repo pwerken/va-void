@@ -139,6 +139,9 @@ return [
      *   extend one of the listed exceptions will also be skipped for logging.
      *   E.g.:
      *   `'skipLog' => ['Cake\Network\Exception\NotFoundException', 'Cake\Network\Exception\UnauthorizedException']`
+     * - `extraFatalErrorMemory` - int - The number of megabytes to increase
+     *   the memory limit by when a fatal error is encountered. This allows
+     *   breathing room to complete logging or error handling.
      */
     'Error' => [
         'errorLevel' => E_ALL & ~E_DEPRECATED,
@@ -216,7 +219,7 @@ return [
              * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
              * the following line and set the port accordingly
              */
-            //'port' => 'nonstandard_port_number',
+            //'port' => 'non_standard_port_number',
             'username' => 'va-void',
             'password' => 'secret',
             'database' => 'va-void',
@@ -254,7 +257,7 @@ return [
             'driver' => 'Cake\Database\Driver\Mysql',
             'persistent' => false,
             'host' => 'localhost',
-            //'port' => 'nonstandard_port_number',
+            //'port' => 'non_standard_port_number',
             'username' => 'my_app',
             'password' => 'secret',
             'database' => 'test_myapp',
