@@ -14,13 +14,13 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `void-api`
+-- Database: `va-void`
 --
-CREATE DATABASE IF NOT EXISTS `void-api` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-USE `void-api`;
+CREATE DATABASE IF NOT EXISTS `va-void` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `va-void`;
 
 -- --------------------------------------------------------
 
@@ -31,10 +31,10 @@ USE `void-api`;
 DROP TABLE IF EXISTS `attributes`;
 CREATE TABLE IF NOT EXISTS `attributes` (
   `id` int(10) unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `category` text COLLATE utf8_unicode_ci,
-  `code` varchar(2) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `category` text COLLATE utf8mb4_unicode_ci,
+  `code` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -46,7 +46,7 @@ DROP TABLE IF EXISTS `attributes_items`;
 CREATE TABLE IF NOT EXISTS `attributes_items` (
   `attribute_id` int(10) unsigned NOT NULL,
   `item_id` int(10) unsigned NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -57,8 +57,8 @@ CREATE TABLE IF NOT EXISTS `attributes_items` (
 DROP TABLE IF EXISTS `believes`;
 CREATE TABLE IF NOT EXISTS `believes` (
 `id` int(10) unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -71,17 +71,17 @@ CREATE TABLE IF NOT EXISTS `characters` (
 `id` int(10) unsigned NOT NULL,
   `player_id` int(10) unsigned NOT NULL COMMENT 'PLIN',
   `chin` int(2) unsigned NOT NULL DEFAULT '1',
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `xp` decimal(4,1) unsigned NOT NULL DEFAULT '15.0',
   `faction_id` int(10) unsigned NOT NULL,
   `belief_id` int(10) unsigned NOT NULL,
   `group_id` int(10) unsigned NOT NULL,
   `world_id` int(10) unsigned NOT NULL,
-  `status` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `comments` text COLLATE utf8_unicode_ci,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comments` text COLLATE utf8mb4_unicode_ci,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4059 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `characters_conditions` (
   `character_id` int(10) unsigned NOT NULL,
   `condition_id` int(10) unsigned NOT NULL,
   `expiry` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `characters_powers` (
   `character_id` int(10) unsigned NOT NULL,
   `power_id` int(10) unsigned NOT NULL,
   `expiry` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -119,7 +119,7 @@ DROP TABLE IF EXISTS `characters_skills`;
 CREATE TABLE IF NOT EXISTS `characters_skills` (
   `character_id` int(10) unsigned NOT NULL,
   `skill_id` int(10) unsigned NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `characters_spells` (
   `character_id` int(10) unsigned NOT NULL,
   `spell_id` int(10) unsigned NOT NULL,
   `level` int(10) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -143,12 +143,12 @@ CREATE TABLE IF NOT EXISTS `characters_spells` (
 DROP TABLE IF EXISTS `conditions`;
 CREATE TABLE IF NOT EXISTS `conditions` (
   `id` int(10) unsigned NOT NULL COMMENT 'COIN',
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `player_text` text COLLATE utf8_unicode_ci NOT NULL,
-  `cs_text` text COLLATE utf8_unicode_ci,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `player_text` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cs_text` text COLLATE utf8mb4_unicode_ci,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -159,8 +159,8 @@ CREATE TABLE IF NOT EXISTS `conditions` (
 DROP TABLE IF EXISTS `factions`;
 CREATE TABLE IF NOT EXISTS `factions` (
 `id` int(10) unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -171,8 +171,8 @@ CREATE TABLE IF NOT EXISTS `factions` (
 DROP TABLE IF EXISTS `groups`;
 CREATE TABLE IF NOT EXISTS `groups` (
 `id` int(10) unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=359 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -183,15 +183,15 @@ CREATE TABLE IF NOT EXISTS `groups` (
 DROP TABLE IF EXISTS `items`;
 CREATE TABLE IF NOT EXISTS `items` (
   `id` int(10) unsigned NOT NULL COMMENT 'ITIN',
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `player_text` text COLLATE utf8_unicode_ci,
-  `cs_text` text COLLATE utf8_unicode_ci,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `player_text` text COLLATE utf8mb4_unicode_ci,
+  `cs_text` text COLLATE utf8mb4_unicode_ci,
   `character_id` int(10) unsigned DEFAULT NULL,
   `expiry` date DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -202,8 +202,8 @@ CREATE TABLE IF NOT EXISTS `items` (
 DROP TABLE IF EXISTS `manatypes`;
 CREATE TABLE IF NOT EXISTS `manatypes` (
   `id` int(10) unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -214,17 +214,17 @@ CREATE TABLE IF NOT EXISTS `manatypes` (
 DROP TABLE IF EXISTS `players`;
 CREATE TABLE IF NOT EXISTS `players` (
   `id` int(10) unsigned NOT NULL COMMENT 'PLIN',
-  `account_type` enum('Participant','Referee','Infobalie','Super') CHARACTER SET utf8 NOT NULL DEFAULT 'Participant' COMMENT 'authorisation information',
-  `username` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `first_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `insertion` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `last_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `gender` enum('F','M') CHARACTER SET utf8 DEFAULT NULL,
+  `account_type` enum('Participant','Referee','Infobalie','Super') CHARACTER SET utf8mb4 NOT NULL DEFAULT 'Participant' COMMENT 'authorisation information',
+  `username` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `first_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `insertion` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `last_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `gender` enum('F','M') CHARACTER SET utf8mb4 DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -235,12 +235,12 @@ CREATE TABLE IF NOT EXISTS `players` (
 DROP TABLE IF EXISTS `powers`;
 CREATE TABLE IF NOT EXISTS `powers` (
   `id` int(10) unsigned NOT NULL COMMENT 'POIN',
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `player_text` text COLLATE utf8_unicode_ci NOT NULL,
-  `cs_text` text COLLATE utf8_unicode_ci,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `player_text` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cs_text` text COLLATE utf8mb4_unicode_ci,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -251,12 +251,12 @@ CREATE TABLE IF NOT EXISTS `powers` (
 DROP TABLE IF EXISTS `skills`;
 CREATE TABLE IF NOT EXISTS `skills` (
 `id` int(11) unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cost` int(10) NOT NULL,
   `manatype_id` int(10) unsigned DEFAULT NULL,
   `mana_amount` int(10) DEFAULT NULL,
   `sort_order` int(10) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=258 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -267,10 +267,10 @@ CREATE TABLE IF NOT EXISTS `skills` (
 DROP TABLE IF EXISTS `spells`;
 CREATE TABLE IF NOT EXISTS `spells` (
 `id` int(10) unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `short` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `short` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `spiritual` tinyint(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -281,8 +281,8 @@ CREATE TABLE IF NOT EXISTS `spells` (
 DROP TABLE IF EXISTS `worlds`;
 CREATE TABLE IF NOT EXISTS `worlds` (
 `id` int(10) unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Indexes for dumped tables
