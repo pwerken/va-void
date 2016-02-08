@@ -1,14 +1,8 @@
 <?php
 namespace App\Model\Entity;
 
-class Faction extends JsonEntity {
+use Cake\ORM\Entity;
 
-	protected $_accessible =
-		[ 'name' => true
-		, 'characters' => true
-		];
-
-	protected $_json_short =
-		[ 'id', 'name' ];
+class Faction extends Entity {
 
 }

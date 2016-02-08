@@ -1,11 +1,13 @@
 <?php
 namespace App\Model\Entity;
 
-class CharactersSkill extends JsonEntity {
+use Cake\ORM\Entity;
 
-	protected $_accessible =
-		[ 'character' => true
-		, 'skill' => true
+class CharactersSkill extends Entity {
+
+	protected $_hidden =
+		[ 'character_id'
+		, 'skill_id'
 		];
 
 }

@@ -64,40 +64,10 @@ class AppController extends Controller
 			]
 		);
 
-		if($this->request->is('json'))
-			$this->request->data = $this->request->input('json_decode', true);
-	}
-
-	/**
-	 * Before render callback.
-	 *
-	 * @param \Cake\Event\Event $event The beforeRender event.
-	 * @return void
-	 */
-	public function beforeRender(Event $event)
-	{
-		parent::beforeRender($event);
-
 		if($this->request->is('json')) {
-			$objName = $this->viewVars['viewVar'];
-			$obj = $this->viewVars[$objName];
-
-			if($obj instanceof JsonEntity) {
-				$this->set($objName, $obj->jsonFull());
-				$this->set('_serialize', $objName);
-				return;
-			}
-			if(is_array($obj) || $obj instanceof ResultSet) {
-				$output = [];
-				$output['url'] = $this->request->here;
-				foreach($obj as $item) {
-					$output['list'][] = $item->jsonShort();
-				}
-				$this->set($objName, $output);
-				$this->set('_serialize', $objName);
-				return;
-			}
-		}
+			$this->request->data = $this->request->input('json_decode', true);
+            $this->viewBuilder()->className('Api');
+        }
 	}
 
 	/**

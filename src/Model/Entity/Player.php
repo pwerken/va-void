@@ -1,19 +1,9 @@
 <?php
 namespace App\Model\Entity;
 
-class Player extends JsonEntity {
+use Cake\ORM\Entity;
 
-	protected $_accessible =
-		[ 'account_type' => true
-		, 'username' => true
-		, 'password' => true
-		, 'first_name' => true
-		, 'insertion' => true
-		, 'last_name' => true
-		, 'gender' => true
-		, 'date_of_birth' => true
-		, 'characters' => true
-		];
+class Player extends Entity {
 
 	protected $_virtual =
 		[ 'full_name' ];
@@ -21,16 +11,6 @@ class Player extends JsonEntity {
 	protected $_hidden =
 		[ 'password' ];
 
-	protected $_json_aliases =
-		[ 'id' => 'plin' ];
-
-	protected $_json_short =
-		[ 'id', 'full_name' ];
-
-	protected function _getDisplayName() {
-		return $this->_properties['id']
-			. ': ' . self::_getFullName();
-	}
 	protected function _getFullName() {
 		return $this->_properties['first_name'] . ' '
 				. (empty($this->_properties['insertion'])

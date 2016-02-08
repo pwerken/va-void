@@ -1,15 +1,13 @@
 <?php
 namespace App\Model\Entity;
 
-class CharactersPower extends JsonEntity {
+use Cake\ORM\Entity;
 
-	protected $_accessible =
-		[ 'expiry' => true
-		, 'character' => true
-		, 'power' => true
+class CharactersPower extends Entity {
+
+	protected $_hidden =
+		[ 'character_id'
+		, 'power_id'
 		];
-
-	protected $_json_short =
-		[ 'expiry' ];
 
 }

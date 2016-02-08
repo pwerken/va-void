@@ -1,11 +1,8 @@
 <?php
 namespace App\Model\Entity;
 
-class AttributesItem extends JsonEntity {
+use Cake\ORM\Entity;
 
-	protected $_accessible =
-		[ 'attribute' => true
-		, 'item' => true
-		];
+class AttributesItem extends Entity {
 
 }

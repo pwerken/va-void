@@ -1,14 +1,8 @@
 <?php
 namespace App\Model\Entity;
 
-class Group extends JsonEntity {
+use Cake\ORM\Entity;
 
-	protected $_accessible =
-		[ 'name' => true
-		, 'characters' => true
-		];
-
-	protected $_json_short =
-		[ 'id', 'name' ];
+class Group extends Entity {
 
 }

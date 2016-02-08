@@ -1,20 +1,13 @@
 <?php
 namespace App\Model\Entity;
 
-class CharactersCondition extends JsonEntity {
+use Cake\ORM\Entity;
 
-	protected $_accessible =
-		[ 'expiry' => true
-		, 'character' => true
-		, 'condition' => true
-		];
+class CharactersCondition extends Entity {
 
 	protected $_hidden =
 		[ 'character_id'
 		, 'condition_id'
 		];
-
-	protected $_json_short =
-		[ 'expiry' ];
 
 }
