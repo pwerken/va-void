@@ -206,13 +206,16 @@ DispatcherFactory::add('ControllerFactory');
  */
 Type::build('time')
     ->useImmutable()
-    ->useLocaleParser();
+    ->useLocaleParser()
+    ->setLocaleFormat('Y-M-d H:i');
 Type::build('date')
     ->useImmutable()
-    ->useLocaleParser();
+    ->useLocaleParser()
+    ->setLocaleFormat('Y-M-d');
 Type::build('datetime')
     ->useImmutable()
-    ->useLocaleParser();
+    ->useLocaleParser()
+    ->setLocaleFormat('Y-M-d H:i');
 
 /**
  * More friendly formating of date/time in json output.
