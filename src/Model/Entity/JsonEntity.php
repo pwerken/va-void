@@ -3,7 +3,6 @@ namespace App\Model\Entity;
 
 use Cake\Utility\Inflector;
 use Cake\ORM\Entity;
-use Cake\I18n\Time;
 
 class JsonEntity extends Entity {
 
@@ -64,13 +63,6 @@ class JsonEntity extends Entity {
 				$value = $list;
 			} else {
 				$value = self::_jsonSubValue($value);
-			}
-
-			if($value instanceof Time) {
-				if($property == 'created' || $property == 'modified')
-					$value = $value->format('Y-m-d H:i:s');
-				else
-					$value = $value->format('Y-m-d');
 			}
 
 			$camel = Inflector::camelize($property);

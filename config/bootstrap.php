@@ -213,3 +213,11 @@ Type::build('date')
 Type::build('datetime')
     ->useImmutable()
     ->useLocaleParser();
+
+/**
+ * More friendly formating of date/time in json output.
+ */
+use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
+FrozenDate::setJsonEncodeFormat('yyyy-MM-dd');
+FrozenTime::setJsonEncodeFormat('yyyy-MM-dd HH:mm:ss');
