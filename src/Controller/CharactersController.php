@@ -15,15 +15,6 @@ class CharactersController extends AppController {
 	public function initialize() {
 		parent::initialize();
 
-		$this->Crud->action('index')->config(
-			[ 'contain' =>
-				[ 'Players'
-				, 'Factions'
-				, 'Believes'
-				, 'Groups'
-				, 'Worlds'
-			]	]);
-
 		$this->Crud->action('view')->config(
 			[ 'contain' =>
 				[ 'Players'
