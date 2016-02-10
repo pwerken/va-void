@@ -14,18 +14,13 @@ class ItemsController extends AppController {
 	public function initialize() {
 		parent::initialize();
 
-		$this->Crud->action('index')->config(
-			[ 'contain' => [ 'Characters' ] ]);
-
-		$this->Crud->action('view')->config(
-			[ 'contain' => [ 'Characters', 'Attributes' ] ]);
-
-		$this->Crud->action('add')->config(
-			[ 'relatedModels' => [ 'Characters', 'Attributes' ] ]);
-
-		$this->Crud->action('edit')->config(
-			[ 'contain' => [ 'Attributes' ]
-			, 'relatedModels' => [ 'Characters' ]
+		$this->Crud->mapAction('index',
+			[ 'className' => 'Crud.Index'
+			, 'contain' => [ 'Characters' ]
+			]);
+		$this->Crud->mapAction('view',
+			[ 'className' => 'Crud.View'
+			, 'contain' => [ 'Characters', 'Attributes' ]
 			]);
 
 		$this->Crud->mapAction('characterIndex',
@@ -35,12 +30,15 @@ class ItemsController extends AppController {
 	}
 
 	public function characterIndex($plin, $chin) {
+		$this->loadModel('Characters');
+		$parent = $this->Characters->plinChin($plin, $chin);
+		$id = $parent->id;
+
 		$this->Crud->on('beforePaginate',
-			function(Event $event) use ($plin, $chin) {
-				$this->loadModel('Characters');
-				$event->subject->query->where(['character_id' =>
-					$this->Characters->plinChin($plin, $chin)]);
+			function(Event $event) use ($id) {
+				$event->subject->query->where(['character_id' => $id]);
 		});
+		$this->set('parent', $parent);
 		return $this->Crud->execute();
 	}
 }

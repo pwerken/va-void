@@ -13,8 +13,11 @@ class ManatypesController extends AppController {
 	public function initialize() {
 		parent::initialize();
 
-		$this->Crud->action('view')->config(
-			[ 'contain' => [ 'Skills' ] ]);
+		$this->Crud->mapAction('index', 'Crud.Index');
+		$this->Crud->mapAction('view',
+			[ 'className' => 'Crud.View'
+			, 'contain' => [ 'Skills' ]
+			]);
 	}
 
 }

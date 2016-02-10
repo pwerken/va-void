@@ -5,31 +5,31 @@ use App\Controller\AppController;
 use Cake\Event\Event;
 
 /**
- * CharactersConditions Controller
+ * CharactersSkills Controller
  *
- * @property App\Model\Table\CharactersConditionsTable $CharactersConditions
+ * @property App\Model\Table\CharactersSkillsTable $CharactersSkills
  */
-class CharactersConditionsController extends AppController {
+class CharactersSkillsController extends AppController {
 
 	public function initialize() {
 		parent::initialize();
 
 		$this->Crud->mapAction('characterIndex',
 			[ 'className' => 'Crud.Index'
-			, 'contain' => [ 'Characters', 'Conditions' ]
+			, 'contain' => [ 'Characters', 'Skills' => [ 'Manatypes' ] ]
 			]);
 		$this->Crud->mapAction('characterView',
 			[ 'className' => 'Crud.View'
-			, 'contain' => [ 'Characters', 'Conditions' ]
+			, 'contain' => [ 'Characters', 'Skills' => [ 'Manatypes' ] ]
 			]);
 		$this->Crud->mapAction('characterEdit',
 			[ 'className' => 'Crud.Edit'
-			, 'contain' => [ 'Characters', 'Conditions' ]
+			, 'contain' => [ 'Characters', 'Skills' => [ 'Manatypes' ] ]
 			]);
 
-		$this->Crud->mapAction('conditionIndex',
+		$this->Crud->mapAction('skillIndex',
 			[ 'className' => 'Crud.Index'
-			, 'contain' => [ 'Characters', 'Conditions' ]
+			, 'contain' => [ 'Characters', 'Skills' => [ 'Manatypes' ] ]
 			]);
 	}
 
@@ -45,23 +45,23 @@ class CharactersConditionsController extends AppController {
 		$this->set('parent', $parent);
 		return $this->Crud->execute();
 	}
-	public function characterView($plin, $chin, $coin) {
+	public function characterView($plin, $chin, $id) {
 		$this->Crud->on('beforeHandle', function(Event $event) {
 			$event->subject->args = $this->argsCharId($event->subject->args);
 		});
 		return $this->Crud->execute();
 	}
-	public function characterEdit($plin, $chin, $coin) {
-		return $this->characterView($plin, $chin, $coin);
+	public function characterEdit($plin, $chin, $id) {
+		return $this->characterView($plin, $chin, $id);
 	}
 
-	public function conditionIndex($coin) {
-		$this->loadModel('Conditions');
-		$parent = $this->Conditions->get($coin);
+	public function skillIndex($id) {
+		$this->loadModel('Skills');
+		$parent = $this->Skills->get($id);
 
 		$this->Crud->on('beforePaginate',
-			function(Event $event) use ($coin) {
-				$event->subject->query->where(['condition_id' => $coin]);
+			function(Event $event) use ($id) {
+				$event->subject->query->where(['skill_id' => $id]);
 		});
 		$this->set('parent', $parent);
 		return $this->Crud->execute();

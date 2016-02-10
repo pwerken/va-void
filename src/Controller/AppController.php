@@ -51,17 +51,7 @@ class AppController extends Controller
 		$this->loadComponent('RequestHandler');
 		$this->loadComponent('Flash');
 		$this->loadComponent('Crud.Crud',
-			[ 'actions' =>
-				[ 'Crud.Index'
-				, 'Crud.Add'
-				, 'Crud.Edit'
-				, 'Crud.View'
-				, 'Crud.Delete'
-				]
-			, 'listeners' =>
-				[ 'Crud.RelatedModels'
-				]
-			]
+			[ 'listeners' => ['Crud.RelatedModels'] ]
 		);
 
 		if($this->request->is('json')) {
@@ -100,7 +90,7 @@ class AppController extends Controller
 		if(count($args) >= 2) {
 			$plin = array_shift($args);
 			$chin = array_shift($args);
-			$char = $this->Characters->plinChin($plin, $chin);
+			$char = $this->Characters->plinChin($plin, $chin)->id;
 			array_unshift($args, $char);
 		}
 		return $args;

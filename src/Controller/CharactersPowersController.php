@@ -5,31 +5,31 @@ use App\Controller\AppController;
 use Cake\Event\Event;
 
 /**
- * CharactersConditions Controller
+ * CharactersPowers Controller
  *
- * @property App\Model\Table\CharactersConditionsTable $CharactersConditions
+ * @property App\Model\Table\CharactersPowersTable $CharactersPowers
  */
-class CharactersConditionsController extends AppController {
+class CharactersPowersController extends AppController {
 
 	public function initialize() {
 		parent::initialize();
 
 		$this->Crud->mapAction('characterIndex',
 			[ 'className' => 'Crud.Index'
-			, 'contain' => [ 'Characters', 'Conditions' ]
+			, 'contain' => [ 'Characters', 'Powers' ]
 			]);
 		$this->Crud->mapAction('characterView',
 			[ 'className' => 'Crud.View'
-			, 'contain' => [ 'Characters', 'Conditions' ]
+			, 'contain' => [ 'Characters', 'Powers' ]
 			]);
 		$this->Crud->mapAction('characterEdit',
 			[ 'className' => 'Crud.Edit'
-			, 'contain' => [ 'Characters', 'Conditions' ]
+			, 'contain' => [ 'Characters', 'Powers' ]
 			]);
 
-		$this->Crud->mapAction('conditionIndex',
+		$this->Crud->mapAction('powerIndex',
 			[ 'className' => 'Crud.Index'
-			, 'contain' => [ 'Characters', 'Conditions' ]
+			, 'contain' => [ 'Characters', 'Powers' ]
 			]);
 	}
 
@@ -45,23 +45,22 @@ class CharactersConditionsController extends AppController {
 		$this->set('parent', $parent);
 		return $this->Crud->execute();
 	}
-	public function characterView($plin, $chin, $coin) {
+	public function characterView($plin, $chin, $poin) {
 		$this->Crud->on('beforeHandle', function(Event $event) {
 			$event->subject->args = $this->argsCharId($event->subject->args);
 		});
 		return $this->Crud->execute();
 	}
-	public function characterEdit($plin, $chin, $coin) {
-		return $this->characterView($plin, $chin, $coin);
+	public function characterEdit($plin, $chin, $poin) {
+		return $this->characterView($plin, $chin, $poin);
 	}
 
-	public function conditionIndex($coin) {
-		$this->loadModel('Conditions');
-		$parent = $this->Conditions->get($coin);
-
+	public function powerIndex($poin) {
+		$this->loadModel('Powers');
+		$parent = $this->Powers->get($poin);
 		$this->Crud->on('beforePaginate',
-			function(Event $event) use ($coin) {
-				$event->subject->query->where(['condition_id' => $coin]);
+			function(Event $event) use ($poin) {
+				$event->subject->query->where(['power_id' => $poin]);
 		});
 		$this->set('parent', $parent);
 		return $this->Crud->execute();

@@ -13,23 +13,10 @@ class ConditionsController extends AppController {
 	public function initialize() {
 		parent::initialize();
 
-		$this->Crud->action('view')->config(
-			[ 'contain' =>
-				[ 'Characters' =>
-					[ 'Factions'
-					, 'Believes'
-					, 'Groups'
-					, 'Worlds'
-				]	]
-			]);
-
-		$this->Crud->action('add')->config(
-			[ 'relatedModels' => [ 'Characters' ] ]);
-
-		$this->Crud->action('edit')->config(
-			[ 'contain' => [ 'Characters' ]
-			, 'relatedModels' => [ 'Characters' ]
-			, 'saveOptions' => [ 'associated' => [ 'Characters._joinData' ] ]
+		$this->Crud->mapAction('index', 'Crud.Index');
+		$this->Crud->mapAction('view',
+			[ 'className' => 'Crud.View'
+			, 'contain' => [ 'Characters' ]
 			]);
 	}
 

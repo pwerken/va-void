@@ -13,14 +13,10 @@ class GroupsController extends AppController {
 	public function initialize() {
 		parent::initialize();
 
-		$this->Crud->action('view')->config(
-			[ 'contain' =>
-				[ 'Characters' =>
-					[ 'Factions'
-					, 'Believes'
-					, 'Groups'
-					, 'Worlds'
-				]	]
+		$this->Crud->mapAction('index', 'Crud.Index');
+		$this->Crud->mapAction('view',
+			[ 'className' => 'Crud.View'
+			, 'contain' => [ 'Characters' ]
 			]);
 	}
 
