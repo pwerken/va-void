@@ -6,7 +6,8 @@ use Cake\ORM\Entity;
 class Character extends Entity {
 
 	protected $_hidden =
-		[ 'faction_id'
+		[ 'id'
+		, 'faction_id'
 		, 'belief_id'
 		, 'group_id'
 		, 'world_id'
