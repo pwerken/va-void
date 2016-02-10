@@ -20,6 +20,7 @@ class SkillsController extends AppController {
 		$this->Crud->mapAction('view',
 			[ 'className' => 'Crud.View'
 			, 'contain' => [ 'Manatypes' ]
+#			, 'contain' => [ 'Manatypes', 'Characters' ]
 			]);
 	}
 

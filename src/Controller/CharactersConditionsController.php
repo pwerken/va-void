@@ -14,26 +14,26 @@ class CharactersConditionsController extends AppController {
 	public function initialize() {
 		parent::initialize();
 
-		$this->Crud->mapAction('characterIndex',
+		$this->Crud->mapAction('charactersIndex',
 			[ 'className' => 'Crud.Index'
 			, 'contain' => [ 'Characters', 'Conditions' ]
 			]);
-		$this->Crud->mapAction('characterView',
+		$this->Crud->mapAction('charactersView',
 			[ 'className' => 'Crud.View'
 			, 'contain' => [ 'Characters', 'Conditions' ]
 			]);
-		$this->Crud->mapAction('characterEdit',
+		$this->Crud->mapAction('charactersEdit',
 			[ 'className' => 'Crud.Edit'
 			, 'contain' => [ 'Characters', 'Conditions' ]
 			]);
 
-		$this->Crud->mapAction('conditionIndex',
+		$this->Crud->mapAction('conditionsIndex',
 			[ 'className' => 'Crud.Index'
 			, 'contain' => [ 'Characters', 'Conditions' ]
 			]);
 	}
 
-	public function characterIndex($plin, $chin) {
+	public function charactersIndex($plin, $chin) {
 		$this->loadModel('Characters');
 		$parent = $this->Characters->plinChin($plin, $chin);
 		$id = $parent->id;
@@ -45,17 +45,17 @@ class CharactersConditionsController extends AppController {
 		$this->set('parent', $parent);
 		return $this->Crud->execute();
 	}
-	public function characterView($plin, $chin, $coin) {
+	public function charactersView($plin, $chin, $coin) {
 		$this->Crud->on('beforeHandle', function(Event $event) {
 			$event->subject->args = $this->argsCharId($event->subject->args);
 		});
 		return $this->Crud->execute();
 	}
-	public function characterEdit($plin, $chin, $coin) {
-		return $this->characterView($plin, $chin, $coin);
+	public function charactersEdit($plin, $chin, $coin) {
+		return $this->charactersView($plin, $chin, $coin);
 	}
 
-	public function conditionIndex($coin) {
+	public function conditionsIndex($coin) {
 		$this->loadModel('Conditions');
 		$parent = $this->Conditions->get($coin);
 

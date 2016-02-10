@@ -16,7 +16,7 @@ class SpellsController extends AppController {
 		$this->Crud->mapAction('index', 'Crud.Index');
 		$this->Crud->mapAction('view',
 			[ 'className' => 'Crud.View'
-			, 'contain' => [ 'Characters' ]
+#			, 'contain' => [ 'Characters' ]
 			]);
 	}
 

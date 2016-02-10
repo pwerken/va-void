@@ -14,26 +14,26 @@ class CharactersSkillsController extends AppController {
 	public function initialize() {
 		parent::initialize();
 
-		$this->Crud->mapAction('characterIndex',
+		$this->Crud->mapAction('charactersIndex',
 			[ 'className' => 'Crud.Index'
 			, 'contain' => [ 'Characters', 'Skills' => [ 'Manatypes' ] ]
 			]);
-		$this->Crud->mapAction('characterView',
+		$this->Crud->mapAction('charactersView',
 			[ 'className' => 'Crud.View'
 			, 'contain' => [ 'Characters', 'Skills' => [ 'Manatypes' ] ]
 			]);
-		$this->Crud->mapAction('characterEdit',
+		$this->Crud->mapAction('charactersEdit',
 			[ 'className' => 'Crud.Edit'
 			, 'contain' => [ 'Characters', 'Skills' => [ 'Manatypes' ] ]
 			]);
 
-		$this->Crud->mapAction('skillIndex',
+		$this->Crud->mapAction('skillsIndex',
 			[ 'className' => 'Crud.Index'
 			, 'contain' => [ 'Characters', 'Skills' => [ 'Manatypes' ] ]
 			]);
 	}
 
-	public function characterIndex($plin, $chin) {
+	public function charactersIndex($plin, $chin) {
 		$this->loadModel('Characters');
 		$parent = $this->Characters->plinChin($plin, $chin);
 		$id = $parent->id;
@@ -45,17 +45,17 @@ class CharactersSkillsController extends AppController {
 		$this->set('parent', $parent);
 		return $this->Crud->execute();
 	}
-	public function characterView($plin, $chin, $id) {
+	public function charactersView($plin, $chin, $id) {
 		$this->Crud->on('beforeHandle', function(Event $event) {
 			$event->subject->args = $this->argsCharId($event->subject->args);
 		});
 		return $this->Crud->execute();
 	}
-	public function characterEdit($plin, $chin, $id) {
-		return $this->characterView($plin, $chin, $id);
+	public function charactersEdit($plin, $chin, $id) {
+		return $this->charactersView($plin, $chin, $id);
 	}
 
-	public function skillIndex($id) {
+	public function skillsIndex($id) {
 		$this->loadModel('Skills');
 		$parent = $this->Skills->get($id);
 

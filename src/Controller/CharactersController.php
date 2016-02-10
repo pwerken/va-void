@@ -50,18 +50,18 @@ class CharactersController extends AppController {
 				, 'Worlds'
 			]	]);
 
-		$this->Crud->mapAction('beliefIndex',  'Crud.Index');
-		$this->Crud->mapAction('factionIndex', 'Crud.Index');
-		$this->Crud->mapAction('groupIndex',   'Crud.Index');
-		$this->Crud->mapAction('playerIndex',  'Crud.Index');
-		$this->Crud->mapAction('worldIndex',   'Crud.Index');
+		$this->Crud->mapAction('believesIndex', 'Crud.Index');
+		$this->Crud->mapAction('factionsIndex', 'Crud.Index');
+		$this->Crud->mapAction('groupsIndex',   'Crud.Index');
+		$this->Crud->mapAction('playersIndex',  'Crud.Index');
+		$this->Crud->mapAction('worldsIndex',   'Crud.Index');
 
 		$this->Crud->on('beforeHandle', function(Event $event) {
 			$event->subject->args = $this->argsCharId($event->subject->args);
 		});
 	}
 
-	public function beliefIndex($id) {
+	public function believesIndex($id) {
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($id) {
 				$event->subject->query->where(['belief_id' => $id]);
@@ -70,7 +70,7 @@ class CharactersController extends AppController {
 		$this->set('parent', $this->Believes->get($id));
 		return $this->Crud->execute();
 	}
-	public function factionIndex($id) {
+	public function factionsIndex($id) {
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($id) {
 				$event->subject->query->where(['faction_id' => $id]);
@@ -79,7 +79,7 @@ class CharactersController extends AppController {
 		$this->set('parent', $this->Faction->get($id));
 		return $this->Crud->execute();
 	}
-	public function groupIndex($id) {
+	public function groupsIndex($id) {
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($id) {
 				$event->subject->query->where(['group_id' => $id]);
@@ -88,7 +88,7 @@ class CharactersController extends AppController {
 		$this->set('parent', $this->Groups->get($id));
 		return $this->Crud->execute();
 	}
-	public function playerIndex($id) {
+	public function playersIndex($id) {
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($id) {
 				$event->subject->query->where(['player_id' => $id]);
@@ -97,7 +97,7 @@ class CharactersController extends AppController {
 		$this->set('parent', $this->Players->get($id));
 		return $this->Crud->execute();
 	}
-	public function worldIndex($id) {
+	public function worldsIndex($id) {
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($id) {
 				$event->subject->query->where(['world_id' => $id]);

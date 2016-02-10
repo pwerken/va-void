@@ -68,88 +68,91 @@ function getKeys($controller) {
 	}
 }
 function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
-	$lcName = Inflector::underscore($name);
-	$sName = Inflector::singularize($name);
+	$lcName = strtolower($name);
 
 	$routeOptions = [];
 	foreach(getKeys($name) as $key) {
-		$routeOptions[$key] = '[0-9]+';
 		$routeOptions['pass'][] = $key;
+		$routeOptions[$key] = '[0-9]+';
 	}
 	$path = ':'.implode('/:', $routeOptions['pass']);
+	$url = '/'.$lcName.'/'.$path;
 
-	$map =  [ 'index'   => [ '_method' => [ 'GET' ]         , 'path' => '' ]
-			, 'add'     => [ '_method' => [ 'PUT' ]         , 'path' => '' ]
-			, 'view'    => [ '_method' => [ 'GET' ]         , 'path' => $path ]
-			, 'edit'    => [ '_method' => [ 'PUT', 'PATCH' ], 'path' => $path ]
-			, 'delete'  => [ '_method' => [ 'DELETE' ]      , 'path' => $path ]
+	$map =  [ 'index'   => [ '_method' => [ 'GET' ]         , 'path' => 0 ]
+			, 'add'     => [ '_method' => [ 'PUT' ]         , 'path' => 0 ]
+			, 'view'    => [ '_method' => [ 'GET' ]         , 'path' => 1 ]
+			, 'edit'    => [ '_method' => [ 'PUT', 'PATCH' ], 'path' => 1 ]
+			, 'delete'  => [ '_method' => [ 'DELETE' ]      , 'path' => 1 ]
 			];
 
-	foreach($map as $method => $params) {
-		$params['controller'] = $name;
-		$params['action'] = $method;
+	foreach($map as $method => $options) {
+		$defaults['_method'] = $options['_method'];
+		$defaults['controller'] = $name;
+		$defaults['action'] = $method;
 
-		$url = '/'.$lcName.'/'.$params['path'];
-
-		$routes->connect($url, $params, $routeOptions);
+		$urlNest = ($options['path'] == 0 ? '/'.$lcName : $url);
+		$routes->connect($urlNest, $defaults, $routeOptions);
 	}
 
-	foreach($subs as $sub) {
-		$sub = Inflector::underscore($sub);
+	foreach($subs as $controller) {
+		$defaults = [];
+		$defaults['_method'] = 'GET';
+		$defaults['controller'] = $controller;
+		$defaults['action'] = $lcName.'Index';
 
-		$params = [];
-		$params['_method'] = 'GET';
-		$params['controller'] = $sub;
-		$params['action'] = $sName.'Index';
-
-		$routes->connect($url . '/' . $sub, $params, $routeOptions);
+		$urlNest = $url.'/'.strtolower($controller);
+		$routes->connect($urlNest, $defaults, $routeOptions);
 	}
 
 	foreach($nest as $sub) {
 		$controller = [$name, $sub];
 		sort($controller);
+		$controller = implode($controller);
 
-		$params = [];
-		$params['_method'] = ['GET'];
-		$params['controller'] = implode($controller);
-		$params['action'] = $sName.'Index';
+		$defaults = [];
+		$defaults['_method'] = ['GET'];
+		$defaults['controller'] = $controller;
+		$defaults['action'] = $lcName.'Index';
 
-		$urlNest = $url . '/' . Inflector::underscore($sub);
-		$routes->connect($urlNest, $params, $routeOptions);
+		$urlNest = $url.'/'.strtolower($sub);
+		$routes->connect($urlNest, $defaults, $routeOptions);
 	}
 
 	foreach($rels as $rel) {
 		$routeOptions2 = $routeOptions;
 		$path = [];
 		foreach(getKeys($rel) as $key) {
-			$routeOptions2[$key] = '[0-9]+';
 			$routeOptions2['pass'][] = $key;
+			$routeOptions2[$key] = '[0-9]+';
 			$path[] = $key;
 		}
 		$path = ':'.implode('/:', $path);
 
-		$map =  [ 'index'   => [ '_method' => [ 'GET' ]         , 'path' => '' ]
-				, 'add'     => [ '_method' => [ 'PUT' ]         , 'path' => '' ]
-				, 'view'    => [ '_method' => [ 'GET' ]         , 'path' => $path ]
-				, 'edit'    => [ '_method' => [ 'PUT', 'PATCH' ], 'path' => $path ]
-				, 'delete'  => [ '_method' => [ 'DELETE' ]      , 'path' => $path ]
+		$map =  [ 'index'   => [ '_method' => [ 'GET' ]         , 'path' => 0 ]
+				, 'add'     => [ '_method' => [ 'PUT' ]         , 'path' => 0 ]
+				, 'view'    => [ '_method' => [ 'GET' ]         , 'path' => 1 ]
+				, 'edit'    => [ '_method' => [ 'PUT', 'PATCH' ], 'path' => 1 ]
+				, 'delete'  => [ '_method' => [ 'DELETE' ]      , 'path' => 1 ]
 				];
 
 		$controller = [ $name, $rel ];
 		sort($controller);
 		$controller = implode($controller);
-		$lcNest = Inflector::underscore($rel);
-		$single = Inflector::singularize($name);
+		$lcNest = strtolower($rel);
 
-		foreach($map as $method => $params) {
-			$params['controller'] = $controller;
-			$params['action'] = $single.ucfirst($method);
+		foreach($map as $method => $options) {
+			$defaults = [];
+			$defaults['_method'] = $options['_method'];
+			$defaults['controller'] = $controller;
+			$defaults['action'] = $lcName.ucfirst($method);
 
-			$urlNest = $url . '/' . $lcNest . '/' . $params['path'];
-			if(empty($params['path']))
-				$routes->connect($urlNest, $params, $routeOptions);
-			else
-				$routes->connect($urlNest, $params, $routeOptions2);
+			$urlNest = $url.'/'.$lcNest;
+			if($options['path'] == 0) {
+				$routes->connect($urlNest, $defaults, $routeOptions);
+			} else {
+				$urlNest .= '/'.$path;
+				$routes->connect($urlNest, $defaults, $routeOptions2);
+			}
 		}
 	}
 }

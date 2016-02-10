@@ -23,13 +23,13 @@ class ItemsController extends AppController {
 			, 'contain' => [ 'Characters', 'Attributes' ]
 			]);
 
-		$this->Crud->mapAction('characterIndex',
+		$this->Crud->mapAction('charactersIndex',
 			[ 'className' => 'Crud.Index'
 			, 'contain' => [ 'Characters' ]
 			]);
 	}
 
-	public function characterIndex($plin, $chin) {
+	public function charactersIndex($plin, $chin) {
 		$this->loadModel('Characters');
 		$parent = $this->Characters->plinChin($plin, $chin);
 		$id = $parent->id;

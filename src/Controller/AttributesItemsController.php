@@ -14,26 +14,26 @@ class AttributesItemsController extends AppController {
 	public function initialize() {
 		parent::initialize();
 
-		$this->Crud->mapAction('itemIndex',
+		$this->Crud->mapAction('itemsIndex',
 			[ 'className' => 'Crud.Index'
 			, 'contain' => [ 'Attributes', 'Items' => [ 'Characters' ] ]
 			]);
-		$this->Crud->mapAction('itemView',
+		$this->Crud->mapAction('itemsView',
 			[ 'className' => 'Crud.View'
 			, 'contain' => [ 'Attributes', 'Items' => [ 'Characters' ] ]
 			]);
-		$this->Crud->mapAction('itemEdit',
+		$this->Crud->mapAction('itemsEdit',
 			[ 'className' => 'Crud.Edit'
 			, 'contain' => [ 'Attributes', 'Items' => [ 'Characters' ] ]
 			]);
 
-		$this->Crud->mapAction('attributeIndex',
+		$this->Crud->mapAction('attributesIndex',
 			[ 'className' => 'Crud.Index'
 			, 'contain' => [ 'Attributes', 'Items' => [ 'Characters' ] ]
 			]);
 	}
 
-	public function itemIndex($itin) {
+	public function itemsIndex($itin) {
 		$this->loadModel('Items');
 		$parent = $this->Items->get($itin);
 
@@ -44,18 +44,18 @@ class AttributesItemsController extends AppController {
 		$this->set('parent', $parent);
 		return $this->Crud->execute();
 	}
-	public function itemView($itin, $id) {
+	public function itemsView($itin, $id) {
 		$this->Crud->on('beforeHandle', function(Event $event) {
 			$args = $this->argsOrder("ab", "ba", $event->subject->args);
 			$event->subject->args = $args;
 		});
 		return $this->Crud->execute();
 	}
-	public function itemEdit($itin, $id) {
-		return $this->itemView($itin);
+	public function itemsEdit($itin, $id) {
+		return $this->itemsView($itin);
 	}
 
-	public function attributeIndex($id) {
+	public function attributesIndex($id) {
 		$this->loadModel('Attributes');
 		$parent = $this->Attributes->get($id);
 

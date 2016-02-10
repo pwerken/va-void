@@ -14,26 +14,26 @@ class CharactersPowersController extends AppController {
 	public function initialize() {
 		parent::initialize();
 
-		$this->Crud->mapAction('characterIndex',
+		$this->Crud->mapAction('charactersIndex',
 			[ 'className' => 'Crud.Index'
 			, 'contain' => [ 'Characters', 'Powers' ]
 			]);
-		$this->Crud->mapAction('characterView',
+		$this->Crud->mapAction('charactersView',
 			[ 'className' => 'Crud.View'
 			, 'contain' => [ 'Characters', 'Powers' ]
 			]);
-		$this->Crud->mapAction('characterEdit',
+		$this->Crud->mapAction('charactersEdit',
 			[ 'className' => 'Crud.Edit'
 			, 'contain' => [ 'Characters', 'Powers' ]
 			]);
 
-		$this->Crud->mapAction('powerIndex',
+		$this->Crud->mapAction('powersIndex',
 			[ 'className' => 'Crud.Index'
 			, 'contain' => [ 'Characters', 'Powers' ]
 			]);
 	}
 
-	public function characterIndex($plin, $chin) {
+	public function charactersIndex($plin, $chin) {
 		$this->loadModel('Characters');
 		$parent = $this->Characters->plinChin($plin, $chin);
 		$id = $parent->id;
@@ -45,17 +45,17 @@ class CharactersPowersController extends AppController {
 		$this->set('parent', $parent);
 		return $this->Crud->execute();
 	}
-	public function characterView($plin, $chin, $poin) {
+	public function charactersView($plin, $chin, $poin) {
 		$this->Crud->on('beforeHandle', function(Event $event) {
 			$event->subject->args = $this->argsCharId($event->subject->args);
 		});
 		return $this->Crud->execute();
 	}
-	public function characterEdit($plin, $chin, $poin) {
-		return $this->characterView($plin, $chin, $poin);
+	public function charactersEdit($plin, $chin, $poin) {
+		return $this->charactersView($plin, $chin, $poin);
 	}
 
-	public function powerIndex($poin) {
+	public function powersIndex($poin) {
 		$this->loadModel('Powers');
 		$parent = $this->Powers->get($poin);
 		$this->Crud->on('beforePaginate',
