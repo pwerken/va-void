@@ -67,8 +67,9 @@ function getKeys($controller) {
 	default:            return [ 'id' ];
 	}
 }
-function rest($routes, $name, $subs = [], $rels = []) {
+function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 	$lcName = Inflector::underscore($name);
+	$sName = Inflector::singularize($name);
 
 	$routeOptions = [];
 	foreach(getKeys($name) as $key) {
@@ -99,9 +100,22 @@ function rest($routes, $name, $subs = [], $rels = []) {
 		$params = [];
 		$params['_method'] = 'GET';
 		$params['controller'] = $sub;
-		$params['action'] = Inflector::singularize($name).'Index';
+		$params['action'] = $sName.'Index';
 
 		$routes->connect($url . '/' . $sub, $params, $routeOptions);
+	}
+
+	foreach($nest as $sub) {
+		$controller = [$name, $sub];
+		sort($controller);
+
+		$params = [];
+		$params['_method'] = ['GET'];
+		$params['controller'] = implode($controller);
+		$params['action'] = $sName.'Index';
+
+		$urlNest = $url . '/' . Inflector::underscore($sub);
+		$routes->connect($urlNest, $params, $routeOptions);
 	}
 
 	foreach($rels as $rel) {
@@ -129,7 +143,7 @@ function rest($routes, $name, $subs = [], $rels = []) {
 
 		foreach($map as $method => $params) {
 			$params['controller'] = $controller;
-			$params['action'] = lcfirst($single).ucfirst($method);
+			$params['action'] = $single.ucfirst($method);
 
 			$urlNest = $url . '/' . $lcNest . '/' . $params['path'];
 			if(empty($params['path']))
@@ -140,24 +154,24 @@ function rest($routes, $name, $subs = [], $rels = []) {
 	}
 }
 
-        rest($routes, 'Players');
         rest($routes, 'Characters'
                         , [ 'Items' ]
-                        , [ 'Conditions', 'Powers', 'Skills' ]
-                        );
-        rest($routes, 'Items');
-        rest($routes, 'Conditions'
 						, [ ]
-						, [ 'Characters' ]
-						);
-        rest($routes, 'Powers');
-        rest($routes, 'Skills');
+                        , [ 'Conditions', 'Powers', 'Skills', 'Spells' ]
+                        );
+        rest($routes, 'Items', [], [], ['Attributes']);
 
-        rest($routes, 'Believes');
-        rest($routes, 'Factions');
-        rest($routes, 'Groups');
-        rest($routes, 'Spells');
-        rest($routes, 'Worlds');
+        rest($routes, 'Attributes', [], [ 'Items' ]);
+        rest($routes, 'Conditions', [], [ 'Characters' ]);
+        rest($routes, 'Powers',     [], [ 'Characters' ]);
+        rest($routes, 'Skills',     [], [ 'Characters' ]);
+        rest($routes, 'Spells',     [], [ 'Characters' ]);
+
+        rest($routes, 'Believes', [ 'Characters' ]);
+        rest($routes, 'Factions', [ 'Characters' ]);
+        rest($routes, 'Groups',   [ 'Characters' ]);
+        rest($routes, 'Players',  [ 'Characters' ]);
+        rest($routes, 'Worlds',   [ 'Characters' ]);
     });
 
     /**
