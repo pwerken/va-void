@@ -25,7 +25,7 @@ use Cake\Error\Debugger;
 </head>
 <body>
 
-<p> Displa the currently connected routes match the given URL or parameters.
+<p>Display the currently connected routes.
 Add a matching route to <?= 'config' . DS . 'routes.php' ?></p>
 
 <h3>Connected Routes</h3>
