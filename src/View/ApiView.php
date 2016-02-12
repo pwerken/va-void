@@ -7,7 +7,6 @@ use Cake\Datasource\EntityInterface;
 use Cake\ORM\ResultSet;
 use Cake\Utility\Inflector;
 use Cake\View\View;
-use Crud\Error\Exception\ValidationException;
 
 class ApiView extends View
 {
@@ -35,19 +34,15 @@ class ApiView extends View
 	public function render($view = null, $layout = null)
 	{
 		$data = $this->viewVars[$this->viewVars['viewVar']];
-		if(!$this->viewVars['success'])
-			throw new ValidationException($data);
-
-		$jsonOptions = JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT;
-		if (Configure::read('debug')) {
-			$jsonOptions = $jsonOptions | JSON_PRETTY_PRINT;
-		}
-
 		if(is_array($data) || $data instanceof ResultSet)
 			$data = $this->_jsonList($data, @$this->viewVars['parent']);
 		else
 			$data = $this->_jsonData($data);
 
+		$jsonOptions = JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT;
+		if (Configure::read('debug')) {
+			$jsonOptions = $jsonOptions | JSON_PRETTY_PRINT;
+		}
 		return json_encode($data, $jsonOptions);
 	}
 

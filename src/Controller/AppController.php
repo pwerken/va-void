@@ -20,6 +20,7 @@ use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Network\Exception\BadRequestException;
 use Cake\ORM\ResultSet;
+use Crud\Error\Exception\ValidationException;
 
 /**
  * Application Controller
@@ -66,10 +67,25 @@ class AppController extends Controller
 				throw new BadRequestException($msg);
 			}
 
+			$this->Crud->on('afterSave', function(Event $event) {
+				if(!$event->subject->success)
+					throw new ValidationException($event->subject->entity);
+
+				if($event->subject->created) {
+					$this->response->statusCode(201);
+					return $this->response;
+				}
+			});
+			$this->Crud->on('afterDelete', function(Event $event) {
+				if(!$event->subject->success)
+					throw new BadRequestException('Faied to delete');
+
+				$this->response->statusCode(204);
+				return $this->response;
+			});
 			$this->Crud->on('beforeRedirect', function(Event $event) {
-				$this->Crud->action()->publishViewVar($event);
-				if (!isset($this->viewVars['success']))
-					$this->set('success', $event->subject->success);
+				if(method_exists($this->Crud->action(), 'publishViewVar'))
+					$this->Crud->action()->publishViewVar($event);
 				return $this->render();
 			});
         }
