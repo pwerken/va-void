@@ -73,7 +73,7 @@ class CharactersTable extends Table {
 	}
 
 	public function plinChin($plin, $chin) {
-		return $this->findByPlayerIdAndChin($plin, $chin)->first();
+		return $this->findByPlayerIdAndChin($plin, $chin)->firstOrFail();
 	}
 
 }
