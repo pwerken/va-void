@@ -39,7 +39,7 @@ class CharactersPowersController extends AppController {
 		$this->set('parent', $parent);
 
 		$this->Crud->on('beforePaginate',
-			function(Event $event) use ($id) {
+			function(Event $event) use ($parent) {
 				$event->subject->query->where(['character_id' => $parent->id]);
 		});
 		return $this->Crud->execute();
