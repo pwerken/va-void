@@ -18,6 +18,22 @@ class GroupsController extends AppController {
 			[ 'className' => 'Crud.View'
 			, 'contain' => [ 'Characters' ]
 			]);
+
+		$this->Crud->mapAction('charactersIndex',
+			[ 'className' => 'Crud.Index'
+			, 'contain' => [ 'Characters' ]
+			]);
 	}
 
+	public function charactersIndex($plin, $chin) {
+		$this->loadModel('Characters');
+		$parent = $this->Characters->plinChin($plin, $chin);
+		$this->set('parent', $parent);
+
+		$this->Crud->on('beforePaginate',
+			function(Event $event) use ($parent) {
+				$event->subject->query->where(['character_id' => $parent->id]);
+		});
+		return $this->Crud->execute();
+	}
 }
