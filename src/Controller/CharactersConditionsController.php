@@ -36,13 +36,12 @@ class CharactersConditionsController extends AppController {
 	public function charactersIndex($plin, $chin) {
 		$this->loadModel('Characters');
 		$parent = $this->Characters->plinChin($plin, $chin);
-		$id = $parent->id;
+		$this->set('parent', $parent);
 
 		$this->Crud->on('beforePaginate',
-			function(Event $event) use ($id) {
-				$event->subject->query->where(['character_id' => $id]);
+			function(Event $event) use ($parent) {
+				$event->subject->query->where(['character_id' => $parent->id]);
 		});
-		$this->set('parent', $parent);
 		return $this->Crud->execute();
 	}
 	public function charactersView($plin, $chin, $coin) {
@@ -57,13 +56,12 @@ class CharactersConditionsController extends AppController {
 
 	public function conditionsIndex($coin) {
 		$this->loadModel('Conditions');
-		$parent = $this->Conditions->get($coin);
+		$this->set('parent', $this->Conditions->get($coin);
 
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($coin) {
 				$event->subject->query->where(['condition_id' => $coin]);
 		});
-		$this->set('parent', $parent);
 		return $this->Crud->execute();
 	}
 }

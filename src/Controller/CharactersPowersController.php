@@ -36,13 +36,12 @@ class CharactersPowersController extends AppController {
 	public function charactersIndex($plin, $chin) {
 		$this->loadModel('Characters');
 		$parent = $this->Characters->plinChin($plin, $chin);
-		$id = $parent->id;
+		$this->set('parent', $parent);
 
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($id) {
-				$event->subject->query->where(['character_id' => $id]);
+				$event->subject->query->where(['character_id' => $parent->id]);
 		});
-		$this->set('parent', $parent);
 		return $this->Crud->execute();
 	}
 	public function charactersView($plin, $chin, $poin) {
@@ -57,12 +56,12 @@ class CharactersPowersController extends AppController {
 
 	public function powersIndex($poin) {
 		$this->loadModel('Powers');
-		$parent = $this->Powers->get($poin);
+		$this->set('parent', $this->Powers->get($poin));
+
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($poin) {
 				$event->subject->query->where(['power_id' => $poin]);
 		});
-		$this->set('parent', $parent);
 		return $this->Crud->execute();
 	}
 }

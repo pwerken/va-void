@@ -35,13 +35,12 @@ class AttributesItemsController extends AppController {
 
 	public function itemsIndex($itin) {
 		$this->loadModel('Items');
-		$parent = $this->Items->get($itin);
+		$this->set('parent', $this->Items->get($itin));
 
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($itin) {
 				$event->subject->query->where(['item_id' => $itin]);
 		});
-		$this->set('parent', $parent);
 		return $this->Crud->execute();
 	}
 	public function itemsView($itin, $id) {
@@ -57,13 +56,12 @@ class AttributesItemsController extends AppController {
 
 	public function attributesIndex($id) {
 		$this->loadModel('Attributes');
-		$parent = $this->Attributes->get($id);
+		$this->set('parent', $this->Attributes->get($id));
 
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($id) {
 				$event->subject->query->where(['attribute_id' => $id]);
 		});
-		$this->set('parent', $parent);
 		return $this->Crud->execute();
 	}
 }

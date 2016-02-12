@@ -36,13 +36,12 @@ class CharactersSpellsController extends AppController {
 	public function charactersIndex($plin, $chin) {
 		$this->loadModel('Characters');
 		$parent = $this->Characters->plinChin($plin, $chin);
-		$id = $parent->id;
+		$this->set('parent', $parent);
 
 		$this->Crud->on('beforePaginate',
-			function(Event $event) use ($id) {
-				$event->subject->query->where(['character_id' => $id]);
+			function(Event $event) use ($parent) {
+				$event->subject->query->where(['character_id' => $parent->id]);
 		});
-		$this->set('parent', $parent);
 		return $this->Crud->execute();
 	}
 	public function charactersView($plin, $chin, $id) {
@@ -57,13 +56,12 @@ class CharactersSpellsController extends AppController {
 
 	public function spellsIndex($id) {
 		$this->loadModel('Spells');
-		$parent = $this->Spells->get($id);
+		$this->set('parent', $this->Spells->get($id));
 
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($id) {
 				$event->subject->query->where(['spell_id' => $id]);
 		});
-		$this->set('parent', $parent);
 		return $this->Crud->execute();
 	}
 }
