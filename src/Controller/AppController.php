@@ -56,6 +56,7 @@ class AppController extends Controller
 		);
 
 		if($this->request->is('json')) {
+			$this->viewBuilder()->className('Api');
 			$this->request->data = $this->request->input('json_decode', true);
 
 			$error = json_last_error();
@@ -65,7 +66,12 @@ class AppController extends Controller
 				throw new BadRequestException($msg);
 			}
 
-            $this->viewBuilder()->className('Api');
+			$this->Crud->on('beforeRedirect', function(Event $event) {
+				$this->Crud->action()->publishViewVar($event);
+				if (!isset($this->viewVars['success']))
+					$this->set('success', $event->subject->success);
+				return $this->render();
+			});
         }
 	}
 

@@ -7,6 +7,7 @@ use Cake\Datasource\EntityInterface;
 use Cake\ORM\ResultSet;
 use Cake\Utility\Inflector;
 use Cake\View\View;
+use Crud\Error\Exception\ValidationException;
 
 class ApiView extends View
 {
@@ -33,14 +34,21 @@ class ApiView extends View
 
 	public function render($view = null, $layout = null)
 	{
-		$var = $this->viewVars['viewVar'];
-		$data = $this->_jsonData($this->viewVars[$var]);
+		$data = $this->viewVars[$this->viewVars['viewVar']];
+		if(!$this->viewVars['success'])
+			throw new ValidationException($data);
 
-        $jsonOptions = JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT;
-        if (Configure::read('debug')) {
-            $jsonOptions = $jsonOptions | JSON_PRETTY_PRINT;
-        }
-        return json_encode($data, $jsonOptions);
+		$jsonOptions = JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT;
+		if (Configure::read('debug')) {
+			$jsonOptions = $jsonOptions | JSON_PRETTY_PRINT;
+		}
+
+		if(is_array($data) || $data instanceof ResultSet)
+			$data = $this->_jsonList($data, @$this->viewVars['parent']);
+		else
+			$data = $this->_jsonData($data);
+
+		return json_encode($data, $jsonOptions);
 	}
 
 	private function _class($value) {
@@ -102,15 +110,10 @@ class ApiView extends View
 		return '/'.$class.'/';
 	}
 
-	private function _jsonData($obj) {
-		if(!is_array($obj)
-        && !($obj instanceof EntityInterface)
-        && !($obj instanceof ResultSet)) {
+	private function _jsonData($obj)
+	{
+		if(!($obj instanceof EntityInterface))
 			return $obj;
-        }
-
-		if(is_array($obj) || $obj instanceof ResultSet)
-			return $this->_jsonList($obj, @$this->viewVars['parent']);
 
 		$result = [];
 		$result['url'] = $this->_jsonUrl($obj);
