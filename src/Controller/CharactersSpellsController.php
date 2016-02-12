@@ -18,6 +18,12 @@ class CharactersSpellsController extends AppController {
 			[ 'className' => 'Crud.Index'
 			, 'contain' => [ 'Characters', 'Spells' ]
 			]);
+		$this->Crud->mapAction('charactersAdd',
+			[ 'className' => 'Crud.Add'
+			]);
+		$this->Crud->mapAction('charactersDelete',
+			[ 'className' => 'Crud.Delete'
+			]);
 		$this->Crud->mapAction('charactersView',
 			[ 'className' => 'Crud.View'
 			, 'contain' => [ 'Characters', 'Spells' ]
@@ -43,6 +49,16 @@ class CharactersSpellsController extends AppController {
 				$event->subject->query->where(['character_id' => $parent->id]);
 		});
 		return $this->Crud->execute();
+	}
+	public function charactersAdd($plin, $chin) {
+		$this->loadModel('Characters');
+		$parent = $this->Characters->plinChin($plin, $chin);
+		$this->request->data['character_id'] = $parent->id;
+
+		return $this->Crud->execute();
+	}
+	public function charactersDelete($plin, $chin, $id) {
+		return $this->charactersView($plin, $chin, $id);
 	}
 	public function charactersView($plin, $chin, $id) {
 		$this->Crud->on('beforeHandle', function(Event $event) {
