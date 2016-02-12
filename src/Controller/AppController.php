@@ -18,6 +18,7 @@ use App\Model\Entity\JsonEntity;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
+use Cake\Network\Exception\BadRequestException;
 use Cake\ORM\ResultSet;
 
 /**
@@ -56,6 +57,14 @@ class AppController extends Controller
 
 		if($this->request->is('json')) {
 			$this->request->data = $this->request->input('json_decode', true);
+
+			$error = json_last_error();
+			if($error != JSON_ERROR_NONE) {
+				$msg = sprintf("Failed to parse json, error: %s '%s'"
+								, $error, json_last_error_msg());
+				throw new BadRequestException($msg);
+			}
+
             $this->viewBuilder()->className('Api');
         }
 	}
