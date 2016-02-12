@@ -8,17 +8,36 @@ ToDo-list:
    - [ ] project license
    - [ ] update README.md
    - [x] share/publish repository on github
- - /api json output
+ - JSON interface
    - [x] add /api prefix
    - [x] always return json under /api (without .json extension)
-   - [ ] add all controllers under /api
-   - [ ] create all json view ctp's
+   - [x] add all controllers under /api
    - [x] disable pagination on listings
-   - [ ] accept json for add/edit actions
+   - [x] accept json for add/edit actions
+   - [ ] implement add functions
+   - [ ] implement edit functions
+   - [ ] implement delete functions
  - Expand route.php
    - [x] characters url routing: from .../:id to .../:plin/:chin
-   - [ ] restructure urls/controllers (relations, nesting)
- - User interface
+   - [x] restructure urls/controllers (relations, nesting)
+ - Reduce CRUD-plugin boilerplating
+   - [x] configurable per view query 'contain' information
+   - [x] configure per view 'relatedModels'
+   - [ ] refactor controllers
+ - Lammy printing
+   - [ ] create/manage printing queue
+   - [ ] output pdf
+ - Logging/accounting
+   - [ ] logging of all modifications
+ - Automate import of Access
+   - [x] import Access data to MySQL (1:1, no conversion)
+   - [x] convert MySQL imported data to database layout
+ - Item attributes
+   - [x] rename lorType field
+   - [ ] dummy lore code handling/generation
+ - Upstream
+   - [ ] Crud cake3: configurable 'contain' relation
+ - Web interface
    - [ ] add validator rules
    - [x] test if the add/edit actions work with CRUD
    - [ ] add/edit _joinData fields to forms
@@ -28,18 +47,3 @@ ToDo-list:
    - [ ] select => combobox (with search)
    - [ ] infobalie uitcheck forms
    - [ ] make a proper home.ctp for /
- - Reduce CRUD-plugin boilerplating
-   - [x] configurable per view query 'contain' information
-   - [x] configure per view 'relatedModels'
- - Lammy printing
-   - [ ] create/manage printing queue
-   - [ ] output pdf with print job
- - Automate import of Access
-   - [x] import Access data to MySQL (1:1, no conversion)
-   - [x] convert MySQL imported data to database layout
- - Item attributes
-   - [x] rename lorType field
-   - [ ] dummy lore code handling/generation
- - Upstream
-   - [ ] CakePHP 3.0: fix _joinData mass assignment guard
-   - [ ] Crud cake3: configurable 'contain' relation
