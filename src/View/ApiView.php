@@ -33,11 +33,18 @@ class ApiView extends View
 
 	public function render($view = null, $layout = null)
 	{
-		$data = $this->viewVars[$this->viewVars['viewVar']];
-		if(is_array($data) || $data instanceof ResultSet)
-			$data = $this->_jsonList($data, @$this->viewVars['parent']);
-		else
-			$data = $this->_jsonData($data);
+		$viewVar = @$this->viewVars['viewVar'];
+		if(isset($this->viewVars[$viewVar])) {
+			$data = $this->viewVars[$viewVar];
+			if(is_array($data) || $data instanceof ResultSet)
+				$data = $this->_jsonList($data, @$this->viewVars['parent']);
+			else
+				$data = $this->_jsonData($data);
+		} elseif(isset($this->viewVars['_serialize'])) {
+			$data = $this->viewVars['_serialize'];
+		} else {
+			$data = $this->viewVars;
+		}
 
 		$jsonOptions = JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT;
 		if (Configure::read('debug')) {

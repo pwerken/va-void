@@ -215,7 +215,6 @@ DROP TABLE IF EXISTS `players`;
 CREATE TABLE IF NOT EXISTS `players` (
   `id` int(10) unsigned NOT NULL COMMENT 'PLIN',
   `account_type` enum('Participant','Referee','Infobalie','Super') CHARACTER SET utf8mb4 NOT NULL DEFAULT 'Participant' COMMENT 'authorisation information',
-  `username` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   `first_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   `insertion` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,

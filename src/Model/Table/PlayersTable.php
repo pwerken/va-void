@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -36,8 +37,6 @@ class PlayersTable extends Table {
 			->add('id', 'valid', ['rule' => 'numeric'])
 			->notEmpty('id')
 			->add('account_type', 'valid', ['rule' => ['inList', Player::labelsAccountTypes(true)]] )
-			->allowEmpty('username')
-			->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table'])
 			->allowEmpty('password')
 			->notEmpty('first_name')
 			->allowEmpty('insertion')
@@ -48,6 +47,10 @@ class PlayersTable extends Table {
 			->allowEmpty('date_of_birth');
 
 		return $validator;
+	}
+
+	public function _setPassword($password) {
+		return (new DefaultPasswordHasher)->hash($password);
 	}
 
 }

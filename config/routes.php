@@ -175,6 +175,12 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
         rest($routes, 'Groups',   [ 'Characters' ]);
         rest($routes, 'Players',  [ 'Characters' ]);
         rest($routes, 'Worlds',   [ 'Characters' ]);
+
+		$defaults = [];
+		$defaults['_method'] = ['GET', 'PUT', 'POST'];
+		$defaults['controller'] = 'Players';
+		$defaults['action'] = 'login';
+		$routes->connect('/login', $defaults, []);
     });
 
     /**

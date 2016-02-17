@@ -55,10 +55,29 @@ class AppController extends Controller
 		$this->loadComponent('Crud.Crud',
 			[ 'listeners' => ['Crud.RelatedModels'] ]
 		);
+		$this->loadComponent('Auth',
+			[ 'storage' => 'Memory'
+			, 'authenticate' =>
+				[ 'Form' =>
+					[ 'userModel' => 'Players'
+					, 'fields' => [ 'username' => 'id' ]
+					]
+				, 'ADmad/JwtAuth.Jwt' =>
+					[ 'userModel' => 'Players'
+					, 'fields' => [ 'username' => 'id' ]
+					, 'parameter' => 'token'
+					, 'queryDatasource' => true
+				]	]
+			, 'unauthorizedRedirect' => false
+			, 'checkAuthIn' => 'Controller.initialize'
+			, 'loginAction' => '/api/login'
+			]
+		);
 
 		if($this->request->is('json')) {
 			$this->viewBuilder()->className('Api');
-			$this->request->data = $this->request->input('json_decode', true);
+			if(!$this->request->is('post'))
+				$this->request->data = $this->request->input('json_decode', true);
 
 			$error = json_last_error();
 			if($error != JSON_ERROR_NONE) {
