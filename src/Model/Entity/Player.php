@@ -18,6 +18,10 @@ class Player extends Entity {
 				.  $this->_properties['last_name'];
 	}
 
+	public function _setPassword($password) {
+		return (new DefaultPasswordHasher)->hash($password);
+	}
+
 	public static function labelsAccountTypes($keys = false) {
 		static $data = null;
 		if(is_null($data))

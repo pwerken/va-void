@@ -49,8 +49,4 @@ class PlayersTable extends Table {
 		return $validator;
 	}
 
-	public function _setPassword($password) {
-		return (new DefaultPasswordHasher)->hash($password);
-	}
-
 }
