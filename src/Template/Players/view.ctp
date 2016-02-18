@@ -40,8 +40,8 @@ use App\Model\Entity\Player;
 	</div>
 	<div class="row texts">
 		<div class="columns large-9">
-			<h6 class="subheader"><?= __('Account Type') ?></h6>
-			<p><?= Player::labelAccountType($player->account_type); ?></p>
+			<h6 class="subheader"><?= __('Role') ?></h6>
+			<p><?= Player::labelRole($player->role); ?></p>
 		</div>
 	</div>
 	<div class="row texts">

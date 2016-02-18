@@ -20,11 +20,10 @@ use App\Model\Entity\Player;
 				[ 'type' => 'number'
 				, 'label' => __('Plin')
 				]);
-		echo $this->Form->input('account_type',
+		echo $this->Form->input('role',
 				[ 'type' => 'select'
-				, 'options' => Player::validAccountTypes()
+				, 'options' => Player::labelsRoles()
 				]);
-		echo $this->Form->input('username');
 		echo $this->Form->input('password');
 		?><hr><?php
 		echo $this->Form->input('first_name');
@@ -33,7 +32,7 @@ use App\Model\Entity\Player;
 		?><hr><?php
 		echo $this->Form->input('gender',
 				[ 'type' => 'select'
-				, 'options' => Player::validGenders()
+				, 'options' => Player::labelsGenders()
 				, 'empty' => true
 				]);
 		echo $this->Form->input('date_of_birth',

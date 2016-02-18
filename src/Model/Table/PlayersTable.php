@@ -36,7 +36,7 @@ class PlayersTable extends Table {
 		$validator
 			->add('id', 'valid', ['rule' => 'numeric'])
 			->notEmpty('id')
-			->add('account_type', 'valid', ['rule' => ['inList', Player::labelsAccountTypes(true)]] )
+			->add('role', 'valid', ['rule' => ['inList', Player::labelsRoles(true)]] )
 			->allowEmpty('password')
 			->notEmpty('first_name')
 			->allowEmpty('insertion')

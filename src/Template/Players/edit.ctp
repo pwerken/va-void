@@ -17,11 +17,10 @@ use App\Model\Entity\Player;
 	<fieldset>
 		<legend><?= __('Edit Player') ?></legend>
 	<?php
-		echo $this->Form->input('account_type',
+		echo $this->Form->input('role',
 				[ 'type' => 'select'
-				, 'options' => Player::labelsAccountTypes()
+				, 'options' => Player::labelsRoles()
 				]);
-		echo $this->Form->input('username');
 		echo $this->Form->input('password');
 		?><hr><?php
 		echo $this->Form->input('first_name');

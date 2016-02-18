@@ -22,18 +22,18 @@ class Player extends Entity {
 		return (new DefaultPasswordHasher)->hash($password);
 	}
 
-	public static function labelsAccountTypes($keys = false) {
+	public static function labelsRoles($keys = false) {
 		static $data = null;
 		if(is_null($data))
-			$data = [ 'P' => __('Participant')
-					, 'R' => __('Referee')
-					, 'I' => __('Infobalie')
-					, 'S' => __('Super')
+			$data = [ 'Participant'=> __('Participant')
+					, 'Referee'     => __('Referee')
+					, 'Infobalie'   => __('Infobalie')
+					, 'Super'       => __('Super')
 					];
 		return ($keys ? array_keys($data) : $data);
 	}
-	public static function labelAccountType($key = null) {
-		$data = self::labelsAccountTypes();
+	public static function labelRole($key = null) {
+		$data = self::labelsRoles();
 		if(isset($data[$key]))
 			return $data[$key];
 		return null;
