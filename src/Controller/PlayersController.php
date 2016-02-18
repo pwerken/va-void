@@ -30,9 +30,11 @@ class PlayersController extends AppController {
 		$user = null;
 		if($this->request->is('put') || $this->request->is('post'))
 			$user = $this->Auth->identify();
+
 		if (!$user)
 			throw new UnauthorizedException('Invalid username or password');
 
+		$this->Auth->setUser($user);
 		$this->set(
 			[ '_serialize' =>
 				[ 'token' => JWT::encode(
@@ -42,5 +44,8 @@ class PlayersController extends AppController {
 				, 'player' => '/api/players/'.$user['id']
 				]
 			]);
+
+		if($this->request->is('post'))
+			$this->redirect('/api/players/'.$user['id'], 302);
 	}
 }

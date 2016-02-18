@@ -57,7 +57,9 @@ class PagesController extends AppController
         if (!empty($path[1])) {
             $subpage = $path[1];
         }
-        $this->set(compact('page', 'subpage'));
+
+        $user = $this->Auth->user();
+        $this->set(compact('page', 'subpage', 'user'));
 
         try {
             $this->render(implode('/', $path));

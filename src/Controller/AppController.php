@@ -56,7 +56,7 @@ class AppController extends Controller
 			[ 'listeners' => ['Crud.RelatedModels'] ]
 		);
 		$this->loadComponent('Auth',
-			[ 'storage' => 'Memory'
+			[ 'storage' => 'Session'
 			, 'authenticate' =>
 				[ 'Form' =>
 					[ 'userModel' => 'Players'
@@ -68,6 +68,7 @@ class AppController extends Controller
 					, 'parameter' => 'token'
 					, 'queryDatasource' => true
 				]	]
+			, 'authorize' => ['Controller']
 			, 'unauthorizedRedirect' => false
 			, 'checkAuthIn' => 'Controller.initialize'
 			, 'loginAction' => '/api/login'
@@ -123,6 +124,13 @@ class AppController extends Controller
 			return $query->all();
 
 		return parent::paginate($query);
+	}
+
+	public function isAuthorized($user) {
+		if(isset($user['account_type']) && $user['account_type'] === 'Super')
+			return true;
+
+		return false;
 	}
 
 	protected function argsOrder($from, $to, $array)
