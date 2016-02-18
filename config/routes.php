@@ -181,6 +181,12 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 		$defaults['controller'] = 'Players';
 		$defaults['action'] = 'login';
 		$routes->connect('/login', $defaults, []);
+
+		$defaults = [];
+		$defaults['_method'] = ['GET'];
+		$defaults['controller'] = 'Players';
+		$defaults['action'] = 'logout';
+		$routes->connect('/logout', $defaults, []);
     });
 
     /**

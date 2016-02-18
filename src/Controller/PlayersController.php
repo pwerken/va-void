@@ -21,6 +21,8 @@ class PlayersController extends AppController {
 			[ 'className' => 'Crud.View'
 			, 'contain' => [ 'Characters' ]
 			]);
+
+		$this->Auth->allow(['logout']);
 	}
 
 	public function login() {
@@ -47,5 +49,9 @@ class PlayersController extends AppController {
 
 		if($this->request->is('post'))
 			$this->redirect('/api/players/'.$user['id'], 302);
+	}
+
+	public function logout() {
+		return $this->redirect($this->Auth->logout());
 	}
 }

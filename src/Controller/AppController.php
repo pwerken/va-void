@@ -72,6 +72,7 @@ class AppController extends Controller
 			, 'unauthorizedRedirect' => false
 			, 'checkAuthIn' => 'Controller.initialize'
 			, 'loginAction' => '/api/login'
+			, 'logoutRedirect' => '/'
 			]
 		);
 
