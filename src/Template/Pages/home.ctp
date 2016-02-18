@@ -96,17 +96,22 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <?php endforeach; ?>
 </tbody>
 </table>
-<?= $this->Form->create('', ['url' => '/api/login']) ?>
-<fieldset>
-<?php
-	echo $this->Form->input('id', ['label' => 'Plin']);
-	echo $this->Form->input('password');
-	echo $this->Form->button(__('Login'))
-?>
-</fieldset>
-<?=$this->Form->end() ?>
-<hr/>
 <?= $this->Html->link('/pages/routes') ?>
+<hr/>
+<?php
+	if ($user):
+		echo "You are logged in as '".$user['full_name']."'.<br/>";
+		echo $this->Html->link(__('Logout'), '/api/logout');
+	else:
+		echo $this->Form->create('', ['url' => '/api/login']);
+		echo "<fieldset>\n";
+		echo $this->Form->input('id', ['label' => 'Plin']);
+		echo $this->Form->input('password');
+		echo $this->Form->button(__('Login'));
+		echo "</fieldset>\n";
+		echo $this->Form->end();
+	endif;
+?>
 
             </div>
         </div>
