@@ -4,7 +4,6 @@ ToDo-list:
    - [x] created database layout
    - [x] add CRUD plugin
    - [ ] add search functions: player/character/item/power/condition
-   - [ ] add authenticate/authorize/login
    - [ ] project license
    - [ ] update README.md
    - [x] share/publish repository on github
@@ -17,6 +16,10 @@ ToDo-list:
    - [ ] implement add functions
    - [ ] implement edit functions
    - [ ] implement delete functions
+ - Authorization
+   - [x] add authenticate/login/logout
+   - [ ] restrict index/view based on role
+   - [ ] restrict add/edit based on role
  - Expand route.php
    - [x] characters url routing: from .../:id to .../:plin/:chin
    - [x] restructure urls/controllers (relations, nesting)
@@ -40,8 +43,7 @@ ToDo-list:
  - Web interface
    - [ ] add validator rules
    - [x] test if the add/edit actions work with CRUD
-   - [ ] add/edit _joinData fields to forms
-   - [x] clean up Template/*.ctp's
+   - [x] clean up Template/.ctp's
    - [ ] fancier edit form for character skills
    - [ ] date input fields: text+calendar
    - [ ] select => combobox (with search)
