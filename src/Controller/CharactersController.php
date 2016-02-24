@@ -30,25 +30,7 @@ class CharactersController extends AppController {
 				, 'Spells'
 				, 'Worlds'
 			]	]);
-		$this->Crud->mapAction('edit',
-			[ 'className' => 'Crud.Edit'
-			, 'contain' =>
-				[ 'Conditions'
-				, 'Powers'
-				, 'Skills'
-				, 'Spells'
-				]
-			, 'relatedModels' =>
-				[ 'Believes'
-				, 'Conditions'
-				, 'Factions'
-				, 'Groups'
-				, 'Players'
-				, 'Powers'
-				, 'Skills'
-				, 'Spells'
-				, 'Worlds'
-			]	]);
+		$this->Crud->mapAction('edit', 'Crud.Edit');
 
 		$this->Crud->mapAction('believesIndex', 'Crud.Index');
 		$this->Crud->mapAction('factionsIndex', 'Crud.Index');

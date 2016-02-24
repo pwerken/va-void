@@ -2,6 +2,7 @@
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
+use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -76,4 +77,11 @@ class CharactersTable extends Table {
 		return $this->findByPlayerIdAndChin($plin, $chin)->firstOrFail();
 	}
 
+	public function buildRules(RulesChecker $rules) {
+		$rules->add($rules->existsIn('faction_id', 'factions'));
+		$rules->add($rules->existsIn('group_id', 'groups'));
+		$rules->add($rules->existsIn('belief_id', 'believes'));
+		$rules->add($rules->existsIn('world_id', 'worlds'));
+		return $rules;
+	}
 }

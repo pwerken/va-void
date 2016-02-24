@@ -7,10 +7,6 @@ class Character extends Entity {
 
 	protected $_hidden =
 		[ 'id'
-		, 'faction_id'
-		, 'belief_id'
-		, 'group_id'
-		, 'world_id'
 		];
 
 	protected function _getDisplayName() {
