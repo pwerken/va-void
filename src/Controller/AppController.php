@@ -92,8 +92,9 @@ class AppController extends Controller
 				if(!$event->subject->success)
 					throw new ValidationException($event->subject->entity);
 
-				if($event->subject->created) {
-					$this->response->statusCode(201);
+				if($event->subject->success) {
+					$code = $event->subject->created ? 302 : 303;
+					$this->response->location($this->request->here);
 					return $this->response;
 				}
 			});
