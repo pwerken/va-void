@@ -3,14 +3,12 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
-/**
- * Spells Controller
- *
- * @property App\Model\Table\SpellsTable $Spells
- */
-class SpellsController extends AppController {
+class SpellsController
+	extends AppController
+{
 
-	public function initialize() {
+	public function initialize()
+	{
 		parent::initialize();
 
 		$this->Crud->mapAction('index', 'Crud.Index');

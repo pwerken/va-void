@@ -3,14 +3,12 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
-/**
- * Skills Controller
- *
- * @property App\Model\Table\SkillsTable $Skills
- */
-class SkillsController extends AppController {
+class SkillsController
+	extends AppController
+{
 
-	public function initialize() {
+	public function initialize()
+	{
 		parent::initialize();
 
 		$this->Crud->mapAction('index',

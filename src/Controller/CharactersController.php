@@ -4,14 +4,12 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\Event\Event;
 
-/**
- * Characters Controller
- *
- * @property App\Model\Table\CharactersTable $Characters
- */
-class CharactersController extends AppController {
+class CharactersController
+	extends AppController
+{
 
-	public function initialize() {
+	public function initialize()
+	{
 		parent::initialize();
 
 		$this->Crud->mapAction('index', 'Crud.Index');
@@ -42,7 +40,8 @@ class CharactersController extends AppController {
 		});
 	}
 
-	public function believesIndex($id) {
+	public function believesIndex($id)
+	{
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($id) {
 				$event->subject->query->where(['belief_id' => $id]);
@@ -51,7 +50,8 @@ class CharactersController extends AppController {
 		$this->set('parent', $this->Believes->get($id));
 		return $this->Crud->execute();
 	}
-	public function factionsIndex($id) {
+	public function factionsIndex($id)
+	{
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($id) {
 				$event->subject->query->where(['faction_id' => $id]);
@@ -60,7 +60,8 @@ class CharactersController extends AppController {
 		$this->set('parent', $this->Faction->get($id));
 		return $this->Crud->execute();
 	}
-	public function groupsIndex($id) {
+	public function groupsIndex($id)
+	{
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($id) {
 				$event->subject->query->where(['group_id' => $id]);
@@ -69,7 +70,8 @@ class CharactersController extends AppController {
 		$this->set('parent', $this->Groups->get($id));
 		return $this->Crud->execute();
 	}
-	public function playersIndex($id) {
+	public function playersIndex($id)
+	{
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($id) {
 				$event->subject->query->where(['player_id' => $id]);
@@ -78,7 +80,8 @@ class CharactersController extends AppController {
 		$this->set('parent', $this->Players->get($id));
 		return $this->Crud->execute();
 	}
-	public function worldsIndex($id) {
+	public function worldsIndex($id)
+	{
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($id) {
 				$event->subject->query->where(['world_id' => $id]);

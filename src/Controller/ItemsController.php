@@ -4,14 +4,12 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\Event\Event;
 
-/**
- * Items Controller
- *
- * @property App\Model\Table\ItemsTable $Items
- */
-class ItemsController extends AppController {
+class ItemsController
+	extends AppController
+{
 
-	public function initialize() {
+	public function initialize()
+	{
 		parent::initialize();
 
 		$this->Crud->mapAction('index',

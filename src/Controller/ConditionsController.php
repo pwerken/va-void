@@ -3,14 +3,12 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
-/**
- * Conditions Controller
- *
- * @property App\Model\Table\ConditionsTable $Conditions
- */
-class ConditionsController extends AppController {
+class ConditionsController
+	extends AppController
+{
 
-	public function initialize() {
+	public function initialize()
+	{
 		parent::initialize();
 
 		$this->Crud->mapAction('index', 'Crud.Index');

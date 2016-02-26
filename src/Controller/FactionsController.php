@@ -3,14 +3,12 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
-/**
- * Factions Controller
- *
- * @property App\Model\Table\FactionsTable $Factions
- */
-class FactionsController extends AppController {
+class FactionsController
+	extends AppController
+{
 
-	public function initialize() {
+	public function initialize()
+	{
 		parent::initialize();
 
 		$this->Crud->mapAction('index', 'Crud.Index');

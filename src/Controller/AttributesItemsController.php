@@ -4,26 +4,24 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\Event\Event;
 
-/**
- * AttributesItems Controller
- *
- * @property App\Model\Table\AttributesItemsTable $AttributesItems
- */
-class AttributesItemsController extends AppController {
+class AttributesItemsController
+	extends AppController
+{
 
-	public function initialize() {
+	public function initialize()
+	{
 		parent::initialize();
 
+		$this->Crud->mapAction('itemsEdit',
+			[ 'className' => 'Crud.Edit'
+			, 'contain' => [ 'Attributes', 'Items' => [ 'Characters' ] ]
+			]);
 		$this->Crud->mapAction('itemsIndex',
 			[ 'className' => 'Crud.Index'
 			, 'contain' => [ 'Attributes', 'Items' => [ 'Characters' ] ]
 			]);
 		$this->Crud->mapAction('itemsView',
 			[ 'className' => 'Crud.View'
-			, 'contain' => [ 'Attributes', 'Items' => [ 'Characters' ] ]
-			]);
-		$this->Crud->mapAction('itemsEdit',
-			[ 'className' => 'Crud.Edit'
 			, 'contain' => [ 'Attributes', 'Items' => [ 'Characters' ] ]
 			]);
 
@@ -33,7 +31,12 @@ class AttributesItemsController extends AppController {
 			]);
 	}
 
-	public function itemsIndex($itin) {
+	public function itemsEdit($itin, $id)
+	{
+		return $this->itemsView($itin);
+	}
+	public function itemsIndex($itin)
+	{
 		$this->loadModel('Items');
 		$this->set('parent', $this->Items->get($itin));
 
@@ -43,18 +46,17 @@ class AttributesItemsController extends AppController {
 		});
 		return $this->Crud->execute();
 	}
-	public function itemsView($itin, $id) {
+	public function itemsView($itin, $id)
+	{
 		$this->Crud->on('beforeHandle', function(Event $event) {
 			$args = $this->argsOrder("ab", "ba", $event->subject->args);
 			$event->subject->args = $args;
 		});
 		return $this->Crud->execute();
 	}
-	public function itemsEdit($itin, $id) {
-		return $this->itemsView($itin);
-	}
 
-	public function attributesIndex($id) {
+	public function attributesIndex($id)
+	{
 		$this->loadModel('Attributes');
 		$this->set('parent', $this->Attributes->get($id));
 

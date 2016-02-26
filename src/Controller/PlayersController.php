@@ -6,14 +6,12 @@ use Cake\Network\Exception\UnauthorizedException;
 use Cake\Utility\Security;
 use Firebase\JWT\JWT;
 
-/**
- * Players Controller
- *
- * @property App\Model\Table\PlayersTable $Players
- */
-class PlayersController extends AppController {
+class PlayersController
+	extends AppController
+{
 
-	public function initialize() {
+	public function initialize()
+	{
 		parent::initialize();
 
 		$this->Crud->mapAction('index', 'Crud.Index');
@@ -25,7 +23,8 @@ class PlayersController extends AppController {
 		$this->Auth->allow(['logout']);
 	}
 
-	public function login() {
+	public function login()
+	{
 		if(isset($this->request->data['id']))
 			$this->request->data['id'] = (string)$this->request->data['id'];
 
@@ -51,7 +50,8 @@ class PlayersController extends AppController {
 			$this->redirect('/api/players/'.$user['id'], 302);
 	}
 
-	public function logout() {
+	public function logout()
+	{
 		return $this->redirect($this->Auth->logout());
 	}
 
