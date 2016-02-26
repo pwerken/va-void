@@ -128,11 +128,9 @@ class AppController extends Controller
 		return parent::paginate($query);
 	}
 
-	public function isAuthorized($user) {
-		if(isset($user['role']) && $user['role'] === 'Super')
-			return true;
-
-		return false;
+	public function isAuthorized($user)
+	{
+		return $this->hasAuthSuper();
 	}
 
 	protected function argsOrder($from, $to, $array)
@@ -154,5 +152,32 @@ class AppController extends Controller
 			array_unshift($args, $char);
 		}
 		return $args;
+	}
+
+	protected function hasAuthUser($id = null)
+	{
+		if($id === null)
+			$id = (int)$this->request->param('plin');
+		return $this->Auth->user('id') == $id;
+	}
+	protected function hasAuthRole($role)
+	{
+		return $this->Auth->user('role') == $role;
+	}
+	protected function hasAuthSuper()
+	{
+		return $this->hasAuthRole('Super');
+	}
+	protected function hasAuthInfobalie()
+	{
+		return $this->hasAuthRole('Infobalie') || $this->hasAuthSuper();
+	}
+	protected function hasAuthReferee()
+	{
+		return $this->hasAuthRole('Referee') || $this->hasAuthInfobalie();
+	}
+	protected function hasAuthPlayer()
+	{
+		return $this->hasAuthRole('Participant') || $this->hasAuthReferee();
 	}
 }

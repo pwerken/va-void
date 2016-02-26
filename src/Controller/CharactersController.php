@@ -3,7 +3,6 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
-use Crud\Event\Subject;
 
 /**
  * Characters Controller
@@ -87,5 +86,23 @@ class CharactersController extends AppController {
 		$this->loadModel('Worlds');
 		$this->set('parent', $this->Worlds->get($id));
 		return $this->Crud->execute();
+	}
+
+	public function isAuthorized($user)
+	{
+		switch($this->request->action) {
+		case 'view':
+		case 'playersIndex':
+			return $this->hasAuthReferee() || $this->hasAuthUser();
+		case 'index':
+		case 'edit':
+		case 'believesIndex':
+		case 'factionsIndex':
+		case 'groupsIndex':
+		case 'worldsIndex':
+			return $this->hasAuthReferee();
+		default:
+			return parent::isAuthorized($user);
+		}
 	}
 }

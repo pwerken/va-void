@@ -20,4 +20,14 @@ class ManatypesController extends AppController {
 			]);
 	}
 
+	public function isAuthorized($user)
+	{
+		switch($this->request->action) {
+		case 'index':
+		case 'view':
+			return $this->hasAuthPlayer();
+		default:
+			return parent::isAuthorized($user);
+		}
+	}
 }

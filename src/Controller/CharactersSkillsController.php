@@ -73,4 +73,20 @@ class CharactersSkillsController extends AppController {
 		});
 		return $this->Crud->execute();
 	}
+
+	public function isAuthorized($user)
+	{
+		switch($this->request->action) {
+		case 'charactersIndex':
+		case 'charactersView':
+			return $this->hasAuthUser() || $this->hasAuthReferee();
+		case 'charactersAdd':
+		case 'charactersDelete':
+			return $this->hasAuthInfobalie();
+		case 'skillsIndex':
+			return $this->hasAuthReferee();
+		default:
+			return parent::isAuthorized($user);
+		}
+	}
 }

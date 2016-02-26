@@ -20,8 +20,17 @@ class SkillsController extends AppController {
 		$this->Crud->mapAction('view',
 			[ 'className' => 'Crud.View'
 			, 'contain' => [ 'Manatypes' ]
-#			, 'contain' => [ 'Manatypes', 'Characters' ]
 			]);
 	}
 
+	public function isAuthorized($user)
+	{
+		switch($this->request->action) {
+		case 'index':
+		case 'view':
+			return $this->hasAuthPlayer();
+		default:
+			return parent::isAuthorized($user);
+		}
+	}
 }

@@ -22,22 +22,29 @@ class ItemsController extends AppController {
 			[ 'className' => 'Crud.View'
 			, 'contain' => [ 'Characters', 'Attributes' ]
 			]);
-
-		$this->Crud->mapAction('charactersIndex',
-			[ 'className' => 'Crud.Index'
-			, 'contain' => [ 'Characters' ]
-			]);
 	}
 
-	public function charactersIndex($plin, $chin) {
-		$this->loadModel('Characters');
-		$parent = $this->Characters->plinChin($plin, $chin);
-		$this->set('parent', $parent);
+	public function isAuthorized($user)
+	{
+		switch($this->request->action) {
+		case 'view':
+			return $this->hasAuthUser() || $this->hasAuthReferee();
+		case 'index':
+			return $this->hasAuthReferee();
+		default:
+			return parent::isAuthorized($user);
+		}
+	}
 
-		$this->Crud->on('beforePaginate',
-			function(Event $event) use ($parent) {
-				$event->subject->query->where(['character_id' => $parent->id]);
-		});
-		return $this->Crud->execute();
+	protected function hasAuthUser($id = null)
+	{
+		$itin = (int)$this->request->param('itin');
+		$data = $this->Items->find()
+					->hydrate(false)
+					->select(['Characters.player_id'])
+					->where(['Items.id' => $itin])
+					->contain('Characters')
+					->first();
+		return parent::hasAuthUser(@$data['Characters']['player_id'] ?: -1);
 	}
 }

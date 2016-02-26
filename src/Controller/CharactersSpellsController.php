@@ -80,4 +80,21 @@ class CharactersSpellsController extends AppController {
 		});
 		return $this->Crud->execute();
 	}
+
+	public function isAuthorized($user)
+	{
+		switch($this->request->action) {
+		case 'charactersIndex':
+		case 'charactersView':
+			return $this->hasAuthUser() || $this->hasAuthReferee();
+		case 'charactersAdd':
+		case 'charactersDelete':
+		case 'charactersEdit':
+			return $this->hasAuthInfobalie();
+		case 'spellsIndex':
+			return $this->hasAuthReferee();
+		default:
+			return parent::isAuthorized($user);
+		}
+	}
 }

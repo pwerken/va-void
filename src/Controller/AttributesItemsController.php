@@ -64,4 +64,18 @@ class AttributesItemsController extends AppController {
 		});
 		return $this->Crud->execute();
 	}
+
+	public function isAuthorized($user)
+	{
+		switch($this->request->action) {
+		case 'itemsIndex':
+		case 'itemsView':
+		case 'attributesIndex':
+			return $this->hasAuthReferee();
+		case 'itemsEdit':
+			return $this->hasAuthInfobalie();
+		default:
+			return parent::isAuthorized($user);
+		}
+	}
 }

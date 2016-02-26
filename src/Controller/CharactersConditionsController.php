@@ -80,4 +80,20 @@ class CharactersConditionsController extends AppController {
 		});
 		return $this->Crud->execute();
 	}
+
+	public function isAuthorized($user)
+	{
+		switch($this->request->action) {
+		case 'charactersIndex':
+		case 'charactersView':
+			return $this->hasAuthUser() || $this->hasAuthReferee();
+		case 'charactersAdd':
+		case 'charactersDelete':
+			return $this->hasAuthInfobalie();
+		case 'conditionsIndex':
+			return $this->hasAuthReferee();
+		default:
+			return parent::isAuthorized($user);
+		}
+	}
 }

@@ -54,4 +54,18 @@ class PlayersController extends AppController {
 	public function logout() {
 		return $this->redirect($this->Auth->logout());
 	}
+
+	public function isAuthorized($user)
+	{
+		switch($this->request->action) {
+		case 'index':
+			return $this->hasAuthReferee();
+		case 'view':
+			return $this->hasAuthReferee() || $this->hasAuthUser();
+		case 'edit':
+			return $this->hasAuthInfobalie() || $this->hasAuthUser();
+		default:
+			return parent::isAuthorized($user);
+		}
+	}
 }
