@@ -17,7 +17,7 @@
         "friendsofcake/crud": "dev-master-pwerken",
         "cakephp/migrations": "~1.0",
         "cakephp/plugin-installer": "*",
-        "admad/cakephp-jwt-auth": "2.0.x-dev"
+        "admad/cakephp-jwt-auth": "^2.0"
     },
     "require-dev": {
         "psy/psysh": "@stable",
