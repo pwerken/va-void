@@ -71,7 +71,7 @@ class AppController
 			});
 			$this->Crud->on('afterDelete', function(Event $event) {
 				if(!$event->subject->success)
-					throw new BadRequestException('Faied to delete');
+					throw new BadRequestException('Failed to delete');
 
 				$this->response->statusCode(204);
 				return $this->response;
