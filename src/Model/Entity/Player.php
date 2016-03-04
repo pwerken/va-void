@@ -25,7 +25,7 @@ class Player extends Entity {
 	public static function labelsRoles($keys = false) {
 		static $data = null;
 		if(is_null($data))
-			$data = [ 'Participant'=> __('Participant')
+			$data = [ 'Player'      => __('Player')
 					, 'Referee'     => __('Referee')
 					, 'Infobalie'   => __('Infobalie')
 					, 'Super'       => __('Super')

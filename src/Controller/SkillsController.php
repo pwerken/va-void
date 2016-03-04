@@ -11,24 +11,10 @@ class SkillsController
 	{
 		parent::initialize();
 
-		$this->Crud->mapAction('index',
-			[ 'className' => 'Crud.Index'
-			, 'contain' => [ 'Manatypes' ]
-			]);
-		$this->Crud->mapAction('view',
-			[ 'className' => 'Crud.View'
-			, 'contain' => [ 'Manatypes' ]
-			]);
+		$contain = [ 'Manatypes' ];
+
+		$this->mapMethod('index', [ 'player' ], $contain);
+		$this->mapMethod('view',  [ 'player' ], $contain);
 	}
 
-	public function isAuthorized($user)
-	{
-		switch($this->request->action) {
-		case 'index':
-		case 'view':
-			return $this->hasAuthPlayer();
-		default:
-			return parent::isAuthorized($user);
-		}
-	}
 }

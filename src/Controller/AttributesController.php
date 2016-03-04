@@ -11,18 +11,8 @@ class AttributesController
 	{
 		parent::initialize();
 
-		$this->Crud->mapAction('index', 'Crud.Index');
-		$this->Crud->mapAction('view',  'Crud.View');
+		$this->mapMethod('index', [ 'referee' ]);
+		$this->mapMethod('view',  [ 'referee' ]);
 	}
 
-	public function isAuthorized($user)
-	{
-		switch($this->request->action) {
-		case 'index':
-		case 'view':
-			return $this->hasAuthReferee();
-		default:
-			return parent::isAuthorized($user);
-		}
-	}
 }

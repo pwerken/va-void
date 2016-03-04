@@ -12,28 +12,20 @@ class CharactersController
 	{
 		parent::initialize();
 
-		$this->Crud->mapAction('index', 'Crud.Index');
-		$this->Crud->mapAction('view',
-			[ 'className' => 'Crud.View'
-			, 'contain' =>
-				[ 'Believes'
-				, 'Conditions'
-				, 'Factions'
-				, 'Groups'
-				, 'Items'
-				, 'Players'
-				, 'Powers'
-				, 'Skills' => [ 'Manatypes' ]
-				, 'Spells'
-				, 'Worlds'
-			]	]);
-		$this->Crud->mapAction('edit', 'Crud.Edit');
+		$contain =  [ 'Believes', 'Factions', 'Groups', 'Players', 'Worlds'
+					, 'Items', 'Skills' => [ 'Manatypes' ]
+					, 'Conditions', 'Powers', 'Spells'
+					];
 
-		$this->Crud->mapAction('believesIndex', 'Crud.Index');
-		$this->Crud->mapAction('factionsIndex', 'Crud.Index');
-		$this->Crud->mapAction('groupsIndex',   'Crud.Index');
-		$this->Crud->mapAction('playersIndex',  'Crud.Index');
-		$this->Crud->mapAction('worldsIndex',   'Crud.Index');
+		$this->mapMethod('edit',          [ 'referee'         ]);
+		$this->mapMethod('index',         [ 'referee'         ]);
+		$this->mapMethod('view',          [ 'referee', 'user' ], $contain);
+
+		$this->mapMethod('believesIndex', [ 'referee'         ]);
+		$this->mapMethod('factionsIndex', [ 'referee'         ]);
+		$this->mapMethod('groupsIndex',   [ 'referee'         ]);
+		$this->mapMethod('playersIndex',  [ 'referee', 'user' ]);
+		$this->mapMethod('worldsIndex',   [ 'referee'         ]);
 
 		$this->Crud->on('beforeHandle', function(Event $event) {
 			$event->subject->args = $this->argsCharId($event->subject->args);
@@ -89,23 +81,5 @@ class CharactersController
 		$this->loadModel('Worlds');
 		$this->set('parent', $this->Worlds->get($id));
 		return $this->Crud->execute();
-	}
-
-	public function isAuthorized($user)
-	{
-		switch($this->request->action) {
-		case 'view':
-		case 'playersIndex':
-			return $this->hasAuthReferee() || $this->hasAuthUser();
-		case 'index':
-		case 'edit':
-		case 'believesIndex':
-		case 'factionsIndex':
-		case 'groupsIndex':
-		case 'worldsIndex':
-			return $this->hasAuthReferee();
-		default:
-			return parent::isAuthorized($user);
-		}
 	}
 }

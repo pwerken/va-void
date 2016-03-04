@@ -94,7 +94,12 @@ class AppController
 
 	public function isAuthorized($user)
 	{
-		return $this->hasAuthSuper();
+		$auths = $this->Crud->action()->config('auth') ?: ['super'];
+		foreach($auths as $level) {
+			if($this->hasAuth($level))
+				return true;
+		}
+		return false;
 	}
 
 	protected function argsOrder($from, $to, $array)
@@ -118,30 +123,38 @@ class AppController
 		return $args;
 	}
 
+	protected function hasAuth($level)
+	{
+		if(strcasecmp($level, $this->Auth->user('role')) == 0)
+			return true;
+
+		switch(strtolower($level)) {
+		case 'user':		return $this->hasAuthUser();
+		case 'player':		return $this->hasAuth('referee');
+		case 'referee':		return $this->hasAuth('infobalie');
+		case 'infobalie':	return $this->hasAuth('super');
+		}
+
+		return false;
+	}
 	protected function hasAuthUser($id = null)
 	{
 		if($id === null)
 			$id = (int)$this->request->param('plin');
 		return $this->Auth->user('id') == $id;
 	}
-	protected function hasAuthRole($role)
+
+	protected function mapMethod($action, $auth, $contain = [])
 	{
-		return $this->Auth->user('role') == $role;
+		$className = ucfirst($action);
+		$className = preg_replace('/.*([A-Z][a-z]+)/', 'Crud.\\1', $className);
+
+		if(is_string($auth))
+			$auth = [$auth];
+		if(empty($auth))
+			$auth = ['super'];
+
+		$this->Crud->mapAction($action, compact('className','auth','contain'));
 	}
-	protected function hasAuthSuper()
-	{
-		return $this->hasAuthRole('Super');
-	}
-	protected function hasAuthInfobalie()
-	{
-		return $this->hasAuthRole('Infobalie') || $this->hasAuthSuper();
-	}
-	protected function hasAuthReferee()
-	{
-		return $this->hasAuthRole('Referee') || $this->hasAuthInfobalie();
-	}
-	protected function hasAuthPlayer()
-	{
-		return $this->hasAuthRole('Participant') || $this->hasAuthReferee();
-	}
+
 }

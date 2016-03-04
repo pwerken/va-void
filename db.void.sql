@@ -214,7 +214,7 @@ CREATE TABLE IF NOT EXISTS `manatypes` (
 DROP TABLE IF EXISTS `players`;
 CREATE TABLE IF NOT EXISTS `players` (
   `id` int(10) unsigned NOT NULL COMMENT 'PLIN',
-  `role` enum('Participant','Referee','Infobalie','Super') CHARACTER SET utf8mb4 NOT NULL DEFAULT 'Participant' COMMENT 'authorisation information',
+  `role` enum('Player','Referee','Infobalie','Super') CHARACTER SET utf8mb4 NOT NULL DEFAULT 'Participant' COMMENT 'authorisation information',
   `password` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   `first_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   `insertion` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,

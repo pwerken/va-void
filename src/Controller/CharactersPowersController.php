@@ -12,25 +12,15 @@ class CharactersPowersController
 	{
 		parent::initialize();
 
-		$this->Crud->mapAction('charactersIndex',
-			[ 'className' => 'Crud.Index'
-			, 'contain' => [ 'Characters', 'Powers' ]
-			]);
-		$this->Crud->mapAction('charactersAdd',    'Crud.Add');
-		$this->Crud->mapAction('charactersDelete', 'Crud.Delete');
-		$this->Crud->mapAction('charactersView',
-			[ 'className' => 'Crud.View'
-			, 'contain' => [ 'Characters', 'Powers' ]
-			]);
-		$this->Crud->mapAction('charactersEdit',
-			[ 'className' => 'Crud.Edit'
-			, 'contain' => [ 'Characters', 'Powers' ]
-			]);
+		$contain = [ 'Characters', 'Powers' ];
 
-		$this->Crud->mapAction('powersIndex',
-			[ 'className' => 'Crud.Index'
-			, 'contain' => [ 'Characters', 'Powers' ]
-			]);
+		$this->mapMethod('charactersAdd',    [ 'referee'         ]);
+		$this->mapMethod('charactersDelete', [ 'referee'         ]);
+		$this->mapMethod('charactersEdit',   [ 'referee'         ], $contain);
+		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], $contain);
+		$this->mapMethod('charactersView',   [ 'referee'         ], $contain);
+
+		$this->mapMethod('powersIndex',      [ 'referee'         ], $contain);
 	}
 
 	public function charactersAdd($plin, $chin)
@@ -81,19 +71,4 @@ class CharactersPowersController
 		return $this->Crud->execute();
 	}
 
-	public function isAuthorized($user)
-	{
-		switch($this->request->action) {
-		case 'charactersIndex':
-		case 'charactersView':
-			return $this->hasAuthUser() || $this->hasAuthReferee();
-		case 'charactersAdd':
-		case 'charactersDelete':
-			return $this->hasAuthInfobalie();
-		case 'powersIndex':
-			return $this->hasAuthReferee();
-		default:
-			return parent::isAuthorized($user);
-		}
-	}
 }

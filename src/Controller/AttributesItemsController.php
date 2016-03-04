@@ -12,28 +12,18 @@ class AttributesItemsController
 	{
 		parent::initialize();
 
-		$this->Crud->mapAction('itemsEdit',
-			[ 'className' => 'Crud.Edit'
-			, 'contain' => [ 'Attributes', 'Items' => [ 'Characters' ] ]
-			]);
-		$this->Crud->mapAction('itemsIndex',
-			[ 'className' => 'Crud.Index'
-			, 'contain' => [ 'Attributes', 'Items' => [ 'Characters' ] ]
-			]);
-		$this->Crud->mapAction('itemsView',
-			[ 'className' => 'Crud.View'
-			, 'contain' => [ 'Attributes', 'Items' => [ 'Characters' ] ]
-			]);
+		$contain = [ 'Attributes', 'Items' => [ 'Characters' ] ];
 
-		$this->Crud->mapAction('attributesIndex',
-			[ 'className' => 'Crud.Index'
-			, 'contain' => [ 'Attributes', 'Items' => [ 'Characters' ] ]
-			]);
+		$this->mapMethod('attributesIndex', [ 'referee'   ], $contain);
+
+		$this->mapMethod('itemsEdit',       [ 'infobalie' ]);
+		$this->mapMethod('itemsIndex',      [ 'referee'   ], $contain);
+		$this->mapMethod('itemsView',       [ 'referee'   ], $contain);
 	}
 
 	public function itemsEdit($itin, $id)
 	{
-		return $this->itemsView($itin);
+		return $this->itemsView($itin, $id);
 	}
 	public function itemsIndex($itin)
 	{
@@ -67,17 +57,4 @@ class AttributesItemsController
 		return $this->Crud->execute();
 	}
 
-	public function isAuthorized($user)
-	{
-		switch($this->request->action) {
-		case 'itemsIndex':
-		case 'itemsView':
-		case 'attributesIndex':
-			return $this->hasAuthReferee();
-		case 'itemsEdit':
-			return $this->hasAuthInfobalie();
-		default:
-			return parent::isAuthorized($user);
-		}
-	}
 }

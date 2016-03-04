@@ -11,18 +11,8 @@ class SpellsController
 	{
 		parent::initialize();
 
-		$this->Crud->mapAction('index', 'Crud.Index');
-		$this->Crud->mapAction('view',  'Crud.View');
+		$this->mapMethod('index', [ 'player' ]);
+		$this->mapMethod('view',  [ 'player' ]);
 	}
 
-	public function isAuthorized($user)
-	{
-		switch($this->request->action) {
-		case 'index':
-		case 'view':
-			return $this->hasAuthPlayer();
-		default:
-			return parent::isAuthorized($user);
-		}
-	}
 }

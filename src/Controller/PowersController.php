@@ -11,20 +11,8 @@ class PowersController
 	{
 		parent::initialize();
 
-		$this->Crud->mapAction('index', 'Crud.Index');
-		$this->Crud->mapAction('view',  'Crud.View');
-	}
-
-	public function isAuthorized($user)
-	{
-		switch($this->request->action) {
-		case 'view':
-			return $this->hasAuthUser() || $this->hasAuthReferee();
-		case 'index':
-			return $this->hasAuthReferee();
-		default:
-			return parent::isAuthorized($user);
-		}
+		$this->mapMethod('index', [ 'referee'         ]);
+		$this->mapmethod('view',  [ 'referee', 'user' ]);
 	}
 
 	protected function hasAuthUser($id = null)
@@ -39,4 +27,5 @@ class PowersController
 					->first();
 		return parent::hasAuthUser(@$data['Characters']['player_id'] ?: -1);
 	}
+
 }

@@ -12,21 +12,14 @@ class CharactersSkillsController
 	{
 		parent::initialize();
 
-		$this->Crud->mapAction('charactersAdd',    'Crud.Add');
-		$this->Crud->mapAction('charactersDelete', 'Crud.Delete');
-		$this->Crud->mapAction('charactersIndex',
-			[ 'className' => 'Crud.Index'
-			, 'contain' => [ 'Characters', 'Skills' => [ 'Manatypes' ] ]
-			]);
-		$this->Crud->mapAction('charactersView',
-			[ 'className' => 'Crud.View'
-			, 'contain' => [ 'Characters', 'Skills' => [ 'Manatypes' ] ]
-			]);
+		$contain = [ 'Characters', 'Skills' => [ 'Manatypes' ] ];
 
-		$this->Crud->mapAction('skillsIndex',
-			[ 'className' => 'Crud.Index'
-			, 'contain' => [ 'Characters', 'Skills' => [ 'Manatypes' ] ]
-			]);
+		$this->mapMethod('charactersAdd',    [ 'infobalie'       ]);
+		$this->mapMethod('charactersDelete', [ 'infobalie'       ]);
+		$this->mapMethod('charactersIndex',  [ 'referee'         ], $contain);
+		$this->mapMethod('charactersView',   [ 'referee', 'user' ], $contain);
+
+		$this->mapMethod('skillsIndex',      [ 'referee'         ], $contain);
 	}
 
 	public function charactersAdd($plin, $chin)
@@ -73,19 +66,4 @@ class CharactersSkillsController
 		return $this->Crud->execute();
 	}
 
-	public function isAuthorized($user)
-	{
-		switch($this->request->action) {
-		case 'charactersIndex':
-		case 'charactersView':
-			return $this->hasAuthUser() || $this->hasAuthReferee();
-		case 'charactersAdd':
-		case 'charactersDelete':
-			return $this->hasAuthInfobalie();
-		case 'skillsIndex':
-			return $this->hasAuthReferee();
-		default:
-			return parent::isAuthorized($user);
-		}
-	}
 }

@@ -14,11 +14,11 @@ class PlayersController
 	{
 		parent::initialize();
 
-		$this->Crud->mapAction('index', 'Crud.Index');
-		$this->Crud->mapAction('view',
-			[ 'className' => 'Crud.View'
-			, 'contain' => [ 'Characters' ]
-			]);
+		$contain = [ 'Characters' ];
+
+		$this->mapMethod('edit',  [ 'infobalie', 'user' ]);
+		$this->mapMethod('index', [ 'referee'           ]);
+		$this->mapMethod('view',  [ 'referee',   'user' ], $contain);
 
 		$this->Auth->allow(['logout']);
 	}
@@ -55,17 +55,4 @@ class PlayersController
 		return $this->redirect($this->Auth->logout());
 	}
 
-	public function isAuthorized($user)
-	{
-		switch($this->request->action) {
-		case 'index':
-			return $this->hasAuthReferee();
-		case 'view':
-			return $this->hasAuthReferee() || $this->hasAuthUser();
-		case 'edit':
-			return $this->hasAuthInfobalie() || $this->hasAuthUser();
-		default:
-			return parent::isAuthorized($user);
-		}
-	}
 }

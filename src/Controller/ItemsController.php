@@ -12,26 +12,10 @@ class ItemsController
 	{
 		parent::initialize();
 
-		$this->Crud->mapAction('index',
-			[ 'className' => 'Crud.Index'
-			, 'contain' => [ 'Characters' ]
-			]);
-		$this->Crud->mapAction('view',
-			[ 'className' => 'Crud.View'
-			, 'contain' => [ 'Characters', 'Attributes' ]
-			]);
-	}
+		$contain = [ 'Characters', 'Attributes' ];
 
-	public function isAuthorized($user)
-	{
-		switch($this->request->action) {
-		case 'view':
-			return $this->hasAuthUser() || $this->hasAuthReferee();
-		case 'index':
-			return $this->hasAuthReferee();
-		default:
-			return parent::isAuthorized($user);
-		}
+		$this->mapMethod('index', [ 'referee'         ], [ 'Characters' ]);
+		$this->mapMethod('view',  [ 'referee', 'user' ], $contain);
 	}
 
 	protected function hasAuthUser($id = null)
@@ -45,4 +29,5 @@ class ItemsController
 					->first();
 		return parent::hasAuthUser(@$data['Characters']['player_id'] ?: -1);
 	}
+
 }

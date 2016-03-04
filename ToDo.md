@@ -18,8 +18,8 @@ ToDo-list:
    - [ ] implement delete functions
  - Authorization
    - [x] add authenticate/login/logout
-   - [ ] restrict index/view based on role
-   - [ ] restrict add/edit based on role
+   - [x] restrict page access based on role
+   - [ ] adjust content based on role
  - Expand route.php
    - [x] characters url routing: from .../:id to .../:plin/:chin
    - [x] restructure urls/controllers (relations, nesting)
