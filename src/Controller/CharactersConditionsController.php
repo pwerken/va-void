@@ -72,7 +72,7 @@ class CharactersConditionsController
 	public function conditionsIndex($coin)
 	{
 		$this->loadModel('Conditions');
-		$this->set('parent', $this->Conditions->get($coin);
+		$this->set('parent', $this->Conditions->get($coin));
 
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($coin) {
