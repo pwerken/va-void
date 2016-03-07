@@ -27,7 +27,7 @@ class CharactersPowersController
 	{
 		$this->loadModel('Characters');
 		$parent = $this->Characters->plinChin($plin, $chin);
-		$this->request->data['character_id'] = $parent->id;
+		$this->request->data('character_id', $parent->id);
 
 		return $this->Crud->execute();
 	}

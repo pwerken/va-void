@@ -26,7 +26,7 @@ class AttributesItemsController
 
 	public function itemsAdd($itin)
 	{
-		$this->request->data['item_id'] = $itin;
+		$this->request->data('item_id', $itin);
 		return $this->Crud->execute();
 	}
 	public function itemsDelete($itin, $id)
