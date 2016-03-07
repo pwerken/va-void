@@ -32,11 +32,11 @@ class ConditionsController
 		$this->loadModel('CharactersConditions');
 		$data = $this->CharactersConditions->find()
 					->hydrate(false)
-					->select(['Characters.player_id'])
+					->select(['player_id' => 'Characters.player_id'])
 					->where(['CharactersConditions.condition_id' => $coin])
 					->contain('Characters')
 					->first();
-		return parent::hasAuthUser(@$data['Characters']['player_id'] ?: -1);
+		return parent::hasAuthUser(@$data['player_id'] ?: -1);
 	}
 
 }

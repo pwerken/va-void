@@ -67,11 +67,11 @@ class ItemsController
 		$itin = (int)$this->request->param('itin');
 		$data = $this->Items->find()
 					->hydrate(false)
-					->select(['Characters.player_id'])
+					->select(['player_id' => 'Characters.player_id'])
 					->where(['Items.id' => $itin])
 					->contain('Characters')
 					->first();
-		return parent::hasAuthUser(@$data['Characters']['player_id'] ?: -1);
+		return parent::hasAuthUser(@$data['player_id'] ?: -1);
 	}
 
 	private function nextFreeItin()
