@@ -40,7 +40,7 @@ use Cake\Utility\Inflector;
  * `:action` markers.
  *
  */
-Router::defaultRouteClass('DashedRoute');
+#Router::defaultRouteClass('Route');
 
 Router::scope('/', function ($routes) {
     /**
@@ -78,11 +78,11 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 	$path = ':'.implode('/:', $routeOptions['pass']);
 	$url = '/'.$lcName.'/'.$path;
 
-	$map =  [ 'index'   => [ '_method' => [ 'GET' ]         , 'path' => 0 ]
-			, 'add'     => [ '_method' => [ 'PUT' ]         , 'path' => 0 ]
-			, 'view'    => [ '_method' => [ 'GET' ]         , 'path' => 1 ]
-			, 'edit'    => [ '_method' => [ 'PUT', 'PATCH' ], 'path' => 1 ]
-			, 'delete'  => [ '_method' => [ 'DELETE' ]      , 'path' => 1 ]
+	$map =  [ 'index'   => [ '_method' => 'GET',    'path' => 0 ]
+			, 'add'     => [ '_method' => 'PUT',    'path' => 0 ]
+			, 'view'    => [ '_method' => 'GET',    'path' => 1 ]
+			, 'edit'    => [ '_method' => 'PUT',    'path' => 1 ]
+			, 'delete'  => [ '_method' => 'DELETE', 'path' => 1 ]
 			];
 
 	foreach($map as $method => $options) {
@@ -110,7 +110,7 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 		$controller = implode($controller);
 
 		$defaults = [];
-		$defaults['_method'] = ['GET'];
+		$defaults['_method'] = 'GET';
 		$defaults['controller'] = $controller;
 		$defaults['action'] = $lcName.'Index';
 
@@ -128,11 +128,11 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 		}
 		$path = ':'.implode('/:', $path);
 
-		$map =  [ 'index'   => [ '_method' => [ 'GET' ]         , 'path' => 0 ]
-				, 'add'     => [ '_method' => [ 'PUT' ]         , 'path' => 0 ]
-				, 'view'    => [ '_method' => [ 'GET' ]         , 'path' => 1 ]
-				, 'edit'    => [ '_method' => [ 'PUT', 'PATCH' ], 'path' => 1 ]
-				, 'delete'  => [ '_method' => [ 'DELETE' ]      , 'path' => 1 ]
+		$map =  [ 'index'   => [ '_method' => 'GET',    'path' => 0 ]
+				, 'add'     => [ '_method' => 'PUT',    'path' => 0 ]
+				, 'view'    => [ '_method' => 'GET',    'path' => 1 ]
+				, 'edit'    => [ '_method' => 'PUT',    'path' => 1 ]
+				, 'delete'  => [ '_method' => 'DELETE', 'path' => 1 ]
 				];
 
 		$controller = [ $name, $rel ];
@@ -177,13 +177,13 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
         rest($routes, 'Worlds',   [ 'Characters' ]);
 
 		$defaults = [];
-		$defaults['_method'] = ['GET', 'PUT', 'POST'];
+		$defaults['_method'] = ['PUT', 'POST'];
 		$defaults['controller'] = 'Players';
 		$defaults['action'] = 'login';
 		$routes->connect('/login', $defaults, []);
 
 		$defaults = [];
-		$defaults['_method'] = ['GET'];
+		$defaults['_method'] = 'GET';
 		$defaults['controller'] = 'Players';
 		$defaults['action'] = 'logout';
 		$routes->connect('/logout', $defaults, []);
