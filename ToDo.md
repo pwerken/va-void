@@ -14,6 +14,7 @@ ToDo-list:
    - [x] disable pagination on listings
    - [x] accept json for add/edit actions
    - [ ] implement add functions
+   - [ ] after add redirect to new entity
    - [ ] implement edit functions
    - [ ] implement delete functions
  - Authorization

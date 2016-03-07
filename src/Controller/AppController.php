@@ -63,11 +63,15 @@ class AppController
 				if(!$event->subject->success)
 					throw new ValidationException($event->subject->entity);
 
-				if($event->subject->success) {
-					$code = $event->subject->created ? 302 : 303;
-					$this->response->location($this->request->here);
+				if($event->subject->created) {
+					$this->response->statusCode(302);
+					//FIXME redirect to location of new entity
 					return $this->response;
 				}
+
+				$this->response->statusCode(303);
+				$this->response->location($this->request->here);
+				return $this->response;
 			});
 			$this->Crud->on('afterDelete', function(Event $event) {
 				if(!$event->subject->success)
