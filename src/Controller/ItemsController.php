@@ -12,10 +12,26 @@ class ItemsController
 	{
 		parent::initialize();
 
+		$char    = [ 'Characters' ];
 		$contain = [ 'Characters', 'Attributes' ];
 
-		$this->mapMethod('index', [ 'referee'         ], [ 'Characters' ]);
-		$this->mapMethod('view',  [ 'referee', 'user' ], $contain);
+		$this->mapMethod('index',            [ 'referee'         ], $char);
+		$this->mapMethod('view',             [ 'referee', 'user' ], $contain);
+
+		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], $contain);
+	}
+
+	public function charactersIndex($plin, $chin)
+	{
+		$this->loadModel('Characters');
+		$parent = $this->Characters->plinChin($plin, $chin);
+		$this->set('parent', $parent);
+
+		$this->Crud->on('beforePaginate',
+			function(Event $event) use ($parent) {
+				$event->subject->query->where(['character_id' => $parent->id]);
+		});
+		return $this->Crud->execute();
 	}
 
 	protected function hasAuthUser($id = null)
@@ -29,5 +45,4 @@ class ItemsController
 					->first();
 		return parent::hasAuthUser(@$data['Characters']['player_id'] ?: -1);
 	}
-
 }
