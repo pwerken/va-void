@@ -51,7 +51,7 @@ class CharactersController
 				$event->subject->query->where(['faction_id' => $id]);
 		});
 		$this->loadModel('Factions');
-		$this->set('parent', $this->Faction->get($id));
+		$this->set('parent', $this->Factions->get($id));
 		return $this->Crud->execute();
 	}
 	public function groupsIndex($id)
