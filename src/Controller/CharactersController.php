@@ -17,7 +17,9 @@ class CharactersController
 					, 'Conditions', 'Powers', 'Spells'
 					];
 
-		$this->mapMethod('edit',          [ 'referee'         ]);
+#		$this->mapMethod('add',           [ 'infobalie'       ]);
+		$this->mapMethod('delete',        [ 'super'           ]);
+		$this->mapMethod('edit',          [ 'infobalie'       ]);
 		$this->mapMethod('index',         [ 'referee'         ]);
 		$this->mapMethod('view',          [ 'referee', 'user' ], $contain);
 
@@ -82,4 +84,40 @@ class CharactersController
 		$this->set('parent', $this->Worlds->get($id));
 		return $this->Crud->execute();
 	}
+
+	protected function canDelete($entity)
+	{
+		$this->loadModel('CharactersConditions');
+		$query = $this->CharactersConditions->find();
+		$query->where(['character_id' => $entity->id]);
+		if($query->count() > 0)
+			return false;
+
+		$this->loadModel('CharactersPowers');
+		$query = $this->CharactersPowers->find();
+		$query->where(['character_id' => $entity->id]);
+		if($query->count() > 0)
+			return false;
+
+		$this->loadModel('CharactersSkills');
+		$query = $this->CharactersSkills->find();
+		$query->where(['character_id' => $entity->id]);
+		if($query->count() > 0)
+			return false;
+
+		$this->loadModel('CharactersSpells');
+		$query = $this->CharactersSpells->find();
+		$query->where(['character_id' => $entity->id]);
+		if($query->count() > 0)
+			return false;
+
+		$this->loadModel('Items');
+		$query = $this->Items->find();
+		$query->where(['character_id' => $entity->id]);
+		if($query->count() > 0)
+			return false;
+
+		return true;
+	}
+
 }

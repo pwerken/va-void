@@ -11,8 +11,19 @@ class AttributesController
 	{
 		parent::initialize();
 
-		$this->mapMethod('index', [ 'referee' ]);
-		$this->mapMethod('view',  [ 'referee' ]);
+		$this->mapMethod('add',    [ 'super'   ]);
+		$this->mapMethod('delete', [ 'super'   ]);
+		$this->mapMethod('edit',   [ 'super'   ]);
+		$this->mapMethod('index',  [ 'referee' ]);
+		$this->mapMethod('view',   [ 'referee' ]);
+	}
+
+	protected function canDelete($entity)
+	{
+		$this->loadModel('AttributesItems');
+		$query = $this->AttributesItems->find();
+		$query->where(['character_id' => $entity->id]);
+		return ($query->count() == 0)
 	}
 
 }

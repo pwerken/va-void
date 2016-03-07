@@ -11,8 +11,19 @@ class ConditionsController
 	{
 		parent::initialize();
 
-		$this->mapMethod('index', [ 'referee'         ]);
-		$this->mapMethod('view',  [ 'referee', 'user' ]);
+		$this->mapMethod('add',    [ 'referee'         ]);
+		$this->mapMethod('delete', [ 'super'           ]);
+		$this->mapMethod('edit',   [ 'referee'         ]);
+		$this->mapMethod('index',  [ 'referee'         ]);
+		$this->mapMethod('view',   [ 'referee', 'user' ]);
+	}
+
+	protected function canDelete($entity)
+	{
+		$this->loadModel('CharactersConditions');
+		$query = $this->CharactersConditions->find();
+		$query->where(['condition_id' => $entity->id]);
+		return ($query->count() == 0);
 	}
 
 	protected function hasAuthUser($id = null)

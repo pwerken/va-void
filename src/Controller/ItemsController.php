@@ -15,10 +15,21 @@ class ItemsController
 		$char    = [ 'Characters' ];
 		$contain = [ 'Characters', 'Attributes' ];
 
+		$this->mapMethod('add',              [ 'referee'         ], $char);
+		$this->mapMethod('delete',           [ 'super'           ], $char);
+		$this->mapMethod('edit',             [ 'referee'         ], $char);
 		$this->mapMethod('index',            [ 'referee'         ], $char);
 		$this->mapMethod('view',             [ 'referee', 'user' ], $contain);
 
 		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], $contain);
+	}
+
+	public function add()
+	{
+		$itin = $this->request->data('itin') ?: $this->nextFreeItin();
+		$this->request->data('itin', $itin);
+
+		return $this->Crud->execute();
 	}
 
 	public function charactersIndex($plin, $chin)
@@ -34,6 +45,23 @@ class ItemsController
 		return $this->Crud->execute();
 	}
 
+	protected function canDelete($entity)
+	{
+		$this->loadModel('Characters');
+		$query = $this->Characters->find();
+		$query->where(['character_id' => $entity->id]);
+		if($query->count() > 0)
+			return false;
+
+		$this->loadModel('AttributesItems');
+		$query = $this->AttributesItems->find();
+		$query->where(['character_id' => $entity->id]);
+		if($query->count() > 0)
+			return false;
+
+		return true;
+	}
+
 	protected function hasAuthUser($id = null)
 	{
 		$itin = (int)$this->request->param('itin');
@@ -45,4 +73,17 @@ class ItemsController
 					->first();
 		return parent::hasAuthUser(@$data['Characters']['player_id'] ?: -1);
 	}
+
+	private function nextFreeItin()
+	{
+		$ranges = [ 1980, 2201, 2300, 8001, 8888, 9000, 9999, 1000000 ];
+		foreach($ranges as $max) {
+			$query = $this->Items->find();
+			$query->hydrate(false)->select('id')->order(['id' => 'DESC']);
+			$next = $query->where(['id <' => $max])->first()['id'] + 1;
+			if($next < $max) break;
+		}
+		return $next;
+	}
+
 }

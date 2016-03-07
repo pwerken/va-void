@@ -13,10 +13,8 @@ ToDo-list:
    - [x] add all controllers under /api
    - [x] disable pagination on listings
    - [x] accept json for add/edit actions
-   - [ ] implement add functions
-   - [ ] after add redirect to new entity
-   - [ ] implement edit functions
-   - [ ] implement delete functions
+   - [/] implement 'add'/'delete'/'edit' functions
+   - [ ] after 'add' redirect to new entity
  - Authorization
    - [x] add authenticate/login/logout
    - [x] restrict page access based on role
@@ -28,6 +26,9 @@ ToDo-list:
    - [x] configurable per view query 'contain' information
    - [x] configure per view 'relatedModels'
    - [ ] refactor controllers
+ - Business logic
+   - [ ] add cascade on delete
+   - [ ] add validator rules
  - Lammy printing
    - [ ] create/manage printing queue
    - [ ] output pdf
@@ -42,7 +43,6 @@ ToDo-list:
  - Upstream
    - [ ] Crud cake3: configurable 'contain' relation
  - Web interface
-   - [ ] add validator rules
    - [x] test if the add/edit actions work with CRUD
    - [x] clean up Template/.ctp's
    - [ ] fancier edit form for character skills

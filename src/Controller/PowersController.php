@@ -11,8 +11,19 @@ class PowersController
 	{
 		parent::initialize();
 
-		$this->mapMethod('index', [ 'referee'         ]);
-		$this->mapmethod('view',  [ 'referee', 'user' ]);
+		$this->mapMethod('add',    [ 'referee'         ]);
+		$this->mapMethod('delete', [ 'super'           ]);
+		$this->mapMethod('edit',   [ 'referee'         ]);
+		$this->mapMethod('index',  [ 'referee'         ]);
+		$this->mapmethod('view',   [ 'referee', 'user' ]);
+	}
+
+	protected function canDelete($entity)
+	{
+		$this->loadModel('CharactersPowers');
+		$query = $this->CharactersPowers->find();
+		$query->where(['power_id' => $entity->id]);
+		return ($query->count() == 0);
 	}
 
 	protected function hasAuthUser($id = null)

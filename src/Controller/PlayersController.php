@@ -16,9 +16,11 @@ class PlayersController
 
 		$contain = [ 'Characters' ];
 
-		$this->mapMethod('edit',  [ 'infobalie', 'user' ]);
-		$this->mapMethod('index', [ 'referee'           ]);
-		$this->mapMethod('view',  [ 'referee',   'user' ], $contain);
+		$this->mapMethod('add',    [ 'infobalie'         ]);
+		$this->mapMethod('edit',   [ 'infobalie', 'user' ]);
+		$this->mapMethod('delete', [ 'super'             ]);
+		$this->mapMethod('index',  [ 'referee'           ]);
+		$this->mapMethod('view',   [ 'referee',   'user' ], $contain);
 
 		$this->Auth->allow(['logout']);
 	}
@@ -53,6 +55,14 @@ class PlayersController
 	public function logout()
 	{
 		return $this->redirect($this->Auth->logout());
+	}
+
+	protected function canDelete($entity)
+	{
+		$this->loadModel('Characters');
+		$query = $this->Characters->find();
+		$query->where(['player_id' => $entity->id]);
+		return ($query->count() == 0);
 	}
 
 }

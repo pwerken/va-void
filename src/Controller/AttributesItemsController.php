@@ -14,14 +14,22 @@ class AttributesItemsController
 
 		$contain = [ 'Attributes', 'Items' => [ 'Characters' ] ];
 
-		$this->mapMethod('attributesIndex', [ 'referee'   ], $contain);
+		$this->mapMethod('attributesIndex', [ 'referee' ], $contain);
 
-		$this->mapMethod('itemsEdit',       [ 'infobalie' ]);
-		$this->mapMethod('itemsIndex',      [ 'referee'   ], $contain);
-		$this->mapMethod('itemsView',       [ 'referee'   ], $contain);
+		$this->mapMethod('itemsAdd',        [ 'referee' ]);
+		$this->mapMethod('itemsDelete',     [ 'referee' ]);
+# There are no properties on this relation to edit
+#		$this->mapMethod('itemsEdit',       [ 'referee' ]);
+		$this->mapMethod('itemsIndex',      [ 'referee' ], $contain);
+		$this->mapMethod('itemsView',       [ 'referee' ], $contain);
 	}
 
-	public function itemsEdit($itin, $id)
+	public function itemsAdd($itin)
+	{
+		$this->request->data['item_id'] = $itin;
+		return $this->Crud->execute();
+	}
+	public function itemsDelete($itin, $id)
 	{
 		return $this->itemsView($itin, $id);
 	}
