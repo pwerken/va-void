@@ -100,7 +100,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <hr/>
 <?php
 	if ($user):
-		echo "You are logged in as '".$user['full_name']."'.<br/>";
+		echo "You are logged in as '".$user['full_name']."' (".$user['role'].").<br/>";
 		echo $this->Html->link(__('Logout'), '/api/logout');
 	else:
 		echo $this->Form->create('', ['url' => '/api/login']);
