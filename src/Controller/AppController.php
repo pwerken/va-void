@@ -73,6 +73,10 @@ class AppController
 				$this->response->location($this->request->here);
 				return $this->response;
 			});
+			$this->Crud->on('beforeDelete', function(Event $event) {
+				if(!$this->canDelete($event->subject->entity))
+					throw new BadRequestException("Entity is referenced", 412);
+			});
 			$this->Crud->on('afterDelete', function(Event $event) {
 				if(!$event->subject->success)
 					throw new BadRequestException('Failed to delete');
@@ -125,6 +129,11 @@ class AppController
 			array_unshift($args, $char);
 		}
 		return $args;
+	}
+
+	protected function canDelete($entity)
+	{
+		return true;
 	}
 
 	protected function hasAuth($level)
