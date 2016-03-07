@@ -1,39 +1,45 @@
 ToDo-list:
- - Code base
+ - Project details
    - [x] setup CakePHP 3.0
    - [x] created database layout
    - [x] add CRUD plugin
-   - [ ] add search functions: player/character/item/power/condition
    - [ ] project license
-   - [ ] update README.md
+   - [ ] update README.md, installation instructions
    - [x] share/publish repository on github
+   - [ ] write documentation
  - JSON interface
    - [x] add /api prefix
    - [x] always return json under /api (without .json extension)
    - [x] add all controllers under /api
    - [x] disable pagination on listings
    - [x] accept json for add/edit actions
-   - [/] implement 'add'/'delete'/'edit' functions
-   - [ ] after 'add' redirect to new entity
+   - [ ] after 'add' redirect to the new entity
  - Authorization
    - [x] add authenticate/login/logout
    - [x] restrict page access based on role
    - [ ] adjust content based on role
- - Expand route.php
-   - [x] characters url routing: from .../:id to .../:plin/:chin
-   - [x] restructure urls/controllers (relations, nesting)
- - Reduce CRUD-plugin boilerplating
-   - [x] configurable per view query 'contain' information
-   - [x] configure per view 'relatedModels'
-   - [ ] refactor controllers
+   - [ ] inital password creation
+   - [ ] password recovery
  - Business logic
+   - [x] implement 'add'/'delete'/'edit' functions
+   - [ ] add new characters
+   - [ ] assigning item to character
    - [ ] add cascade on delete
    - [ ] add validator rules
+   - [ ] add search functions
  - Lammy printing
    - [ ] create/manage printing queue
    - [ ] output pdf
  - Logging/accounting
    - [ ] logging of all modifications
+ - Custom route.php
+   - [x] characters url routing: from .../:id to .../:plin/:chin
+   - [x] restructure urls/controllers (relations, nesting)
+   - [ ] fix reverse routing (url generation)
+ - Reduce CRUD-plugin boilerplating
+   - [x] configurable per view query 'contain' information
+   - [x] configure per view 'relatedModels'
+   - [ ] refactor controllers
  - Automate import of Access
    - [x] import Access data to MySQL (1:1, no conversion)
    - [x] convert MySQL imported data to database layout
@@ -42,6 +48,7 @@ ToDo-list:
    - [ ] dummy lore code handling/generation
  - Upstream
    - [ ] Crud cake3: configurable 'contain' relation
+   - [ ] Crud cake3: support multiple primary keys
  - Web interface
    - [x] test if the add/edit actions work with CRUD
    - [x] clean up Template/.ctp's
