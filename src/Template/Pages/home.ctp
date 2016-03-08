@@ -41,51 +41,10 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <body class="home">
     <div id="content">
         <div class="row">
-<table cellpadding="0" cellspacing="0">
-<thead>
-    <tr>
-        <th>Path (json api)</th>
-        <th>Description</th>
-        <th>Actions</th>
-    </tr>
-</thead>
-<tbody>
-<?php
-    $items =
-        [   [ 'controller' => 'Players', 'id' => [ 987 ]
-            , 'description' => 'Peter van de Werken' ]
-        ,   [ 'controller' => 'Characters', 'id' => [ 987, 2 ]
-            , 'description' => 'Azuma' ]
-        ,   [ 'controller' => 'Items', 'id' => [ 724 ]
-            , 'description' => 'Parta' ]
-        ,   [ 'controller' => 'Powers', 'id' => [ 2462 ]
-            , 'description' => 'Purify Body (2)' ]
-        ,   [ 'controller' => 'Conditions', 'id' => [ 3137 ]
-            , 'description' => 'Mark of Nimpf' ]
-        ];
-
-    foreach ($items as $item):
-        $urlList = '/' . strtolower($item['controller']);
-        $urlItem = $urlList . '/' . implode('/', $item['id']);
-        ?>
-    <tr>
-        <td> / <?= h(strtolower($item['controller'])) ?>
-          / <?= implode($item['id'], ' / ') ?></td>
-        <td><?= h($item['description']) ?></td>
-        <td class="actions">
-            <?= $this->Html->link(__('Index'), $urlList) ?>
-            <?= $this->Html->link(__('View'), $urlItem) ?>
-        </td>
-    </tr>
-<?php endforeach; ?>
-</tbody>
-</table>
-<?= $this->Html->link('/help/routes') ?><br/>
-<hr/>
 <?php
 
 	if ($user):
-		echo "You are logged in as '".$user['full_name']."' (".$user['role'].").<br/>";
+		echo $user['full_name']." (".$user['role'].") ";
 		echo $this->Html->link(__('Logout'), '/logout');
 	else:
 		echo $this->Form->create('', ['url' => '/login']);
@@ -98,7 +57,66 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 	endif;
 
 ?>
+<hr/>
+<table cellpadding="0" cellspacing="0">
+<thead>
+    <tr>
+        <th>Uri's</th>
+    </tr>
+</thead>
+<tbody>
+<?php
+    $list =
+        [ [ 'help', 'routes' ]
+        , [ 'players' ]
+		, [ 'players', 987 ]
+		, [ 'players', 987, 'characters' ]
+        , [ 'characters', 987, 2 ]
+        , [ 'characters', 987, 2, 'items' ]
+        , [ 'characters', 987, 2, 'conditions' ]
+        , [ 'characters', 987, 2, 'conditions', 3137 ]
+        , [ 'characters', 987, 2, 'powers' ]
+        , [ 'characters', 987, 2, 'powers', 2462 ]
+        , [ 'characters', 987, 2, 'skills' ]
+        , [ 'characters', 987, 2, 'skills', 1 ]
+        , [ 'characters', 987, 2, 'spells' ]
+        , [ 'characters', 987, 2, 'spells', 9 ]
+        , [ 'items' ]
+        , [ 'items', 724 ]
+        , [ 'items', 724, 'attributes' ]
+        , [ 'items', 724, 'attributes', 482 ]
+        , [ 'attributes' ]
+        , [ 'attributes', 482 ]
+        , [ 'attributes', 482, 'items' ]
+        , [ 'powers' ]
+        , [ 'powers', 2462 ]
+        , [ 'powers', 2462, 'characters' ]
+        , [ 'conditions' ]
+        , [ 'conditions', 3137 ]
+        , [ 'conditions', 3137, 'characters' ]
+        , [ 'factions' ]
+        , [ 'factions', 2 ]
+        , [ 'factions', 2, 'characters' ]
+        , [ 'believes' ]
+        , [ 'believes', 2 ]
+        , [ 'believes', 2, 'characters' ]
+        , [ 'groups' ]
+        , [ 'groups', 3 ]
+        , [ 'groups', 3, 'characters' ]
+        , [ 'worlds' ]
+        , [ 'worlds', 2 ]
+        , [ 'worlds', 2, 'characters' ]
+        ];
 
+    foreach ($list as $params):
+        $url = '/' . implode('/', $params);
+        ?>
+    <tr>
+        <td><?= $this->Html->link($url); ?></td>
+    </tr>
+<?php endforeach; ?>
+</tbody>
+</table>
         </div>
         <hr/>
         <div class="row">
