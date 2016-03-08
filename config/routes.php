@@ -53,9 +53,23 @@ Router::scope('/', function ($routes) {
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
      */
-    $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
+	$defaults = [];
+	$defaults['_method'] = 'GET';
+	$defaults['controller'] = 'Pages';
+	$defaults['action'] = 'display';
+    $routes->connect('/help/*', $defaults);
 
-    $routes->scope('/api', function ($routes) {
+	$defaults = [];
+	$defaults['_method'] = ['GET', 'PUT', 'POST'];
+	$defaults['controller'] = 'Players';
+	$defaults['action'] = 'login';
+	$routes->connect('/login', $defaults);
+
+	$defaults = [];
+	$defaults['_method'] = 'GET';
+	$defaults['controller'] = 'Players';
+	$defaults['action'] = 'logout';
+	$routes->connect('/logout', $defaults);
 
 function getKeys($controller) {
 	switch($controller) {
@@ -157,55 +171,24 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 	}
 }
 
-        rest($routes, 'Characters'
-                        , [ 'Items' ]
-						, [ ]
-                        , [ 'Conditions', 'Powers', 'Skills', 'Spells' ]
-                        );
-        rest($routes, 'Items', [], [], ['Attributes']);
+	rest($routes, 'Characters'
+					, [ 'Items' ]
+					, [ ]
+					, [ 'Conditions', 'Powers', 'Skills', 'Spells' ]
+					);
+	rest($routes, 'Items', [], [], ['Attributes']);
 
-        rest($routes, 'Attributes', [], [ 'Items' ]);
-        rest($routes, 'Conditions', [], [ 'Characters' ]);
-        rest($routes, 'Powers',     [], [ 'Characters' ]);
-        rest($routes, 'Skills',     [], [ 'Characters' ]);
-        rest($routes, 'Spells',     [], [ 'Characters' ]);
+	rest($routes, 'Attributes', [], [ 'Items' ]);
+	rest($routes, 'Conditions', [], [ 'Characters' ]);
+	rest($routes, 'Powers',     [], [ 'Characters' ]);
+	rest($routes, 'Skills',     [], [ 'Characters' ]);
+	rest($routes, 'Spells',     [], [ 'Characters' ]);
 
-        rest($routes, 'Believes', [ 'Characters' ]);
-        rest($routes, 'Factions', [ 'Characters' ]);
-        rest($routes, 'Groups',   [ 'Characters' ]);
-        rest($routes, 'Players',  [ 'Characters' ]);
-        rest($routes, 'Worlds',   [ 'Characters' ]);
-
-		$defaults = [];
-		$defaults['_method'] = ['PUT', 'POST'];
-		$defaults['controller'] = 'Players';
-		$defaults['action'] = 'login';
-		$routes->connect('/login', $defaults, []);
-
-		$defaults = [];
-		$defaults['_method'] = 'GET';
-		$defaults['controller'] = 'Players';
-		$defaults['action'] = 'logout';
-		$routes->connect('/logout', $defaults, []);
-    });
-
-    /**
-     * Connect catchall routes for all controllers.
-     *
-     * Using the argument `DashedRoute`, the `fallbacks` method is a shortcut for
-     *    `$routes->connect('/:controller', ['action' => 'index'], ['routeClass' => 'DashedRoute']);`
-     *    `$routes->connect('/:controller/:action/*', [], ['routeClass' => 'DashedRoute']);`
-     *
-     * Any route class can be used with this method, such as:
-     * - DashedRoute
-     * - InflectedRoute
-     * - Route
-     * - Or your own route class
-     *
-     * You can remove these routes once you've connected the
-     * routes you want in your application.
-     */
-    $routes->fallbacks('DashedRoute');
+	rest($routes, 'Believes', [ 'Characters' ]);
+	rest($routes, 'Factions', [ 'Characters' ]);
+	rest($routes, 'Groups',   [ 'Characters' ]);
+	rest($routes, 'Players',  [ 'Characters' ]);
+	rest($routes, 'Worlds',   [ 'Characters' ]);
 });
 
 /**

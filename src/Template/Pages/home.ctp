@@ -41,22 +41,6 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <body class="home">
     <div id="content">
         <div class="row">
-            <div class="actions columns large-2 medium-3">
-                <ul class="side-nav">
-<li><?= $this->Html->link(__('List Players'), ['controller' => 'Players', 'action' => 'index']) ?> </li>
-<li><?= $this->Html->link(__('List Characters'), ['controller' => 'Characters', 'action' => 'index']) ?> </li>
-<li><?= $this->Html->link(__('List Factions'), ['controller' => 'Factions', 'action' => 'index']) ?> </li>
-<li><?= $this->Html->link(__('List Believes'), ['controller' => 'Believes', 'action' => 'index']) ?> </li>
-<li><?= $this->Html->link(__('List Groups'), ['controller' => 'Groups', 'action' => 'index']) ?> </li>
-<li><?= $this->Html->link(__('List Worlds'), ['controller' => 'Worlds', 'action' => 'index']) ?> </li>
-<li><?= $this->Html->link(__('List Items'), ['controller' => 'Items', 'action' => 'index']) ?> </li>
-<li><?= $this->Html->link(__('List Conditions'), ['controller' => 'Conditions', 'action' => 'index']) ?> </li>
-<li><?= $this->Html->link(__('List Powers'), ['controller' => 'Powers', 'action' => 'index']) ?> </li>
-<li><?= $this->Html->link(__('List Skills'), ['controller' => 'Skills', 'action' => 'index']) ?> </li>
-<li><?= $this->Html->link(__('List Spells'), ['controller' => 'Spells', 'action' => 'index']) ?> </li>
-                </ul>
-            </div>
-            <div class="characters index large-10 medium-9 columns">
 <table cellpadding="0" cellspacing="0">
 <thead>
     <tr>
@@ -81,11 +65,11 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         ];
 
     foreach ($items as $item):
-        $urlList = '/api/' . strtolower($item['controller']);
+        $urlList = '/' . strtolower($item['controller']);
         $urlItem = $urlList . '/' . implode('/', $item['id']);
         ?>
     <tr>
-        <td> / api / <?= h(strtolower($item['controller'])) ?>
+        <td> / <?= h(strtolower($item['controller'])) ?>
           / <?= implode($item['id'], ' / ') ?></td>
         <td><?= h($item['description']) ?></td>
         <td class="actions">
@@ -96,24 +80,25 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <?php endforeach; ?>
 </tbody>
 </table>
-<?= $this->Html->link('/pages/routes') ?>
+<?= $this->Html->link('/help/routes') ?><br/>
 <hr/>
 <?php
+
 	if ($user):
 		echo "You are logged in as '".$user['full_name']."' (".$user['role'].").<br/>";
-		echo $this->Html->link(__('Logout'), '/api/logout');
+		echo $this->Html->link(__('Logout'), '/logout');
 	else:
-		echo $this->Form->create('', ['url' => '/api/login']);
+		echo $this->Form->create('', ['url' => '/login']);
 		echo "<fieldset>\n";
-		echo $this->Form->input('id', ['label' => 'Plin']);
-		echo $this->Form->input('password');
+		echo $this->Form->input('id', ['label' => 'Plin', 'type' => 'text']);
+		echo $this->Form->input('password', ['type'=>'password']);
 		echo $this->Form->button(__('Login'));
 		echo "</fieldset>\n";
 		echo $this->Form->end();
 	endif;
+
 ?>
 
-            </div>
         </div>
         <hr/>
         <div class="row">

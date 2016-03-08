@@ -42,54 +42,52 @@ class AppController
 			, 'authorize' => ['Controller']
 			, 'unauthorizedRedirect' => false
 			, 'checkAuthIn' => 'Controller.initialize'
-			, 'loginAction' => '/api/login'
+			, 'loginAction' => '/login'
 			, 'logoutRedirect' => '/'
 			]
 		);
 
-		if($this->request->is('json')) {
-			$this->viewBuilder()->className('Api');
-			if(!$this->request->is('post'))
-				$this->request->data = $this->request->input('json_decode', 1);
+		$this->viewBuilder()->className('Api');
+		if(!$this->request->is('post'))
+			$this->request->data = $this->request->input('json_decode',1) ?: [];
 
-			$error = json_last_error();
-			if($error != JSON_ERROR_NONE) {
-				$msg = sprintf("Failed to parse json, error: %s '%s'"
-								, $error, json_last_error_msg());
-				throw new BadRequestException($msg);
+		$error = json_last_error();
+		if($error != JSON_ERROR_NONE) {
+			$msg = sprintf("Failed to parse json, error: %s '%s'"
+							, $error, json_last_error_msg());
+			throw new BadRequestException($msg);
+		}
+
+		$this->Crud->on('afterSave', function(Event $event) {
+			if(!$event->subject->success)
+				throw new ValidationException($event->subject->entity);
+
+			if($event->subject->created) {
+				$this->response->statusCode(302);
+				//FIXME redirect to location of new entity
+				return $this->response;
 			}
 
-			$this->Crud->on('afterSave', function(Event $event) {
-				if(!$event->subject->success)
-					throw new ValidationException($event->subject->entity);
+			$this->response->statusCode(303);
+			$this->response->location($this->request->here);
+			return $this->response;
+		});
+		$this->Crud->on('beforeDelete', function(Event $event) {
+			if(!$this->canDelete($event->subject->entity))
+				throw new BadRequestException("Entity is referenced", 412);
+		});
+		$this->Crud->on('afterDelete', function(Event $event) {
+			if(!$event->subject->success)
+				throw new BadRequestException('Failed to delete');
 
-				if($event->subject->created) {
-					$this->response->statusCode(302);
-					//FIXME redirect to location of new entity
-					return $this->response;
-				}
-
-				$this->response->statusCode(303);
-				$this->response->location($this->request->here);
-				return $this->response;
-			});
-			$this->Crud->on('beforeDelete', function(Event $event) {
-				if(!$this->canDelete($event->subject->entity))
-					throw new BadRequestException("Entity is referenced", 412);
-			});
-			$this->Crud->on('afterDelete', function(Event $event) {
-				if(!$event->subject->success)
-					throw new BadRequestException('Failed to delete');
-
-				$this->response->statusCode(204);
-				return $this->response;
-			});
-			$this->Crud->on('beforeRedirect', function(Event $event) {
-				if(method_exists($this->Crud->action(), 'publishViewVar'))
-					$this->Crud->action()->publishViewVar($event);
-				return $this->render();
-			});
-        }
+			$this->response->statusCode(204);
+			return $this->response;
+		});
+		$this->Crud->on('beforeRedirect', function(Event $event) {
+			if(method_exists($this->Crud->action(), 'publishViewVar'))
+				$this->Crud->action()->publishViewVar($event);
+			return $this->render();
+		});
 	}
 
 	public function paginate($query = null)

@@ -8,9 +8,8 @@ ToDo-list:
    - [x] share/publish repository on github
    - [ ] write documentation
  - JSON interface
-   - [x] add /api prefix
-   - [x] always return json under /api (without .json extension)
-   - [x] add all controllers under /api
+   - [x] always return json
+   - [x] add all controllers
    - [x] disable pagination on listings
    - [x] accept json for add/edit actions
    - [ ] after 'add' redirect to the new entity
@@ -49,11 +48,3 @@ ToDo-list:
  - Upstream
    - [ ] Crud cake3: configurable 'contain' relation
    - [ ] Crud cake3: support multiple primary keys
- - Web interface
-   - [x] test if the add/edit actions work with CRUD
-   - [x] clean up Template/.ctp's
-   - [ ] fancier edit form for character skills
-   - [ ] date input fields: text+calendar
-   - [ ] select => combobox (with search)
-   - [ ] infobalie uitcheck forms
-   - [ ] make a proper home.ctp for /

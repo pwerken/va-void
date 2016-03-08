@@ -43,12 +43,12 @@ class PlayersController
 					[ 'sub' => $user['id']
 					, 'exp' =>  time() + 604800
 					], Security::salt())
-				, 'player' => '/api/players/'.$user['id']
+				, 'player' => '/players/'.$user['id']
 				]
 			]);
 
 		if($this->request->is('post'))
-			$this->redirect('/api/players/'.$user['id'], 302);
+			$this->redirect('/players/'.$user['id'], 302);
 	}
 
 	public function logout()

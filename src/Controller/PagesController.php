@@ -13,6 +13,7 @@ class PagesController
 	{
 		parent::initialize();
 
+		$this->viewBuilder()->className('App');
 		$this->Auth->allow('display');
 	}
 
@@ -45,4 +46,5 @@ class PagesController
 			throw new NotFoundException();
 		}
 	}
+
 }
