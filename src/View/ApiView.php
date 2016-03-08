@@ -59,7 +59,7 @@ class ApiView extends View
 
 	private function _jsonUrl($value = null) {
         if(is_null($value)) {
-			return substr($this->request->url, 3);
+			return '/'.$this->request->url;
 		}
 
         $class = $this->_class($value);
