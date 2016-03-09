@@ -1,6 +1,6 @@
 # VA-Void
 
-[Vortex Adventues](http://www.the-vortex.nl) - Vortex Ingame character Database
+[Vortex Adventues](http://www.the-vortex.nl) - **Vo**rtex **I**ngame character **D**atabase
 
 The code can be found here: [pwerken/va-void](https://github.com/pwerken/va-void).
 
