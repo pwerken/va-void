@@ -30,17 +30,19 @@ Add a matching route to <?= 'config' . DS . 'routes.php' ?></p>
 
 <h3>Connected Routes</h3>
 <table cellspacing="0" cellpadding="0">
-<tr><th>Template</th><th>Defaults</th><th>Options</th></tr>
+<tr><th>Path</th><th>HTTP Method</th><th>Function</th></tr>
 <?php
-foreach (Router::routes() as $route):
-    echo '<tr>';
-    printf(
-        '<td width="25%%">%s</td><td>%s</td><td width="20%%">%s</td>',
-        $route->template,
-        Debugger::exportVar($route->defaults),
-        Debugger::exportVar($route->options)
-    );
-    echo '</tr>';
+foreach (Router::routes() as $key => $route):
+	$method = @$route->defaults['_method'] ?: 'GET';
+	if(is_array($method))
+		$method = implode(',', $method);
+
+	$function = $route->defaults['controller'].'::'.$route->defaults['action'];
+
+    printf( "<tr><td>%s</td><td>%s</td><td>%s</td></tr>\n"
+			, $route->template
+			, $method, $function
+			);
 endforeach;
 ?>
 </table>
