@@ -32,6 +32,25 @@ class ItemsController
 		return $this->Crud->execute();
 	}
 
+	public function edit($itin)
+	{
+		if(isset($this->request->data['plin'])
+		|| isset($this->request->data['chin']))
+		{
+			$plin = $this->request->data('plin');
+			$chin = $this->request->data('chin');
+
+			$this->loadModel('Characters');
+			$char = $this->Characters->findByPlayerIdAndChin($plin, $chin)->first();
+			$this->request->data('character_id', $char ? $char->id : -1);
+		}
+
+		$this->request->data('plin', null);
+		$this->request->data('chin', null);
+
+		return $this->Crud->execute();
+	}
+
 	public function charactersIndex($plin, $chin)
 	{
 		$this->loadModel('Characters');

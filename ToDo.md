@@ -22,7 +22,7 @@ ToDo-list:
  - Business logic
    - [x] implement 'add'/'delete'/'edit' functions
    - [ ] add new characters
-   - [ ] assigning item to character
+   - [x] assigning item to character
    - [ ] add cascade on delete
    - [ ] add validator rules
    - [ ] add search functions
