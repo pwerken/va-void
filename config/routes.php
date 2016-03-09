@@ -100,6 +100,10 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 			];
 
 	foreach($map as $method => $options) {
+		// hacky special case #1
+		if($name == 'Characters' && $method == 'add')
+			continue;
+
 		$defaults['_method'] = $options['_method'];
 		$defaults['controller'] = $name;
 		$defaults['action'] = $method;
@@ -168,6 +172,16 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 				$routes->connect($urlNest, $defaults, $routeOptions2);
 			}
 		}
+	}
+
+	// hacky special case #2
+	if($name == 'Players') {
+		$defaults = [];
+		$defaults['_method'] = 'PUT';
+		$defaults['controller'] = 'Characters';
+		$defaults['action'] = 'add';
+		$routeOptions = [ 'pass' => ['plin'], 'plin' => '[0-9]+' ];
+		$routes->connect('/players/:plin/characters', $defaults, $routeOptions);
 	}
 }
 
