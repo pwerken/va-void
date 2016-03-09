@@ -4,9 +4,10 @@ ToDo-list:
    - [x] created database layout
    - [x] add CRUD plugin
    - [ ] project license
-   - [ ] update README.md, installation instructions
+   - [x] update README.md
+   - [ ] improve installation instructions
    - [x] share/publish repository on github
-   - [ ] write documentation
+   - [ ] write API documentation
  - JSON interface
    - [x] always return json
    - [x] add all controllers
@@ -19,6 +20,7 @@ ToDo-list:
    - [ ] adjust content based on role
    - [ ] inital password creation
    - [ ] password recovery
+   - [ ] link to valea for credentials/password management
  - Business logic
    - [x] implement 'add'/'delete'/'edit' functions
    - [ ] add new characters
@@ -26,11 +28,13 @@ ToDo-list:
    - [ ] add cascade on delete
    - [ ] add validator rules
    - [ ] add search functions
+   - [ ] track "teaching"
  - Lammy printing
    - [ ] create/manage printing queue
    - [ ] output pdf
  - Logging/accounting
    - [ ] logging of all modifications
+   - [ ] entity versioning
  - Custom route.php
    - [x] characters url routing: from .../:id to .../:plin/:chin
    - [x] restructure urls/controllers (relations, nesting)
@@ -45,6 +49,6 @@ ToDo-list:
  - Item attributes
    - [x] rename lorType field
    - [ ] dummy lore code handling/generation
- - Upstream
+ - Upstream changes
    - [ ] Crud cake3: configurable 'contain' relation
    - [ ] Crud cake3: support multiple primary keys

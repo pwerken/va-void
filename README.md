@@ -1,24 +1,16 @@
-# CakePHP Application Skeleton
+# VA-Void
 
-[![Build Status](https://img.shields.io/travis/cakephp/app/master.svg?style=flat-square)](https://travis-ci.org/cakephp/app)
-[![License](https://img.shields.io/packagist/l/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app)
+[Vortex Adventues](http://www.the-vortex.nl) - Vortex Ingame character Database
 
-A skeleton for creating applications with [CakePHP](http://cakephp.org) 3.x.
-
-The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
+The code can be found here: [pwerken/va-void](https://github.com/pwerken/va-void).
 
 ## Installation
 
-1. Download [Composer](http://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
-2. Run `php composer.phar create-project --prefer-dist cakephp/app [app_name]`.
+Download [Composer](http://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
 
-If Composer is installed globally, run
-```bash
-composer create-project --prefer-dist cakephp/app [app_name]
-```
-
-You should now be able to visit the path to where you installed the app and see
-the setup traffic lights.
+1. `git clone https://github.com/pwerken/va-void.git`
+2. `cd va-void`
+3. `composer install`
 
 ## Configuration
 
