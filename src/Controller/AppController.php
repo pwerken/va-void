@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\AuthState;
 use App\Model\Entity\JsonEntity;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
@@ -100,9 +101,11 @@ class AppController
 
 	public function isAuthorized($user)
 	{
+		AuthState::setAuth($this->Auth, $this->hasAuthUser());
+
 		$auths = $this->Crud->action()->config('auth') ?: ['super'];
-		foreach($auths as $level) {
-			if($this->hasAuth($level))
+		foreach($auths as $role) {
+			if(AuthState::hasRole($role))
 				return true;
 		}
 		return false;
@@ -134,25 +137,10 @@ class AppController
 		return true;
 	}
 
-	protected function hasAuth($level)
-	{
-		if(strcasecmp($level, $this->Auth->user('role')) == 0)
-			return true;
-
-		switch(strtolower($level)) {
-		case 'user':		return $this->hasAuthUser();
-		case 'player':		return $this->hasAuth('referee');
-		case 'referee':		return $this->hasAuth('infobalie');
-		case 'infobalie':	return $this->hasAuth('super');
-		}
-
-		return false;
-	}
 	protected function hasAuthUser($id = null)
 	{
-		if($id === null)
-			$id = (int)$this->request->param('plin');
-		return $this->Auth->user('id') == $id;
+		$id = ($id ?: $this->request->param('plin'));
+		return ($this->Auth->user('id') == $id);
 	}
 
 	protected function mapMethod($action, $auth, $contain = [])

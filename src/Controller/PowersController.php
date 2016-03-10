@@ -28,7 +28,7 @@ class PowersController
 
 	protected function hasAuthUser($id = null)
 	{
-		$poin = (int)$this->request->param('poin');
+		$poin = $this->request->param('poin');
 		$this->loadModel('CharactersPowers');
 		$data = $this->CharactersPowers->find()
 					->hydrate(false)
@@ -36,7 +36,7 @@ class PowersController
 					->where(['CharactersPowers.power_id' => $poin])
 					->contain('Characters')
 					->first();
-		return parent::hasAuthUser(@$data['player_id'] ?: -1);
+		return parent::hasAuthUser(@$data['player_id']);
 	}
 
 }

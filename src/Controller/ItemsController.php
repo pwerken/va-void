@@ -83,14 +83,14 @@ class ItemsController
 
 	protected function hasAuthUser($id = null)
 	{
-		$itin = (int)$this->request->param('itin');
+		$itin = $this->request->param('itin');
 		$data = $this->Items->find()
 					->hydrate(false)
 					->select(['player_id' => 'Characters.player_id'])
 					->where(['Items.id' => $itin])
 					->contain('Characters')
 					->first();
-		return parent::hasAuthUser(@$data['player_id'] ?: -1);
+		return parent::hasAuthUser(@$data['player_id']);
 	}
 
 	private function nextFreeItin()
