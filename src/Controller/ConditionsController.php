@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\AuthState;
 use App\Controller\AppController;
 
 class ConditionsController
@@ -11,11 +12,13 @@ class ConditionsController
 	{
 		parent::initialize();
 
+		$contain = [ 'Characters' ];
+
 		$this->mapMethod('add',    [ 'referee'         ]);
 		$this->mapMethod('delete', [ 'super'           ]);
 		$this->mapMethod('edit',   [ 'referee'         ]);
 		$this->mapMethod('index',  [ 'referee'         ]);
-		$this->mapMethod('view',   [ 'referee', 'user' ]);
+		$this->mapMethod('view',   [ 'referee', 'user' ], $contain);
 	}
 
 	protected function canDelete($entity)

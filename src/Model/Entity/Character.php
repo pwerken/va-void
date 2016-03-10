@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Entity;
 
+use App\AuthState;
 use Cake\ORM\Entity;
 
 class Character extends Entity {
@@ -9,7 +10,21 @@ class Character extends Entity {
 		[ 'id'
 		];
 
-	protected function _getDisplayName() {
+	public function __construct($properties = [], $options = [])
+	{
+		parent::__construct($properties, $options);
+
+		if(AuthState::hasRole('user') || AuthState::hasRole('super')) {
+			$this->accessible('password', true);
+		}
+
+		if(!AuthState::hasRole('referee')) {
+			$this->_hidden[] = 'comments';
+		}
+	}
+
+	protected function _getDisplayName()
+	{
 		return $this->_properties['player_id']
 			. '-' . $this->_properties['chin']
 			. ': ' . $this->_properties['name'];

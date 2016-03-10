@@ -11,11 +11,13 @@ class PowersController
 	{
 		parent::initialize();
 
+		$contain = [ 'Characters' ];
+
 		$this->mapMethod('add',    [ 'referee'         ]);
 		$this->mapMethod('delete', [ 'super'           ]);
 		$this->mapMethod('edit',   [ 'referee'         ]);
 		$this->mapMethod('index',  [ 'referee'         ]);
-		$this->mapmethod('view',   [ 'referee', 'user' ]);
+		$this->mapmethod('view',   [ 'referee', 'user' ], $contain);
 	}
 
 	protected function canDelete($entity)

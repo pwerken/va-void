@@ -17,7 +17,7 @@ ToDo-list:
  - Authorization
    - [x] add authenticate/login/logout
    - [x] restrict page access based on role
-   - [ ] adjust content based on role
+   - [x] adjust content based on role
    - [ ] inital password creation
    - [ ] password recovery
    - [ ] link to valea for credentials/password management
