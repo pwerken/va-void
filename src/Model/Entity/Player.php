@@ -37,11 +37,18 @@ class Player
 				.  $this->_properties['last_name'];
 	}
 
-	public function _setPassword($password) {
+	public function _setPassword($password)
+	{
 		return (new DefaultPasswordHasher)->hash($password);
 	}
 
-	public static function labelsRoles($keys = false) {
+	public static function labelPassword($key = null)
+	{
+		return isset($key);
+	}
+
+	public static function labelsRoles($keys = false)
+	{
 		static $data = null;
 		if(is_null($data))
 			$data = [ 'Player'      => __('Player')
@@ -51,14 +58,17 @@ class Player
 					];
 		return ($keys ? array_keys($data) : $data);
 	}
-	public static function labelRole($key = null) {
+
+	public static function labelRole($key = null)
+	{
 		$data = self::labelsRoles();
 		if(isset($data[$key]))
 			return $data[$key];
 		return null;
 	}
 
-	public static function labelsGenders($keys = false) {
+	public static function labelsGenders($keys = false)
+	{
 		static $data = null;
 		if(is_null($data))
 			$data = [ 'F' => __('Female')
@@ -66,7 +76,9 @@ class Player
 					];
 		return ($keys ? array_keys($data) : $data);
 	}
-	public static function labelGender($key = null) {
+
+	public static function labelGender($key = null)
+	{
 		$data = self::labelsGenders();
 		if(isset($data[$key]))
 			return $data[$key];
