@@ -21,7 +21,7 @@ class Player
 			$this->accessible('password', true);
 		}
 		if(!AuthState::hasRole('infobalie')) {
-			$this->hidden[] = 'password';
+			$this->_hidden[] = 'password';
 		}
 	}
 
