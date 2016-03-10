@@ -9,13 +9,9 @@ class Player
 	extends Entity
 {
 
-	protected $_accessible =
-		[ 'password' => false
-		, '*' => true
-		];
+	protected $_accessible = [ 'password' => false, '*' => true ];
 
-	protected $_virtual =
-		[ 'full_name' ];
+	protected $_virtual = [ 'full_name' ];
 
 	public function __construct($properties = [], $options = [])
 	{
@@ -25,16 +21,8 @@ class Player
 			$this->accessible('password', true);
 		}
 		if(!AuthState::hasRole('infobalie')) {
-			$this->hiddenProperties(['password']);
+			$this->hidden[] = 'password';
 		}
-	}
-
-	protected function _getFullName()
-	{
-		return $this->_properties['first_name'] . ' '
-				. (empty($this->_properties['insertion'])
-					? '' : $this->_properties['insertion'] . ' ')
-				.  $this->_properties['last_name'];
 	}
 
 	public function _setPassword($password)
@@ -58,7 +46,6 @@ class Player
 					];
 		return ($keys ? array_keys($data) : $data);
 	}
-
 	public static function labelRole($key = null)
 	{
 		$data = self::labelsRoles();
@@ -76,7 +63,6 @@ class Player
 					];
 		return ($keys ? array_keys($data) : $data);
 	}
-
 	public static function labelGender($key = null)
 	{
 		$data = self::labelsGenders();
@@ -84,4 +70,12 @@ class Player
 			return $data[$key];
 		return null;
 	}
+
+	protected function _getFullName()
+	{
+		return $this->first_name
+				. (empty($this->insertion) ? '' : ' ' . $this->insertion)
+				. ' ' . $this->last_name;
+	}
+
 }

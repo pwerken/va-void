@@ -22,11 +22,6 @@ class Item
 		}
 	}
 
-	protected function _getDisplayName() {
-		return $this->_properties['id']
-			. ': ' . $this->_properties['name'];
-	}
-
 	protected function _getPlin()
 	{
 		return @$this->character->player_id;

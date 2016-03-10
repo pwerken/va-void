@@ -1,6 +1,8 @@
 <?php
 namespace App\Model\Entity;
 
-class Power extends Condition {
+class Power
+	extends Condition
+{
 
 }

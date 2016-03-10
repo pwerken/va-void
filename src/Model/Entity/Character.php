@@ -4,11 +4,11 @@ namespace App\Model\Entity;
 use App\AuthState;
 use Cake\ORM\Entity;
 
-class Character extends Entity {
+class Character
+	extends Entity
+{
 
-	protected $_hidden =
-		[ 'id'
-		];
+	protected $_hidden = [ 'id' ];
 
 	public function __construct($properties = [], $options = [])
 	{
@@ -29,4 +29,5 @@ class Character extends Entity {
 			. '-' . $this->_properties['chin']
 			. ': ' . $this->_properties['name'];
 	}
+
 }
