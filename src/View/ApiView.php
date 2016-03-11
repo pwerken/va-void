@@ -118,6 +118,7 @@ class ApiView extends View
 			return $obj;
 
 		$result = [];
+		$result['class'] = $this->_class($obj);
 		$result['url'] = $this->_jsonUrl($obj);
         $class = $this->_class($obj);
 
@@ -143,6 +144,7 @@ class ApiView extends View
 	}
 	private function _jsonList($objs, $parent = null) {
 		$result = [];
+		$result['class'] = 'List';
         $result['url'] = $this->_jsonUrl();
 
 		$remove = '';
@@ -187,6 +189,7 @@ class ApiView extends View
 			return $obj->get('name');
 
         $result = [];
+        $result['class'] = $class;
         $result['url'] = $this->_jsonUrl($obj);
         foreach($properties as $key) {
             $value = $this->_jsonCompact($obj->get($key));
