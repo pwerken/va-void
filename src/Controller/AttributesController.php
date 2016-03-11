@@ -23,7 +23,7 @@ class AttributesController
 		$this->loadModel('AttributesItems');
 		$query = $this->AttributesItems->find();
 		$query->where(['character_id' => $entity->id]);
-		return ($query->count() == 0)
+		return ($query->count() == 0);
 	}
 
 }
