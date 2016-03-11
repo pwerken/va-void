@@ -8,6 +8,7 @@ use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Network\Exception\BadRequestException;
 use Cake\ORM\ResultSet;
+use Cake\Utility\Inflector;
 use Crud\Error\Exception\ValidationException;
 
 class AppController
@@ -63,6 +64,7 @@ class AppController
 	public function implementedEvents()
 	{
 		$events = parent::implementedEvents();
+		$events['Crud.beforeHandle']   = 'CrudBeforeHandle';
 		$events['Crud.afterSave']      = 'CrudAfterSave';
 		$events['Crud.beforeDelete']   = 'CrudBeforeDelete';
 		$events['Crud.afterDelete']    = 'CrudAfterDelete';
@@ -90,6 +92,18 @@ class AppController
 		return parent::paginate($query);
 	}
 
+	public function CrudBeforeHandle(Event $event)
+	{
+		switch($event->subject->action) {
+		case 'charactersDelete':
+		case 'charactersEdit':
+		case 'charactersView':
+			$event->subject->args = $this->argsCharId($event->subject->args);
+			break;
+		default:
+			break;
+		}
+	}
 	public function CrudAfterSave(Event $event)
 	{
 		if(!$event->subject->success)
@@ -101,10 +115,12 @@ class AppController
 			return $this->response;
 		}
 
-		$this->response->statusCode(200);
-		//FIXME render the new object
-#		$this->response->location($this->request->here);
-		return $this->response;
+		$action = $this->request->params['action'];
+		$action = lcfirst(Inflector::camelize(substr($action, 0, -4)."_view"));
+		$this->request->params['_method'] = 'GET';
+		$this->request->params['action'] = $action;
+		$this->Crud->beforeFilter($event);
+		return $this->invokeAction();
 	}
 	public function CrudBeforeDelete(Event $event)
 	{

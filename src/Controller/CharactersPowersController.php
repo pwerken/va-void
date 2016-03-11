@@ -31,14 +31,6 @@ class CharactersPowersController
 
 		return $this->Crud->execute();
 	}
-	public function charactersDelete($plin, $chin, $poin)
-	{
-		return $this->charactersView($plin, $chin, $poin);
-	}
-	public function charactersEdit($plin, $chin, $poin)
-	{
-		return $this->charactersView($plin, $chin, $poin);
-	}
 	public function charactersIndex($plin, $chin)
 	{
 		$this->loadModel('Characters');
@@ -48,13 +40,6 @@ class CharactersPowersController
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($parent) {
 				$event->subject->query->where(['character_id' => $parent->id]);
-		});
-		return $this->Crud->execute();
-	}
-	public function charactersView($plin, $chin, $poin)
-	{
-		$this->Crud->on('beforeHandle', function(Event $event) {
-			$event->subject->args = $this->argsCharId($event->subject->args);
 		});
 		return $this->Crud->execute();
 	}

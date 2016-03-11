@@ -31,14 +31,6 @@ class CharactersConditionsController
 
 		return $this->Crud->execute();
 	}
-	public function charactersDelete($plin, $chin, $coin)
-	{
-		return $this->charactersView($plin, $chin, $coin);
-	}
-	public function charactersEdit($plin, $chin, $coin)
-	{
-		return $this->charactersView($plin, $chin, $coin);
-	}
 	public function charactersIndex($plin, $chin)
 	{
 		$this->loadModel('Characters');
@@ -48,13 +40,6 @@ class CharactersConditionsController
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($parent) {
 				$event->subject->query->where(['character_id' => $parent->id]);
-		});
-		return $this->Crud->execute();
-	}
-	public function charactersView($plin, $chin, $coin)
-	{
-		$this->Crud->on('beforeHandle', function(Event $event) {
-			$event->subject->args = $this->argsCharId($event->subject->args);
 		});
 		return $this->Crud->execute();
 	}

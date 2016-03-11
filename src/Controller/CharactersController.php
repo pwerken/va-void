@@ -28,10 +28,6 @@ class CharactersController
 		$this->mapMethod('groupsIndex',   [ 'referee'         ]);
 		$this->mapMethod('playersIndex',  [ 'referee', 'user' ]);
 		$this->mapMethod('worldsIndex',   [ 'referee'         ]);
-
-		$this->Crud->on('beforeHandle', function(Event $event) {
-			$event->subject->args = $this->argsCharId($event->subject->args);
-		});
 	}
 
 	public function believesIndex($id)
@@ -83,6 +79,11 @@ class CharactersController
 		$this->loadModel('Worlds');
 		$this->set('parent', $this->Worlds->get($id));
 		return $this->Crud->execute();
+	}
+
+	public function CrudBeforeHandle(Event $event)
+	{
+		$event->subject->args = $this->argsCharId($event->subject->args);
 	}
 
 	protected function canDelete($entity)

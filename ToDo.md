@@ -14,6 +14,7 @@ ToDo-list:
    - [x] disable pagination on listings
    - [x] accept json for add/edit actions
    - [ ] after 'add' redirect to the new entity
+   - [x] after 'edit' render the entity
  - Authorization
    - [x] add authenticate/login/logout
    - [x] restrict page access based on role
@@ -23,7 +24,7 @@ ToDo-list:
    - [ ] link to valea for credentials/password management
  - Business logic
    - [x] implement 'add'/'delete'/'edit' functions
-   - [ ] add new characters
+   - [ ] fix/implement add characters
    - [x] assigning item to character
    - [ ] add cascade on delete
    - [ ] add validator rules
