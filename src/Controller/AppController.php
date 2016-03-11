@@ -25,8 +25,8 @@ class AppController
 		$this->loadComponent('RequestHandler');
 		$this->loadComponent('Flash');
 		$this->loadComponent('Crud.Crud',
-			[ 'listeners' => ['Crud.RelatedModels'] ]
-		);
+			[ 'listeners' => ['Crud.RelatedModels']
+			]);
 		$this->loadComponent('Auth',
 			[ 'storage' => 'Session'
 			, 'authenticate' =>
@@ -45,8 +45,7 @@ class AppController
 			, 'checkAuthIn' => 'Controller.initialize'
 			, 'loginAction' => '/login'
 			, 'logoutRedirect' => '/'
-			]
-		);
+			]);
 
 		$this->viewBuilder()->className('Api');
 		if(!$this->request->is('post'))
@@ -59,44 +58,16 @@ class AppController
 			throw new BadRequestException($msg);
 		}
 
-		$this->Crud->on('afterSave', function(Event $event) {
-			if(!$event->subject->success)
-				throw new ValidationException($event->subject->entity);
-
-			if($event->subject->created) {
-				$this->response->statusCode(302);
-				//FIXME redirect to location of new entity
-				return $this->response;
-			}
-
-			$this->response->statusCode(303);
-			$this->response->location($this->request->here);
-			return $this->response;
-		});
-		$this->Crud->on('beforeDelete', function(Event $event) {
-			if(!$this->canDelete($event->subject->entity))
-				throw new BadRequestException("Entity is referenced", 412);
-		});
-		$this->Crud->on('afterDelete', function(Event $event) {
-			if(!$event->subject->success)
-				throw new BadRequestException('Failed to delete');
-
-			$this->response->statusCode(204);
-			return $this->response;
-		});
-		$this->Crud->on('beforeRedirect', function(Event $event) {
-			if(method_exists($this->Crud->action(), 'publishViewVar'))
-				$this->Crud->action()->publishViewVar($event);
-			return $this->render();
-		});
 	}
 
-	public function paginate($query = null)
+	public function implementedEvents()
 	{
-		if($this->request->is('json'))
-			return $query->all();
-
-		return parent::paginate($query);
+		$events = parent::implementedEvents();
+		$events['Crud.afterSave']      = 'CrudAfterSave';
+		$events['Crud.beforeDelete']   = 'CrudBeforeDelete';
+		$events['Crud.afterDelete']    = 'CrudAfterDelete';
+		$events['Crud.beforeRedirect'] = 'CrudBeforeRedirect';
+		return $events;
 	}
 
 	public function isAuthorized($user)
@@ -109,6 +80,50 @@ class AppController
 				return true;
 		}
 		return false;
+	}
+
+	public function paginate($query = null)
+	{
+		if($this->request->is('json'))
+			return $query->all();
+
+		return parent::paginate($query);
+	}
+
+	public function CrudAfterSave(Event $event)
+	{
+		if(!$event->subject->success)
+			throw new ValidationException($event->subject->entity);
+
+		if($event->subject->created) {
+			$this->response->statusCode(201);
+			//FIXME redirect to location of new entity
+			return $this->response;
+		}
+
+		$this->response->statusCode(200);
+		//FIXME render the new object
+#		$this->response->location($this->request->here);
+		return $this->response;
+	}
+	public function CrudBeforeDelete(Event $event)
+	{
+		if(!$this->canDelete($event->subject->entity))
+			throw new BadRequestException("Entity is referenced", 422);
+	}
+	public function CrudAfterDelete(Event $event)
+	{
+		if(!$event->subject->success)
+			throw new BadRequestException('Failed to delete');
+
+		$this->response->statusCode(204);
+		return $this->response;
+	}
+	public function CrudBeforeRedirect(Event $event)
+	{
+		if(method_exists($this->Crud->action(), 'publishViewVar'))
+			$this->Crud->action()->publishViewVar($event);
+		return $this->render();
 	}
 
 	protected function argsOrder($from, $to, $array)
