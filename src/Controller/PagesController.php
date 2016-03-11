@@ -13,7 +13,7 @@ class PagesController
 	{
 		parent::initialize();
 
-		$this->viewBuilder()->className('App');
+		$this->viewBuilder()->className('');
 		$this->Auth->allow('display');
 	}
 
