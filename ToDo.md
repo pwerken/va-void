@@ -24,7 +24,7 @@ ToDo-list:
    - [ ] link to valea for credentials/password management
  - Business logic
    - [x] implement 'add'/'delete'/'edit' functions
-   - [ ] fix/implement add characters
+   - [x] fix/implement add characters
    - [x] assigning item to character
    - [ ] add cascade on delete
    - [ ] add validator rules

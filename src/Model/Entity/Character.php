@@ -21,6 +21,14 @@ class Character
 		if(!AuthState::hasRole('referee')) {
 			$this->_hidden[] = 'comments';
 		}
+
+		if($this->isNew()) {
+			$this->set('xp', 15);
+			$this->set('belief_id',  1);
+			$this->set('group_id',   1);
+			$this->set('faction_id', 1);
+			$this->set('world_id',   1);
+		}
 	}
 
 	protected function _getDisplayName()

@@ -17,7 +17,7 @@ class CharactersController
 					, 'Conditions', 'Powers', 'Spells'
 					];
 
-#		$this->mapMethod('add',           [ 'infobalie'       ]);
+		$this->mapMethod('add',           [ 'infobalie'       ]);
 		$this->mapMethod('delete',        [ 'super'           ]);
 		$this->mapMethod('edit',          [ 'infobalie'       ]);
 		$this->mapMethod('index',         [ 'referee'         ]);
@@ -28,6 +28,23 @@ class CharactersController
 		$this->mapMethod('groupsIndex',   [ 'referee'         ]);
 		$this->mapMethod('playersIndex',  [ 'referee', 'user' ]);
 		$this->mapMethod('worldsIndex',   [ 'referee'         ]);
+	}
+
+	public function add($plin)
+	{
+		$plin = $plin ?: $this->request->data('plin');
+		$this->request->data('player_id', $plin);
+		unset($this->request->data['plin']);
+
+		$next = $this->Characters->find()
+					->select(['nextChin' => 'MAX(chin)'])
+					->where(['player_id' => $plin])
+					->hydrate(false)
+					->first();
+		$next = $next ? $next['nextChin'] + 1: 1;
+		$this->request->data('chin', $this->request->data('chin') ?: $next);
+
+		$this->Crud->execute();
 	}
 
 	public function believesIndex($id)
