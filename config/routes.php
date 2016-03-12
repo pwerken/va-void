@@ -62,13 +62,13 @@ Router::scope('/', function (RouteBuilder $routes) {
 
 	$defaults = [];
 	$defaults['_method'] = ['GET', 'PUT', 'POST'];
-	$defaults['controller'] = 'Players';
+	$defaults['controller'] = 'Auth';
 	$defaults['action'] = 'login';
 	$routes->connect('/auth/login', $defaults);
 
 	$defaults = [];
 	$defaults['_method'] = 'GET';
-	$defaults['controller'] = 'Players';
+	$defaults['controller'] = 'Auth';
 	$defaults['action'] = 'logout';
 	$routes->connect('/auth/logout', $defaults);
 
