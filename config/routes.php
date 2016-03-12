@@ -64,13 +64,13 @@ Router::scope('/', function (RouteBuilder $routes) {
 	$defaults['_method'] = ['GET', 'PUT', 'POST'];
 	$defaults['controller'] = 'Players';
 	$defaults['action'] = 'login';
-	$routes->connect('/login', $defaults);
+	$routes->connect('/auth/login', $defaults);
 
 	$defaults = [];
 	$defaults['_method'] = 'GET';
 	$defaults['controller'] = 'Players';
 	$defaults['action'] = 'logout';
-	$routes->connect('/logout', $defaults);
+	$routes->connect('/auth/logout', $defaults);
 
 function getKeys($controller) {
 	switch($controller) {

@@ -44,7 +44,7 @@ class AppController
 			, 'authorize' => ['Controller']
 			, 'unauthorizedRedirect' => false
 			, 'checkAuthIn' => 'Controller.initialize'
-			, 'loginAction' => '/login'
+			, 'loginAction' => '/auth/login'
 			, 'logoutRedirect' => '/'
 			]);
 

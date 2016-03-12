@@ -45,9 +45,9 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 
 	if ($user):
 		echo $user['full_name']." (".$user['role'].") ";
-		echo $this->Html->link(__('Logout'), '/logout');
+		echo $this->Html->link(__('Logout'), '/auth/logout');
 	else:
-		echo $this->Form->create('', ['url' => '/login']);
+		echo $this->Form->create('', ['url' => '/auth/login']);
 		echo "<fieldset>\n";
 		echo $this->Form->input('id', ['label' => 'Plin', 'type' => 'text']);
 		echo $this->Form->input('password', ['type'=>'password']);
