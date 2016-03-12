@@ -186,23 +186,24 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 	}
 }
 
+	rest($routes, 'Players',  [ 'Characters' ]);
 	rest($routes, 'Characters'
 					, [ 'Items' ]
 					, [ ]
 					, [ 'Conditions', 'Powers', 'Skills', 'Spells' ]
 					);
-	rest($routes, 'Items', [], [], ['Attributes']);
 
-	rest($routes, 'Attributes', [], [ 'Items' ]);
 	rest($routes, 'Conditions', [], [ 'Characters' ]);
 	rest($routes, 'Powers',     [], [ 'Characters' ]);
 	rest($routes, 'Skills',     [], [ 'Characters' ]);
 	rest($routes, 'Spells',     [], [ 'Characters' ]);
 
+	rest($routes, 'Items',      [], [              ], ['Attributes']);
+	rest($routes, 'Attributes', [], [ 'Items'      ]);
+
 	rest($routes, 'Believes', [ 'Characters' ]);
 	rest($routes, 'Factions', [ 'Characters' ]);
 	rest($routes, 'Groups',   [ 'Characters' ]);
-	rest($routes, 'Players',  [ 'Characters' ]);
 	rest($routes, 'Worlds',   [ 'Characters' ]);
 });
 
