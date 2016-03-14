@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.10.1deb1
+-- version 4.2.12deb2+deb8u1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 26, 2014 at 10:45 AM
--- Server version: 5.5.39-1
--- PHP Version: 5.6.2-1
+-- Generation Time: Mar 14, 2016 at 09:26 PM
+-- Server version: 5.5.47-0+deb8u1
+-- PHP Version: 5.6.17-0+deb8u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `va-void`
@@ -214,7 +214,7 @@ CREATE TABLE IF NOT EXISTS `manatypes` (
 DROP TABLE IF EXISTS `players`;
 CREATE TABLE IF NOT EXISTS `players` (
   `id` int(10) unsigned NOT NULL COMMENT 'PLIN',
-  `role` enum('Player','Referee','Infobalie','Super') CHARACTER SET utf8mb4 NOT NULL DEFAULT 'Participant' COMMENT 'authorisation information',
+  `role` enum('Player','Referee','Infobalie','Super') CHARACTER SET utf8mb4 NOT NULL DEFAULT 'Player' COMMENT 'authorisation information',
   `password` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   `first_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   `insertion` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
@@ -249,7 +249,7 @@ CREATE TABLE IF NOT EXISTS `powers` (
 
 DROP TABLE IF EXISTS `skills`;
 CREATE TABLE IF NOT EXISTS `skills` (
-  `id` int(11) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cost` int(10) NOT NULL,
   `manatype_id` int(10) unsigned DEFAULT NULL,
@@ -312,7 +312,7 @@ ALTER TABLE `believes`
 ALTER TABLE `characters`
  ADD PRIMARY KEY (`id`),
  ADD KEY `player_idx` (`player_id`),
- ADD KEY `characterx` (`player_id`, `chin`),
+ ADD KEY `characterx` (`player_id`,`chin`),
  ADD KEY `belief_idx` (`belief_id`),
  ADD KEY `faction_idx` (`faction_id`),
  ADD KEY `group_idx` (`group_id`),
@@ -417,43 +417,46 @@ ALTER TABLE `worlds`
 --
 ALTER TABLE `believes`
 MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `characters`
 --
 ALTER TABLE `characters`
 MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
-
+--
+-- AUTO_INCREMENT for table `conditions`
+--
+ALTER TABLE `conditions`
+MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `factions`
 --
 ALTER TABLE `factions`
 MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
 MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
-
+--
+-- AUTO_INCREMENT for table `powers`
+--
+ALTER TABLE `powers`
+MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `skills`
 --
 ALTER TABLE `skills`
-MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT;
-
+MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `spells`
 --
 ALTER TABLE `spells`
 MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `worlds`
 --
 ALTER TABLE `worlds`
 MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
-
 --
 -- Constraints for dumped tables
 --
