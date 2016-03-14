@@ -206,6 +206,8 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 	rest($routes, 'Groups',   [ 'Characters' ]);
 	rest($routes, 'Worlds',   [ 'Characters' ]);
 
+	rest($routes, 'Lammies');
+
 	if(strcmp(substr($_SERVER['SERVER_SOFTWARE'],0,8), "lighttpd") == 0) {
 		$defaults = [];
 		$defaults['_method'] = 'GET';

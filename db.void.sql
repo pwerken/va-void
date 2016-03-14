@@ -196,6 +196,23 @@ CREATE TABLE IF NOT EXISTS `items` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `lammies`
+--
+
+DROP TABLE IF EXISTS `lammies`;
+CREATE TABLE IF NOT EXISTS `lammies` (
+  `id` int(10) unsigned NOT NULL,
+  `entity` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `key1` int(10) NOT NULL,
+  `key2` int(10) DEFAULT NULL,
+  `printed` tinyint(1) NOT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `manatypes`
 --
 
@@ -372,6 +389,12 @@ ALTER TABLE `items`
  ADD KEY `character_idx` (`character_id`);
 
 --
+-- Indexes for table `lammies`
+--
+ALTER TABLE `lammies`
+ ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `manatypes`
 --
 ALTER TABLE `manatypes`
@@ -436,6 +459,11 @@ MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
+MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `lammies`
+--
+ALTER TABLE `lammies`
 MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `powers`
