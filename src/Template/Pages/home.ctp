@@ -44,6 +44,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 <?php
 
 	if ($user):
+		echo "<hr>Logged in as: ";
 		echo $user['full_name']." (".$user['role'].") ";
 		echo $this->Html->link(__('Logout'), '/auth/logout');
 	else:
@@ -57,6 +58,8 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 	endif;
 
 ?>
+<hr/>
+Code repository: <?= $this->Html->link("https://github.com/pwerken/va-void"); ?>
 <hr/>
 <table cellpadding="0" cellspacing="0">
 <thead>
