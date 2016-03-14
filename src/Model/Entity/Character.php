@@ -14,9 +14,9 @@ class Character
 			];
 
 	protected $_editAuth =
-			[ 'player_id'   => 'referee'
-			, 'chin'        => 'referee'
-			, 'xp'          => 'referee'
+			[ 'player_id'   => 'infobalie'
+			, 'chin'        => 'infobalie'
+			, 'xp'          => 'infobalie'
 			, 'status'      => 'referee'
 			, 'comments'    => 'referee'
 			];

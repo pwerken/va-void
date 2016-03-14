@@ -19,7 +19,7 @@ class CharactersController
 
 		$this->mapMethod('add',           [ 'infobalie'       ]);
 		$this->mapMethod('delete',        [ 'super'           ]);
-		$this->mapMethod('edit',          [ 'infobalie'       ]);
+		$this->mapMethod('edit',          [ 'referee'         ]);
 		$this->mapMethod('index',         [ 'referee'         ]);
 		$this->mapMethod('view',          [ 'referee', 'user' ], $contain);
 

@@ -12,8 +12,7 @@ class Player
 			];
 
 	protected $_editAuth =
-			[ '*'           => true
-			, 'password'    => ['user', 'super']
+			[ 'password'    => ['user', 'super']
 			, 'role'        => 'infobalie'
 			];
 
