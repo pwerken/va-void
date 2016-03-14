@@ -2,7 +2,6 @@
 namespace App\Controller;
 
 use App\AuthState;
-use App\Controller\AppController;
 
 class ConditionsController
 	extends AppController
