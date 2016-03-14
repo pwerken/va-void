@@ -28,10 +28,6 @@ class AttributesItemsController
 		$this->request->data('item_id', $itin);
 		return $this->Crud->execute();
 	}
-	public function itemsDelete($itin, $id)
-	{
-		return $this->itemsView($itin, $id);
-	}
 	public function itemsIndex($itin)
 	{
 		$this->loadModel('Items');
@@ -40,14 +36,6 @@ class AttributesItemsController
 		$this->Crud->on('beforePaginate',
 			function(Event $event) use ($itin) {
 				$event->subject->query->where(['item_id' => $itin]);
-		});
-		return $this->Crud->execute();
-	}
-	public function itemsView($itin, $id)
-	{
-		$this->Crud->on('beforeHandle', function(Event $event) {
-			$args = $this->argsOrder("ab", "ba", $event->subject->args);
-			$event->subject->args = $args;
 		});
 		return $this->Crud->execute();
 	}
@@ -62,6 +50,19 @@ class AttributesItemsController
 				$event->subject->query->where(['attribute_id' => $id]);
 		});
 		return $this->Crud->execute();
+	}
+
+	public function CrudBeforeHandle(Event $event)
+	{
+		switch($this->request->action) {
+		case 'itemsDelete':
+		case 'itemsView':
+			$args = $this->argsOrder("ab", "ba", $event->subject->args);
+			$event->subject->args = $args;
+			break;
+		default:
+			break;
+		}
 	}
 
 }
