@@ -65,6 +65,7 @@ class AppController
 	{
 		$events = parent::implementedEvents();
 		$events['Crud.beforeHandle']   = 'CrudBeforeHandle';
+		$events['Crud.beforePaginate'] = 'CrudBeforePaginate';
 		$events['Crud.afterSave']      = 'CrudAfterSave';
 		$events['Crud.beforeDelete']   = 'CrudBeforeDelete';
 		$events['Crud.afterDelete']    = 'CrudAfterDelete';
@@ -94,7 +95,7 @@ class AppController
 
 	public function CrudBeforeHandle(Event $event)
 	{
-		switch($event->subject->action) {
+		switch($this->request->action) {
 		case 'charactersDelete':
 		case 'charactersEdit':
 		case 'charactersView':
@@ -103,6 +104,17 @@ class AppController
 		default:
 			break;
 		}
+	}
+	public function CrudBeforePaginate(Event $event)
+	{
+		$action = $this->request->action;
+		if(strcmp(substr($action, -5, 5), 'Index') !== 0)
+			return;
+		if(!isset($this->viewVars['parent']))
+			return;
+
+		$key = Inflector::singularize(substr($action, 0, -5)).'_id';
+		$event->subject->query->where([$key => $this->viewVars['parent']->id]);
 	}
 	public function CrudAfterSave(Event $event)
 	{

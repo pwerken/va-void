@@ -32,11 +32,6 @@ class AttributesItemsController
 	{
 		$this->loadModel('Items');
 		$this->set('parent', $this->Items->get($itin));
-
-		$this->Crud->on('beforePaginate',
-			function(Event $event) use ($itin) {
-				$event->subject->query->where(['item_id' => $itin]);
-		});
 		return $this->Crud->execute();
 	}
 
@@ -44,11 +39,6 @@ class AttributesItemsController
 	{
 		$this->loadModel('Attributes');
 		$this->set('parent', $this->Attributes->get($id));
-
-		$this->Crud->on('beforePaginate',
-			function(Event $event) use ($id) {
-				$event->subject->query->where(['attribute_id' => $id]);
-		});
 		return $this->Crud->execute();
 	}
 

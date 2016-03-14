@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller;
 
-use Cake\Event\Event;
-
 class CharactersConditionsController
 	extends AppController
 {
@@ -33,13 +31,7 @@ class CharactersConditionsController
 	public function charactersIndex($plin, $chin)
 	{
 		$this->loadModel('Characters');
-		$parent = $this->Characters->plinChin($plin, $chin);
-		$this->set('parent', $parent);
-
-		$this->Crud->on('beforePaginate',
-			function(Event $event) use ($parent) {
-				$event->subject->query->where(['character_id' => $parent->id]);
-		});
+		$this->set('parent', $this->Characters->plinChin($plin, $chin));
 		return $this->Crud->execute();
 	}
 
@@ -47,11 +39,6 @@ class CharactersConditionsController
 	{
 		$this->loadModel('Conditions');
 		$this->set('parent', $this->Conditions->get($coin));
-
-		$this->Crud->on('beforePaginate',
-			function(Event $event) use ($coin) {
-				$event->subject->query->where(['condition_id' => $coin]);
-		});
 		return $this->Crud->execute();
 	}
 

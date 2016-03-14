@@ -48,50 +48,30 @@ class CharactersController
 
 	public function believesIndex($id)
 	{
-		$this->Crud->on('beforePaginate',
-			function(Event $event) use ($id) {
-				$event->subject->query->where(['belief_id' => $id]);
-		});
 		$this->loadModel('Believes');
 		$this->set('parent', $this->Believes->get($id));
 		return $this->Crud->execute();
 	}
 	public function factionsIndex($id)
 	{
-		$this->Crud->on('beforePaginate',
-			function(Event $event) use ($id) {
-				$event->subject->query->where(['faction_id' => $id]);
-		});
 		$this->loadModel('Factions');
 		$this->set('parent', $this->Factions->get($id));
 		return $this->Crud->execute();
 	}
 	public function groupsIndex($id)
 	{
-		$this->Crud->on('beforePaginate',
-			function(Event $event) use ($id) {
-				$event->subject->query->where(['group_id' => $id]);
-		});
 		$this->loadModel('Groups');
 		$this->set('parent', $this->Groups->get($id));
 		return $this->Crud->execute();
 	}
 	public function playersIndex($id)
 	{
-		$this->Crud->on('beforePaginate',
-			function(Event $event) use ($id) {
-				$event->subject->query->where(['player_id' => $id]);
-		});
 		$this->loadModel('Players');
 		$this->set('parent', $this->Players->get($id));
 		return $this->Crud->execute();
 	}
 	public function worldsIndex($id)
 	{
-		$this->Crud->on('beforePaginate',
-			function(Event $event) use ($id) {
-				$event->subject->query->where(['world_id' => $id]);
-		});
 		$this->loadModel('Worlds');
 		$this->set('parent', $this->Worlds->get($id));
 		return $this->Crud->execute();
