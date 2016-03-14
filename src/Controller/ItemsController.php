@@ -89,8 +89,8 @@ class ItemsController
 		$ranges = [ 1980, 2201, 2300, 8001, 8888, 9000, 9999, 1000000 ];
 		foreach($ranges as $max) {
 			$query = $this->Items->find();
-			$query->hydrate(false)->select('id')->order(['id' => 'DESC']);
-			$next = $query->where(['id <' => $max])->first()['id'] + 1;
+			$query->select(['id' => 'MAX(id)'])->where(['id <' => $max]);
+			$next = $query->hydrate(false)->toArray()['id'] + 1;
 			if($next < $max) break;
 		}
 		return $next;
