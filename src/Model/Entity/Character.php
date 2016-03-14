@@ -1,41 +1,29 @@
 <?php
 namespace App\Model\Entity;
 
-use App\AuthState;
-use Cake\ORM\Entity;
-
 class Character
-	extends Entity
+	extends AppEntity
 {
 
-	protected $_hidden = [ 'id' ];
+	protected $_defaults =
+			[ 'xp'          => 15
+			, 'belief_id'   =>  1
+			, 'group_id'    =>  1
+			, 'faction_id'  =>  1
+			, 'world_id'    =>  1
+			];
 
-	public function __construct($properties = [], $options = [])
-	{
-		parent::__construct($properties, $options);
+	protected $_editAuth =
+			[ 'player_id'   => 'referee'
+			, 'chin'        => 'referee'
+			, 'xp'          => 'referee'
+			, 'status'      => 'referee'
+			, 'comments'    => 'referee'
+			];
 
-		if(AuthState::hasRole('user') || AuthState::hasRole('super')) {
-			$this->accessible('password', true);
-		}
-
-		if(!AuthState::hasRole('referee')) {
-			$this->_hidden[] = 'comments';
-		}
-
-		if($this->isNew()) {
-			$this->set('xp', 15);
-			$this->set('belief_id',  1);
-			$this->set('group_id',   1);
-			$this->set('faction_id', 1);
-			$this->set('world_id',   1);
-		}
-	}
-
-	protected function _getDisplayName()
-	{
-		return $this->_properties['player_id']
-			. '-' . $this->_properties['chin']
-			. ': ' . $this->_properties['name'];
-	}
+	protected $_showAuth =
+			[ 'id'          => 'super'
+			, 'comments'    => 'referee'
+			];
 
 }

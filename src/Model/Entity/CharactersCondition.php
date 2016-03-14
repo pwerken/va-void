@@ -1,12 +1,14 @@
 <?php
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
-
 class CharactersCondition
-	extends Entity
+	extends AppEntity
 {
 
-	protected $_hidden = [ 'character_id', 'condition_id' ];
+	protected $_showAuth =
+			[ 'character_id'    => 'super'
+			, 'condition_id'    => 'super'
+			];
+
 
 }

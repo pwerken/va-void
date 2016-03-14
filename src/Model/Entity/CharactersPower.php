@@ -1,12 +1,13 @@
 <?php
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
-
 class CharactersPower
-	extends Entity
+	extends AppEntity
 {
 
-	protected $_hidden = [ 'character_id', 'power_id' ];
+	protected $_showAuth =
+			[ 'character_id'    => 'super'
+			, 'power_id'        => 'super'
+			];
 
 }

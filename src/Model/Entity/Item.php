@@ -1,26 +1,17 @@
 <?php
 namespace App\Model\Entity;
 
-use App\AuthState;
-use Cake\ORM\Entity;
-
 class Item
-	extends Entity
+	extends AppEntity
 {
 
-	protected $_hidden = [ 'character_id' ];
+	protected $_showAuth =
+			[ 'character_id'    => 'super'
+			, 'cs_text'         => 'referee'
+			, 'attributes'      => 'referee'
+			];
 
 	protected $_virtual = [ 'plin', 'chin' ];
-
-	public function __construct($properties = [], $options = [])
-	{
-		parent::__construct($properties, $options);
-
-		if(!AuthState::hasRole('referee')) {
-			$this->_hidden[] = 'cs_text';
-			$this->_hidden[] = 'attributes';
-		}
-	}
 
 	protected function _getPlin()
 	{

@@ -1,12 +1,13 @@
 <?php
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
-
 class AttributesItem
-	extends Entity
+	extends AppEntity
 {
 
-	protected $_hidden = [ 'attribute_id', 'item_id' ];
+	protected $_showAuth =
+			[ 'attribute_id'    => 'super'
+			, 'item_id'         => 'super'
+			];
 
 }

@@ -1,10 +1,8 @@
 <?php
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
-
 class Attribute
-	extends Entity
+	extends AppEntity
 {
 
 }

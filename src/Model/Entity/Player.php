@@ -1,29 +1,27 @@
 <?php
 namespace App\Model\Entity;
 
-use App\AuthState;
 use Cake\Auth\DefaultPasswordHasher;
-use Cake\ORM\Entity;
 
 class Player
-	extends Entity
+	extends AppEntity
 {
 
-	protected $_accessible = [ 'password' => false, '*' => true ];
+	protected $_defaults =
+			[ 'role'        => 'Player'
+			];
+
+	protected $_editAuth =
+			[ '*'           => true
+			, 'password'    => ['user', 'super']
+			, 'role'        => 'infobalie'
+			];
+
+	protected $_showAuth =
+			[ 'password'    => ['user', 'infobalie']
+			];
 
 	protected $_virtual = [ 'full_name' ];
-
-	public function __construct($properties = [], $options = [])
-	{
-		parent::__construct($properties, $options);
-
-		if(AuthState::hasRole('user') || AuthState::hasRole('super')) {
-			$this->accessible('password', true);
-		}
-		if(!AuthState::hasRole('infobalie')) {
-			$this->_hidden[] = 'password';
-		}
-	}
 
 	public function _setPassword($password)
 	{

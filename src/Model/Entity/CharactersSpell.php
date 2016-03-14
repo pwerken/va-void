@@ -1,12 +1,13 @@
 <?php
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
-
 class CharactersSpell
-	extends Entity
+	extends AppEntity
 {
 
-	protected $_hidden = [ 'character_id', 'spell_id' ];
+	protected $_showAuth =
+			[ 'character_id'    => 'super'
+			, 'spell_id'        => 'super'
+			];
 
 }
