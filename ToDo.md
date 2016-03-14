@@ -1,38 +1,31 @@
 ToDo-list:
  - Project details
-   - [x] setup CakePHP 3.0
-   - [x] created database layout
-   - [x] add CRUD plugin
    - [ ] project license
-   - [x] update README.md
+   - [ ] update README.md
    - [ ] improve installation instructions
-   - [x] share/publish repository on github
    - [ ] write API documentation
- - JSON interface
-   - [x] always return json
-   - [x] add all controllers
-   - [x] disable pagination on listings
-   - [x] accept json for add/edit actions
+ - REST interface
    - [ ] after 'add' redirect to the new entity
-   - [x] after 'edit' render the entity
+   - [ ] render exceptions as JSON
+   - [ ] implement filtering of lists
  - Authorization
    - [x] add authenticate/login/logout
    - [x] restrict page access based on role
    - [x] adjust content based on role
-   - [ ] inital password creation
-   - [ ] password recovery
+   - [x] limit editable fields based on role
    - [ ] link to valea for credentials/password management
  - Business logic
    - [x] implement 'add'/'delete'/'edit' functions
    - [x] fix/implement add characters
    - [x] assigning item to character
-   - [ ] add cascade on delete
-   - [ ] add validator rules
+   - [ ] extend validator rules
    - [ ] add search functions
-   - [ ] track "teaching"
+   - [ ] take expiry into account in lists (item/conditon/power)
+   - [ ] implement skill prereq check
  - Lammy printing
    - [ ] create/manage printing queue
    - [ ] output pdf
+   - [ ] dummy lore code handling/generation
  - Logging/accounting
    - [ ] logging of all modifications
    - [ ] entity versioning
@@ -40,16 +33,17 @@ ToDo-list:
    - [x] characters url routing: from .../:id to .../:plin/:chin
    - [x] restructure urls/controllers (relations, nesting)
    - [ ] fix reverse routing (url generation)
- - Reduce CRUD-plugin boilerplating
-   - [x] configurable per view query 'contain' information
-   - [x] configure per view 'relatedModels'
-   - [ ] refactor controllers
  - Automate import of Access
    - [x] import Access data to MySQL (1:1, no conversion)
    - [x] convert MySQL imported data to database layout
- - Item attributes
-   - [x] rename lorType field
-   - [ ] dummy lore code handling/generation
+ - Data model (for v2)
+   - [ ] performance analysis of queries
+   - [ ] rename 'Spells' to ... ? ('Casting', 'Domain', 'School', ?)
+   - [ ] add individual spell descriptions
+   - [ ] Skills: add base/extra/deprecated
+   - [ ] Skills: grouping field [fighter,healing,mage,...]
+   - [ ] Teaching: track student/teacher relation
+   - [ ] Events: can be used for XP assignment
  - Upstream changes
    - [ ] Crud cake3: configurable 'contain' relation
    - [ ] Crud cake3: support multiple primary keys
