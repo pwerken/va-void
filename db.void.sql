@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `attributes_items` (
 
 DROP TABLE IF EXISTS `believes`;
 CREATE TABLE IF NOT EXISTS `believes` (
-`id` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `believes` (
 
 DROP TABLE IF EXISTS `characters`;
 CREATE TABLE IF NOT EXISTS `characters` (
-`id` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL,
   `player_id` int(10) unsigned NOT NULL COMMENT 'PLIN',
   `chin` int(2) unsigned NOT NULL DEFAULT '1',
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -158,7 +158,7 @@ CREATE TABLE IF NOT EXISTS `conditions` (
 
 DROP TABLE IF EXISTS `factions`;
 CREATE TABLE IF NOT EXISTS `factions` (
-`id` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -170,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `factions` (
 
 DROP TABLE IF EXISTS `groups`;
 CREATE TABLE IF NOT EXISTS `groups` (
-`id` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -249,7 +249,7 @@ CREATE TABLE IF NOT EXISTS `powers` (
 
 DROP TABLE IF EXISTS `skills`;
 CREATE TABLE IF NOT EXISTS `skills` (
-`id` int(11) unsigned NOT NULL,
+  `id` int(11) unsigned NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cost` int(10) NOT NULL,
   `manatype_id` int(10) unsigned DEFAULT NULL,
@@ -265,7 +265,7 @@ CREATE TABLE IF NOT EXISTS `skills` (
 
 DROP TABLE IF EXISTS `spells`;
 CREATE TABLE IF NOT EXISTS `spells` (
-`id` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `short` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `spiritual` tinyint(1) NOT NULL
@@ -279,7 +279,7 @@ CREATE TABLE IF NOT EXISTS `spells` (
 
 DROP TABLE IF EXISTS `worlds`;
 CREATE TABLE IF NOT EXISTS `worlds` (
-`id` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
