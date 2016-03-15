@@ -13,7 +13,6 @@ class PagesController
 	{
 		parent::initialize();
 
-		$this->viewBuilder()->className('');
 		$this->Auth->allow('display');
 	}
 

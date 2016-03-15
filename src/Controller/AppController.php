@@ -48,7 +48,8 @@ class AppController
 			, 'logoutRedirect' => '/'
 			]);
 
-		$this->viewBuilder()->className('Api');
+		if(strcmp($this->name, 'Pages') != 0)
+			$this->viewBuilder()->className('Api');
 		if(!$this->request->is('post'))
 			$this->request->data = $this->request->input('json_decode',1) ?: [];
 
@@ -58,7 +59,6 @@ class AppController
 							, $error, json_last_error_msg());
 			throw new BadRequestException($msg);
 		}
-
 	}
 
 	public function implementedEvents()
@@ -87,10 +87,7 @@ class AppController
 
 	public function paginate($query = null)
 	{
-		if($this->request->is('json'))
-			return $query->all();
-
-		return parent::paginate($query);
+		return $query->all();
 	}
 
 	public function CrudBeforeHandle(Event $event)

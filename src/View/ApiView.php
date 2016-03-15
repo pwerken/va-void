@@ -51,6 +51,7 @@ class ApiView
 		if(Configure::read('debug'))
 			$jsonOptions = $jsonOptions | JSON_PRETTY_PRINT;
 
+		$this->response->type('json');
 		return json_encode($data, $jsonOptions);
 	}
 

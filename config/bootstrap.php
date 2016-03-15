@@ -201,7 +201,6 @@ Plugin::load('ADmad/JwtAuth');
 DispatcherFactory::add('Asset');
 DispatcherFactory::add('Routing');
 DispatcherFactory::add('NoExtensions');
-DispatcherFactory::add('ForceJson');
 DispatcherFactory::add('ControllerFactory');
 
 /**
