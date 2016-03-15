@@ -70,50 +70,54 @@ Code repository: <?= $this->Html->link("https://github.com/pwerken/va-void"); ?>
 <tbody>
 <?php
     $list =
-        [ [ 'help', 'routes' ]
-        , [ 'players' ]
-		, [ 'players', 987 ]
-		, [ 'players', 987, 'characters' ]
-        , [ 'characters', 987, 2 ]
-        , [ 'characters', 987, 2, 'items' ]
-        , [ 'characters', 987, 2, 'conditions' ]
-        , [ 'characters', 987, 2, 'conditions', 3137 ]
-        , [ 'characters', 987, 2, 'powers' ]
-        , [ 'characters', 987, 2, 'powers', 2462 ]
-        , [ 'characters', 987, 2, 'skills' ]
-        , [ 'characters', 987, 2, 'skills', 1 ]
-        , [ 'characters', 987, 2, 'spells' ]
-        , [ 'characters', 987, 2, 'spells', 9 ]
-        , [ 'items' ]
-        , [ 'items', 724 ]
-        , [ 'items', 724, 'attributes' ]
-        , [ 'items', 724, 'attributes', 482 ]
-        , [ 'attributes' ]
-        , [ 'attributes', 482 ]
-        , [ 'attributes', 482, 'items' ]
-        , [ 'powers' ]
-        , [ 'powers', 2462 ]
-        , [ 'powers', 2462, 'characters' ]
-        , [ 'conditions' ]
-        , [ 'conditions', 3137 ]
-        , [ 'conditions', 3137, 'characters' ]
-        , [ 'factions' ]
-        , [ 'factions', 2 ]
-        , [ 'factions', 2, 'characters' ]
-        , [ 'believes' ]
-        , [ 'believes', 2 ]
-        , [ 'believes', 2, 'characters' ]
-        , [ 'groups' ]
-        , [ 'groups', 3 ]
-        , [ 'groups', 3, 'characters' ]
-        , [ 'worlds' ]
-        , [ 'worlds', 2 ]
-        , [ 'worlds', 2, 'characters' ]
-        ];
+		[ [ 'Pages',                'display',      'routes'           ]
+		, [ 'Players',              'index'                            ]
+		, [ 'Players',              'view',             987            ]
+		, [ 'Characters',           'playersIndex',     987            ]
+		, [ 'Characters',           'view',             987,   2       ]
+		, [ 'Items',                'charactersIndex',  987,   2       ]
+		, [ 'CharactersConditions', 'charactersIndex',  987,   2       ]
+		, [ 'CharactersConditions', 'charactersView',   987,   2, 3137 ]
+		, [ 'CharactersPowers',     'charactersIndex',  987,   2       ]
+		, [ 'CharactersPowers',     'charactersView',   987,   2, 2462 ]
+		, [ 'CharactersSkills',     'charactersIndex',  987,   2       ]
+		, [ 'CharactersSkills',     'charactersView',   987,   2,    1 ]
+		, [ 'CharactersSpells',     'charactersIndex',  987,   2       ]
+		, [ 'CharactersSpells',     'charactersView',   987,   2,    9 ]
+		, [ 'Items',                'index'                            ]
+		, [ 'Items',                'view',             724            ]
+		, [ 'AttributesItems',      'itemsIndex',       724            ]
+		, [ 'AttributesItems',      'itemsView',        724, 482       ]
+		, [ 'Attributes',           'index'                            ]
+		, [ 'Attributes',           'view',             482            ]
+		, [ 'AttributesItems',      'attributesIndex',  482            ]
+		, [ 'Powers',               'index'                            ]
+		, [ 'Powers',               'view',            2462            ]
+		, [ 'CharactersPowers',     'powersIndex',     2462            ]
+		, [ 'Conditions',           'index'                            ]
+		, [ 'Conditions',           'view',            3137            ]
+		, [ 'CharactersConditions', 'conditionsIndex', 3137            ]
+		, [ 'Factions',             'index'                            ]
+		, [ 'Factions',             'view',               2            ]
+		, [ 'Characters',           'factionsIndex',      2            ]
+		, [ 'Believes',             'index'                            ]
+		, [ 'Believes',             'view',               2            ]
+		, [ 'Characters',           'believesIndex',      2            ]
+		, [ 'Groups',               'index'                            ]
+		, [ 'Groups',               'view',               3            ]
+		, [ 'Characters',           'groupsIndex',        3            ]
+		, [ 'Worlds',               'index'                            ]
+		, [ 'Worlds',               'view',               2            ]
+		, [ 'Characters',           'worldsIndex',        2            ]
+		];
 
-    foreach ($list as $params):
-        $url = '/' . implode('/', $params);
-        ?>
+	foreach ($list as $url):
+		$controller        = array_shift($url);
+		$action            = array_shift($url);
+		$url['controller'] = $controller;
+		$url['action']     = $action;
+		$url['_method']    = 'GET';
+	?>
     <tr>
         <td><?= $this->Html->link($url); ?></td>
     </tr>
