@@ -24,6 +24,9 @@ class Player
 
 	public function _setPassword($password)
 	{
+		if(empty($password))
+			return NULL;
+
 		return (new DefaultPasswordHasher)->hash($password);
 	}
 
