@@ -1,16 +1,18 @@
 <?php
 namespace App\Model\Table;
 
-use Cake\Auth\DefaultPasswordHasher;
-use Cake\ORM\Query;
+use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use App\AuthState;
 use App\Model\Entity\Player;
 
 /**
  * Players Model
  */
-class PlayersTable extends Table {
+class PlayersTable
+	extends Table
+{
 
 /**
  * Initialize method
@@ -32,8 +34,9 @@ class PlayersTable extends Table {
  * @param \Cake\Validation\Validator $validator
  * @return \Cake\Validation\Validator
  */
-	public function validationDefault(Validator $validator) {
-		$validator
+	public function validationDefault(Validator $validator)
+	{
+		return $validator
 			->add('id', 'valid', ['rule' => 'numeric'])
 			->notEmpty('id')
 			->add('role', 'valid', ['rule' => ['inList', Player::labelsRoles(true)]] )
@@ -45,8 +48,28 @@ class PlayersTable extends Table {
 			->allowEmpty('gender')
 			->add('date_of_birth', 'valid', ['rule' => 'date'])
 			->allowEmpty('date_of_birth');
+	}
 
-		return $validator;
+	public function buildRules(RulesChecker $rules)
+	{
+		return $rules
+			->add([$this, 'checkRoleRule'], ['errorField' => 'role']);
+	}
+
+	public function checkRoleRule($entity, $options)
+	{
+		if(!$entity->dirty('role') || AuthState::hasRole('super'))
+			return true;
+
+		// don't demote someone who is above your auth level
+		if(!AuthState::hasRole($entity->getOriginal('role')))
+			return "Cannot demote user that has more permissions than you.";
+
+		// don't promote someone to above your auth level
+		if(!AuthState::hasRole($entity->get('role')))
+			return "Cannot promote user to more permissions than you have.";
+
+		return true;
 	}
 
 }

@@ -7,6 +7,11 @@ class AuthState
 	private static $_user = NULL;
 	private static $_role = 0;
 
+	public static function getRole()
+	{
+		return self::$_auth->user('role');
+	}
+
 	public static function hasRole($role)
 	{
 		if(is_null(self::$_auth))
