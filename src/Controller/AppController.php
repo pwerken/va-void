@@ -2,12 +2,9 @@
 namespace App\Controller;
 
 use App\AuthState;
-use App\Model\Entity\JsonEntity;
 use Cake\Controller\Controller;
-use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Network\Exception\BadRequestException;
-use Cake\ORM\ResultSet;
 use Cake\Utility\Inflector;
 use Crud\Error\Exception\ValidationException;
 
@@ -23,8 +20,6 @@ class AppController
 	{
 		parent::initialize();
 
-		$this->loadComponent('RequestHandler');
-		$this->loadComponent('Flash');
 		$this->loadComponent('Crud.Crud',
 			[ 'listeners' => ['Crud.RelatedModels']
 			]);
