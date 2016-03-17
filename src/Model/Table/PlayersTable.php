@@ -40,22 +40,43 @@ class PlayersTable
 
 	public function buildRules(RulesChecker $rules)
 	{
-		return $rules
-			->add([$this, 'checkRoleRule'], ['errorField' => 'role']);
+		$rules->add([$this, 'ruleRoleChange']);
+		$rules->addDelete([$this, 'ruleNoCharacters']);
+		return $rules;
 	}
 
-	public function checkRoleRule($entity, $options)
+	public function ruleRoleChange($entity, $options)
 	{
 		if(!$entity->dirty('role') || AuthState::hasRole('super'))
 			return true;
 
+		$msg = true;
+
 		// don't demote someone who is above your auth level
 		if(!AuthState::hasRole($entity->getOriginal('role')))
-			return "Cannot demote user that has more permissions than you.";
+			$msg =  "Cannot demote user that has more permissions than you.";
 
 		// don't promote someone to above your auth level
 		if(!AuthState::hasRole($entity->get('role')))
-			return "Cannot promote user to more permissions than you have.";
+			$msg = "Cannot promote user to more permissions than you have.";
+
+		if($msg !== true) {
+			$entity->errors('role', $msg);
+			return false;
+		}
+
+		return true;
+	}
+
+	public function ruleNoCharacters($entity, $options)
+	{
+		$query = $this->Characters->find();
+		$query->where(['player_id' => $entity->id]);
+
+		if($query->count() > 0) {
+			$entity->errors('characters', 'reference(s) present');
+			return false;
+		}
 
 		return true;
 	}

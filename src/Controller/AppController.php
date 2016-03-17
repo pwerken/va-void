@@ -62,7 +62,6 @@ class AppController
 		$events['Crud.beforeHandle']   = 'CrudBeforeHandle';
 		$events['Crud.beforePaginate'] = 'CrudBeforePaginate';
 		$events['Crud.afterSave']      = 'CrudAfterSave';
-		$events['Crud.beforeDelete']   = 'CrudBeforeDelete';
 		$events['Crud.afterDelete']    = 'CrudAfterDelete';
 		$events['Crud.beforeRedirect'] = 'CrudBeforeRedirect';
 		return $events;
@@ -126,11 +125,6 @@ class AppController
 		$this->Crud->beforeFilter($event);
 		return $this->invokeAction();
 	}
-	public function CrudBeforeDelete(Event $event)
-	{
-		if(!$this->canDelete($event->subject->entity))
-			throw new BadRequestException("Entity is referenced", 422);
-	}
 	public function CrudAfterDelete(Event $event)
 	{
 		if(!$event->subject->success)
@@ -156,11 +150,6 @@ class AppController
 			array_unshift($args, $char);
 		}
 		return $args;
-	}
-
-	protected function canDelete($entity)
-	{
-		return true;
 	}
 
 	protected function hasAuthUser($id = null)

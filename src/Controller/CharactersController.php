@@ -84,39 +84,4 @@ class CharactersController
 		parent::CrudBeforeHandle($event);
 	}
 
-	protected function canDelete($entity)
-	{
-		$this->loadModel('CharactersConditions');
-		$query = $this->CharactersConditions->find();
-		$query->where(['character_id' => $entity->id]);
-		if($query->count() > 0)
-			return false;
-
-		$this->loadModel('CharactersPowers');
-		$query = $this->CharactersPowers->find();
-		$query->where(['character_id' => $entity->id]);
-		if($query->count() > 0)
-			return false;
-
-		$this->loadModel('CharactersSkills');
-		$query = $this->CharactersSkills->find();
-		$query->where(['character_id' => $entity->id]);
-		if($query->count() > 0)
-			return false;
-
-		$this->loadModel('CharactersSpells');
-		$query = $this->CharactersSpells->find();
-		$query->where(['character_id' => $entity->id]);
-		if($query->count() > 0)
-			return false;
-
-		$this->loadModel('Items');
-		$query = $this->Items->find();
-		$query->where(['character_id' => $entity->id]);
-		if($query->count() > 0)
-			return false;
-
-		return true;
-	}
-
 }

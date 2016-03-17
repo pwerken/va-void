@@ -1,7 +1,9 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 class PowersTable
@@ -30,6 +32,25 @@ class PowersTable
 		$validator->requirePresence('player_text', 'create');
 
 		return $validator;
+	}
+
+	public function buildRules(RulesChecker $rules)
+	{
+		$rules->addDelete([$this, 'ruleNoCharacters']);
+		return $rules;
+	}
+
+	public function ruleNoCharacters($entity, $options)
+	{
+		$query = TableRegistry::get('CharactersPowers')->find();
+		$query->where(['power_id' => $entity->id]);
+
+		if($query->count() > 0) {
+			$entity->errors('characters', 'reference(s) present');
+			return false;
+		}
+
+		return true;
 	}
 
 }

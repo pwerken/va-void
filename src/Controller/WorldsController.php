@@ -18,12 +18,4 @@ class WorldsController
 		$this->mapMethod('view',   [ 'player'  ], $contain);
 	}
 
-	protected function canDelete($entity)
-	{
-		$this->loadModel('Characters');
-		$query = $this->Characters->find();
-		$query->where(['world_id' => $entity->id]);
-		return ($query->count() == 0);
-	}
-
 }

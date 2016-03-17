@@ -16,12 +16,4 @@ class BelievesController
 		$this->mapMethod('view',   [ 'player'  ]);
 	}
 
-	protected function canDelete($entity)
-	{
-		$this->loadModel('Characters');
-		$query = $this->Characters->find();
-		$query->where(['belief_id' => $entity->id]);
-		return ($query->count() == 0);
-	}
-
 }

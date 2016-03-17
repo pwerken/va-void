@@ -18,14 +18,6 @@ class PowersController
 		$this->mapmethod('view',   [ 'referee', 'user' ], $contain);
 	}
 
-	protected function canDelete($entity)
-	{
-		$this->loadModel('CharactersPowers');
-		$query = $this->CharactersPowers->find();
-		$query->where(['power_id' => $entity->id]);
-		return ($query->count() == 0);
-	}
-
 	protected function hasAuthUser($id = null)
 	{
 		$poin = $this->request->param('poin');

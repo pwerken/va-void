@@ -18,12 +18,4 @@ class SkillsController
 		$this->mapMethod('view',   [ 'player' ], $contain);
 	}
 
-	protected function canDelete($entity)
-	{
-		$this->loadModel('CharactersSkills');
-		$query = $this->CharactersSkills->find();
-		$query->where(['skill_id' => $entity->id]);
-		return ($query->count() == 0);
-	}
-
 }

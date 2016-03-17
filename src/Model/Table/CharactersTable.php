@@ -3,6 +3,7 @@ namespace App\Model\Table;
 
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 class CharactersTable
@@ -68,6 +69,75 @@ class CharactersTable
 		$rules->add($rules->existsIn('group_id', 'groups'));
 		$rules->add($rules->existsIn('belief_id', 'believes'));
 		$rules->add($rules->existsIn('world_id', 'worlds'));
+
+		$rules->addDelete([$this, 'ruleNoConditions']);
+		$rules->addDelete([$this, 'ruleNoItems']);
+		$rules->addDelete([$this, 'ruleNoPowers']);
+		$rules->addDelete([$this, 'ruleNoSkills']);
+		$rules->addDelete([$this, 'ruleNoSpells']);
+
 		return $rules;
 	}
+
+	public function ruleNoConditions($entity, $options)
+	{
+		$query = TableRegistry::get('CharactersConditions')->find();
+		$query->where(['character_id' => $entity->id]);
+
+		if($query->count() > 0) {
+			$entity->errors('conditions', 'reference(s) present');
+			return false;
+		}
+
+		return true;
+	}
+	public function ruleNoItems($entity, $options)
+	{
+		$query = $this->Items->find();
+		$query->where(['character_id' => $entity->id]);
+
+		if($query->count() > 0) {
+			$entity->errors('items', 'reference(s) present');
+			return false;
+		}
+
+		return true;
+	}
+	public function ruleNoPowers($entity, $options)
+	{
+		$query = TableRegistry::get('CharactersPowers')->find();
+		$query->where(['character_id' => $entity->id]);
+
+		if($query->count() > 0) {
+			$entity->errors('powers', 'reference(s) present');
+			return false;
+		}
+
+		return true;
+	}
+	public function ruleNoSkills($entity, $options)
+	{
+		$query = TableRegistry::get('CharactersSkills')->find();
+		$query->where(['character_id' => $entity->id]);
+
+		if($query->count() > 0) {
+			$entity->errors('skills', 'reference(s) present');
+			return false;
+		}
+
+		return true;
+	}
+	public function ruleNoSpells($entity, $options)
+	{
+		$query = TableRegistry::get('CharactersSpells')->find();
+		$query->where(['character_id' => $entity->id]);
+
+		if($query->count() > 0) {
+			$entity->errors('spells', 'reference(s) present');
+			return false;
+		}
+
+		return true;
+	}
+
 }

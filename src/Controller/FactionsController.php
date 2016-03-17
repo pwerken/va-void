@@ -18,12 +18,4 @@ class FactionsController
 		$this->mapMethod('view',   [ 'player'  ], $contain);
 	}
 
-	protected function canDelete($entity)
-	{
-		$this->loadModel('Players');
-		$query = $this->Players->find();
-		$query->where(['faction_id' => $entity->id]);
-		return ($query->count() == 0);
-	}
-
 }

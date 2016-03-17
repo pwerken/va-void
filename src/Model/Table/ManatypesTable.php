@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -26,6 +27,25 @@ class ManatypesTable
 		$validator->requirePresence('name', 'create');
 
 		return $validator;
+	}
+
+	public function buildRules(RulesChecker $rules)
+	{
+		$rules->addDelete([$this, 'ruleNoSkills']);
+		return $rules;
+	}
+
+	public function ruleNoSkills($entity, $options)
+	{
+		$query = $this->Skills->find();
+		$query->where(['manatype_id' => $entity->id]);
+
+		if($query->count() > 0) {
+			$entity->errors('skills', 'reference(s) present');
+			return false;
+		}
+
+		return true;
 	}
 
 }

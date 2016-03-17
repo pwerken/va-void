@@ -16,12 +16,4 @@ class SpellsController
 		$this->mapMethod('view',   [ 'player' ]);
 	}
 
-	protected function canDelete($entity)
-	{
-		$this->loadModel('CharactersSpells');
-		$query = $this->CharactersSpells->find();
-		$query->where(['spell_id' => $entity->id]);
-		return ($query->count() == 0);
-	}
-
 }

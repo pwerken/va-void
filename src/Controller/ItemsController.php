@@ -47,23 +47,6 @@ class ItemsController
 		return $this->Crud->execute();
 	}
 
-	protected function canDelete($entity)
-	{
-		$this->loadModel('Characters');
-		$query = $this->Characters->find();
-		$query->where(['character_id' => $entity->id]);
-		if($query->count() > 0)
-			return false;
-
-		$this->loadModel('AttributesItems');
-		$query = $this->AttributesItems->find();
-		$query->where(['character_id' => $entity->id]);
-		if($query->count() > 0)
-			return false;
-
-		return true;
-	}
-
 	protected function hasAuthUser($id = null)
 	{
 		$itin = $this->request->param('itin');

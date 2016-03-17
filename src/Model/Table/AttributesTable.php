@@ -1,7 +1,9 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 class AttributesTable
@@ -28,6 +30,25 @@ class AttributesTable
 		$validator->requirePresence('code', 'create');
 
 		return $validator;
+	}
+
+	public function buildRules(RulesChecker $rules)
+	{
+		$rules->addDelete([$this, 'ruleNoItems']);
+		return $rules;
+	}
+
+	public function ruleNoItems($entity, $options)
+	{
+		$query = TableRegistry::get('AttributesItems')->find();
+		$query->where(['attributes_id' => $entity->id]);
+
+		if($query->count() > 0) {
+			$entity->errors('items', 'reference(s) present');
+			return false;
+		}
+
+		return true;
 	}
 
 }

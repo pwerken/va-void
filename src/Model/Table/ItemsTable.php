@@ -3,6 +3,7 @@ namespace App\Model\Table;
 
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 class ItemsTable
@@ -41,7 +42,32 @@ class ItemsTable
 	public function buildRules(RulesChecker $rules)
 	{
 		$rules->add($rules->existsIn('character_id', 'characters'));
+		$rules->addDelete([$this, 'ruleNoCharacter']);
+		$rules->addDelete([$this, 'ruleNoAttributes']);
 		return $rules;
+	}
+
+	public function ruleNoCharacter($entity, $options)
+	{
+		if(!empty($entity->get('character_id'))) {
+			$entity->errors('character_id', 'reference present');
+			return false;
+		}
+
+		return true;
+	}
+
+	public function ruleNoAttributes($entity, $options)
+	{
+		$query = TableRegistry::get('AttributesItems')->find();
+		$query->where(['item_id' => $entity->id]);
+
+		if($query->count() > 0) {
+			$entity->errors('attributes', 'reference(s) present');
+			return false;
+		}
+
+		return true;
 	}
 
 	protected function _newID($primary)

@@ -16,12 +16,4 @@ class AttributesController
 		$this->mapMethod('view',   [ 'referee' ]);
 	}
 
-	protected function canDelete($entity)
-	{
-		$this->loadModel('AttributesItems');
-		$query = $this->AttributesItems->find();
-		$query->where(['character_id' => $entity->id]);
-		return ($query->count() == 0);
-	}
-
 }

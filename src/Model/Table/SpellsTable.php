@@ -1,7 +1,9 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 class SpellsTable
@@ -31,6 +33,25 @@ class SpellsTable
 		$validator->requirePresence('spiritual', 'create');
 
 		return $validator;
+	}
+
+	public function buildRules(RulesChecker $rules)
+	{
+		$rules->addDelete([$this, 'ruleNoCharacters']);
+		return $rules;
+	}
+
+	public function ruleNoCharacters($entity, $options)
+	{
+		$query = TableRegistry::get('CharactersSpells')->find();
+		$query->where(['spell_id' => $entity->id]);
+
+		if($query->count() > 0) {
+			$entity->errors('characters', 'reference(s) present');
+			return false;
+		}
+
+		return true;
 	}
 
 }

@@ -16,12 +16,4 @@ class ManatypesController
 		$this->mapMethod('view',   [ 'player' ], [ 'Skills' ]);
 	}
 
-	protected function canDelete($entity)
-	{
-		$this->loadModel('Skills');
-		$query = $this->Skills->find();
-		$query->where(['manatype_id' => $entity->id]);
-		return ($query->count() == 0);
-	}
-
 }
