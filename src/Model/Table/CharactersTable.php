@@ -1,23 +1,16 @@
 <?php
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
-/**
- * Characters Model
- */
-class CharactersTable extends Table {
+class CharactersTable
+	extends Table
+{
 
-/**
- * Initialize method
- *
- * @param array $config The configuration for the Table.
- * @return void
- */
-	public function initialize(array $config) {
+	public function initialize(array $config)
+	{
 		$this->table('characters');
 		$this->displayField('displayName');
 		$this->primaryKey('id');
@@ -34,46 +27,43 @@ class CharactersTable extends Table {
 		$this->belongsToMany('Spells');
 	}
 
-/**
- * Default validation rules.
- *
- * @param \Cake\Validation\Validator $validator
- * @return \Cake\Validation\Validator
- */
-	public function validationDefault(Validator $validator) {
-		$validator
-			->add('id', 'valid', ['rule' => 'numeric'])
-			->allowEmpty('id', 'create')
-			->add('player_id', 'valid', ['rule' => 'numeric'])
-			->requirePresence('player_id', 'create')
-			->notEmpty('player_id')
-			->add('chin', 'valid', ['rule' => 'naturalNumber'])
-			->requirePresence('chin', 'create')
-			->notEmpty('chin')
-			->requirePresence('name', 'create')
-			->notEmpty('name')
-			->add('xp', 'valid', ['rule' => ['custom', '/^[0-9]*([\.][05])?$/']])
-			->add('xp', 'range', ['rule' => ['range', 0, 50]])
-			->notEmpty('xp')
-			->add('faction_id', 'valid', ['rule' => 'numeric'])
-			->notEmpty('faction_id')
-			->add('belief_id', 'valid', ['rule' => 'numeric'])
-			->notEmpty('belief_id')
-			->add('group_id', 'valid', ['rule' => 'numeric'])
-			->notEmpty('group_id')
-			->add('world_id', 'valid', ['rule' => 'numeric'])
-			->notEmpty('world_id')
-			->allowEmpty('status')
-			->allowEmpty('comments');
+	public function validationDefault(Validator $validator)
+	{
+		$validator->allowEmpty('id', 'create');
+		$validator->notEmpty('player_id');
+		$validator->notEmpty('chin');
+		$validator->notEmpty('name');
+		$validator->notEmpty('xp');
+		$validator->notEmpty('faction_id');
+		$validator->notEmpty('belief_id');
+		$validator->notEmpty('group_id');
+		$validator->notEmpty('world_id');
+		$validator->allowEmpty('status');
+		$validator->allowEmpty('comments');
+
+		$validator->add('id', 'valid', ['rule' => 'numeric']);
+		$validator->add('player_id', 'valid', ['rule' => 'numeric']);
+		$validator->add('chin', 'valid', ['rule' => 'naturalNumber']);
+		$validator->add('xp', 'valid', ['rule' => ['custom', '/^[0-9]*([\.][05])?$/']]);
+		$validator->add('faction_id', 'valid', ['rule' => 'numeric']);
+		$validator->add('belief_id', 'valid', ['rule' => 'numeric']);
+		$validator->add('group_id', 'valid', ['rule' => 'numeric']);
+		$validator->add('world_id', 'valid', ['rule' => 'numeric']);
+
+		$validator->requirePresence('player_id', 'create');
+		$validator->requirePresence('chin', 'create');
+		$validator->requirePresence('name', 'create');
 
 		return $validator;
 	}
 
-	public function plinChin($plin, $chin) {
+	public function plinChin($plin, $chin)
+	{
 		return $this->findByPlayerIdAndChin($plin, $chin)->firstOrFail();
 	}
 
-	public function buildRules(RulesChecker $rules) {
+	public function buildRules(RulesChecker $rules)
+	{
 		$rules->add($rules->existsIn('faction_id', 'factions'));
 		$rules->add($rules->existsIn('group_id', 'groups'));
 		$rules->add($rules->existsIn('belief_id', 'believes'));

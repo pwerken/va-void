@@ -1,45 +1,34 @@
 <?php
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
-/**
- * Spells Model
- */
-class SpellsTable extends Table {
+class SpellsTable
+	extends Table
+{
 
-/**
- * Initialize method
- *
- * @param array $config The configuration for the Table.
- * @return void
- */
-	public function initialize(array $config) {
+	public function initialize(array $config)
+	{
 		$this->table('spells');
 		$this->displayField('name');
 		$this->primaryKey('id');
 		$this->belongsToMany('Characters');
 	}
 
-/**
- * Default validation rules.
- *
- * @param \Cake\Validation\Validator $validator
- * @return \Cake\Validation\Validator
- */
-	public function validationDefault(Validator $validator) {
-		$validator
-			->add('id', 'valid', ['rule' => 'numeric'])
-			->allowEmpty('id', 'create')
-			->requirePresence('name', 'create')
-			->notEmpty('name')
-			->requirePresence('short', 'create')
-			->notEmpty('short')
-			->add('spiritual', 'valid', ['rule' => 'boolean'])
-			->requirePresence('spiritual', 'create')
-			->notEmpty('spiritual');
+	public function validationDefault(Validator $validator)
+	{
+		$validator->allowEmpty('id', 'create');
+		$validator->notEmpty('name');
+		$validator->notEmpty('short');
+		$validator->notEmpty('spiritual');
+
+		$validator->add('id', 'valid', ['rule' => 'numeric']);
+		$validator->add('spiritual', 'valid', ['rule' => 'boolean']);
+
+		$validator->requirePresence('name', 'create');
+		$validator->requirePresence('short', 'create');
+		$validator->requirePresence('spiritual', 'create');
 
 		return $validator;
 	}

@@ -1,22 +1,15 @@
 <?php
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
-/**
- * Powers Model
- */
-class PowersTable extends Table {
+class PowersTable
+	extends Table
+{
 
-/**
- * Initialize method
- *
- * @param array $config The configuration for the Table.
- * @return void
- */
-	public function initialize(array $config) {
+	public function initialize(array $config)
+	{
 		$this->table('powers');
 		$this->displayField('displayName');
 		$this->primaryKey('id');
@@ -24,21 +17,17 @@ class PowersTable extends Table {
 		$this->belongsToMany('Characters');
 	}
 
-/**
- * Default validation rules.
- *
- * @param \Cake\Validation\Validator $validator
- * @return \Cake\Validation\Validator
- */
-	public function validationDefault(Validator $validator) {
-		$validator
-			->add('id', 'valid', ['rule' => 'numeric'])
-			->allowEmpty('id', 'create')
-			->requirePresence('name', 'create')
-			->notEmpty('name')
-			->requirePresence('player_text', 'create')
-			->notEmpty('player_text')
-			->allowEmpty('cs_text');
+	public function validationDefault(Validator $validator)
+	{
+		$validator->allowEmpty('id', 'create');
+		$validator->notEmpty('name');
+		$validator->notEmpty('player_text');
+		$validator->allowEmpty('cs_text');
+
+		$validator->add('id', 'valid', ['rule' => 'numeric']);
+
+		$validator->requirePresence('name', 'create');
+		$validator->requirePresence('player_text', 'create');
 
 		return $validator;
 	}

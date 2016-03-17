@@ -1,23 +1,16 @@
 <?php
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
-/**
- * Items Model
- */
-class ItemsTable extends Table {
+class ItemsTable
+	extends Table
+{
 
-/**
- * Initialize method
- *
- * @param array $config The configuration for the Table.
- * @return void
- */
-	public function initialize(array $config) {
+	public function initialize(array $config)
+	{
 		$this->table('items');
 		$this->displayField('displayName');
 		$this->primaryKey('id');
@@ -26,30 +19,27 @@ class ItemsTable extends Table {
 		$this->belongsToMany('Attributes');
 	}
 
-/**
- * Default validation rules.
- *
- * @param \Cake\Validation\Validator $validator
- * @return \Cake\Validation\Validator
- */
-	public function validationDefault(Validator $validator) {
-		$validator
-			->add('id', 'valid', ['rule' => 'numeric'])
-			->allowEmpty('id', 'create')
-			->requirePresence('name', 'create')
-			->notEmpty('name')
-			->allowEmpty('description')
-			->allowEmpty('player_text')
-			->allowEmpty('cs_text')
-			->add('character_id', 'valid', ['rule' => 'numeric'])
-			->allowEmpty('character_id')
-			->add('expiry', 'valid', ['rule' => 'date'])
-			->allowEmpty('expiry');
+	public function validationDefault(Validator $validator)
+	{
+		$validator->allowEmpty('id', 'create');
+		$validator->notEmpty('name');
+		$validator->allowEmpty('description');
+		$validator->allowEmpty('player_text');
+		$validator->allowEmpty('cs_text');
+		$validator->allowEmpty('character_id');
+		$validator->allowEmpty('expiry');
+
+		$validator->add('id', 'valid', ['rule' => 'numeric']);
+		$validator->add('character_id', 'valid', ['rule' => 'numeric']);
+		$validator->add('expiry', 'valid', ['rule' => 'date']);
+
+		$validator->requirePresence('name', 'create');
 
 		return $validator;
 	}
 
-	public function buildRules(RulesChecker $rules) {
+	public function buildRules(RulesChecker $rules)
+	{
 		$rules->add($rules->existsIn('character_id', 'characters'));
 		return $rules;
 	}
@@ -66,7 +56,7 @@ class ItemsTable extends Table {
 			if($newID < $max || $max < 0)
 				return $newID;
 		}
-		return null;
+		return NULL;
 	}
 
 }

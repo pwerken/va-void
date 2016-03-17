@@ -7,20 +7,12 @@ use Cake\Validation\Validator;
 use App\AuthState;
 use App\Model\Entity\Player;
 
-/**
- * Players Model
- */
 class PlayersTable
 	extends Table
 {
 
-/**
- * Initialize method
- *
- * @param array $config The configuration for the Table.
- * @return void
- */
-	public function initialize(array $config) {
+	public function initialize(array $config)
+	{
 		$this->table('players');
 		$this->displayField('displayName');
 		$this->primaryKey('id');
@@ -28,26 +20,22 @@ class PlayersTable
 		$this->hasMany('Characters');
 	}
 
-/**
- * Default validation rules.
- *
- * @param \Cake\Validation\Validator $validator
- * @return \Cake\Validation\Validator
- */
 	public function validationDefault(Validator $validator)
 	{
-		return $validator
-			->add('id', 'valid', ['rule' => 'numeric'])
-			->notEmpty('id')
-			->add('role', 'valid', ['rule' => ['inList', Player::labelsRoles(true)]] )
-			->allowEmpty('password')
-			->notEmpty('first_name')
-			->allowEmpty('insertion')
-			->notEmpty('last_name')
-			->add('gender', 'valid', ['rule' => ['inList', Player::labelsGenders(true)]])
-			->allowEmpty('gender')
-			->add('date_of_birth', 'valid', ['rule' => 'date'])
-			->allowEmpty('date_of_birth');
+		$validator->notEmpty('id');
+		$validator->allowEmpty('password');
+		$validator->notEmpty('first_name');
+		$validator->allowEmpty('insertion');
+		$validator->notEmpty('last_name');
+		$validator->allowEmpty('gender');
+		$validator->allowEmpty('date_of_birth');
+
+		$validator->add('id', 'valid', ['rule' => 'numeric']);
+		$validator->add('role', 'valid', ['rule' => ['inList', Player::labelsRoles(true)]] );
+		$validator->add('gender', 'valid', ['rule' => ['inList', Player::labelsGenders(true)]]);
+		$validator->add('date_of_birth', 'valid', ['rule' => 'date']);
+
+		return $validator;
 	}
 
 	public function buildRules(RulesChecker $rules)
