@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -31,4 +32,31 @@ class CharactersSkillsTable
 		return $validator;
 	}
 
+	public function buildRules(RulesChecker $rules)
+	{
+		$rules->add($rules->existsIn('character_id', 'characters'));
+		$rules->add($rules->existsIn('skill_id', 'skills'));
+
+		$rules->addCreate([$this, 'ruleXPAvailable']);
+
+		return $rules;
+	}
+
+	public function ruleXPAvailable($entity, $options)
+	{
+		$total = $this->Characters->get($entity->character_id)->xp;
+		$cost = $this->Skills->get($entity->skill_id)->cost;
+
+		$query = $this->find()->contain(['Skills'])->hydrate(false);
+		$query->select(['spend' => 'SUM(Skills.cost)']);
+		$query->where(['character_id' => $entity->character_id]);
+		$spend = (int)$query->first()['spend'];
+
+		if($spend + $cost > $total) {
+			$entity->errors('character_id', 'insufficient XP');
+			return false;
+		}
+
+		return true;
+	}
 }
