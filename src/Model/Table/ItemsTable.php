@@ -53,4 +53,20 @@ class ItemsTable extends Table {
 		$rules->add($rules->existsIn('character_id', 'characters'));
 		return $rules;
 	}
+
+	protected function _newID($primary)
+	{
+		$holes = [ 1980, 2201, 2300, 8001, 8888, 9000, 9999, -1 ];
+		foreach($holes as $max) {
+			$query = $this->find()->hydrate(false)->select(['id' => 'MAX(id)']);
+			if($max > 0)
+				$query->where(['id <' => $max]);
+
+			$newID = $query->toArray()['id'] + 1;
+			if($newID < $max || $max < 0)
+				return $newID;
+		}
+		return null;
+	}
+
 }

@@ -21,14 +21,6 @@ class ItemsController
 		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], $contain);
 	}
 
-	public function add()
-	{
-		$itin = $this->request->data('itin') ?: $this->nextFreeItin();
-		$this->request->data('itin', $itin);
-
-		return $this->Crud->execute();
-	}
-
 	public function edit($itin)
 	{
 		if(isset($this->request->data['plin'])
@@ -82,18 +74,6 @@ class ItemsController
 					->contain('Characters')
 					->first();
 		return parent::hasAuthUser(@$data['player_id']);
-	}
-
-	private function nextFreeItin()
-	{
-		$ranges = [ 1980, 2201, 2300, 8001, 8888, 9000, 9999, 1000000 ];
-		foreach($ranges as $max) {
-			$query = $this->Items->find();
-			$query->select(['id' => 'MAX(id)'])->where(['id <' => $max]);
-			$next = $query->hydrate(false)->toArray()['id'] + 1;
-			if($next < $max) break;
-		}
-		return $next;
 	}
 
 }
