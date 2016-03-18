@@ -46,41 +46,9 @@ class CharactersController
 		$this->Crud->execute();
 	}
 
-	public function believesIndex($id)
-	{
-		$this->loadModel('Believes');
-		$this->set('parent', $this->Believes->get($id));
-		return $this->Crud->execute();
-	}
-	public function factionsIndex($id)
-	{
-		$this->loadModel('Factions');
-		$this->set('parent', $this->Factions->get($id));
-		return $this->Crud->execute();
-	}
-	public function groupsIndex($id)
-	{
-		$this->loadModel('Groups');
-		$this->set('parent', $this->Groups->get($id));
-		return $this->Crud->execute();
-	}
-	public function playersIndex($id)
-	{
-		$this->loadModel('Players');
-		$this->set('parent', $this->Players->get($id));
-		return $this->Crud->execute();
-	}
-	public function worldsIndex($id)
-	{
-		$this->loadModel('Worlds');
-		$this->set('parent', $this->Worlds->get($id));
-		return $this->Crud->execute();
-	}
-
 	public function CrudBeforeHandle(Event $event)
 	{
 		$event->subject->args = $this->argsCharId($event->subject->args);
-
 		parent::CrudBeforeHandle($event);
 	}
 

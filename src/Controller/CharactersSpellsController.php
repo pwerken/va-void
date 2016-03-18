@@ -28,18 +28,5 @@ class CharactersSpellsController
 
 		return $this->Crud->execute();
 	}
-	public function charactersIndex($plin, $chin)
-	{
-		$this->loadModel('Characters');
-		$this->set('parent', $this->Characters->plinChin($plin, $chin));
-		return $this->Crud->execute();
-	}
-
-	public function spellsIndex($id)
-	{
-		$this->loadModel('Spells');
-		$this->set('parent', $this->Spells->get($id));
-		return $this->Crud->execute();
-	}
 
 }

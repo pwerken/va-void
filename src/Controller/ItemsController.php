@@ -40,13 +40,6 @@ class ItemsController
 		return $this->Crud->execute();
 	}
 
-	public function charactersIndex($plin, $chin)
-	{
-		$this->loadModel('Characters');
-		$this->set('parent', $this->Characters->plinChin($plin, $chin));
-		return $this->Crud->execute();
-	}
-
 	protected function hasAuthUser($id = null)
 	{
 		$itin = $this->request->param('itin');

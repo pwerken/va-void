@@ -28,19 +28,6 @@ class AttributesItemsController
 		$this->request->data('item_id', $itin);
 		return $this->Crud->execute();
 	}
-	public function itemsIndex($itin)
-	{
-		$this->loadModel('Items');
-		$this->set('parent', $this->Items->get($itin));
-		return $this->Crud->execute();
-	}
-
-	public function attributesIndex($id)
-	{
-		$this->loadModel('Attributes');
-		$this->set('parent', $this->Attributes->get($id));
-		return $this->Crud->execute();
-	}
 
 	public function CrudBeforeHandle(Event $event)
 	{

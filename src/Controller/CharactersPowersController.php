@@ -28,18 +28,5 @@ class CharactersPowersController
 
 		return $this->Crud->execute();
 	}
-	public function charactersIndex($plin, $chin)
-	{
-		$this->loadModel('Characters');
-		$this->set('parent', $this->Characters->plinChin($plin, $chin));
-		return $this->Crud->execute();
-	}
-
-	public function powersIndex($poin)
-	{
-		$this->loadModel('Powers');
-		$this->set('parent', $this->Powers->get($poin));
-		return $this->Crud->execute();
-	}
 
 }

@@ -29,18 +29,5 @@ class CharactersSkillsController
 
 		return $this->Crud->execute();
 	}
-	public function charactersIndex($plin, $chin)
-	{
-		$this->loadModel('Characters');
-		$this->set('parent', $this->Characters->plinChin($plin, $chin));
-		return $this->Crud->execute();
-	}
-
-	public function skillsIndex($id)
-	{
-		$this->loadModel('Skills');
-		$this->set('parent', $this->Skills->get($id));
-		return $this->Crud->execute();
-	}
 
 }

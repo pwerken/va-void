@@ -28,18 +28,5 @@ class CharactersConditionsController
 
 		return $this->Crud->execute();
 	}
-	public function charactersIndex($plin, $chin)
-	{
-		$this->loadModel('Characters');
-		$this->set('parent', $this->Characters->plinChin($plin, $chin));
-		return $this->Crud->execute();
-	}
-
-	public function conditionsIndex($coin)
-	{
-		$this->loadModel('Conditions');
-		$this->set('parent', $this->Conditions->get($coin));
-		return $this->Crud->execute();
-	}
 
 }

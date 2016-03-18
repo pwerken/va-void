@@ -5,6 +5,7 @@ use App\AuthState;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Network\Exception\BadRequestException;
+use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 use Crud\Error\Exception\ValidationException;
 
@@ -86,14 +87,21 @@ class AppController
 
 	public function CrudBeforeHandle(Event $event)
 	{
-		switch($this->request->action) {
+		$action = $this->request->action;
+		switch($action) {
 		case 'charactersDelete':
 		case 'charactersEdit':
+		case 'charactersIndex':
 		case 'charactersView':
 			$event->subject->args = $this->argsCharId($event->subject->args);
 			break;
 		default:
 			break;
+		}
+		if(strcmp(substr($action, -5, 5), 'Index') == 0) {
+			$model = ucfirst(substr($action, 0, -5));
+			$parent = TableRegistry::get($model)->get($event->subject->args[0]);
+			$this->set('parent', $parent);
 		}
 	}
 	public function CrudBeforePaginate(Event $event)
