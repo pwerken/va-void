@@ -54,6 +54,8 @@ class AttributesItemsController
 		default:
 			break;
 		}
+
+		parent::CrudBeforeHandle($event);
 	}
 
 }

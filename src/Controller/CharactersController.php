@@ -80,6 +80,8 @@ class CharactersController
 	public function CrudBeforeHandle(Event $event)
 	{
 		$event->subject->args = $this->argsCharId($event->subject->args);
+
+		parent::CrudBeforeHandle($event);
 	}
 
 	protected function canDelete($entity)
