@@ -1,6 +1,6 @@
 ToDo-list:
  - Project details
-   - [ ] project license
+   - [x] project license
    - [ ] update README.md
    - [ ] improve installation instructions
    - [ ] write API documentation

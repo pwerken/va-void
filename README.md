@@ -1,3 +1,4 @@
+[![License](https://img.shields.io/:license-ISC-blue.svg)](https://tldrlegal.com/license/-isc-license)
 # VA - VOID
 
 [Vortex Adventues](http://www.the-vortex.nl) - **V**ortex **O**nline **I**ncharacter **D**atabase

@@ -3,7 +3,7 @@
     "description": "Vortex Adventures - Vortex Online Incharacter Database",
     "homepage": "https://github.org/pwerken/va-void",
     "type": "project",
-    "license": "MIT",
+    "license": "ISC",
     "repositories": [
         {
             "type": "vcs",
