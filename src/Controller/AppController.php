@@ -88,16 +88,21 @@ class AppController
 	public function CrudBeforeHandle(Event $event)
 	{
 		$action = $this->request->action;
-		switch($action) {
-		case 'charactersDelete':
-		case 'charactersEdit':
-		case 'charactersIndex':
-		case 'charactersView':
-			$event->subject->args = $this->argsCharId($event->subject->args);
-			break;
-		default:
-			break;
+		if(strcmp(substr($action, 0, 10), 'characters') == 0) {
+			$plin = $event->subject->args[0];
+			$chin = $event->subject->args[1];
+
+			$this->loadModel('Characters');
+			$char = $this->Characters->plinChin($plin, $chin)->id;
+
+			array_shift($event->subject->args);
+			$event->subject->args[0] = $char;
+
+			if(strcmp($action, 'charactersAdd') == 0) {
+				$this->request->data('character_id', $char);
+			}
 		}
+
 		if(strcmp(substr($action, -5, 5), 'Index') == 0) {
 			$model = ucfirst(substr($action, 0, -5));
 			$parent = TableRegistry::get($model)->get($event->subject->args[0]);
@@ -146,18 +151,6 @@ class AppController
 		if(method_exists($this->Crud->action(), 'publishViewVar'))
 			$this->Crud->action()->publishViewVar($event);
 		return $this->render();
-	}
-
-	protected function argsCharId($args)
-	{
-		$this->loadModel('Characters');
-		if(count($args) >= 2) {
-			$plin = array_shift($args);
-			$chin = array_shift($args);
-			$char = $this->Characters->plinChin($plin, $chin)->id;
-			array_unshift($args, $char);
-		}
-		return $args;
 	}
 
 	protected function hasAuthUser($id = null)

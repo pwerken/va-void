@@ -20,13 +20,4 @@ class CharactersSpellsController
 		$this->mapMethod('spellsIndex',      [ 'referee'         ], $contain);
 	}
 
-	public function charactersAdd($plin, $chin)
-	{
-		$this->loadModel('Characters');
-		$parent = $this->Characters->plinChin($plin, $chin);
-		$this->request->data('character_id', $parent->id);
-
-		return $this->Crud->execute();
-	}
-
 }
