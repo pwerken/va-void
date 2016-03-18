@@ -47,8 +47,9 @@ class AttributesItemsController
 		switch($this->request->action) {
 		case 'itemsDelete':
 		case 'itemsView':
-			$args = $this->argsOrder("ab", "ba", $event->subject->args);
-			$event->subject->args = $args;
+			$temp = $event->subject->args[0];
+			$event->subject->args[0] = $event->subject->args[1];
+			$event->subject->args[1] = $temp;
 			break;
 		default:
 			break;

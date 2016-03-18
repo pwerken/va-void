@@ -146,15 +146,6 @@ class AppController
 		return $this->render();
 	}
 
-	protected function argsOrder($from, $to, $array)
-	{
-		$lookup = array_flip(str_split($from));
-		$output = [];
-		foreach(str_split($to) as $key) {
-			$output[] = $array[$lookup[$key]];
-		}
-		return $output;
-	}
 	protected function argsCharId($args)
 	{
 		$this->loadModel('Characters');
