@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DB="$(readlink "$1")"
+DB="$1"
 
 if [ ! -e "$DB" ]; then
 	echo "File does not exist."
@@ -10,7 +10,7 @@ if [ ! -r "$DB" ]; then
 	echo "File is not readable."
 	exit 1
 fi
-if [ "$(file --brief "$DB")" != "Microsoft Access Database" ]; then
+if [ "$(file -Lb "$DB")" != "Microsoft Access Database" ]; then
 	echo "File type mismatch."
 	exit 1
 fi

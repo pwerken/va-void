@@ -4,3 +4,4 @@ composer.lock
 /config/app.php
 /tmp/*
 /logs/*
+/import/*.mdb
