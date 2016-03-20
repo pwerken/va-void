@@ -1,6 +1,9 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\ORM\RulesChecker;
+use Cake\ORM\TableRegistry;
+use Cake\Utility\Inflector;
 use Cake\Validation\Validator;
 
 class LammiesTable
@@ -31,6 +34,28 @@ class LammiesTable
 		$validator->requirePresence('key1', 'create');
 
 		return $validator;
+	}
+
+	public function buildRules(RulesChecker $rules)
+	{
+		$rules->add([$this, 'ruleEntityExists']);
+		return $rules;
+	}
+
+	public function ruleEntityExists($entity, $options)
+	{
+		$class = Inflector::pluralize($entity->entity);
+		if(!TableRegistry::exists($class)) {
+			$entity->errors('entity', 'unknown entity type');
+			return false;
+		}
+
+		if(is_null($entity->getTarget())) {
+			$entity->errors('key1', 'no such entity');
+			return false;
+		}
+
+		return true;
 	}
 
 }
