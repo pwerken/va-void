@@ -9,15 +9,13 @@ class CharactersPowersController
 	{
 		parent::initialize();
 
-		$contain = [ 'Characters', 'Powers' ];
-
 		$this->mapMethod('charactersAdd',    [ 'referee'         ]);
 		$this->mapMethod('charactersDelete', [ 'referee'         ]);
-		$this->mapMethod('charactersEdit',   [ 'referee'         ], $contain);
-		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], $contain);
-		$this->mapMethod('charactersView',   [ 'referee'         ], $contain);
+		$this->mapMethod('charactersEdit',   [ 'referee'         ], true);
+		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], true);
+		$this->mapMethod('charactersView',   [ 'referee'         ], true);
 
-		$this->mapMethod('powersIndex',      [ 'referee'         ], $contain);
+		$this->mapMethod('powersIndex',      [ 'referee'         ], true);
 	}
 
 }

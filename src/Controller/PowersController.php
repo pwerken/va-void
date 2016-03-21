@@ -9,13 +9,11 @@ class PowersController
 	{
 		parent::initialize();
 
-		$contain = [ 'Characters' ];
-
 		$this->mapMethod('add',    [ 'referee'         ]);
 		$this->mapMethod('delete', [ 'super'           ]);
 		$this->mapMethod('edit',   [ 'referee'         ]);
 		$this->mapMethod('index',  [ 'referee'         ]);
-		$this->mapmethod('view',   [ 'referee', 'user' ], $contain);
+		$this->mapmethod('view',   [ 'referee', 'user' ], true);
 	}
 
 	protected function hasAuthUser($id = null)

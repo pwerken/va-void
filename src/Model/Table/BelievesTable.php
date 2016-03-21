@@ -2,11 +2,10 @@
 namespace App\Model\Table;
 
 use Cake\ORM\RulesChecker;
-use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 class BelievesTable
-	extends Table
+	extends AppTable
 {
 
 	public function initialize(array $config)

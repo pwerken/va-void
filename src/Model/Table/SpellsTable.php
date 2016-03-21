@@ -2,12 +2,11 @@
 namespace App\Model\Table;
 
 use Cake\ORM\RulesChecker;
-use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 class SpellsTable
-	extends Table
+	extends AppTable
 {
 
 	public function initialize(array $config)

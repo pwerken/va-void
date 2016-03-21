@@ -9,15 +9,13 @@ class CharactersConditionsController
 	{
 		parent::initialize();
 
-		$contain = [ 'Characters', 'Conditions' ];
-
 		$this->mapMethod('charactersAdd',    [ 'referee'         ]);
 		$this->mapMethod('charactersDelete', [ 'referee'         ]);
 		$this->mapMethod('charactersEdit',   [ 'referee'         ]);
-		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], $contain);
-		$this->mapMethod('charactersView',   [ 'referee', 'user' ], $contain);
+		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], true);
+		$this->mapMethod('charactersView',   [ 'referee', 'user' ], true);
 
-		$this->mapMethod('conditionsIndex',  [ 'referee'         ], $contain);
+		$this->mapMethod('conditionsIndex',  [ 'referee'         ], true);
 	}
 
 }

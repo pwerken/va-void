@@ -11,16 +11,11 @@ class CharactersController
 	{
 		parent::initialize();
 
-		$contain =  [ 'Believes', 'Factions', 'Groups', 'Players', 'Worlds'
-					, 'Items', 'Skills' => [ 'Manatypes' ]
-					, 'Conditions', 'Powers', 'Spells'
-					];
-
 		$this->mapMethod('add',           [ 'infobalie'       ]);
 		$this->mapMethod('delete',        [ 'super'           ]);
 		$this->mapMethod('edit',          [ 'referee'         ]);
 		$this->mapMethod('index',         [ 'referee'         ]);
-		$this->mapMethod('view',          [ 'referee', 'user' ], $contain);
+		$this->mapMethod('view',          [ 'referee', 'user' ], true);
 
 		$this->mapMethod('believesIndex', [ 'referee'         ]);
 		$this->mapMethod('factionsIndex', [ 'referee'         ]);

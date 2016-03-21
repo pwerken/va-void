@@ -1,12 +1,13 @@
 <?php
 namespace App\Model\Table;
 
-use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 class AttributesItemsTable
-	extends Table
+	extends AppTable
 {
+
+	protected $_contain = [ 'Attributes', 'Items' => [ 'Characters' ] ];
 
 	public function initialize(array $config)
 	{

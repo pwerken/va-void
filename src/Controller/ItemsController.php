@@ -9,16 +9,13 @@ class ItemsController
 	{
 		parent::initialize();
 
-		$char    = [ 'Characters' ];
-		$contain = [ 'Characters', 'Attributes' ];
+		$this->mapMethod('add',              [ 'referee'         ]);
+		$this->mapMethod('delete',           [ 'super'           ]);
+		$this->mapMethod('edit',             [ 'referee'         ]);
+		$this->mapMethod('index',            [ 'referee'         ]);
+		$this->mapMethod('view',             [ 'referee', 'user' ], true);
 
-		$this->mapMethod('add',              [ 'referee'         ], $char);
-		$this->mapMethod('delete',           [ 'super'           ], $char);
-		$this->mapMethod('edit',             [ 'referee'         ], $char);
-		$this->mapMethod('index',            [ 'referee'         ], $char);
-		$this->mapMethod('view',             [ 'referee', 'user' ], $contain);
-
-		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], $contain);
+		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], true);
 	}
 
 	public function edit($itin)

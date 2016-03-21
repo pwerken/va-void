@@ -159,7 +159,7 @@ class AppController
 		return ($this->Auth->user('id') == $id);
 	}
 
-	protected function mapMethod($action, $auth, $contain = [])
+	protected function mapMethod($action, $auth = [], $contain = false)
 	{
 		$className = ucfirst($action);
 		$className = preg_replace('/.*([A-Z][a-z]+)/', 'Crud.\\1', $className);
@@ -169,7 +169,11 @@ class AppController
 		if(empty($auth))
 			$auth = ['super'];
 
-		$this->Crud->mapAction($action, compact('className','auth','contain'));
+		$config = compact('className','auth');
+		if($contain)
+			$config['findMethod'] = 'withContain';
+
+		$this->Crud->mapAction($action, $config);
 	}
 
 }

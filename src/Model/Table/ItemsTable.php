@@ -1,14 +1,16 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
-use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 class ItemsTable
-	extends Table
+	extends AppTable
 {
+
+	protected $_contain = [ 'Characters', 'Attributes' ];
 
 	public function initialize(array $config)
 	{
@@ -18,6 +20,11 @@ class ItemsTable
 		$this->addBehavior('Timestamp');
 		$this->belongsTo('Characters');
 		$this->belongsToMany('Attributes');
+	}
+
+	public function findAll(Query $query, array $options)
+	{
+		return $query->contain(['Characters']);
 	}
 
 	public function validationDefault(Validator $validator)

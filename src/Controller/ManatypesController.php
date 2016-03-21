@@ -13,7 +13,7 @@ class ManatypesController
 		$this->mapMethod('delete', [ 'super'  ]);
 		$this->mapMethod('edit',   [ 'super'  ]);
 		$this->mapMethod('index',  [ 'player' ]);
-		$this->mapMethod('view',   [ 'player' ], [ 'Skills' ]);
+		$this->mapMethod('view',   [ 'player' ], true);
 	}
 
 }

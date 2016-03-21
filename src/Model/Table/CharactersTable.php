@@ -2,13 +2,18 @@
 namespace App\Model\Table;
 
 use Cake\ORM\RulesChecker;
-use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 class CharactersTable
-	extends Table
+	extends AppTable
 {
+
+	protected $_contain =
+		[ 'Believes', 'Factions', 'Groups', 'Players', 'Worlds'
+		, 'Items', 'Skills' => [ 'Manatypes' ]
+		, 'Conditions', 'Powers', 'Spells'
+		];
 
 	public function initialize(array $config)
 	{

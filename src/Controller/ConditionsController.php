@@ -11,13 +11,11 @@ class ConditionsController
 	{
 		parent::initialize();
 
-		$contain = [ 'Characters' ];
-
 		$this->mapMethod('add',    [ 'referee'         ]);
 		$this->mapMethod('delete', [ 'super'           ]);
 		$this->mapMethod('edit',   [ 'referee'         ]);
 		$this->mapMethod('index',  [ 'referee'         ]);
-		$this->mapMethod('view',   [ 'referee', 'user' ], $contain);
+		$this->mapMethod('view',   [ 'referee', 'user' ], true);
 	}
 
 	protected function hasAuthUser($id = null)

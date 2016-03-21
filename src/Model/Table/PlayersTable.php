@@ -2,14 +2,15 @@
 namespace App\Model\Table;
 
 use Cake\ORM\RulesChecker;
-use Cake\ORM\Table;
 use Cake\Validation\Validator;
 use App\AuthState;
 use App\Model\Entity\Player;
 
 class PlayersTable
-	extends Table
+	extends AppTable
 {
+
+	protected $_contain = [ 'Characters' ];
 
 	public function initialize(array $config)
 	{

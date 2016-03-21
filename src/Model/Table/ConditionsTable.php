@@ -2,13 +2,14 @@
 namespace App\Model\Table;
 
 use Cake\ORM\RulesChecker;
-use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 class ConditionsTable
-	extends Table
+	extends AppTable
 {
+
+	protected $_contain = [ 'Characters' ];
 
 	public function initialize(array $config)
 	{

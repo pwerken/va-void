@@ -2,12 +2,13 @@
 namespace App\Model\Table;
 
 use Cake\ORM\RulesChecker;
-use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 class ManatypesTable
-	extends Table
+	extends AppTable
 {
+
+	protected $_contain = [ 'Skills' ];
 
 	public function initialize(array $config)
 	{

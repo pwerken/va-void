@@ -9,13 +9,11 @@ class PlayersController
 	{
 		parent::initialize();
 
-		$contain = [ 'Characters' ];
-
 		$this->mapMethod('add',    [ 'infobalie'         ]);
 		$this->mapMethod('edit',   [ 'infobalie', 'user' ]);
 		$this->mapMethod('delete', [ 'super'             ]);
 		$this->mapMethod('index',  [ 'referee'           ]);
-		$this->mapMethod('view',   [ 'referee',   'user' ], $contain);
+		$this->mapMethod('view',   [ 'referee',   'user' ], true);
 	}
 
 }

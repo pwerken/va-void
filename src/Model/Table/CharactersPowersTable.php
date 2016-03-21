@@ -1,12 +1,13 @@
 <?php
 namespace App\Model\Table;
 
-use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 class CharactersPowersTable
-	extends Table
+	extends AppTable
 {
+
+	protected $_contain = [ 'Characters', 'Powers' ];
 
 	public function initialize(array $config)
 	{

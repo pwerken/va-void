@@ -11,16 +11,14 @@ class AttributesItemsController
 	{
 		parent::initialize();
 
-		$contain = [ 'Attributes', 'Items' => [ 'Characters' ] ];
-
-		$this->mapMethod('attributesIndex', [ 'referee' ], $contain);
+		$this->mapMethod('attributesIndex', [ 'referee' ], true);
 
 		$this->mapMethod('itemsAdd',        [ 'referee' ]);
 		$this->mapMethod('itemsDelete',     [ 'referee' ]);
 # There are no properties on this relation to edit
 #		$this->mapMethod('itemsEdit',       [ 'referee' ]);
-		$this->mapMethod('itemsIndex',      [ 'referee' ], $contain);
-		$this->mapMethod('itemsView',       [ 'referee' ], $contain);
+		$this->mapMethod('itemsIndex',      [ 'referee' ], true);
+		$this->mapMethod('itemsView',       [ 'referee' ], true);
 	}
 
 	public function itemsAdd($itin)
