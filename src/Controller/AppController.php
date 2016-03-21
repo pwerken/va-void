@@ -88,7 +88,13 @@ class AppController
 	public function CrudBeforeHandle(Event $event)
 	{
 		$action = $this->request->action;
-		if(strcmp(substr($action, 0, 10), 'characters') == 0) {
+
+		// = (A && !B) || C
+		$startPlin  = strcmp($this->name, 'Characters') == 0;
+		$startPlin &= strcmp($action, 'add') != 0;
+		$startPlin |= strcmp(substr($action, 0, 10), 'characters') == 0;
+
+		if($startPlin) {
 			$plin = $event->subject->args[0];
 			$chin = $event->subject->args[1];
 
