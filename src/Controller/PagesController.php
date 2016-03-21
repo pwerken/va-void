@@ -13,7 +13,7 @@ class PagesController
 	{
 		parent::initialize();
 
-		$this->Auth->allow('display');
+		$this->Auth->allow(['display', 'lighttpd']);
 	}
 
 	public function display()
@@ -44,6 +44,11 @@ class PagesController
 			}
 			throw new NotFoundException();
 		}
+	}
+
+	public function lighttpd()
+	{
+		$this->redirect('/');
 	}
 
 }

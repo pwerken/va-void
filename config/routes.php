@@ -205,6 +205,14 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 	rest($routes, 'Factions', [ 'Characters' ]);
 	rest($routes, 'Groups',   [ 'Characters' ]);
 	rest($routes, 'Worlds',   [ 'Characters' ]);
+
+	if(strcmp(substr($_SERVER['SERVER_SOFTWARE'],0,8), "lighttpd") == 0) {
+		$defaults = [];
+		$defaults['_method'] = 'GET';
+		$defaults['controller'] = 'Pages';
+		$defaults['action'] = 'lighttpd';
+		$routes->connect('/va-void/', $defaults);
+	}
 });
 
 /**
