@@ -4,11 +4,6 @@ namespace App\Lammy;
 use FPDF;
 use App\Model\Entity\Character;
 
-/* TODO
- *	- $char object gebruiken
- *	- beter weergave mana, spheres en elementen
- */
-
 class CharacterLammy
 	extends Lammy
 {
@@ -31,6 +26,7 @@ class CharacterLammy
 		default:	user_error("unknown side '$side'", E_USER_ERROR);
 		}
 	}
+
 	private function drawFront()
 	{
 		$this->border();
@@ -52,15 +48,33 @@ class CharacterLammy
 
 		$this->pdf->SetTextColor(0);
 		$this->pdf->SetFont('Arial', 'B', 11);
-		$this->text(15, 12, 20, 'L', '987');
-		$this->text(35, 12, 20, 'L', '02');
-		$this->text(15, 20, 60, 'L', 'Werken, Peter van de');
-		$this->text(15, 28, 60, 'L', 'Azuma');
-		$this->text(15, 34, 60, 'L', 'Gatherer');
-		$this->text(15, 40, 60, 'L', 'Gargoyle');
+		$this->text(15, 12, 20, 'L', $this->entity->player_id);
+		$this->text(35, 12, 20, 'L', $this->entity->chin);
+		$this->text(15, 20, 60, 'L', $this->entity->player->fullName);
+		$this->text(15, 28, 60, 'L', $this->entity->name);
+		$this->text(15, 34, 60, 'L', $this->entity->group->name);
+		$this->text(15, 40, 60, 'L', $this->entity->faction->name);
 	}
+
 	private function drawBack()
 	{
+		$data = [];
+		$data['xp'] = 0;
+		$data['skill'] = [];
+		$data['mana'] = [];
+
+		foreach($this->entity->skills as $skill) {
+			$data['xp'] += $skill->cost;
+			$data['skills'][] = $skill->name.' ('.$skill->cost.')';
+
+			if(!isset($skill->manatype))
+				continue;
+
+			if(!isset($data['mana'][$skill->manatype->name]))
+				$data['mana'][$skill->manatype->name] = 0;
+			$data['mana'][$skill->manatype->name] += $skill->mana_amount;
+		}
+
 		$this->border();
 		$this->logo(1, 1);
 		$this->title('Character Card');
@@ -74,28 +88,14 @@ class CharacterLammy
 
 		// xp
 		$this->text( 9, 40.7, 21, 'R', 'Spent Points:');
-		$this->text(30, 40.7, 10, 'L', '28');
+		$this->text(30, 40.7, 10, 'L', $data['xp']);
 		$this->text(40, 40.7, 21, 'R', 'Total Points:');
-		$this->text(61, 40.7, 10, 'L', '21');
+		$this->text(61, 40.7, 10, 'L', $this->entity->xp);
 
 		// skills: max 6 regels
-		$this->textblock(8, 5.5, 64, 'L'
-			,   "numeracy (0)"
-			. ", reading/writing (1)"
-			. ", small weapons (0)"
-			. ", 1-h weapons (1)"
-			. ", ambidexterity (2)"
-			. ", armor light (2)"
-			. ", high priest (8)"
-			. ", nightvision (1)"
-			. ", spiritual ritualist (1)"
-			. ", avenger (2)"
-			. ", speak with animals (2)"
-			. ", tracking (1)"
-			. ", healing (7)"
-		);
+		$this->textblock(8, 5.5, 64, 'L', implode(', ', $data['skills']));
 
-		// mana:	max 2 regels
+		// mana: max 2 regels
 		$this->textblock(8, 24.5, 64, 'L'
 			,   "xx Elemental"
 			. ", xx Spiritual"
@@ -105,7 +105,7 @@ class CharacterLammy
 			. ", xx Demonology"
 			. ", xx Necromancy"
 		);
-		// spheres:	max 3 regels
+		// spheres: max 3 regels
 		$this->textblock(8, 31, 64, 'C'
 			,   "xx Body/Life"
 			. ", xx Chaos/Destruction"
