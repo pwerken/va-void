@@ -1,6 +1,7 @@
 <?php
 namespace App\Lammy;
 
+use App\Model\Entity\Lammy as LammyEntity;
 use FPDF;
 
 /**
@@ -55,6 +56,18 @@ class PdfSheet
 	{
 		$this->lammies[] = $lammy;
 		$this->clearLayout();
+	}
+
+	public function addEntity(LammyEntity $entity)
+	{
+		$class = 'App\\Lammy\\'.$entity->entity.'Lammy';
+
+		if(!class_exists($class)) {
+			echo "geen class: $class";
+			die;
+		}
+
+		$this->add(new $class($entity->getTarget()));
 	}
 
 	private function clearLayout()

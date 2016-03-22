@@ -1,7 +1,6 @@
 <?php
 namespace App\View;
 
-use App\Lammy\CharacterLammy;
 use App\Lammy\PdfSheet;
 use App\Model\Entity\Lammy;
 use Cake\View\View;
@@ -27,7 +26,7 @@ class PdfView
 
 		$sheet = new PdfSheet(true);	// true = double sided
 
-		$sheet->add(new CharacterLammy($data->getTarget()));
+		$sheet->addEntity($data);
 
 		$this->response->type('pdf');
 		$this->response->header('Content-Disposition', 'inline; filename="lammies.pdf"');

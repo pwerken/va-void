@@ -27,7 +27,7 @@ ToDo-list:
    - [ ] remove/reorder tasks from printing queue
    - [ ] mark queue items as printed
    - [x] import pdf-lammy code into App namespace
-   - [ ] create custom PdfView
+   - [x] create custom PdfView
    - [ ] create Item pdf render
    - [ ] create Power/Condition pdf render
    - [ ] output multiple lammies and/or pages at once
