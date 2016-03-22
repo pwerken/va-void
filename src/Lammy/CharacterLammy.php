@@ -5,7 +5,7 @@ use FPDF;
 use App\Model\Entity\Character;
 
 class CharacterLammy
-	extends Lammy
+	extends LammyCard
 {
 
 	public function __construct(Character $character)

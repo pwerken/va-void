@@ -6,7 +6,7 @@ use FPDF;
 /**
  *  Contains all the basics for making a lammy.
  */
-abstract class Lammy
+abstract class LammyCard
 {
 	static public	$WIDTH	= 75;	// lammy size (in mm)
 	static public	$HEIGHT	= 45;	// if changed, fix all the *Lammy classes!
@@ -65,13 +65,13 @@ abstract class Lammy
 	{
 		$this->pdf->SetFont('Arial', NULL, 9);
 		$this->pdf->SetTextColor(0);
-		$this->text(0, 3, Lammy::$WIDTH, 'C', $text);
+		$this->text(0, 3, self::$WIDTH, 'C', $text);
 	}
 	protected function footer($text)
 	{
 		$this->pdf->SetFont('Arial', NULL, 5);
 		$this->pdf->SetTextColor(191);
-		$this->text(0, Lammy::$HEIGHT - 1, Lammy::$WIDTH, 'R', $text);
+		$this->text(0, self::$HEIGHT - 1, self::$WIDTH, 'R', $text);
 	}
 	protected function square($x1, $y1, $x2, $y2)
 	{
