@@ -208,6 +208,15 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 
 	rest($routes, 'Lammies');
 
+	$defaults = [];
+	$defaults['_method'] = 'GET';
+	$defaults['controller'] = 'Lammies';
+	$defaults['action'] = 'print';
+	$routeOptions = [];
+	$routeOptions['pass'][] = 'id';
+	$routeOptions['id'] = '[0-9]+';
+	$routes->connect('/lammies/:id/print', $defaults, $routeOptions);
+
 	if(strcmp(substr($_SERVER['SERVER_SOFTWARE'],0,8), "lighttpd") == 0) {
 		$defaults = [];
 		$defaults['_method'] = 'GET';
