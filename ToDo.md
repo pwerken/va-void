@@ -23,8 +23,15 @@ ToDo-list:
    - [ ] take expiry into account in lists (item/conditon/power)
    - [ ] implement skill prereq check
  - Lammy printing
-   - [ ] create/manage printing queue
-   - [ ] output pdf
+   - [ ] create/fill printing queue
+   - [ ] remove/reorder tasks from printing queue
+   - [ ] mark queue items as printed
+   - [x] import pdf-lammy code into App namespace
+   - [ ] create custom PdfView
+   - [ ] create Item pdf render
+   - [ ] create Power/Condition pdf render
+   - [ ] output multiple lammies and/or pages at once
+   - [ ] merge Lammy/PdfSheet into View/PdfView
    - [ ] dummy lore code handling/generation
  - Logging/accounting
    - [ ] logging of all modifications
@@ -41,5 +48,4 @@ ToDo-list:
    - [ ] Teaching: track student/teacher relation
    - [ ] Events: can be used for XP assignment
  - Upstream changes
-   - [ ] Crud cake3: configurable 'contain' relation
    - [ ] Crud cake3: support multiple primary keys

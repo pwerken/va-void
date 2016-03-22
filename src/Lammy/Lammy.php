@@ -1,6 +1,7 @@
 <?php
+namespace App\Lammy;
 
-require_once('libs/fpdf.php');
+use FPDF;
 
 /**
  *  Contains all the basics for making a lammy.
@@ -10,11 +11,17 @@ abstract class Lammy
 	static public	$WIDTH	= 75;	// lammy size (in mm)
 	static public	$HEIGHT	= 45;	// if changed, fix all the *Lammy classes!
 
-	protected $pdf  = NULL;
-	private   $xPos = 0;
-	private   $yPos = 0;
+	protected $entity = null;
+	protected $pdf    = null;
+	private   $xPos   = 0;
+	private   $yPos   = 0;
 
-	/************************* USED BY LammySheet *************************/
+	public function __construct($entity)
+	{
+		$this->entity = $entity;
+	}
+
+	/************************* USED BY PdfSheet ***************************/
 
 	/***
 	 *  Return the number of sides the lammy has.
@@ -50,7 +57,7 @@ abstract class Lammy
 	}
 	protected function logo($x, $y)
 	{
-		$this->pdf->Image('va_logo.png'
+		$this->pdf->Image(APP . DS . 'Lammy' . DS . 'va_logo.png'
 						, $this->xPos + $x, $this->yPos + $y
 						, 6, 10);
 	}
@@ -98,6 +105,5 @@ abstract class Lammy
 		$this->pdf->MultiCell($w, 2.5, $text, $border, $align);
 		$this->pdf->SetXY($this->xPos, $this->yPos);
 	}
-}
 
-// vim:sw=4:ts=4:tw=0:foldlevel=1
+}

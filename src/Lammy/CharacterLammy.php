@@ -1,22 +1,21 @@
 <?php
+namespace App\Lammy;
 
-require_once('libs/fpdf.php');
-require_once('objs/Lammy/Lammy.php');
-#require_once('objs/Character.php');
+use FPDF;
+use App\Model\Entity\Character;
 
 /* TODO
  *	- $char object gebruiken
  *	- beter weergave mana, spheres en elementen
  */
 
-class CharLammy
+class CharacterLammy
 	extends Lammy
 {
-	private $char;		// TODO deze gebruiken
 
-	public function __construct($char)
+	public function __construct(Character $character)
 	{
-		$this->char = $char;
+		parent::__construct($character);
 	}
 
 	public function sides()
@@ -146,5 +145,3 @@ class CharLammy
 #		Water
 #		Wood
 }
-
-// vim:sw=4:ts=4:tw=0:foldlevel=1

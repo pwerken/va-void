@@ -1,13 +1,14 @@
 <?php
+namespace App\Lammy;
 
-require_once('libs/fpdf.php');
+use FPDF;
 
 /**
  *	Given a list of lammies place them in a pdf.
  *
  *	Also handle a other sizes of lammy
  */
-class LammySheet
+class PdfSheet
 {
 	static private	$M_LEFT	= 29.5;	// paper margins
 	static private	$M_TOP	=  8;
@@ -23,20 +24,12 @@ class LammySheet
 	private $layout = NULL;			// actual layout
 	private $spaceleft = 0;			// nr of singlesided slots left
 
-	/***************************** SINGLETON ******************************/
-	static private $instance = NULL;
-	static public function getInstance()
-	{
-		if(!self::$instance)
-			self::$instance = new LammySheet();
-		return self::$instance;
-	}
-	private function __construct()
+	public function __construct()
 	{
 		$this->clearLayout();
 	}
 
-	public function getspaceleft()
+	public function getSpaceLeft()
 	{
 		if(!$this->layout)
 			$this->makeLayout();
@@ -58,7 +51,7 @@ class LammySheet
 	}
 
 	/* add a Lammy */
-	public function add($lammy)
+	public function add(Lammy $lammy)
 	{
 		$this->lammies[] = $lammy;
 		$this->clearLayout();
@@ -187,7 +180,7 @@ class LammySheet
 			}
 		}
 
-		$pdf->Output('sheet.pdf', 'I');
+		return $pdf->Output('s');
 	}
 
 	/* utility methods */
@@ -199,6 +192,5 @@ class LammySheet
 	{
 		return self::$M_TOP  + (Lammy::$HEIGHT + self::$P_VERT) * $row;
 	}
-}
 
-// vim:sw=4:ts=4:tw=0:foldlevel=1
+}
