@@ -35,17 +35,13 @@ class ApiView
 
 	public function render($view = null, $layout = null)
 	{
-		$viewVar = @$this->viewVars['viewVar'];
-		if(isset($this->viewVars[$viewVar])) {
-			$data = $this->viewVars[$viewVar];
-			if(is_array($data) || $data instanceof ResultSet)
-				$data = $this->_jsonList($data, @$this->viewVars['parent']);
-			else
-				$data = $this->_jsonData($data);
-		} elseif(isset($this->viewVars['_serialize'])) {
-			$data = $this->viewVars['_serialize'];
+		$data = $this->get($this->get('viewVar'));
+		if(is_null($data)) {
+			$data->get('_serialize', $this->viewVars);
+		} elseif(is_array($data) || $data instanceof ResultSet) {
+			$data = $this->_jsonList($data, $this->get('parent'));
 		} else {
-			$data = $this->viewVars;
+			$data = $this->_jsonData($data);
 		}
 
 		$jsonOptions = JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT;
