@@ -92,6 +92,7 @@ abstract class LammyCard
 	}
 	protected function text($x, $y, $w, $align, $text, $border = 0)
 	{
+		$text = utf8_decode($text);
 		while($this->pdf->GetStringWidth($text) > $w) {
 			$text = substr($text, 0, -1);
 		}
@@ -102,7 +103,7 @@ abstract class LammyCard
 	protected function textblock($x, $y, $w, $align, $text, $border = 0)
 	{
 		$this->pdf->SetXY($this->xPos + $x, $this->yPos + $y);
-		$this->pdf->MultiCell($w, 2.5, $text, $border, $align);
+		$this->pdf->MultiCell($w, 2.5, utf8_decode($text), $border, $align);
 		$this->pdf->SetXY($this->xPos, $this->yPos);
 	}
 
