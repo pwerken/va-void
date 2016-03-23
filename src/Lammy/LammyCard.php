@@ -15,6 +15,7 @@ abstract class LammyCard
 	protected $pdf    = null;
 	private   $xPos   = 0;
 	private   $yPos   = 0;
+	private   $size   = 0;
 
 	public function __construct($entity)
 	{
@@ -63,20 +64,25 @@ abstract class LammyCard
 	}
 	protected function title($text)
 	{
-		$this->pdf->SetFont('Arial', NULL, 9);
 		$this->pdf->SetTextColor(0);
+		$this->font(9);
 		$this->text(0, 3, self::$WIDTH, 'C', $text);
 	}
 	protected function footer($text)
 	{
-		$this->pdf->SetFont('Arial', NULL, 5);
 		$this->pdf->SetTextColor(191);
-		$this->text(0, self::$HEIGHT - 1, self::$WIDTH, 'R', $text);
+		$this->font(5);
+		$this->text(0, self::$HEIGHT - 1.3, self::$WIDTH, 'R', $text);
 	}
 	protected function square($x1, $y1, $x2, $y2)
 	{
 		$this->pdf->SetDrawColor(0);
 		$this->pdf->rect($this->xPos+$x1, $this->yPos+$y1, $x2-$x1, $y2-$y1);
+	}
+	protected function font($size, $style = '')
+	{
+		$this->size = $size;
+		$this->pdf->SetFont('Arial', $style, $size);
 	}
 	protected function text($x, $y, $w, $align, $text, $border = 0)
 	{
@@ -90,8 +96,9 @@ abstract class LammyCard
 	}
 	protected function textblock($x, $y, $w, $align, $text, $border = 0)
 	{
-		$this->pdf->SetXY($this->xPos + $x, $this->yPos + $y);
-		$this->pdf->MultiCell($w, 2.5, utf8_decode($text), $border, $align);
+		$h = $this->size / 2;
+		$this->pdf->SetXY($this->xPos + $x, $this->yPos + $y - $h/2);
+		$this->pdf->MultiCell($w, $h, utf8_decode($text), $border, $align);
 		$this->pdf->SetXY($this->xPos, $this->yPos);
 	}
 
