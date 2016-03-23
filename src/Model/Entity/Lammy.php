@@ -8,24 +8,32 @@ class Lammy
 	extends AppEntity
 {
 
+	private $target = null;
+
 	protected $_defaults =
 			[ 'printed'     => false
 			];
 
-	public function getTarget()
+	protected $_virtual = [ 'target' ];
+
+	protected function _getTarget()
 	{
-		$name = Inflector::pluralize($this->entity);
-		$table = TableRegistry::get($name);
+		if(is_null($this->target)) {
+			$name = Inflector::pluralize($this->entity);
+			$table = TableRegistry::get($name);
 
-		$keys = [$this->key1, $this->key2];
-		$primary = $table->primaryKey();
-		if(!is_array($primary)) $primary = [$primary];
+			$keys = [$this->key1, $this->key2];
+			$primary = $table->primaryKey();
+			if(!is_array($primary)) $primary = [$primary];
 
-		$where = [];
-		foreach($primary as $i => $id)
-			$where[$name.'.'.$id] = $keys[$i];
+			$where = [];
+			foreach($primary as $i => $id)
+				$where[$name.'.'.$id] = $keys[$i];
 
-		return $table->find('WithContain')->where($where)->first();
+			$this->target = $table->find('WithContain')->where($where)->first();
+		}
+
+		return $this->target;
 	}
 
 }

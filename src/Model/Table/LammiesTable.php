@@ -50,7 +50,7 @@ class LammiesTable
 			return false;
 		}
 
-		if(is_null($entity->getTarget())) {
+		if(is_null($entity->target)) {
 			$entity->errors('key1', 'no such entity');
 			return false;
 		}
