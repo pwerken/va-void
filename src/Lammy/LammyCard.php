@@ -76,19 +76,7 @@ abstract class LammyCard
 	protected function square($x1, $y1, $x2, $y2)
 	{
 		$this->pdf->SetDrawColor(0);
-		$this->pdf->rect( $this->xPos + $x1
-						, $this->yPos + $y1
-						, $x2 - $x1
-						, $y2 - $y1
-						);
-//		$this->pdf->Line($this->xPos + $x1, $this->yPos + $y1
-//						,$this->xPos + $x2, $this->yPos + $y1);	// +-----
-//		$this->pdf->Line($this->xPos + $x1, $this->yPos + $y1	// |
-//						,$this->xPos + $x1, $this->yPos + $y2);	// |
-//		$this->pdf->Line($this->xPos + $x2, $this->yPos + $y1	//		|
-//						,$this->xPos + $x2, $this->yPos + $y2);	//      |
-//		$this->pdf->Line($this->xPos + $x1, $this->yPos + $y2	// -----+
-//						,$this->xPos + $x2, $this->yPos + $y2);
+		$this->pdf->rect($this->xPos+$x1, $this->yPos+$y1, $x2-$x1, $y2-$y1);
 	}
 	protected function text($x, $y, $w, $align, $text, $border = 0)
 	{

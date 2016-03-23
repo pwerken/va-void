@@ -39,7 +39,7 @@ class PdfView
 
 		$this->response->type('pdf');
 #		$this->response->header('Content-Disposition', 'inline; filename="lammies.pdf"');
-		return $this->createPdf(true);
+		return $this->createPdf(false);
 	}
 
 	private function addEntity(Lammy $entity)
@@ -51,7 +51,7 @@ class PdfView
 			die;
 		}
 
-		$this->lammies[] = new $class($entity->getTarget());
+		$this->lammies[] = new $class($entity->target);
 	}
 	private function createPdf($twosided = false)
 	{
@@ -68,7 +68,7 @@ class PdfView
 
 		$pdf = new FPDF('P', 'mm', 'A4');
 		$pdf->SetMargins(self::$M_SIDE, self::$M_TOP, self::$M_SIDE);
-		$pdf->SetTitle('Lammes!');
+		$pdf->SetTitle('Lammies!');
 		$pdf->SetAutoPageBreak(false);
 
 		for($page = 0; $page < count($layout); $page++)
