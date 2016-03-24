@@ -7,6 +7,8 @@ class WorldsController
 
 	public function initialize()
 	{
+		parent::initialize();
+
 		$this->mapMethod('add',    [ 'referee' ]);
 		$this->mapMethod('delete', [ 'referee' ]);
 		$this->mapMethod('edit',   [ 'referee' ]);
