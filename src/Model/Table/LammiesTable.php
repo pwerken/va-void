@@ -44,8 +44,8 @@ class LammiesTable
 
 	public function ruleEntityExists($entity, $options)
 	{
-		$class = Inflector::pluralize($entity->entity);
-		if(!TableRegistry::exists($class)) {
+		$class = 'App\\Model\\Entity\\'.$entity->entity;
+		if(!class_exists($class)) {
 			$entity->errors('entity', 'unknown entity type');
 			return false;
 		}
