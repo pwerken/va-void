@@ -22,15 +22,20 @@ class Lammy
 			$name = Inflector::pluralize($this->entity);
 			$table = TableRegistry::get($name);
 
-			$keys = [$this->key1, $this->key2];
-			$primary = $table->primaryKey();
-			if(!is_array($primary)) $primary = [$primary];
+			if(strcmp($name, 'Characters') == 0) {
+				$q = $table->findByPlayerIdAndChin($this->key1, $this->key2);
+			} else {
+				$keys = [$this->key1, $this->key2];
+				$primary = $table->primaryKey();
+				if(!is_array($primary)) $primary = [$primary];
 
-			$where = [];
-			foreach($primary as $i => $id)
-				$where[$name.'.'.$id] = $keys[$i];
+				$where = [];
+				foreach($primary as $i => $id)
+					$where[$name.'.'.$id] = $keys[$i];
 
-			$this->target = $table->find('WithContain')->where($where)->first();
+				$q = $table->find()->where($where);
+			}
+			$this->target = $table->findWithContain($q)->first();
 		}
 
 		return $this->target;

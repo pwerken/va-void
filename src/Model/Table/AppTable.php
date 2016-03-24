@@ -10,7 +10,7 @@ abstract class AppTable
 
 	protected $_contain = [ ];
 
-	public function findWithContain(Query $query, array $options)
+	public function findWithContain(Query $query, array $options = [])
 	{
 		if(!empty($this->_contain))
 			$query->contain($this->_contain);
