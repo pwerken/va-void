@@ -89,12 +89,12 @@ class AppController
 	{
 		$action = $this->request->action;
 
-		// = (A && !B) || C
+		// = (A && B) || C
 		$startPlin  = strcmp($this->name, 'Characters') == 0;
-		$startPlin &= strcmp($action, 'add') != 0;
+		$startPlin &= in_array($action, ['delete', 'edit', 'view']);
 		$startPlin |= strcmp(substr($action, 0, 10), 'characters') == 0;
 
-		if($startPlin) {
+		if($startPlin && isset($event->subject->args[1])) {
 			$plin = $event->subject->args[0];
 			$chin = $event->subject->args[1];
 
