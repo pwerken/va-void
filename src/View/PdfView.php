@@ -3,6 +3,7 @@ namespace App\View;
 
 use App\Lammy\LammyCard;
 use App\Model\Entity\Lammy;
+use Cake\ORM\ResultSet;
 use Cake\View\View;
 use FPDF;
 
@@ -30,12 +31,12 @@ class PdfView
 			echo "huh?! \$data is null!"; #FIXME throw exception
 			die;
 		}
-		if(!($data instanceof Lammy)) {
-			echo "huh?! \$data is geen Lammy!"; #FIXME throw exception
-			die;
-		}
 
-		$this->addEntity($data);
+		if(!is_array($data) && !($data instanceof ResultSet))
+			$data = [$data];
+		foreach($data as $obj) {
+			$this->addEntity($obj);
+		}
 
 		$this->response->type('pdf');
 #		$this->response->header('Content-Disposition', 'inline; filename="lammies.pdf"');
@@ -50,14 +51,13 @@ class PdfView
 			echo "geen class: $class"; #FIXME throw exception
 			die;
 		}
-
 		$this->lammies[] = new $class($entity->target);
 	}
 	private function createPdf($twosided = false)
 	{
 		$todo = [];
-		foreach($this->lammies as $key => $lam) {
-			$todo[] = [$key, $lam->sides()];
+		foreach($this->lammies as $key => $lammy) {
+			$todo[] = [$key, $lammy->sides()];
 		}
 
 		if(!$twosided) {

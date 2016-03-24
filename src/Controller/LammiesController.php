@@ -21,6 +21,10 @@ class LammiesController
 			[ 'className' => 'Crud.View'
 			, 'auth' => [ 'referee' ]
 			]);
+		$this->Crud->mapAction('printAll',
+			[ 'className' => 'Crud.Index'
+			, 'auth' => [ 'referee' ]
+			]);
 	}
 
 	public function implementedEvents()
@@ -32,7 +36,7 @@ class LammiesController
 
 	public function CrudBeforeRender(Event $event)
 	{
-		if(strcmp($this->request->action, 'print') !== 0)
+		if(strcmp(substr($this->request->action, 0, 5), 'print') !== 0)
 			return;
 
 		$this->viewBuilder()->className('Pdf');

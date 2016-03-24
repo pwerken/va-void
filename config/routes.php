@@ -211,6 +211,9 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 	$defaults = [];
 	$defaults['_method'] = 'GET';
 	$defaults['controller'] = 'Lammies';
+	$defaults['action'] = 'printAll';
+	$routes->connect('/lammies/print', $defaults, []);
+
 	$defaults['action'] = 'print';
 	$routeOptions = [];
 	$routeOptions['pass'][] = 'id';
