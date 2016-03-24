@@ -37,7 +37,7 @@ class ApiView
 	{
 		$data = $this->get($this->get('viewVar'));
 		if(is_null($data)) {
-			$data->get('_serialize', $this->viewVars);
+			$data = $this->get('_serialize', $this->viewVars);
 		} elseif(is_array($data) || $data instanceof ResultSet) {
 			$data = $this->_jsonList($data, $this->get('parent'));
 		} else {
