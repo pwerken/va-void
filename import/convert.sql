@@ -73,10 +73,11 @@ SELECT `chaID`, `plaPLIN`, `chaCHIN`, `chaName`, `Total Points`
  WHERE 1;
 
 SELECT " ITEMS" AS '';
-INSERT INTO `va-void`.`items` ( `id`, `name`, `description`, `player_text`
-    , `cs_text`, `character_id`, `expiry`)
-SELECT `itmITIN`, `itmName`, `itmDescription`, `itmPlayerText`, `itmCSText`
-    , `itmchaIDFK`, `itmExpireDate`
+INSERT INTO `va-void`.`items` ( `id`, `name`, `description`
+	, `important`, `player_text`, `cs_text`, `character_id`, `expiry`)
+SELECT `itmITIN`, `itmName`, `itmDescription`
+	, IF(`itmSearchName` LIKE "Contact%", `itmSearchName`, NULL)
+	, `itmPlayerText`, `itmCSText`, `itmchaIDFK`, `itmExpireDate`
   FROM `va`.`Tbl_Items`;
 
 SELECT " MANA" AS '';

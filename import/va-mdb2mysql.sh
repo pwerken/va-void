@@ -19,6 +19,7 @@ mdb-tables -1 -t table "$DB" | while read table
 do
 	mdb-schema --drop-table -T "$table" "$DB" mysql | sed \
 		's,varchar .510.,text,g
+		;s,text..255.,text,g
 		;1,9 d'
 	mdb-export -I mysql -X \\ "$DB" "$table" | sed \
 		's,\(.\)\.\(.\)\(.\)00000000000000e+01,\1\2.\3,g

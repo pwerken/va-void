@@ -32,6 +32,7 @@ class ItemsTable
 		$validator->allowEmpty('id', 'create');
 		$validator->notEmpty('name');
 		$validator->allowEmpty('description');
+		$validator->allowEmpty('important');
 		$validator->allowEmpty('player_text');
 		$validator->allowEmpty('cs_text');
 		$validator->allowEmpty('character_id');
