@@ -13,18 +13,15 @@ class CharacterLammy
 	public function draw($side)
 	{
 		switch($side) {
-		case 0:		$this->drawFront();		break;
-		case 1:		$this->drawBack();		break;
+		case 0:		$this->_drawFront();		break;
+		case 1:		$this->_drawBack();		break;
 		default:	user_error("unknown side '$side'", E_USER_ERROR);
 		}
 	}
 
-	private function drawFront()
+	protected function _drawFront()
 	{
-		$this->border();
-		$this->logo(68, 1);
-		$this->title('Character Card');
-		$this->footer('(c) Vortex Adventures');
+		$this->cardFront('Character Card');
 
 		$this->pdf->SetTextColor(63);
 
@@ -52,7 +49,7 @@ class CharacterLammy
 		$this->text(12, 38, 60, 'L', $this->entity->world->name);
 	}
 
-	private function drawBack()
+	protected function _drawBack()
 	{
 		$data = [];
 		$data['xp'] = 0;
@@ -76,10 +73,7 @@ class CharacterLammy
 			$data['spells'][$spell->spiritual][] = $descr;
 		}
 
-		$this->border();
-		$this->logo(1, 1);
-		$this->title('Skills');
-		$this->footer(date('G:i d/m/Y'));
+		$this->cardBack('Skills');
 
 		$this->square( 8,  5, 72, 36);
 		$this->square( 8, 36, 56, 42);

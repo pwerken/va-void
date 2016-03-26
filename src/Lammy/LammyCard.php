@@ -50,6 +50,21 @@ abstract class LammyCard
 		$this->yPos = $y;
 	}
 
+	protected function cardFront($title)
+	{
+		$this->border();
+		$this->logo(68, 1);
+		$this->title($title);
+		$this->footer(date('G:i d/m/Y'));
+	}
+	protected function cardBack($title)
+	{
+		$this->border();
+		$this->logo(1, 1);
+		$this->title($title);
+		$this->footer('(c) Vortex Adventures');
+	}
+
 	/********************* very basic drawing methods *********************/
 
 	protected function border()

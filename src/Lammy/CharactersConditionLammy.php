@@ -30,10 +30,7 @@ class CharactersConditionLammy
 
 	protected function _drawFront($data)
 	{
-		$this->border();
-		$this->logo(68, 1);
-		$this->title($data['type'].' Card');
-		$this->footer('(c) Vortex Adventures');
+		$this->cardFront($data['type'].' Card');
 
 		$this->pdf->SetTextColor(63);
 
@@ -65,14 +62,10 @@ class CharactersConditionLammy
 
 	protected function _drawBack($data)
 	{
-		$this->border();
-		$this->logo(1, 1);
-		$this->title('Description');
-		$this->footer(date('G:i d/m/Y'));
-
-		$this->square(8, 5, 72, 42);
+		$this->cardBack('Description');
 
 		$this->pdf->SetTextColor(0);
+		$this->square(8, 5, 72, 42);
 		$this->font(6);
 		$this->textblock(8, 7, 64, 'L', $data['text']);
 	}
