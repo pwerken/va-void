@@ -97,47 +97,34 @@ class PdfView
 	{
 		$layout = [];
 		$col = 0; $row = 0; $page = 0;
-		while(count($todo))
+		foreach($todo as list($key, $sides))
 		{
-			$add = array();
-			if($col == 0) {
-				list($key, $sides) = array_shift($todo);
-				for($i = 0; $i < $sides; $i++) {
-					$add[] = $i;
-				}
-			} else {
-				foreach($todo as $i => $item)
-				{
-					list($key, $sides) = $item;
-					if($sides % 2 == 1) {
-						break;
+			$space = 2*(self::$LAMMIES_Y - $row) - $col;
+			if($space < $sides) {
+				// lammies don't fit on page, goto next page
+				for(; $row < self::$LAMMIES_Y; $row++) {
+					for(; $col < 2; $col++) {
+						$layout[$page][$row][$col] = [null, 1];
 					}
-
-					unset($i);
-				}
-				if(isset($i)) {
-					unset($todo[$i]);
-					$add[] = $sides;
-					for($i = 0; $i < $sides - 1; $i++) {
-						$add[] = $i;
-					}
-				} else {
-					$key = NULL;
-					$add[] = 1;
-				}
-			}
-			foreach($add as $i)
-			{
-				if(isset($key))
-					$layout[$page][$row][$col] = array($key, $i);
-
-				if(++$col >= 2) {
 					$col = 0;
-					if(++$row >= self::$LAMMIES_Y) {
-						$row = 0;
-						$page++;
-					}
 				}
+				$row = 0;
+				$page++;
+			}
+			if($col == 1) {	// starting in 2nd column, try to fill it
+				$add = ($sides % 2 == 1) ? [$key, --$sides] : [null, 1];
+				$layout[$page][$row][$col] = $add;
+				$col = 0;
+				$row++;
+			}
+			for($i = 0; $i < $sides; $i++) {
+				$layout[$page][$row][$col] = [$key, $i];
+				if($col == 0) {
+					$col++;
+					continue;
+				}
+				$col = 0;
+				$row++;
 			}
 		}
 		return $layout;
@@ -151,9 +138,9 @@ class PdfView
 			list($key, $sides) = array_shift($todo);
 			for($i = 0; $i < $sides; $i += 2)
 			{
-				$layout[$page  ][$row][$col] = array($key, $i);
+				$layout[$page  ][$row][$col] = [$key, $i];
 				if(++$i >= $sides) $key = NULL;
-				$layout[$page+1][$row][$col] = array($key, $i);
+				$layout[$page+1][$row][$col] = [$key, $i];
 				if(++$col >= 2) {
 					$col = 0;
 					if(++$row >= self::$LAMMIES_Y) {
