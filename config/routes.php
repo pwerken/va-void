@@ -111,6 +111,12 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 
 		$urlNest = ($options['path'] == 0 ? '/'.$lcName : $url);
 		$routes->connect($urlNest, $defaults, $routeOptions);
+
+		// hacky special case #2
+		if($name == 'Characters' && $method == 'index') {
+			$defaults['action'] = 'playersIndex';
+			$routes->connect('/characters/:plin', $defaults, $routeOptions);
+		}
 	}
 
 	foreach($subs as $controller) {
@@ -175,7 +181,7 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 		}
 	}
 
-	// hacky special case #2
+	// hacky special case #3
 	if($name == 'Players') {
 		$defaults = [];
 		$defaults['_method'] = 'PUT';
