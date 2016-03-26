@@ -55,10 +55,14 @@ INSERT INTO `va-void`.`believes` ( `id`, `name` )
 SELECT `belID`, `belName` FROM `va`.`Tbl_Beliefs`;
 
 SELECT " CHARACTERS" AS '';
+-- ignore duplicate characters: 487, 519, 538, 614, 996, 1697
+-- remove duplication of plin/chin: 318:2, 4129:1
 INSERT INTO `va-void`.`characters` ( `id`, `player_id`, `chin`, `name`, `xp`
     , `faction_id`, `belief_id`, `group_id`, `world_id`, `status`, `comments`
     , `modified` )
-SELECT `chaID`, `plaPLIN`, `chaCHIN`, `chaName`, `Total Points`
+SELECT `chaID`, `plaPLIN`
+	, IF(`plaPLIN` = 318, 1, IF(`plaPLIN` = 4129, 2, `chaCHIN`))
+	, `chaName`, `Total Points`
     , IF(`facID` IS NULL, 1, `facID` + 1)
     , IFNULL(`chaBeliefIDFK`, 1)
     , IFNULL(`chaGroupIDFK`, 1)
@@ -70,7 +74,7 @@ SELECT `chaID`, `plaPLIN`, `chaCHIN`, `chaName`, `Total Points`
     ON (`Tbl_Characters`.`chaPLINIDFK` = `Tbl_Players`.`plaPLIN`)
   LEFT JOIN `va`.`TblLkp_Faction`
     ON (`Tbl_Characters`.`chaFaction` = `TblLkp_Faction`.`facName`)
- WHERE 1;
+ WHERE `chaID` NOT IN (487, 519, 538, 614, 996, 1697);
 
 SELECT " ITEMS" AS '';
 INSERT INTO `va-void`.`items` ( `id`, `name`, `description`
