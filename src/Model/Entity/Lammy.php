@@ -9,12 +9,13 @@ class Lammy
 {
 
 	private $target = null;
+	private $lammy  = null;
 
 	protected $_defaults =
 			[ 'printed'     => false
 			];
 
-	protected $_virtual = [ 'target' ];
+	protected $_virtual = [ 'target', 'lammy' ];
 
 	protected function _getTarget()
 	{
@@ -39,6 +40,15 @@ class Lammy
 		}
 
 		return $this->target;
+	}
+
+	protected function _getLammy()
+	{
+		if(is_null($this->lammy)) {
+			$class = 'App\\Lammy\\'.$this->entity.'Lammy';
+			$this->lammy = new $class($this->_getTarget());
+		}
+		return $this->lammy;
 	}
 
 }

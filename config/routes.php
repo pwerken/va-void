@@ -217,14 +217,14 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 	$defaults = [];
 	$defaults['_method'] = 'GET';
 	$defaults['controller'] = 'Lammies';
-	$defaults['action'] = 'printAll';
-	$routes->connect('/lammies/print', $defaults, []);
+	$defaults['action'] = 'printSingle';
+	$routeOptions = ['pass' => ['id'], 'id' => '[0-9]+'];
+	$routes->connect('/lammies/single',     $defaults, []);
+	$routes->connect('/lammies/single/:id', $defaults, $routeOptions);
 
-	$defaults['action'] = 'print';
-	$routeOptions = [];
-	$routeOptions['pass'][] = 'id';
-	$routeOptions['id'] = '[0-9]+';
-	$routes->connect('/lammies/:id/print', $defaults, $routeOptions);
+	$defaults['action'] = 'printDouble';
+	$routes->connect('/lammies/double',     $defaults, []);
+	$routes->connect('/lammies/double/:id', $defaults, $routeOptions);
 
 	if(strcmp(substr($_SERVER['SERVER_SOFTWARE'],0,8), "lighttpd") == 0) {
 		$defaults = [];

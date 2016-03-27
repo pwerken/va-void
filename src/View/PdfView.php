@@ -27,32 +27,61 @@ class PdfView
 
 		$data = $this->get($this->get('viewVar'));
 
-		if(is_null($data)) {
-			echo "huh?! \$data is null!"; #FIXME throw exception
-			die;
-		}
+		$pageNr = $this->get('page');
+		$pageDouble = $this->get('double');
 
-		if(!is_array($data) && !($data instanceof ResultSet))
-			$data = [$data];
-		foreach($data as $obj) {
-			$this->addEntity($obj);
+		foreach($data as $entity)
+		{
+			if($pageDouble)
+				$page = $entity->lammy->pageDouble;
+			else
+				$page = $entity->lammy->pageSingle;
+
+			if($page == $pageNr || $pageNr < 0)
+				$this->lammies[] = $entity->lammy;
 		}
 
 		$this->response->type('pdf');
 #		$this->response->header('Content-Disposition', 'inline; filename="lammies.pdf"');
-		return $this->createPdf(false);
+		return $this->createPdf($pageDouble);
 	}
 
-	private function addEntity(Lammy $entity)
+	public static function addLayoutInfo($entities)
 	{
-		$class = 'App\\Lammy\\'.$entity->entity.'Lammy';
+		$maxLammies = self::$LAMMIES_Y * 2;
+		$singlePage = 0; $single = 0;
+		$doublePage = 0; $double = 0;
 
-		if(!class_exists($class)) {
-			echo "geen class: $class"; #FIXME throw exception
-			die;
+		foreach($entities as $entity)
+		{
+			$sides = $entity->lammy->sides();
+			if($single + $sides > $maxLammies) {
+				$singlePage++;
+				$single = 0;
+			}
+			$single += $sides;
+
+			$sides = (int)(($sides + 1) / 2);
+			if($double + $sides > $maxLammies) {
+				$doublePage++;
+				$double = 0;
+			}
+			$double += $sides;
+
+			$entity->lammy->pageSingle = $singlePage;
+			$entity->lammy->pageDouble = $doublePage;
 		}
-		$this->lammies[] = new $class($entity->target);
+
+		$singleFull = ($maxLammies - $single < 2);
+		$doubleFull = ($maxLammies - $double < 2);
+		foreach($entities as $entity) {
+			if($entity->lammy->pageSingle == $singlePage && !$singleFull)
+				$entity->lammy->pageSingle = -1;
+			if($entity->lammy->pageDouble == $doublePage && !$doubleFull)
+				$entity->lammy->pageDouble = -1;
+		}
 	}
+
 	private function createPdf($twosided = false)
 	{
 		$todo = [];
@@ -136,7 +165,7 @@ class PdfView
 		while(count($todo) > 0)
 		{
 			list($key, $sides) = array_shift($todo);
-			for($i = 0; $i < $sides; $i += 2)
+			for($i = 0; $i < $sides; $i++)
 			{
 				$layout[$page  ][$row][$col] = [$key, $i];
 				if(++$i >= $sides) $key = NULL;

@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\View\PdfView;
 use Cake\Event\Event;
 
 class LammiesController
@@ -17,14 +18,12 @@ class LammiesController
 		$this->mapMethod('index',  [ 'referee'   ]);
 		$this->mapMethod('view',   [ 'referee'   ]);
 
-		$this->Crud->mapAction('print',
-			[ 'className' => 'Crud.View'
-			, 'auth' => [ 'referee' ]
-			]);
-		$this->Crud->mapAction('printAll',
-			[ 'className' => 'Crud.Index'
-			, 'auth' => [ 'referee' ]
-			]);
+		$config = [];
+		$config['className']  = 'Crud.Index';
+		$config['auth']       = [ 'referee' ];
+		$config['findMethod'] = 'withContain';
+		$this->Crud->mapAction('printSingle', $config);
+		$this->Crud->mapAction('printDouble', $config);
 	}
 
 	public function implementedEvents()
@@ -36,10 +35,23 @@ class LammiesController
 
 	public function CrudBeforeRender(Event $event)
 	{
-		if(strcmp(substr($this->request->action, 0, 5), 'print') !== 0)
+		if(strcmp(substr($this->request->action, 0, 5), 'print') !== 0) {
+			if(strcmp($this->request->action, 'index') == 0)
+				PdfView::addLayoutInfo($event->subject->entities);
 			return;
+		}
 
 		$this->viewBuilder()->className('Pdf');
+		PdfView::addLayoutInfo($event->subject->entities);
+
+		$this->set('double', false);
+		if(strcmp(substr($this->request->action, 5, 6), 'Double') === 0)
+			$this->set('double', true);
+
+		$this->set('page', -1);
+		if(isset($this->request->params['pass'][0]))
+			$this->set('page', $this->request->params['pass'][0]);
+
 	}
 
 }
