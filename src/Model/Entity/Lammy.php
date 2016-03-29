@@ -15,6 +15,8 @@ class Lammy
 			[ 'printed'     => false
 			];
 
+	protected $_hidden = [ 'lammy' ];
+
 	protected $_virtual = [ 'target', 'lammy' ];
 
 	protected function _getTarget()
@@ -23,19 +25,16 @@ class Lammy
 			$name = Inflector::pluralize($this->entity);
 			$table = TableRegistry::get($name);
 
-			if(strcmp($name, 'Characters') == 0) {
-				$q = $table->findByPlayerIdAndChin($this->key1, $this->key2);
-			} else {
-				$keys = [$this->key1, $this->key2];
-				$primary = $table->primaryKey();
-				if(!is_array($primary)) $primary = [$primary];
+			$keys = [$this->key1, $this->key2];
+			$primary = $table->primaryKey();
+			if(!is_array($primary))
+				$primary = [$primary];
 
-				$where = [];
-				foreach($primary as $i => $id)
-					$where[$name.'.'.$id] = $keys[$i];
+			$where = [];
+			foreach($primary as $i => $id)
+				$where[$name.'.'.$id] = $keys[$i];
 
-				$q = $table->find()->where($where);
-			}
+			$q = $table->find()->where($where);
 			$this->target = $table->findWithContain($q)->first();
 		}
 

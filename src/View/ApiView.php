@@ -14,9 +14,10 @@ class ApiView
 	private $_aliases =
 	[ 'Character'           => ['player_id' => 'plin']
 	, 'Condition'           => ['id' => 'coin']
+	, 'Item'                => ['id' => 'itin']
+	, 'Lammy'               => ['lammy' => 'pdf_page']
 	, 'Player'              => ['id' => 'plin']
 	, 'Power'               => ['id' => 'poin']
-	, 'Item'                => ['id' => 'itin']
 	];
 
 	private $_compact =

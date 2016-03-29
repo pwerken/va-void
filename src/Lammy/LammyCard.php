@@ -11,8 +11,8 @@ abstract class LammyCard
 	static public	$WIDTH	= 75;	// lammy size (in mm)
 	static public	$HEIGHT	= 45;	// if changed, fix all the *Lammy classes!
 
-	public    $pageSingle = 0;
-	public    $pageDouble = 0;
+	public    $single = 0;
+	public    $double = 0;
 	protected $entity = null;
 	protected $pdf    = null;
 	private   $xPos   = 0;

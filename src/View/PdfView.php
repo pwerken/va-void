@@ -33,9 +33,9 @@ class PdfView
 		foreach($data as $entity)
 		{
 			if($pageDouble)
-				$page = $entity->lammy->pageDouble;
+				$page = $entity->lammy->double;
 			else
-				$page = $entity->lammy->pageSingle;
+				$page = $entity->lammy->single;
 
 			if($page == $pageNr || $pageNr < 0)
 				$this->lammies[] = $entity->lammy;
@@ -68,17 +68,17 @@ class PdfView
 			}
 			$double += $sides;
 
-			$entity->lammy->pageSingle = $singlePage;
-			$entity->lammy->pageDouble = $doublePage;
+			$entity->lammy->single = $singlePage;
+			$entity->lammy->double = $doublePage;
 		}
 
 		$singleFull = ($maxLammies - $single < 2);
 		$doubleFull = ($maxLammies - $double < 2);
 		foreach($entities as $entity) {
-			if($entity->lammy->pageSingle == $singlePage && !$singleFull)
-				$entity->lammy->pageSingle = -1;
-			if($entity->lammy->pageDouble == $doublePage && !$doubleFull)
-				$entity->lammy->pageDouble = -1;
+			if($entity->lammy->single == $singlePage && !$singleFull)
+				$entity->lammy->single = null;
+			if($entity->lammy->double == $doublePage && !$doubleFull)
+				$entity->lammy->double = null;
 		}
 	}
 
