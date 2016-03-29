@@ -127,7 +127,8 @@ SELECT `ccChaIDFK`, `ccCasIDFK`, `ccLevel`
 SELECT " CHARACTERS - SKILLS" AS '';
 INSERT INTO `va-void`.`characters_skills` ( `character_id`, `skill_id` )
 SELECT `csChaIDFK`, `csSkiIDFK`
-  FROM `va`.`Tbl_CharacterSkills`;
+  FROM `va`.`Tbl_CharacterSkills`
+ WHERE `csChaIDFK` NOT IN (487, 519, 538, 614, 996, 1697);
 
 SELECT " CHARACTERS - POWERS" AS '';
 INSERT INTO `va-void`.`characters_powers`
@@ -143,7 +144,8 @@ INSERT INTO `va-void`.`characters_conditions`
 SELECT `ciChaIDFK`, `pwrSPIN`, `ciExpireDate`
   FROM `va`.`Tbl_CharacterPowers`
   JOIN `va`.`Tbl_Powers` ON ( `pwrID` = `ciPwrIDFK` )
-WHERE `pwrCond` = 1;
+WHERE `pwrCond` = 1
+  AND `ciChaIDFK` NOT IN (487, 519, 538, 614, 996, 1697);
 
 SELECT " ITEM - CODES" AS '';
 INSERT INTO `va-void`.`attributes_items` ( `attribute_id`, `item_id` )
