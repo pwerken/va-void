@@ -75,9 +75,7 @@ abstract class LammyCard
 	}
 	protected function logo($x, $y)
 	{
-		$this->pdf->Image(APP . DS . 'Lammy' . DS . 'va_logo.png'
-						, $this->xPos + $x, $this->yPos + $y
-						, 6, 10);
+		$this->image('va_logo.png', $x, $y, 6, 10);
 	}
 	protected function title($text)
 	{
@@ -100,6 +98,12 @@ abstract class LammyCard
 	{
 		$this->size = $size;
 		$this->pdf->SetFont('Arial', $style, $size);
+	}
+	protected function image($filename, $x, $y, $w, $h)
+	{
+		$this->pdf->Image(APP . DS . 'Lammy' . DS . $filename
+						, $this->xPos + $x, $this->yPos + $y
+						, $w, $h);
 	}
 	protected function text($x, $y, $w, $align, $text, $border = 0)
 	{

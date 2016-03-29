@@ -23,6 +23,8 @@ class CharacterLammy
 	{
 		$this->cardFront('Character Card');
 
+		$this->image('portaal.png', 54, 18, 20, 24);
+
 		$this->pdf->SetTextColor(63);
 
 		$this->font(5);
