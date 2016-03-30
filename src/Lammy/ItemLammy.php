@@ -64,18 +64,15 @@ class ItemLammy
 	{
 		$this->cardBack('Lore codes');
 
-		$codes[] = [ "1A", "2A", "3A", "4A" ];
-		$codes[] = [ "1B", "2B", "3B", "4B" ];
-		$codes[] = [ "1C", "2C", "3C", "4C" ];
-		$codes[] = [ "1D", "2D", "3D", "4D" ];
-
 		$this->pdf->SetFont('Courier', 'B', 8);
 		$this->pdf->SetTextColor(0);
 		$this->square(8, 5, 72, 42);
 
-		foreach($codes as $row => $data) {
-			foreach($data as $col => $code) {
-				$this->text(14.5 + 15 * $col, 12 + 8 * $row, 5, 'C', $code);
+		$codes = $this->entity->codes();
+		for($row = 0; $row < 3; $row++) {
+			for($col = 0; $col < 4; $col++) {
+				$code = $codes[$col + $row * 4];
+				$this->text(14.5 + 15 * $col, 14 + 9 * $row, 5, 'C', $code);
 			}
 		}
 	}
