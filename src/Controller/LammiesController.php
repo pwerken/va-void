@@ -12,8 +12,8 @@ class LammiesController
 	{
 		parent::initialize();
 
-		$this->mapMethod('add',    [ 'referee'   ]);
-		$this->mapMethod('edit',   [ 'infobalie' ]);
+		$this->mapMethod('add',    [ 'super'     ]);
+		$this->mapMethod('edit',   [ 'super'     ]);
 		$this->mapMethod('delete', [ 'super'     ]);
 		$this->mapMethod('index',  [ 'referee'   ]);
 		$this->mapMethod('view',   [ 'referee'   ]);
@@ -21,9 +21,8 @@ class LammiesController
 		$config = [];
 		$config['className']  = 'Crud.Index';
 		$config['auth']       = [ 'referee' ];
-		$config['findMethod'] = 'withContain';
-		$this->Crud->mapAction('printSingle', $config);
-		$this->Crud->mapAction('printDouble', $config);
+		$this->Crud->mapAction('pdfSingle', $config);
+		$this->Crud->mapAction('pdfDouble', $config);
 	}
 
 	public function implementedEvents()
@@ -35,7 +34,7 @@ class LammiesController
 
 	public function CrudBeforeRender(Event $event)
 	{
-		if(strcmp(substr($this->request->action, 0, 5), 'print') !== 0) {
+		if(strcmp(substr($this->request->action, 0, 3), 'pdf') !== 0) {
 			if(strcmp($this->request->action, 'index') == 0)
 				PdfView::addLayoutInfo($event->subject->entities);
 			return;

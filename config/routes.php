@@ -217,12 +217,12 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 	$defaults = [];
 	$defaults['_method'] = 'GET';
 	$defaults['controller'] = 'Lammies';
-	$defaults['action'] = 'printSingle';
+	$defaults['action'] = 'pdfSingle';
 	$routeOptions = ['pass' => ['id'], 'id' => '[0-9]+'];
 	$routes->connect('/lammies/single',     $defaults, []);
 	$routes->connect('/lammies/single/:id', $defaults, $routeOptions);
 
-	$defaults['action'] = 'printDouble';
+	$defaults['action'] = 'pdfDouble';
 	$routes->connect('/lammies/double',     $defaults, []);
 	$routes->connect('/lammies/double/:id', $defaults, $routeOptions);
 
