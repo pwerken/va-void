@@ -44,7 +44,7 @@ class LammiesController
 		PdfView::addLayoutInfo($event->subject->entities);
 
 		$this->set('double', false);
-		if(strcmp(substr($this->request->action, 5, 6), 'Double') === 0)
+		if(strcmp(substr($this->request->action, 3, 6), 'Double') === 0)
 			$this->set('double', true);
 
 		$this->set('page', -1);
