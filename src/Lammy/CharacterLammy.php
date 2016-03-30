@@ -116,7 +116,7 @@ class CharacterLammy
 		$this->pdf->SetTextColor(@$data['mana']['Spiritual'] ? 0 : $g);
 		$this->text(24, 37.7, 13, 'R', 'Spiritual:');
 		$this->text(36, 37.7,  5, 'C', @$data['mana']['Spiritual'] ?: 0);
-		$this->pdf->SetTextColor(@$data['mana']['Healing'] ? 0 : $g);
+		$this->pdf->SetTextColor(@$data['mana']['Spiritual Ritual'] ? 0 : $g);
 		$this->text(24, 40.7, 13, 'R', 'Spir.Rit.:');
 		$this->text(36, 40.7,  5, 'C', @$data['mana']['Spiritual Ritual'] ?: 0);
 
