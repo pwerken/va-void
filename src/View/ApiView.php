@@ -21,7 +21,8 @@ class ApiView
 	];
 
 	private $_compact =
-	[ 'AttributesItem'      => ['attribute', 'item']
+	[ 'Attribute'           => ['id', 'name', 'code']
+	, 'AttributesItem'      => ['attribute', 'item']
 	, 'Character'           => ['player_id', 'chin', 'name']
     , 'CharactersCondition' => ['expiry', 'character', 'condition']
     , 'CharactersPower'     => ['expiry', 'character', 'power']
