@@ -29,10 +29,11 @@ ToDo-list:
    - [x] import pdf-lammy code into App namespace
    - [x] create custom PdfView
    - [x] merge Lammy/PdfSheet into View/PdfView
-   - [ ] create Item lammy
-   - [ ] create Power/Condition lammy
-   - [ ] output multiple lammies and/or pages at once
-   - [ ] dummy lore code handling/generation
+   - [x] create Item lammy
+   - [x] create Power/Condition lammy
+   - [x] output multiple lammies and/or pages at once
+   - [x] dummy lore code handling/generation
+   - [ ] queue monitor / actual printing of pdf
  - Logging/accounting
    - [ ] logging of all modifications
    - [ ] entity versioning
@@ -43,6 +44,8 @@ ToDo-list:
    - [ ] performance analysis of queries
    - [ ] rename 'Spells' to ... ? ('Casting', 'Domain', 'School', ?)
    - [ ] add individual spell descriptions
+   - [ ] Character: player/background text field
+   - [ ] Character: CS notes field
    - [ ] Skills: add base/extra/deprecated
    - [ ] Skills: grouping field [fighter,healing,mage,...]
    - [ ] Teaching: track student/teacher relation
