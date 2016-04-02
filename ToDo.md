@@ -4,6 +4,7 @@ ToDo-list:
    - [ ] update README.md
    - [ ] improve installation instructions
    - [ ] write API documentation
+   - [ ] integrate DB Migrations into composer.json ?
  - REST interface
    - [ ] after 'add' redirect to the new entity
    - [ ] render exceptions as JSON
