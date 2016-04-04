@@ -13,8 +13,5 @@ Download [Composer](http://getcomposer.org/doc/00-intro.md) or update `composer 
 1. `git clone https://github.com/pwerken/va-void.git`
 2. `cd va-void`
 3. `composer install`
-
-## Configuration
-
-Read and edit `config/app.php` and setup the 'Datasources' and any other
-configuration relevant for your site.
+4. Read and edit `config/app.php` and setup the 'Datasources' and any other configuration relevant for your site.
+5. Run the database migrations with `./bin/cake migrations migrate`
