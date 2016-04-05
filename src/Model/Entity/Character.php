@@ -7,6 +7,7 @@ class Character
 
 	protected $_defaults =
 			[ 'xp'          => 15
+			, 'status'      => 'inactive'
 			, 'belief_id'   =>  1
 			, 'group_id'    =>  1
 			, 'faction_id'  =>  1
@@ -25,5 +26,13 @@ class Character
 			[ 'id'          => 'super'
 			, 'comments'    => 'referee'
 			];
+
+	public static function statusValues()
+	{
+		static $data = null;
+		if(is_null($data))
+			$data = ['dead', 'inactive', 'active'];
+		return $data;
+	}
 
 }

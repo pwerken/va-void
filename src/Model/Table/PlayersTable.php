@@ -1,10 +1,10 @@
 <?php
 namespace App\Model\Table;
 
-use Cake\ORM\RulesChecker;
-use Cake\Validation\Validator;
 use App\AuthState;
 use App\Model\Entity\Player;
+use Cake\ORM\RulesChecker;
+use Cake\Validation\Validator;
 
 class PlayersTable
 	extends AppTable
@@ -32,8 +32,8 @@ class PlayersTable
 		$validator->allowEmpty('date_of_birth');
 
 		$validator->add('id', 'valid', ['rule' => 'numeric']);
-		$validator->add('role', 'valid', ['rule' => ['inList', Player::labelsRoles(true)]] );
-		$validator->add('gender', 'valid', ['rule' => ['inList', Player::labelsGenders(true)]]);
+		$validator->add('role', 'valid', ['rule' => ['inList', Player::roleValues()]] );
+		$validator->add('gender', 'valid', ['rule' => ['inList', Player::genderValues()]]);
 		$validator->add('date_of_birth', 'valid', ['rule' => 'date']);
 
 		return $validator;

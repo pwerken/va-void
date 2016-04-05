@@ -30,45 +30,24 @@ class Player
 		return (new DefaultPasswordHasher)->hash($password);
 	}
 
-	public static function labelPassword($key = null)
+	public static function labelPassword($value = null)
 	{
-		return isset($key);
+		return isset($value);
 	}
 
-	public static function labelsRoles($keys = false)
+	public static function roleValues()
+	{
+		static $values = null;
+		if(is_null($data))
+			$data = ['Player', 'Referee', 'Infobalie', 'Super'];
+		return $data;
+	}
+	public static function genderValues()
 	{
 		static $data = null;
 		if(is_null($data))
-			$data = [ 'Player'      => __('Player')
-					, 'Referee'     => __('Referee')
-					, 'Infobalie'   => __('Infobalie')
-					, 'Super'       => __('Super')
-					];
-		return ($keys ? array_keys($data) : $data);
-	}
-	public static function labelRole($key = null)
-	{
-		$data = self::labelsRoles();
-		if(isset($data[$key]))
-			return $data[$key];
-		return null;
-	}
-
-	public static function labelsGenders($keys = false)
-	{
-		static $data = null;
-		if(is_null($data))
-			$data = [ 'F' => __('Female')
-					, 'M' => __('Male')
-					];
-		return ($keys ? array_keys($data) : $data);
-	}
-	public static function labelGender($key = null)
-	{
-		$data = self::labelsGenders();
-		if(isset($data[$key]))
-			return $data[$key];
-		return null;
+			$data = ['F', 'M'];
+		return $data;
 	}
 
 	protected function _getFullName()
