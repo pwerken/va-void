@@ -23,6 +23,10 @@ ToDo-list:
    - [ ] add search functions
    - [ ] take expiry into account in lists (item/conditon/power)
    - [ ] implement skill prereq check
+   - [ ] CharactersSpells: level = {1,2,3}
+   - [ ] CharactersSpells: order by level DESC,name
+   - [ ] Characters: order by plin, chin DESC
+   - [ ] Skills: order by sortOrder,name
  - Lammy printing
    - [ ] create/fill printing queue
    - [ ] remove/reorder tasks from printing queue
@@ -45,11 +49,13 @@ ToDo-list:
    - [ ] performance analysis of queries
    - [ ] rename 'Spells' to ... ? ('Casting', 'Domain', 'School', ?)
    - [ ] add individual spell descriptions
-   - [ ] Character: player/background text field
-   - [ ] Character: CS notes field
+   - [ ] Characters: player text field (for background)
+   - [ ] Characters: CS notes field
    - [ ] Skills: add base/extra/deprecated
    - [ ] Skills: grouping field [fighter,healing,mage,...]
    - [ ] Teaching: track student/teacher relation
-   - [ ] Events: can be used for XP assignment
+   - [ ] Events: can be used for XP assignment?
+   - [ ] Condition/Power uniq to assigned character (= more like item)
+   - [ ] templating for common condition/power/item
  - Upstream changes
    - [ ] Crud cake3: support multiple primary keys
