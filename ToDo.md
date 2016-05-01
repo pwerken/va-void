@@ -2,7 +2,7 @@ ToDo-list:
  - Project details
    - [x] project license
    - [ ] update README.md
-   - [ ] improve installation instructions
+   - [x] improve installation instructions
    - [ ] write API documentation
    - [ ] integrate DB Migrations into composer.json ?
  - REST interface
