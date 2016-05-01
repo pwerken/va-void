@@ -3,6 +3,8 @@ namespace App\Controller;
 
 use App\AuthState;
 use Cake\Controller\Controller;
+use Cake\Core\Configure;
+use Cake\Error\ErrorHandler;
 use Cake\Event\Event;
 use Cake\Network\Exception\BadRequestException;
 use Cake\ORM\TableRegistry;
@@ -44,8 +46,13 @@ class AppController
 			, 'logoutRedirect' => '/'
 			]);
 
-		if(strcmp($this->name, 'Pages') != 0)
+		if(strcmp($this->name, 'Pages') != 0) {
 			$this->viewBuilder()->className('Api');
+
+			$arr = ['exceptionRenderer' => 'App\Error\ApiExceptionRenderer']
+				+ Configure::read('Error');
+			(new ErrorHandler($arr))->register();
+		}
 		if(!$this->request->is('post'))
 			$this->request->data = $this->request->input('json_decode',1) ?: [];
 
