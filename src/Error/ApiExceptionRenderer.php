@@ -9,7 +9,10 @@ class ApiExceptionRenderer extends ExceptionRenderer
 
 	protected function _outputMessage($template)
 	{
-		$data = $this->_getErrorData();
+		$data = [];
+		$data['class'] = 'Error';
+		$data += $this->_getErrorData();
+
 		if(Configure::read('debug')) {
 			$queryLog = $this->_getQueryLog();
 			if($queryLog) {
@@ -23,6 +26,7 @@ class ApiExceptionRenderer extends ExceptionRenderer
 
 		$this->controller->response->type('json');
 		$this->controller->response->body(json_encode($data, $jsonOptions));
+		$this->controller->response->statusCode($data['code']);
 		return $this->controller->response;
 	}
 
