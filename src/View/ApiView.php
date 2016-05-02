@@ -29,7 +29,7 @@ class ApiView
 	, 'CharactersSkill'     => ['character','skill']
 	, 'CharactersSpell'     => ['level', 'character', 'spell']
 	, 'Item'                => ['id', 'name', 'expiry', 'character']
-	, 'Lammy'               => ['entity', 'key1', 'key2', 'printed', 'lammy' ]
+	, 'Lammy'               => ['entity', 'key1', 'key2', 'job', 'printed', 'lammy' ]
 	, 'Player'              => ['id', 'full_name']
 	, 'Skill'               => ['id', 'name', 'cost', 'mana_amount', 'manatype']
 	, 'Spell'               => ['id', 'name', 'short']

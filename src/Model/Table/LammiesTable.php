@@ -23,15 +23,18 @@ class LammiesTable
 		$validator->notEmpty('entity');
 		$validator->notEmpty('key1');
 		$validator->allowEmpty('key2');
+		$validator->notEmpty('job');
 		$validator->notEmpty('printed');
 
-		$validator->add('id', 'valid', ['rule' => 'numeric']);
-		$validator->add('key1', 'valid', ['rule' => 'numeric']);
-		$validator->add('key2', 'valid', ['rule' => 'numeric']);
+		$validator->add('id',      'valid', ['rule' => 'numeric']);
+		$validator->add('key1',    'valid', ['rule' => 'numeric']);
+		$validator->add('key2',    'valid', ['rule' => 'numeric']);
+		$validator->add('job',     'valid', ['rule' => 'numeric']);
 		$validator->add('printed', 'valid', ['rule' => 'boolean']);
 
 		$validator->requirePresence('entity', 'create');
-		$validator->requirePresence('key1', 'create');
+		$validator->requirePresence('key1',   'create');
+		$validator->requirePresence('job',    'create');
 
 		return $validator;
 	}

@@ -217,14 +217,21 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 	$defaults = [];
 	$defaults['_method'] = 'GET';
 	$defaults['controller'] = 'Lammies';
-	$defaults['action'] = 'pdfSingle';
 	$routeOptions = ['pass' => ['id'], 'id' => '[0-9]+'];
-	$routes->connect('/lammies/single',     $defaults, []);
-	$routes->connect('/lammies/single/:id', $defaults, $routeOptions);
 
-	$defaults['action'] = 'pdfDouble';
-	$routes->connect('/lammies/double',     $defaults, []);
-	$routes->connect('/lammies/double/:id', $defaults, $routeOptions);
+	$actions =	[ [ 'pdfSingle'    , 0, '/lammies/single'          ]
+				, [ 'pdfSingle'    , 1, '/lammies/single/:id'      ]
+				, [ 'pdfDouble'    , 0, '/lammies/double'          ]
+				, [ 'pdfDouble'    , 1, '/lammies/double/:id'      ]
+#				, [ 'jobs'         , 0, '/lammies/jobs'            ]
+				, [ 'jobItems'     , 1, '/lammies/jobs/:id'        ]
+				, [ 'pdfJobSingle' , 1, '/lammies/jobs/:id/single' ]
+				, [ 'pdfJobDouble' , 1, '/lammies/jobs/:id/double' ]
+				];
+	foreach($actions as list($act, $ids, $url)) {
+		$defaults['action'] = $act;
+		$routes->connect($url, $defaults, $ids ? $routeOptions : []);
+	}
 
 	if(strcmp(substr($_SERVER['SERVER_SOFTWARE'],0,8), "lighttpd") == 0) {
 		$defaults = [];
