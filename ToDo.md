@@ -23,7 +23,6 @@ ToDo-list:
    - [ ] add search functions
    - [ ] take expiry into account in lists (item/conditon/power)
    - [ ] implement skill prereq check
-   - [ ] CharactersSpells: level = {1,2,3}
    - [ ] CharactersSpells: order by level DESC,name
    - [ ] Characters: order by plin, chin DESC
    - [ ] Skills: order by sortOrder,name

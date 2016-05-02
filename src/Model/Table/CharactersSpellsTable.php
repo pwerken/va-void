@@ -26,7 +26,7 @@ class CharactersSpellsTable
 
 		$validator->add('character_id', 'valid', ['rule' => 'numeric']);
 		$validator->add('spell_id', 'valid', ['rule' => 'numeric']);
-		$validator->add('level', 'valid', ['rule' => 'numeric']);
+		$validator->add('level', 'valid', ['rule' => ['inList', [1,2,3]]]);
 
 		$validator->requirePresence('character_id', 'create');
 		$validator->requirePresence('spell_id', 'create');
