@@ -39,9 +39,10 @@ foreach (Router::routes() as $key => $route):
 
 	$function = $route->defaults['controller'].'::'.$route->defaults['action'];
 
-    printf( "<tr><td>%s</td><td>%s</td><td>%s</td></tr>\n"
+    printf( "<tr><td>%s</td><td>%s</td><td>%s( %s )</td></tr>\n"
 			, $route->template
 			, $method, $function
+			, implode(", ", @$route->options['pass'] ?: [])
 			);
 endforeach;
 ?>

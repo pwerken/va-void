@@ -109,13 +109,16 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 		$defaults['controller'] = $name;
 		$defaults['action'] = $method;
 
-		$urlNest = ($options['path'] == 0 ? '/'.$lcName : $url);
-		$routes->connect($urlNest, $defaults, $routeOptions);
+		if($options['path'] == 0)
+			$routes->connect('/'.$lcName, $defaults, []);
+		else
+			$routes->connect($url, $defaults, $routeOptions);
 
 		// hacky special case #2
 		if($name == 'Characters' && $method == 'index') {
 			$defaults['action'] = 'playersIndex';
-			$routes->connect('/characters/:plin', $defaults, $routeOptions);
+			$routes->connect('/characters/:plin', $defaults
+							, ['pass' => ['plin'], 'plin' => '[0-9]+']);
 		}
 	}
 
