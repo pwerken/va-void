@@ -35,4 +35,9 @@ class Character
 		return $data;
 	}
 
+	public function getUrl()
+	{
+		return '/'.$this->getBaseUrl().'/'.$this->player_id.'/'.$this->chin;
+	}
+
 }

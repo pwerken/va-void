@@ -11,9 +11,11 @@ class CharactersTable
 {
 
 	protected $_contain =
-		[ 'Believes', 'Factions', 'Groups', 'Players', 'Worlds'
-		, 'Items', 'Skills' => [ 'Manatypes' ]
-		, 'Conditions', 'Powers', 'Spells'
+		[ 'Believes', 'Factions', 'Groups', 'Players', 'Worlds', 'Items'
+		, 'CharactersConditions' => [ 'Conditions' ]
+		, 'CharactersPowers'     => [ 'Powers' ]
+		, 'CharactersSkills'     => [ 'Skills' => [ 'Manatypes' ] ]
+		, 'CharactersSpells'     => [ 'Spells' ]
 		];
 
 	public function initialize(array $config)
@@ -28,10 +30,10 @@ class CharactersTable
 		$this->belongsTo('Groups');
 		$this->belongsTo('Worlds');
 		$this->hasMany('Items');
-		$this->belongsToMany('Conditions');
-		$this->belongsToMany('Powers');
-		$this->belongsToMany('Skills');
-		$this->belongsToMany('Spells');
+		$this->hasMany('CharactersConditions');
+		$this->hasMany('CharactersPowers');
+		$this->hasMany('CharactersSkills');
+		$this->hasMany('CharactersSpells');
 	}
 
 	public function validationDefault(Validator $validator)
@@ -88,7 +90,7 @@ class CharactersTable
 
 	public function ruleNoConditions($entity, $options)
 	{
-		$query = TableRegistry::get('CharactersConditions')->find();
+		$query = $this->CharactersConditions->find();
 		$query->where(['character_id' => $entity->id]);
 
 		if($query->count() > 0) {
@@ -112,7 +114,7 @@ class CharactersTable
 	}
 	public function ruleNoPowers($entity, $options)
 	{
-		$query = TableRegistry::get('CharactersPowers')->find();
+		$query = $this->CharactersPowers->find();
 		$query->where(['character_id' => $entity->id]);
 
 		if($query->count() > 0) {
@@ -124,7 +126,7 @@ class CharactersTable
 	}
 	public function ruleNoSkills($entity, $options)
 	{
-		$query = TableRegistry::get('CharactersSkills')->find();
+		$query = $this->CharactersSkills->find();
 		$query->where(['character_id' => $entity->id]);
 
 		if($query->count() > 0) {
@@ -136,7 +138,7 @@ class CharactersTable
 	}
 	public function ruleNoSpells($entity, $options)
 	{
-		$query = TableRegistry::get('CharactersSpells')->find();
+		$query = $this->CharactersSpells->find();
 		$query->where(['character_id' => $entity->id]);
 
 		if($query->count() > 0) {

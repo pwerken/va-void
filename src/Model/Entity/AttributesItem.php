@@ -10,4 +10,9 @@ class AttributesItem
 			, 'item_id'         => 'super'
 			];
 
+	public function getUrl($parent = null)
+	{
+		return $this->getRelationUrl('item', 'attribute', $parent);
+	}
+
 }

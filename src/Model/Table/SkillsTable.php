@@ -9,7 +9,10 @@ class SkillsTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'Manatypes' ];
+	protected $_contain =
+		[ 'CharactersSkills' => [ 'Characters' ]
+		, 'Manatypes'
+		];
 
 	public function initialize(array $config)
 	{
@@ -17,7 +20,7 @@ class SkillsTable
 		$this->displayField('name');
 		$this->primaryKey('id');
 		$this->belongsTo('Manatypes');
-		$this->belongsToMany('Characters');
+		$this->hasMany('CharactersSkills');
 	}
 
 	public function validationDefault(Validator $validator)
@@ -49,7 +52,7 @@ class SkillsTable
 
 	public function ruleNoCharacters($entity, $options)
 	{
-		$query = TableRegistry::get('CharactersSkills')->find();
+		$query = $this->CharactersSkills->find();
 		$query->where(['skill_id' => $entity->id]);
 
 		if($query->count() > 0) {

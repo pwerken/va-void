@@ -9,12 +9,14 @@ class AttributesTable
 	extends AppTable
 {
 
+	protected $_contain = [ 'AttributesItems' => [ 'Items' ] ];
+
 	public function initialize(array $config)
 	{
 		$this->table('attributes');
 		$this->displayField('name');
 		$this->primaryKey('id');
-		$this->belongsToMany('Items');
+		$this->hasMany('AttributesItems');
 	}
 
 	public function validationDefault(Validator $validator)
@@ -39,7 +41,7 @@ class AttributesTable
 
 	public function ruleNoItems($entity, $options)
 	{
-		$query = TableRegistry::get('AttributesItems')->find();
+		$query = $this->AttributesItems->find();
 		$query->where(['attributes_id' => $entity->id]);
 
 		if($query->count() > 0) {

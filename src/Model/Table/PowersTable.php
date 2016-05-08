@@ -9,7 +9,7 @@ class PowersTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'Characters' ];
+	protected $_contain = [ 'CharactersPowers' => [ 'Characters' ] ];
 
 	public function initialize(array $config)
 	{
@@ -17,7 +17,7 @@ class PowersTable
 		$this->displayField('displayName');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
-		$this->belongsToMany('Characters');
+		$this->hasMany('CharactersPowers');
 	}
 
 	public function validationDefault(Validator $validator)
@@ -43,7 +43,7 @@ class PowersTable
 
 	public function ruleNoCharacters($entity, $options)
 	{
-		$query = TableRegistry::get('CharactersPowers')->find();
+		$query = $this->CharactersPowers->find();
 		$query->where(['power_id' => $entity->id]);
 
 		if($query->count() > 0) {

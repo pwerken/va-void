@@ -10,4 +10,9 @@ class CharactersSkill
 			, 'skill_id'        => 'super'
 			];
 
+	public function getUrl($parent = null)
+	{
+		return $this->getRelationUrl('character', 'skill', $parent);
+	}
+
 }

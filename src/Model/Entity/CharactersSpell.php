@@ -10,4 +10,9 @@ class CharactersSpell
 			, 'spell_id'        => 'super'
 			];
 
+	public function getUrl($parent = null)
+	{
+		return $this->getRelationUrl('character', 'spell', $parent);
+	}
+
 }

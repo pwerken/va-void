@@ -1,8 +1,8 @@
 <?php
 namespace App\View;
 
+use App\Model\Entity\AppEntity;
 use Cake\Core\Configure;
-use Cake\Datasource\EntityInterface;
 use Cake\ORM\ResultSet;
 use Cake\Utility\Inflector;
 use Cake\View\View;
@@ -12,12 +12,26 @@ class ApiView
 {
 
 	private $_aliases =
-	[ 'Character'           => ['player_id' => 'plin']
-	, 'Condition'           => ['id' => 'coin']
-	, 'Item'                => ['id' => 'itin']
-	, 'Lammy'               => ['lammy' => 'pdf_page']
-	, 'Player'              => ['id' => 'plin']
-	, 'Power'               => ['id' => 'poin']
+	[ 'Attribute'			=>	[ 'attributes_items' => 'items' ]
+	, 'Character'           =>	[ 'player_id' => 'plin'
+								, 'characters_conditions' => 'conditions'
+								, 'characters_powers'     => 'powers'
+								, 'characters_skills'     => 'skills'
+								, 'characters_spells'     => 'spells'
+								]
+	, 'Condition'           =>	[ 'id' => 'coin'
+								, 'characters_conditions' => 'characters'
+								]
+	, 'Item'                =>	[ 'id' => 'itin'
+								, 'attributes_items' => 'attributes'
+								]
+	, 'Lammy'               =>	[ 'lammy' => 'pdf_page' ]
+	, 'Player'              =>	[ 'id' => 'plin' ]
+	, 'Power'               =>	[ 'id' => 'poin'
+								, 'characters_powers' => 'characters'
+								]
+	, 'Skill'	            =>	[ 'characters_skills' => 'characters' ]
+	, 'Spell'	            =>	[ 'characters_spells' => 'characters' ]
 	];
 
 	private $_compact =
@@ -26,7 +40,7 @@ class ApiView
 	, 'Character'           => ['player_id', 'chin', 'name']
     , 'CharactersCondition' => ['expiry', 'character', 'condition']
     , 'CharactersPower'     => ['expiry', 'character', 'power']
-	, 'CharactersSkill'     => ['character','skill']
+	, 'CharactersSkill'     => ['character', 'skill']
 	, 'CharactersSpell'     => ['level', 'character', 'spell']
 	, 'Item'                => ['id', 'name', 'expiry', 'character']
 	, 'Lammy'               => ['entity', 'key1', 'key2', 'job', 'printed', 'lammy' ]
@@ -42,6 +56,7 @@ class ApiView
 			$data = $this->get('_serialize', $this->viewVars);
 		} elseif(is_array($data) || $data instanceof ResultSet) {
 			$data = $this->_jsonList($data, $this->get('parent'));
+			$data['url'] = '/'.$this->request->url;
 		} else {
 			$data = $this->_jsonData($data);
 		}
@@ -54,81 +69,18 @@ class ApiView
 		return json_encode($data, $jsonOptions);
 	}
 
-	private function _class($value)
-	{
-		return join('', array_slice(explode('\\', get_class($value)), -1));
-	}
-
-	private function _jsonUrl($obj = null)
-	{
-		if(is_null($obj))
-			return '/'.$this->request->url;
-
-		$class = $this->_class($obj);
-		if($class == 'Character')
-			return '/characters/'.$obj->player_id.'/'.$obj->chin;
-		if($class == 'AttributesItem')
-			return $this->_jsonUrlJoin($obj, $obj->item, $obj->attribute);
-		if($class == 'CharactersCondition')
-			return $this->_jsonUrlJoin($obj, $obj->character, $obj->condition);
-		if($class == 'CharactersPower')
-			return $this->_jsonUrlJoin($obj, $obj->character, $obj->power);
-		if($class == 'CharactersSkill')
-			return $this->_jsonUrlJoin($obj, $obj->character, $obj->skill);
-		if($class == 'CharactersSpell')
-			return $this->_jsonUrlJoin($obj, $obj->character, $obj->spell);
-
-		return '/'.strtolower(Inflector::pluralize($class)).'/'.$obj->id;
-	}
-	private function _jsonUrlJoin($join, $a, $b)
-	{
-		$class = $this->_class($join);
-		$aCls  = $this->_class($a);	$aUrl = $this->_jsonUrl($a);
-		$bCls  = $this->_class($b); $bUrl = $this->_jsonUrl($b);
-		switch($class) {
-		case 'AttributesItem':
-			if($aCls == 'Item' && $bCls == 'Attribute') return $aUrl.$bUrl;
-			if($bCls == 'Item' && $aCls == 'Attribute') return $bUrl.$aUrl;
-			break;
-		case 'CharactersCondition':
-			if($aCls == 'Character' && $bCls == 'Condition') return $aUrl.$bUrl;
-			if($bCls == 'Character' && $aCls == 'Condition') return $bUrl.$aUrl;
-			break;
-		case 'CharactersPower':
-			if($aCls == 'Character' && $bCls == 'Power') return $aUrl.$bUrl;
-			if($bCls == 'Character' && $aCls == 'Power') return $bUrl.$aUrl;
-			break;
-		case 'CharactersSkill':
-			if($aCls == 'Character' && $bCls == 'Skill') return $aUrl.$bUrl;
-			if($bCls == 'Character' && $aCls == 'Skill') return $bUrl.$aUrl;
-			break;
-		case 'CharactersSpell':
-			if($aCls == 'Character' && $bCls == 'Spell') return $aUrl.$bUrl;
-			if($bCls == 'Character' && $aCls == 'Spell') return $bUrl.$aUrl;
-			break;
-		}
-		return '/'.$class.'/';
-	}
-
 	private function _jsonData($obj)
 	{
-		if(!($obj instanceof EntityInterface))
+		if(!($obj instanceof AppEntity))
 			return $obj;
 
+        $class = $obj->getClass();
 		$result = [];
-		$result['class'] = $this->_class($obj);
-		$result['url'] = $this->_jsonUrl($obj);
-        $class = $this->_class($obj);
+		$result['class'] = $class;
+		$result['url']   = $obj->getUrl();
 
 		foreach($obj->visibleProperties() as $key) {
 			$value = $obj->get($key);
-			if(is_array($value)) {
-				$value = $this->_jsonList($value, $obj);
-				$value['url'] = $result['url'].'/'.$key;
-				unset($value['parent']);
-			} else {
-				$value = $this->_jsonCompact($value);
-			}
 
 			$label = Inflector::camelize("label_".$key);
 			if(method_exists($obj, $label))
@@ -136,50 +88,44 @@ class ApiView
 
 			if(isset($this->_aliases[$class][$key]))
 				$key = $this->_aliases[$class][$key];
+
+			if(is_array($value)) {
+				$value = $this->_jsonList($value, $obj, $key);
+				unset($value['parent']);
+			} else {
+				$value = $this->_jsonCompact($value, $obj);
+			}
+
 			$result[$key] = $value;
 		}
 		return $result;
 	}
-	private function _jsonList($objs, $parent = null)
+	private function _jsonList($list, $parent = null, $key = null)
 	{
 		$result = [];
 		$result['class'] = 'List';
-		$result['url'] = $this->_jsonUrl();
+		$result['url'] = $parent->getUrl().'/'.$key;
 
 		$remove = '';
 		if($parent) {
-			$remove = strtolower($this->_class($parent));
+			$remove = strtolower($parent->getClass());
 			$result['parent'] = $this->_jsonCompact($parent);
 		}
 
 		$result['list'] = [];
-		foreach($objs as $obj) {
-			if($obj == $remove)
-				continue;
-
-			$value = $this->_jsonCompact($obj);
+		foreach($list as $obj) {
+			$value = $this->_jsonCompact($obj, $parent);
 			unset($value[$remove]);
-
-			if(!$obj->has('_joinData')) {
-				$result['list'][] = $value;
-				continue;
-			}
-
-			$nest = $this->_jsonCompact($obj->_joinData);
-			$nest['url'] = $this->_jsonUrlJoin($obj->_joinData, $parent, $obj);
-			unset($nest[$remove]);
-			$nest[strtolower($this->_class($obj))] = $value;
-
-			$result['list'][] = $nest;
+			$result['list'][] = $value;
 		}
 		return $result;
 	}
-	private function _jsonCompact($obj)
+	private function _jsonCompact($obj, $parent = null)
 	{
-		if(!($obj instanceof EntityInterface))
+		if(!($obj instanceof AppEntity))
 			return $obj;
 
-		$class = $this->_class($obj);
+		$class = $obj->getClass();
 
 		$properties = ['id', 'name'];
 		if(isset($this->_compact[$class]))
@@ -190,9 +136,9 @@ class ApiView
 
 		$result = [];
 		$result['class'] = $class;
-		$result['url'] = $this->_jsonUrl($obj);
+		$result['url'] = $obj->getUrl($parent);
 		foreach($properties as $key) {
-			$value = $this->_jsonCompact($obj->get($key));
+			$value = $this->_jsonCompact($obj->get($key), $obj);
 			if(isset($this->_aliases[$class][$key]))
 				$key = $this->_aliases[$class][$key];
 			$result[$key] = $value;

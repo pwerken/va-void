@@ -9,12 +9,14 @@ class SpellsTable
 	extends AppTable
 {
 
+	protected $_contain = [ 'CharactersSpells' => [ 'Characters' ] ];
+
 	public function initialize(array $config)
 	{
 		$this->table('spells');
 		$this->displayField('name');
 		$this->primaryKey('id');
-		$this->belongsToMany('Characters');
+		$this->hasMany('CharactersSpells');
 	}
 
 	public function validationDefault(Validator $validator)
@@ -42,7 +44,7 @@ class SpellsTable
 
 	public function ruleNoCharacters($entity, $options)
 	{
-		$query = TableRegistry::get('CharactersSpells')->find();
+		$query = $this->CharactersSpells->find();
 		$query->where(['spell_id' => $entity->id]);
 
 		if($query->count() > 0) {

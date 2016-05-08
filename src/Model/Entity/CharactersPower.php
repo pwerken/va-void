@@ -10,4 +10,9 @@ class CharactersPower
 			, 'power_id'        => 'super'
 			];
 
+	public function getUrl($parent = null)
+	{
+		return $this->getRelationUrl('character', 'power', $parent);
+	}
+
 }

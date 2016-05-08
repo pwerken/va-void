@@ -10,5 +10,9 @@ class CharactersCondition
 			, 'condition_id'    => 'super'
 			];
 
+	public function getUrl($parent = null)
+	{
+		return $this->getRelationUrl('character', 'condition', $parent);
+	}
 
 }

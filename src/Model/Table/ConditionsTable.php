@@ -9,7 +9,7 @@ class ConditionsTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'Characters' ];
+	protected $_contain = [ 'CharactersConditions' => [ 'Characters' ] ];
 
 	public function initialize(array $config)
 	{
@@ -17,7 +17,7 @@ class ConditionsTable
 		$this->displayField('displayName');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
-		$this->belongsToMany('Characters');
+		$this->hasMany('CharactersConditions');
 	}
 
 	public function validationDefault(Validator $validator)
@@ -43,7 +43,7 @@ class ConditionsTable
 
 	public function ruleNoCharacters($entity, $options)
 	{
-		$query = TableRegistry::get('CharactersConditions')->find();
+		$query = $this->CharactersConditions->find();
 		$query->where(['condition_id' => $entity->id]);
 
 		if($query->count() > 0) {

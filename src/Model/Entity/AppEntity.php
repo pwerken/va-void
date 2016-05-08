@@ -3,6 +3,7 @@ namespace App\Model\Entity;
 
 use App\AuthState;
 use Cake\ORM\Entity;
+use Cake\Utility\Inflector;
 
 abstract class AppEntity
 	extends Entity
@@ -54,5 +55,25 @@ abstract class AppEntity
 		}
 	}
 
-}
+	public function getClass()
+	{
+		$class = get_class($this);
+		return substr($class, strrpos($class, '\\') + 1);
+	}
 
+	protected function getBaseUrl()
+	{
+		return strtolower(Inflector::pluralize($this->getClass()));
+	}
+	protected function getRelationUrl($first, $second, $fallback)
+	{
+		$a = $this->$first  ?: $fallback;
+		$b = $this->$second ?: $fallback;
+		return $a->getUrl().$b->getUrl();
+	}
+	public function getUrl()
+	{
+		return '/'.$this->getBaseUrl().'/'.$this->id;
+	}
+
+}

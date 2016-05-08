@@ -10,7 +10,7 @@ class ItemsTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'Characters', 'Attributes' ];
+	protected $_contain = [ 'Characters', 'AttributesItems' => [ 'Items' ] ];
 
 	public function initialize(array $config)
 	{
@@ -19,7 +19,7 @@ class ItemsTable
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
 		$this->belongsTo('Characters');
-		$this->belongsToMany('Attributes');
+		$this->hasMany('AttributesItems');
 	}
 
 	public function findAll(Query $query, array $options)
@@ -67,7 +67,7 @@ class ItemsTable
 
 	public function ruleNoAttributes($entity, $options)
 	{
-		$query = TableRegistry::get('AttributesItems')->find();
+		$query = $this->AttributesItems->find();
 		$query->where(['item_id' => $entity->id]);
 
 		if($query->count() > 0) {
