@@ -56,6 +56,7 @@ class ApiView
 			$data = $this->get('_serialize', $this->viewVars);
 		} elseif(is_array($data) || $data instanceof ResultSet) {
 			$data = $this->_jsonList($data, $this->get('parent'));
+			$data['url'] = '/'.$this->request->url;
 		} else {
 			$data = $this->_jsonData($data);
 		}
@@ -103,7 +104,7 @@ class ApiView
 	{
 		$result = [];
 		$result['class'] = 'List';
-		$result['url'] = '/'.$this->request->url;
+		$result['url'] = '';
 
 		$remove = '';
 		if($parent) {
