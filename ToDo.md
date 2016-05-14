@@ -20,7 +20,7 @@ ToDo-list:
    - [x] fix/implement add characters
    - [x] assigning item to character
    - [ ] extend validator rules
-   - [ ] add search functions
+   - [x] add search functionality
    - [ ] take expiry into account in lists (item/conditon/power)
    - [ ] implement skill prereq check
    - [ ] CharactersSpells: order by level DESC,name

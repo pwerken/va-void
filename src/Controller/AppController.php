@@ -18,6 +18,7 @@ class AppController
 	use \Crud\Controller\ControllerTrait;
 
 	public $helpers = [ 'Date' ];
+	public $searchFields = [ ];
 
 	public function initialize()
 	{
@@ -68,7 +69,6 @@ class AppController
 	{
 		$events = parent::implementedEvents();
 		$events['Crud.beforeHandle']   = 'CrudBeforeHandle';
-		$events['Crud.beforePaginate'] = 'CrudBeforePaginate';
 		$events['Crud.afterSave']      = 'CrudAfterSave';
 		$events['Crud.afterDelete']    = 'CrudAfterDelete';
 		$events['Crud.beforeRedirect'] = 'CrudBeforeRedirect';
@@ -89,6 +89,21 @@ class AppController
 
 	public function paginate($query = null)
 	{
+		$action = $this->request->action;
+		$nested = strcmp(substr($action, -5, 5), 'Index') === 0;
+		if(!$nested) {
+			foreach(explode(' ', $this->request->query('q')) as $q) {
+				foreach($this->searchFields as $field) {
+					$ORs["$field LIKE"] = "%$q%";
+				}
+				if(empty($q) || empty($ORs))
+					continue;
+				$query->where(["OR" => $ORs]);
+			}
+		} else if(isset($this->viewVars['parent'])) {
+			$key = Inflector::singularize(substr($action, 0, -5)).'_id';
+			$query->where([$key => $this->viewVars['parent']->id]);
+		}
 		return $query->all();
 	}
 
@@ -121,17 +136,6 @@ class AppController
 			$parent = TableRegistry::get($model)->get($event->subject->args[0]);
 			$this->set('parent', $parent);
 		}
-	}
-	public function CrudBeforePaginate(Event $event)
-	{
-		$action = $this->request->action;
-		if(strcmp(substr($action, -5, 5), 'Index') !== 0)
-			return;
-		if(!isset($this->viewVars['parent']))
-			return;
-
-		$key = Inflector::singularize(substr($action, 0, -5)).'_id';
-		$event->subject->query->where([$key => $this->viewVars['parent']->id]);
 	}
 	public function CrudAfterSave(Event $event)
 	{
