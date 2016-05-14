@@ -40,6 +40,7 @@ class AppController
 					, 'fields' => [ 'username' => 'id' ]
 					, 'parameter' => 'token'
 					, 'queryDatasource' => true
+					, 'unauthenticatedException' => '\Cake\Network\Exception\ForbiddenException'
 				]	]
 			, 'authorize' => ['Controller']
 			, 'unauthorizedRedirect' => false
