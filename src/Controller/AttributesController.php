@@ -5,6 +5,11 @@ class AttributesController
 	extends AppController
 {
 
+	protected $searchFields =
+		[ 'Attributes.name'
+		, 'Attributes.code'
+		];
+
 	public function initialize()
 	{
 		parent::initialize();

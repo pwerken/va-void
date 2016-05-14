@@ -7,6 +7,10 @@ class CharactersController
 	extends AppController
 {
 
+	protected $searchFields =
+		[ 'Characters.name'
+		];
+
 	public function initialize()
 	{
 		parent::initialize();

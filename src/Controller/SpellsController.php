@@ -5,6 +5,8 @@ class SpellsController
 	extends AppController
 {
 
+	protected $searchFields = [ 'Spells.name', 'Spells.short' ];
+
 	public function initialize()
 	{
 		parent::initialize();

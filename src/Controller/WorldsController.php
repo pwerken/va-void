@@ -5,6 +5,8 @@ class WorldsController
 	extends AppController
 {
 
+	protected $searchFields = [ 'Worlds.name' ];
+
 	public function initialize()
 	{
 		parent::initialize();

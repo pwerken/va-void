@@ -5,6 +5,8 @@ class BelievesController
 	extends AppController
 {
 
+	protected $searchFields = [ 'Believes.name' ];
+
 	public function initialize()
 	{
 		parent::initialize();

@@ -7,6 +7,12 @@ class ConditionsController
 	extends AppController
 {
 
+	protected $searchFields =
+		[ 'Conditions.name'
+		, 'Conditions.player_text'
+		, 'Conditions.cs_text'
+		];
+
 	public function initialize()
 	{
 		parent::initialize();

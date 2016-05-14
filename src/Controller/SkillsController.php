@@ -5,6 +5,8 @@ class SkillsController
 	extends AppController
 {
 
+	protected $searchFields = [ 'Skills.name' ];
+
 	public function initialize()
 	{
 		parent::initialize();

@@ -5,6 +5,12 @@ class PlayersController
 	extends AppController
 {
 
+	protected $searchFields =
+		[ 'Players.first_name'
+		, 'Players.insertion'
+		, 'Players.last_name'
+		];
+
 	public function initialize()
 	{
 		parent::initialize();

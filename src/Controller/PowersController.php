@@ -5,6 +5,12 @@ class PowersController
 	extends AppController
 {
 
+	protected $searchFields =
+		[ 'Powers.name'
+		, 'Powers.player_text'
+		, 'Powers.cs_text'
+		];
+
 	public function initialize()
 	{
 		parent::initialize();

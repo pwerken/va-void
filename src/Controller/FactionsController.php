@@ -5,6 +5,8 @@ class FactionsController
 	extends AppController
 {
 
+	protected $searchFields = [ 'Factions.name' ];
+
 	public function initialize()
 	{
 		parent::initialize();

@@ -5,6 +5,14 @@ class ItemsController
 	extends AppController
 {
 
+	protected $searchFields =
+		[ 'Items.name'
+		, 'Items.description'
+		, 'Items.important'
+		, 'Items.player_text'
+		, 'Items.cs_text'
+		];
+
 	public function initialize()
 	{
 		parent::initialize();

@@ -18,7 +18,8 @@ class AppController
 	use \Crud\Controller\ControllerTrait;
 
 	public $helpers = [ 'Date' ];
-	public $searchFields = [ ];
+
+	protected $searchFields = [ ];
 
 	public function initialize()
 	{
