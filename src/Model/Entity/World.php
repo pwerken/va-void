@@ -9,4 +9,6 @@ class World
 			[ 'characters'      => 'referee'
 			];
 
+	protected $_compact = [ 'id', 'name' ];
+
 }

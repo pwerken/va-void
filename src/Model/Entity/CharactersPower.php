@@ -5,10 +5,9 @@ class CharactersPower
 	extends AppEntity
 {
 
-	protected $_showAuth =
-			[ 'character_id'    => 'super'
-			, 'power_id'        => 'super'
-			];
+	protected $_hidden = [ 'character_id', 'power_id' ];
+
+    protected $_compact = [ 'expiry', 'character', 'power' ];
 
 	public function getUrl($parent = null)
 	{

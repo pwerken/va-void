@@ -19,6 +19,8 @@ class Lammy
 
 	protected $_virtual = [ 'target', 'lammy' ];
 
+	protected $_compact = [ 'entity', 'key1', 'key2', 'job', 'printed' ];
+
 	protected function _getTarget()
 	{
 		if(is_null($this->target)) {

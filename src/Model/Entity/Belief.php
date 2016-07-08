@@ -7,4 +7,6 @@ class Belief
 
 	protected $_showAuth = [ 'characters' => 'referee' ];
 
+	protected $_compact = [ 'id', 'name' ];
+
 }

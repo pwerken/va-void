@@ -5,10 +5,9 @@ class CharactersSkill
 	extends AppEntity
 {
 
-	protected $_showAuth =
-			[ 'character_id'    => 'super'
-			, 'skill_id'        => 'super'
-			];
+	protected $_hidden = [ 'character_id', 'skill_id' ];
+
+	protected $_compact = [ 'character', 'skill' ];
 
 	public function getUrl($parent = null)
 	{

@@ -5,10 +5,9 @@ class CharactersCondition
 	extends AppEntity
 {
 
-	protected $_showAuth =
-			[ 'character_id'    => 'super'
-			, 'condition_id'    => 'super'
-			];
+	protected $_hidden = [ 'character_id', 'condition_id' ];
+
+    protected $_compact = [ 'expiry', 'character', 'condition' ];
 
 	public function getUrl($parent = null)
 	{

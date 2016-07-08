@@ -34,21 +34,6 @@ class ApiView
 	, 'Spell'	            =>	[ 'characters_spells' => 'characters' ]
 	];
 
-	private $_compact =
-	[ 'Attribute'           => ['id', 'name', 'code']
-	, 'AttributesItem'      => ['attribute', 'item']
-	, 'Character'           => ['player_id', 'chin', 'name']
-    , 'CharactersCondition' => ['expiry', 'character', 'condition']
-    , 'CharactersPower'     => ['expiry', 'character', 'power']
-	, 'CharactersSkill'     => ['character', 'skill']
-	, 'CharactersSpell'     => ['level', 'character', 'spell']
-	, 'Item'                => ['id', 'name', 'expiry', 'character']
-	, 'Lammy'               => ['entity', 'key1', 'key2', 'job', 'printed', 'lammy' ]
-	, 'Player'              => ['id', 'full_name']
-	, 'Skill'               => ['id', 'name', 'cost', 'mana_amount', 'manatype']
-	, 'Spell'               => ['id', 'name', 'short']
-	];
-
 	public function render($view = null, $layout = null)
 	{
 		$data = $this->get($this->get('viewVar'));
@@ -128,12 +113,9 @@ class ApiView
 
 		$class = $obj->getClass();
 
-		$properties = ['id', 'name'];
-		if(isset($this->_compact[$class]))
-			$properties = $this->_compact[$class];
-
+		$properties = $obj->compactProperties();
 		if(empty($properties))
-			return $obj->get('name');
+			return [ 'name' => $obj->get('name') ];
 
 		$result = [];
 		$result['class'] = $class;

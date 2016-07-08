@@ -20,6 +20,8 @@ class Player
 			[ 'password'    => ['user', 'infobalie']
 			];
 
+	protected $_compact = [ 'id', 'full_name' ];
+
 	protected $_virtual = [ 'full_name' ];
 
 	public function _setPassword($password)

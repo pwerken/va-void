@@ -15,6 +15,8 @@ class Item
 
 	protected $_virtual = [ 'plin', 'chin' ];
 
+	protected $_compact = [ 'id', 'name', 'expiry', 'character' ];
+
 	protected function _getPlin()
 	{
 		return @$this->character->player_id;

@@ -9,4 +9,6 @@ class Group
 			[ 'characters'      => 'referee'
 			];
 
+	protected $_compact = [ 'id', 'name' ];
+
 }

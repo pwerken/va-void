@@ -10,4 +10,6 @@ class Condition
 			, 'characters'      => 'referee'
 			];
 
+	protected $_compact = [ 'id', 'name' ];
+
 }

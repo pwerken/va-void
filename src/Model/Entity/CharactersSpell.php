@@ -5,10 +5,9 @@ class CharactersSpell
 	extends AppEntity
 {
 
-	protected $_showAuth =
-			[ 'character_id'    => 'super'
-			, 'spell_id'        => 'super'
-			];
+	protected $_hidden = [ 'character_id', 'spell_id' ];
+
+	protected $_compact = [ 'level', 'character', 'spell' ];
 
 	public function getUrl($parent = null)
 	{

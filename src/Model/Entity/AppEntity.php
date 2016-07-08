@@ -12,6 +12,7 @@ abstract class AppEntity
 	protected $_defaults = [ ];
 	protected $_editAuth = [ ];
 	protected $_showAuth = [ ];
+	protected $_compact  = [ ];
 
 	public function __construct($properties = [], $options = [])
 	{
@@ -61,6 +62,16 @@ abstract class AppEntity
 		return substr($class, strrpos($class, '\\') + 1);
 	}
 
+	public function compactProperties()
+	{
+		$props = [];
+		foreach($this->visibleProperties() as $key) {
+			if(in_array($key, $this->_compact))
+				$props[] = $key;
+		}
+		return $props;
+	}
+
 	protected function getBaseUrl()
 	{
 		return strtolower(Inflector::pluralize($this->getClass()));
@@ -75,5 +86,4 @@ abstract class AppEntity
 	{
 		return '/'.$this->getBaseUrl().'/'.$this->id;
 	}
-
 }

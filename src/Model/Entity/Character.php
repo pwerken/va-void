@@ -23,9 +23,18 @@ class Character
 			];
 
 	protected $_showAuth =
-			[ 'id'          => 'super'
-			, 'comments'    => 'referee'
+			[ 'comments'    => 'referee'
 			];
+
+	protected $_hidden =
+			[ 'id'
+			, 'belief_id'
+			, 'group_id'
+			, 'faction_id'
+			, 'world_id'
+			];
+
+	protected $_compact = [ 'player_id' , 'chin' , 'name' ];
 
 	public static function statusValues()
 	{
