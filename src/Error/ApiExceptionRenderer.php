@@ -12,6 +12,7 @@ class ApiExceptionRenderer extends ExceptionRenderer
 		$data = [];
 		$data['class'] = 'Error';
 		$data += $this->_getErrorData();
+		$data['url'] = $this->controller->request->env('PATH_INFO');
 
 		if(Configure::read('debug')) {
 			$queryLog = $this->_getQueryLog();
