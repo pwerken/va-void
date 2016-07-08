@@ -5,10 +5,7 @@ class AttributesItem
 	extends AppEntity
 {
 
-	protected $_showAuth =
-			[ 'attribute_id'    => 'super'
-			, 'item_id'         => 'super'
-			];
+	protected $_hidden = [ 'attribute_id', 'item_id' ];
 
 	protected $_compact = [ 'attribute', 'item' ];
 

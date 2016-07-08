@@ -8,14 +8,13 @@ class Item
 {
 
 	protected $_showAuth =
-			[ 'character_id'    => 'super'
-			, 'cs_text'         => 'referee'
+			[ 'cs_text'         => 'referee'
 			, 'attributes'      => 'referee'
 			];
 
-	protected $_virtual = [ 'plin', 'chin' ];
-
 	protected $_compact = [ 'id', 'name', 'expiry', 'character' ];
+
+	protected $_hidden = [ 'character_id' ];
 
 	protected function _getPlin()
 	{
