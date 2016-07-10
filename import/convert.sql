@@ -255,3 +255,4 @@ UPDATE `va-void`.`skills` SET `id` = @a:=@a+1 ORDER BY `sort_order`, `name`;
 ALTER TABLE `va-void`.`skills` MODIFY COLUMN `id` INT(10) UNSIGNED;
 ALTER TABLE `va-void`.`skills`
     MODIFY COLUMN `id` INT(10) UNSIGNED AUTO_INCREMENT;
+UPDATE `va-void`.`skills` SET `deprecated` = 1 WHERE `sort_order` = 200;
