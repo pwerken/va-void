@@ -146,7 +146,7 @@ class AppController
 
 		if($event->subject->created) {
 			$this->response->statusCode(201);
-			//FIXME redirect to location of new entity
+			$this->response->location($event->subject->entity->getUrl());
 			return $this->response;
 		}
 

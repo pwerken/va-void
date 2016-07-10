@@ -6,7 +6,7 @@ ToDo-list:
    - [ ] write API documentation
    - [ ] integrate DB Migrations into composer.json ?
  - REST interface
-   - [ ] after 'add' redirect to the new entity
+   - [x] after 'add' redirect to the new entity
    - [x] render exceptions as JSON
    - [ ] implement filtering of lists
  - Authorization
