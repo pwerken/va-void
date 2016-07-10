@@ -38,20 +38,30 @@ class CharactersSkillsTable
 		$rules->add($rules->existsIn('character_id', 'characters'));
 		$rules->add($rules->existsIn('skill_id', 'skills'));
 
+		$rules->addCreate([$this, 'addRelations']);
 		$rules->addCreate([$this, 'ruleXPAvailable']);
 
 		return $rules;
 	}
 
+	public function addRelations($entity, $options)
+	{
+		$entity->Character = $this->Characters->findWithContainById($entity->character_id)->first();
+		$entity->Skill = $this->Skills->findWithContainById($entity->skill_id)->first();
+	}
+
 	public function ruleXPAvailable($entity, $options)
 	{
-		$total = $this->Characters->get($entity->character_id)->xp;
-		$cost = $this->Skills->get($entity->skill_id)->cost;
+		if(!$entity->Character || !$entity->Skill)
+			return false;
 
-		$query = $this->find()->contain(['Skills'])->hydrate(false);
-		$query->select(['spend' => 'SUM(Skills.cost)']);
-		$query->where(['character_id' => $entity->character_id]);
-		$spend = (int)$query->first()['spend'];
+		$total = $entity->Character->xp;
+		$cost = $entity->Skill->cost;
+
+		$spend = 0;
+		foreach($entity->Character->characters_skills as $skill) {
+			$spend += $skill->skill->cost;
+		}
 
 		if($spend + $cost > $total) {
 			$entity->errors('character_id', 'insufficient XP');
