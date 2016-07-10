@@ -151,7 +151,7 @@ class AppController
 		}
 
 		$action = $this->request->params['action'];
-		$action = lcfirst(Inflector::camelize(substr($action, 0, -4)."_view"));
+		$action = preg_replace('/^(.*?)[A-Z]?[a-z]*$/', '\\1View', $action);
 		$this->request->params['_method'] = 'GET';
 		$this->request->params['action'] = $action;
 		$this->Crud->beforeFilter($event);
@@ -181,7 +181,7 @@ class AppController
 	protected function mapMethod($action, $auth = [], $contain = false)
 	{
 		$className = ucfirst($action);
-		$className = preg_replace('/.*([A-Z][a-z]+)/', 'Crud.\\1', $className);
+		$className = preg_replace('/^.*([A-Z][a-z]+)$/', 'Crud.\\1', $className);
 
 		if(is_string($auth))
 			$auth = [$auth];
