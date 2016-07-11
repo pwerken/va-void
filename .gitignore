@@ -1,4 +1,4 @@
-composer.lock
+*.lock
 /plugins/*
 /vendor/*
 /config/app.php
