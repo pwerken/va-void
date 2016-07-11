@@ -65,10 +65,13 @@ Code repository: <?= $this->Html->link("https://github.com/pwerken/va-void"); ?>
 <table cellpadding="0" cellspacing="0">
 <thead>
     <tr>
-        <th>Uri's</th>
+        <th colspan=3>Uri's</th>
     </tr>
 </thead>
 <tbody>
+    <tr>
+		<td>
+<ul>
 <?php
     $list =
 		[ [ 'Pages',                'display',      'routes'           ]
@@ -112,17 +115,34 @@ Code repository: <?= $this->Html->link("https://github.com/pwerken/va-void"); ?>
 		, [ 'Characters',           'worldsIndex',        2            ]
 		];
 
-	foreach ($list as $url):
+	foreach ($list as $i => $url) {
 		$controller        = array_shift($url);
 		$action            = array_shift($url);
 		$url['controller'] = $controller;
 		$url['action']     = $action;
 		$url['_method']    = 'GET';
-	?>
-    <tr>
-        <td><?= $this->Html->link($url); ?></td>
+
+		switch($i) {
+		case 14:
+		case 27:
+			echo "</ul></td>\n<td><ul>";
+			break;
+		case 1:
+		case 4:
+		case 18:
+		case 21:
+		case 24:
+		case 30:
+		case 33:
+		case 36:
+			echo '<br/>';
+		}
+        echo '<li>'.$this->Html->link($url) . "</li>\n";
+	} ?>
+<br/>
+</ul>
+		</td>
     </tr>
-<?php endforeach; ?>
 </tbody>
 </table>
         </div>
