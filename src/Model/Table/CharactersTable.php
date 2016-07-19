@@ -36,6 +36,11 @@ class CharactersTable
 		$this->hasMany('CharactersSpells');
 	}
 
+	public function orderBy()
+	{
+		return [ 'player_id' => 'ASC', 'chin' => 'DESC' ];
+	}
+
 	public function validationDefault(Validator $validator)
 	{
 		$validator->allowEmpty('id', 'create');

@@ -16,6 +16,11 @@ class BelievesTable
 		$this->hasMany('Characters');
 	}
 
+	public function orderBy()
+	{
+		return	[ 'name' => 'ASC' ];
+	}
+
 	public function validationDefault(Validator $validator)
 	{
 		$validator->allowEmpty('id', 'create');

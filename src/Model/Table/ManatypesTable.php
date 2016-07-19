@@ -18,6 +18,11 @@ class ManatypesTable
 		$this->hasMany('Skills');
 	}
 
+	public function orderBy()
+	{
+		return	[ 'name' => 'ASC' ];
+	}
+
 	public function validationDefault(Validator $validator)
 	{
 		$validator->allowEmpty('id', 'create');

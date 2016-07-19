@@ -19,6 +19,11 @@ class SpellsTable
 		$this->hasMany('CharactersSpells');
 	}
 
+	public function orderBy()
+	{
+		return	[ 'name' => 'ASC' ];
+	}
+
 	public function validationDefault(Validator $validator)
 	{
 		$validator->allowEmpty('id', 'create');

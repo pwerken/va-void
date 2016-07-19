@@ -23,6 +23,11 @@ class SkillsTable
 		$this->hasMany('CharactersSkills');
 	}
 
+	public function orderBy()
+	{
+		return	[ 'sort_order' => 'ASC', 'name' => 'ASC' ];
+	}
+
 	public function validationDefault(Validator $validator)
 	{
 		$validator->allowEmpty('id', 'create');

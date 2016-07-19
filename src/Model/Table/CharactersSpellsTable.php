@@ -18,6 +18,11 @@ class CharactersSpellsTable
 		$this->belongsTo('Spells');
 	}
 
+	public function orderBy()
+	{
+		return [ 'level' => 'DESC' ];
+	}
+
 	public function validationDefault(Validator $validator)
 	{
 		$validator->notEmpty('character_id');

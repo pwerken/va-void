@@ -20,6 +20,11 @@ class ConditionsTable
 		$this->hasMany('CharactersConditions');
 	}
 
+	public function orderBy()
+	{
+		return	[ 'id' => 'ASC' ];
+	}
+
 	public function validationDefault(Validator $validator)
 	{
 		$validator->allowEmpty('id', 'create');

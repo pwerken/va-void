@@ -21,6 +21,11 @@ class PlayersTable
 		$this->hasMany('Characters');
 	}
 
+	public function orderBy()
+	{
+		return	[ 'id' => 'ASC' ];
+	}
+
 	public function validationDefault(Validator $validator)
 	{
 		$validator->notEmpty('id');

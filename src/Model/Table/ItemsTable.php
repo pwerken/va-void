@@ -27,6 +27,11 @@ class ItemsTable
 		return $query->contain(['Characters']);
 	}
 
+	public function orderBy()
+	{
+		return	[ 'id' => 'ASC' ];
+	}
+
 	public function validationDefault(Validator $validator)
 	{
 		$validator->allowEmpty('id', 'create');

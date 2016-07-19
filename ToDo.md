@@ -23,9 +23,7 @@ ToDo-list:
    - [x] add search functionality
    - [ ] take expiry into account in lists (item/conditon/power)
    - [ ] implement skill prereq check
-   - [ ] CharactersSpells: order by level DESC,name
-   - [ ] Characters: order by plin, chin DESC
-   - [ ] Skills: order by sortOrder,name
+   - [x] order all the listings logicaly
  - Lammy printing
    - [ ] create/fill printing queue
    - [ ] remove/reorder tasks from printing queue
