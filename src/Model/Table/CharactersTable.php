@@ -3,7 +3,6 @@ namespace App\Model\Table;
 
 use App\Model\Entity\Character;
 use Cake\ORM\RulesChecker;
-use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 class CharactersTable

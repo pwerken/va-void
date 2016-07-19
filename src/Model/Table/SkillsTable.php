@@ -2,7 +2,6 @@
 namespace App\Model\Table;
 
 use Cake\ORM\RulesChecker;
-use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 class SkillsTable
@@ -10,8 +9,7 @@ class SkillsTable
 {
 
 	protected $_contain =
-		[ 'CharactersSkills' => [ 'Characters' ]
-		, 'Manatypes'
+		[ 'Manatypes'
 		];
 
 	public function initialize(array $config)

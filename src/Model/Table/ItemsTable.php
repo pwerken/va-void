@@ -1,9 +1,7 @@
 <?php
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
-use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 class ItemsTable
@@ -20,11 +18,6 @@ class ItemsTable
 		$this->addBehavior('Timestamp');
 		$this->belongsTo('Characters');
 		$this->hasMany('AttributesItems');
-	}
-
-	public function findAll(Query $query, array $options)
-	{
-		return $query->contain(['Characters']);
 	}
 
 	public function orderBy()
