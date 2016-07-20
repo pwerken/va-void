@@ -27,13 +27,18 @@ abstract class AppTable
 			$query->order([$this->aliasField($field) => $ord]);
 		}
 
-		$query->sql();
+		if(!is_array($this->primaryKey()))
+			return $query;
+
+		$query->sql();	// force evaluation of internal state/objects
 		foreach($query->clause('join') as $join) {
+			if(!$this->association($join['table']))
+				continue;
+
 			$table = TableRegistry::get($join['table']);
 			$table->alias($join['alias']);
 
 			foreach($table->orderBy() as $field => $ord) {
-				$f = $table->aliasField($field);
 				$query->order([$table->aliasField($field) => $ord]);
 			}
 		}
