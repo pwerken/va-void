@@ -8,7 +8,6 @@ ToDo-list:
  - REST interface
    - [x] after 'add' redirect to the new entity
    - [x] render exceptions as JSON
-   - [ ] implement filtering of lists
  - Authorization
    - [x] add authenticate/login/logout
    - [x] restrict page access based on role
@@ -21,7 +20,6 @@ ToDo-list:
    - [x] assigning item to character
    - [ ] extend validator rules
    - [x] add search functionality
-   - [ ] take expiry into account in lists (item/conditon/power)
    - [ ] implement skill prereq check
    - [x] order all the listings logicaly
  - Lammy printing
@@ -39,10 +37,11 @@ ToDo-list:
  - Logging/accounting
    - [ ] logging of all modifications
    - [ ] entity versioning
+   - [ ] "track changes" so a super-referee can authorize/revert changes
  - Automate import of Access
    - [x] import Access data to MySQL (1:1, no conversion)
    - [x] convert MySQL imported data to database layout
- - Data model (for v2)
+ - Future...
    - [ ] performance analysis of queries
    - [ ] rename 'Spells' to ... ? ('Casting', 'Domain', 'School', ?)
    - [ ] add individual spell descriptions
@@ -52,7 +51,8 @@ ToDo-list:
    - [ ] Skills: grouping field [fighter,healing,mage,...]
    - [ ] Teaching: track student/teacher relation
    - [ ] Events: can be used for XP assignment?
-   - [ ] Condition/Power uniq to assigned character (= more like item)
+   - [ ] Condition/Power uniq to assigned character (= like items)
+   - [ ] Attributes: clean up & make consistent
    - [ ] templating for common condition/power/item
  - Upstream changes
    - [ ] Crud cake3: support multiple primary keys
