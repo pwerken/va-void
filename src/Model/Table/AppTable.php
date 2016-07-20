@@ -22,6 +22,9 @@ abstract class AppTable
 
 	public function beforeFind(Event $event, Query $query, $options, $primary)
 	{
+		if($query->clause('limit') == 1)
+			return $query;
+
 		foreach($this->orderBy() as $field => $ord) {
 			$f = $this->aliasField($field);
 			$query->order([$this->aliasField($field) => $ord]);
