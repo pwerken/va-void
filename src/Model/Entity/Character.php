@@ -34,7 +34,7 @@ class Character
 			, 'world_id'
 			];
 
-	protected $_compact = [ 'player_id' , 'chin' , 'name' ];
+	protected $_compact = [ 'player_id' , 'chin' , 'name', 'status' ];
 
 	public static function statusValues()
 	{
