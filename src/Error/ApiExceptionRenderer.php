@@ -2,6 +2,7 @@
 namespace App\Error;
 
 use Cake\Core\Configure;
+use Cake\Error\Debugger;
 use Crud\Error\ExceptionRenderer;
 
 class ApiExceptionRenderer extends ExceptionRenderer
@@ -9,15 +10,22 @@ class ApiExceptionRenderer extends ExceptionRenderer
 
 	protected function _outputMessage($template)
 	{
+		$error = $this->controller->viewVars['error'];
+
 		$data = [];
 		$data['class'] = 'Error';
-		$data += $this->_getErrorData();
-		$data['url'] = $this->controller->request->env('PATH_INFO');
+		$data['code'] = $error->getCode();
+		$data['url'] = '/'. $this->controller->request->url;
+		$data['message'] = $error->getMessage();
+		$data['errors'] = $this->controller->viewVars['errors'];
 
 		if(Configure::read('debug')) {
+			$data['DEBUG']['trace'] = Debugger::formatTrace($error->getTrace()
+					, ['format' => 'array', 'args' => false]);
+
 			$queryLog = $this->_getQueryLog();
 			if($queryLog) {
-				$data['queryLog'] = $queryLog;
+				$data['DEBUG']['queryLog'] = $queryLog;
 			}
 		}
 
