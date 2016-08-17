@@ -20,6 +20,7 @@ class AppController
 	public $helpers = [ 'Date' ];
 
 	protected $searchFields = [ ];
+	protected static $jsonResponse = true;
 
 	public function initialize()
 	{
@@ -49,7 +50,7 @@ class AppController
 			, 'logoutRedirect' => '/'
 			]);
 
-		if(strcmp($this->name, 'Pages') != 0) {
+		if($this->jsonResponse()) {
 			$this->viewBuilder()->className('Api');
 
 			$arr = ['exceptionRenderer' => 'App\Error\ApiExceptionRenderer']
@@ -65,6 +66,11 @@ class AppController
 							, $error, json_last_error_msg());
 			throw new BadRequestException($msg);
 		}
+	}
+
+	public static function jsonResponse()
+	{
+		return static::$jsonResponse;
 	}
 
 	public function implementedEvents()

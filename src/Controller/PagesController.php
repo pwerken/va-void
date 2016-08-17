@@ -9,6 +9,8 @@ class PagesController
 	extends AppController
 {
 
+	protected static $jsonResponse = false;
+
 	public function initialize()
 	{
 		parent::initialize();
