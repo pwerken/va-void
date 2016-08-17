@@ -59,7 +59,8 @@ class CharacterLammy
 		$data['skills'] = [];
 		$data['spells'] = [[], []];
 
-		foreach($this->entity->skills as $skill) {
+		foreach($this->entity->characters_skills as $relation) {
+			$skill = $relation->skill;
 			$data['xp'] += $skill->cost;
 			$data['skills'][] = $skill->name.' ('.$skill->cost.')';
 
@@ -70,8 +71,9 @@ class CharacterLammy
 				$data['mana'][$skill->manatype->name] = 0;
 			$data['mana'][$skill->manatype->name] += $skill->mana_amount;
 		}
-		foreach($this->entity->spells as $spell) {
-			$descr = $spell->short.': '.$spell->_joinData['level'];
+		foreach($this->entity->characters_spells as $relation) {
+			$spell = $relation->spell;
+			$descr = $spell->short.': '.$relation->level;
 			$data['spells'][$spell->spiritual][] = $descr;
 		}
 
