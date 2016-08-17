@@ -78,9 +78,8 @@ SELECT `chaID`, `plaPLIN`
 
 SELECT " ITEMS" AS '';
 INSERT INTO `va-void`.`items` ( `id`, `name`, `description`
-	, `important`, `player_text`, `cs_text`, `character_id`, `expiry`)
+	, `player_text`, `cs_text`, `character_id`, `expiry`)
 SELECT `itmITIN`, `itmName`, `itmDescription`
-	, IF(`itmSearchName` LIKE "Contact%", `itmSearchName`, NULL)
 	, `itmPlayerText`, `itmCSText`, `itmchaIDFK`, `itmExpireDate`
   FROM `va`.`Tbl_Items`;
 

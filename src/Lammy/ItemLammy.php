@@ -33,18 +33,16 @@ class ItemLammy
 		$this->font(6);
 		$this->text( 0, 10, 12, 'R', 'Name');
 		$this->text( 0, 15, 12, 'R', 'Description');
-		$this->text( 0, 20, 12, 'R', 'Important');
 		$this->text( 0, 43, 12, 'R', 'Expiry');
 
 		$this->font(4);
-		$this->textblock(12, 36, 48, 'L', "Contact CS on receiving item. "
-			. "Physrep must be returned to\norganisation. "
-			. "Not reporting card will be seen as foul play.\n"
+		$this->textblock(0, 37, 58, 'L', "Contact CS on receiving item. "
+			. "Physrep must be returned to organisation. "
+			. "Not reporting card will be seen as foul play. "
 			. "Not reporting physrep will be seen as out of character theft."
 			);
 
 		$this->pdf->SetTextColor(0);
-		$this->square(12, 17, 56, 34.5);
 
 		$expiry = $this->entity->expiry ?: 'Permanent';
 		if(!is_string($expiry)) $expiry = $expiry->jsonSerialize();
@@ -53,8 +51,7 @@ class ItemLammy
 		$this->text(57.5, 5, 10, 'R', $this->entity->id);
 
 		$this->font(8);
-		$this->text(12, 15, 60, 'L', $this->entity->description);
-		$this->textblock(12, 20, 56, 'L', $this->entity->important);
+		$this->textblock(12, 15, 60, 'L', $this->entity->description);
 
 		$this->font(8, 'B');
 		$this->text(12, 10, 60, 'L', $this->entity->name);
