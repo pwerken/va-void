@@ -1,5 +1,4 @@
 *.lock
-/plugins/*
 /vendor/*
 /config/app.php
 /tmp/*
