@@ -169,7 +169,7 @@ class PdfView
 			{
 				$layout[$page  ][$row][$col] = [$key, $i];
 				if(++$i >= $sides) $key = NULL;
-				$layout[$page+1][$row][$col] = [$key, $i];
+				$layout[$page+1][$row][1-$col] = [$key, $i];
 				if(++$col >= 2) {
 					$col = 0;
 					if(++$row >= self::$LAMMIES_Y) {
