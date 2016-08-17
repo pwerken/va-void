@@ -23,6 +23,7 @@ class ItemLammy
 	protected function _drawFront()
 	{
 		$this->cardFront('Item Card');
+		$this->QRcode();
 
 		$this->pdf->SetTextColor(63);
 
@@ -36,14 +37,14 @@ class ItemLammy
 		$this->text( 0, 43, 12, 'R', 'Expiry');
 
 		$this->font(4);
-		$this->textblock(12, 37, 60, 'L', 'Contact CS on receiving item. '
-			. 'Physrep must be returned to organisation. '
-			. 'Not reporting card will be seen as foul play. '
-			. 'Not reporting physrep will be seen as out of character theft.'
+		$this->textblock(12, 36, 48, 'L', "Contact CS on receiving item. "
+			. "Physrep must be returned to\norganisation. "
+			. "Not reporting card will be seen as foul play.\n"
+			. "Not reporting physrep will be seen as out of character theft."
 			);
 
 		$this->pdf->SetTextColor(0);
-		$this->square(12, 17.5, 72, 35.5);
+		$this->square(12, 17, 56, 34.5);
 
 		$expiry = $this->entity->expiry ?: 'Permanent';
 		if(!is_string($expiry)) $expiry = $expiry->jsonSerialize();
@@ -53,7 +54,7 @@ class ItemLammy
 
 		$this->font(8);
 		$this->text(12, 15, 60, 'L', $this->entity->description);
-		$this->textblock(12, 20, 60, 'L', $this->entity->important);
+		$this->textblock(12, 20, 56, 'L', $this->entity->important);
 
 		$this->font(8, 'B');
 		$this->text(12, 10, 60, 'L', $this->entity->name);
@@ -64,7 +65,7 @@ class ItemLammy
 	{
 		$this->cardBack('Lore codes');
 
-		$this->pdf->SetFont('Courier', 'B', 8);
+		$this->pdf->SetFont('Courier', 'B', 11);
 		$this->pdf->SetTextColor(0);
 		$this->square(8, 5, 72, 42);
 
@@ -72,7 +73,7 @@ class ItemLammy
 		for($row = 0; $row < 3; $row++) {
 			for($col = 0; $col < 4; $col++) {
 				$code = $codes[$col + $row * 4];
-				$this->text(14.5 + 15 * $col, 14 + 9 * $row, 5, 'C', $code);
+				$this->text(9.5 + 15 * $col, 14 + 9 * $row, 15, 'C', $code);
 			}
 		}
 	}

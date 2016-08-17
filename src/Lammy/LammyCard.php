@@ -105,6 +105,19 @@ abstract class LammyCard
 						, $this->xPos + $x, $this->yPos + $y
 						, $w, $h);
 	}
+	protected function qrcode()
+	{
+		include_once ROOT . DS . 'plugins' . DS . 'qrcode' . DS . 'qrcode.class.php';
+
+		$qr = new \QRcode($this->entity->getUrl(), 'L');
+		$qr->disableBorder();
+
+		$w = 17;
+		$x = $this->xPos + self::$WIDTH  - 1 - $w;
+		$y = $this->yPos + self::$HEIGHT - 3 - $w;
+
+		$qr->displayFPDF($this->pdf, $x, $y, $w);
+	}
 	protected function text($x, $y, $w, $align, $text, $border = 0)
 	{
 		$text = utf8_decode($text);

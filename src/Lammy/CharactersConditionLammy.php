@@ -31,6 +31,7 @@ class CharactersConditionLammy
 	protected function _drawFront($data)
 	{
 		$this->cardFront($data['type'].' Card');
+		$this->QRcode();
 
 		$this->pdf->SetTextColor(63);
 

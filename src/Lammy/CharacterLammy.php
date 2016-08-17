@@ -22,8 +22,7 @@ class CharacterLammy
 	protected function _drawFront()
 	{
 		$this->cardFront('Character Card');
-
-		$this->image('portaal.png', 54, 18, 20, 24);
+		$this->QRcode();
 
 		$this->pdf->SetTextColor(63);
 
