@@ -95,7 +95,7 @@ class AppController
 		return false;
 	}
 
-	public function paginate($query = null)
+	public function paginate($query = null, array $settings = [])
 	{
 		$action = $this->request->action;
 		$nested = strcmp(substr($action, -5, 5), 'Index') === 0;
