@@ -19,7 +19,7 @@ class ItemsController
 		$this->mapMethod('add',              [ 'referee'         ]);
 		$this->mapMethod('delete',           [ 'super'           ]);
 		$this->mapMethod('edit',             [ 'referee'         ]);
-		$this->mapMethod('index',            [ 'referee'         ]);
+		$this->mapMethod('index',            [ 'referee'         ], true);
 		$this->mapMethod('view',             [ 'referee', 'user' ], true);
 
 		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], true);
