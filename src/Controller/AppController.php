@@ -157,11 +157,13 @@ class AppController
 		}
 
 		$action = $this->request->params['action'];
-		$action = preg_replace('/^(.*?)[A-Z]?[a-z]*$/', '\\1View', $action);
+		$action = preg_replace('/^(.*?)[A-Z]?[a-z]*$/', '${1}', $action);
+		$action .= empty($action) ? 'view' : 'View';
+
 		$this->request->params['_method'] = 'GET';
 		$this->request->params['action'] = $action;
 		$this->Crud->beforeFilter($event);
-		return $this->invokeAction();
+		return $this->Crud->execute();
 	}
 	public function CrudAfterDelete(Event $event)
 	{
