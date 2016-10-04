@@ -58,8 +58,8 @@ SELECT " CHARACTERS" AS '';
 -- ignore duplicate characters: 487, 519, 538, 614, 996, 1697
 -- remove duplication of plin/chin: 318:2, 4129:1
 INSERT INTO `va-void`.`characters` ( `id`, `player_id`, `chin`, `name`, `xp`
-    , `faction_id`, `belief_id`, `group_id`, `world_id`, `status`, `comments`
-    , `modified` )
+    , `faction_id`, `belief_id`, `group_id`, `world_id`, `soulpath`, `status`
+	, `comments`, `created`, `modified` )
 SELECT `chaID`, `plaPLIN`
 	, IF(`plaPLIN` = 318, 1, IF(`plaPLIN` = 4129, 2, `chaCHIN`))
 	, `chaName`, `Total Points`
@@ -67,8 +67,9 @@ SELECT `chaID`, `plaPLIN`
     , IFNULL(`chaBeliefIDFK`, 1)
     , IFNULL(`chaGroupIDFK`, 1)
     , IFNULL(`chaWorldIDFK`, 1)
+	, `chaSoulpath`
     , IF(`chaDeadJN` = 1, "dead", IF(`chaActiveJN` = 1, "active", "inactive"))
-    , `chaRemarks`, IFNULL(`chaLastUpdate`, `chaCreationDate`)
+    , `chaRemarks`, IFNULL(`chaCreationDate`, `chaLastUpdate`), `chaLastUpdate`
   FROM  `va`.`Tbl_Characters`
   LEFT JOIN `va`.`Tbl_Players`
     ON (`Tbl_Characters`.`chaPLINIDFK` = `Tbl_Players`.`plaPLIN`)

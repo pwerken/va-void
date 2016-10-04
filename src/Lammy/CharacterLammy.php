@@ -45,7 +45,12 @@ class CharacterLammy
 		$this->text(12, 10, 60, 'L', $this->entity->player->fullName);
 		$this->text(12, 16, 60, 'L', $this->entity->name);
 		$this->text(12, 23, 60, 'L', $this->entity->faction->name);
-		$this->text(12, 28, 60, 'L', $this->entity->belief->name);
+
+		$belief = $this->entity->belief->name;
+		if(!is_null($this->entity->soulpath)) {
+			$belief .= ' (' . $this->entity->soulpath . ')';
+		}
+		$this->text(12, 28, 60, 'L', $belief);
 		$this->text(12, 33, 60, 'L', $this->entity->group->name);
 		$this->text(12, 38, 60, 'L', $this->entity->world->name);
 	}

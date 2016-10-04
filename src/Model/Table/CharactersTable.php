@@ -51,6 +51,7 @@ class CharactersTable
 		$validator->notEmpty('belief_id');
 		$validator->notEmpty('group_id');
 		$validator->notEmpty('world_id');
+		$validator->allowEmpty('soulpath');
 		$validator->notEmpty('status');
 		$validator->allowEmpty('comments');
 
@@ -62,6 +63,7 @@ class CharactersTable
 		$validator->add('belief_id', 'valid', ['rule' => 'numeric']);
 		$validator->add('group_id', 'valid', ['rule' => 'numeric']);
 		$validator->add('world_id', 'valid', ['rule' => 'numeric']);
+		$validator->add('soulpath', 'valid', ['rule' => ['inList', Character::soulpathValues()]]);
 		$validator->add('status', 'valid', ['rule' => ['inList', Character::statusValues()]]);
 
 		$validator->requirePresence('player_id', 'create');

@@ -36,6 +36,14 @@ class Character
 
 	protected $_compact = [ 'player_id' , 'chin' , 'name', 'status' ];
 
+	public static function soulpathValues()
+	{
+		static $data = null;
+		if(is_null($data))
+			$data = ['BO', 'LI', 'LU', 'MA', 'MO', 'NO', 'NY', 'RA', 'SO'];
+		return $data;
+	}
+
 	public static function statusValues()
 	{
 		static $data = null;
