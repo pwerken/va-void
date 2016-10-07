@@ -47,7 +47,7 @@ class CharacterLammy
 		$this->text(12, 23, 60, 'L', $this->entity->faction->name);
 
 		$belief = $this->entity->belief->name;
-		if(!is_null($this->entity->soulpath)) {
+		if(!empty($this->entity->soulpath)) {
 			$belief .= ' (' . $this->entity->soulpath . ')';
 		}
 		$this->text(12, 28, 60, 'L', $belief);
