@@ -74,8 +74,7 @@ Code repository: <?= $this->Html->link("https://github.com/pwerken/va-void"); ?>
 <ul>
 <?php
     $list =
-		[ [ 'Pages',                'display',      'routes'           ]
-		, [ 'Players',              'index'                            ]
+		[ [ 'Players',              'index'                            ]
 		, [ 'Players',              'view',             987            ]
 		, [ 'Characters',           'playersIndex',     987            ]
 		, [ 'Characters',           'view',             987,   2       ]
@@ -113,6 +112,7 @@ Code repository: <?= $this->Html->link("https://github.com/pwerken/va-void"); ?>
 		, [ 'Worlds',               'index'                            ]
 		, [ 'Worlds',               'view',               2            ]
 		, [ 'Characters',           'worldsIndex',        2            ]
+		, [ 'Pages',                'display',      'routes'           ]
 		];
 
 	foreach ($list as $i => $url) {
@@ -123,22 +123,32 @@ Code repository: <?= $this->Html->link("https://github.com/pwerken/va-void"); ?>
 		$url['_method']    = 'GET';
 
 		switch($i) {
-		case 14:
-		case 27:
+		case 17:
+		case 32:
 			echo "</ul></td>\n<td><ul>";
 			break;
-		case 1:
-		case 4:
-		case 18:
-		case 21:
-		case 24:
-		case 30:
-		case 33:
-		case 36:
+		case 3:
+		case 13:
+		case 20:
+		case 23:
+		case 26:
+		case 29:
+		case 35:
+		case 38:
 			echo '<br/>';
 		}
         echo '<li>'.$this->Html->link($url) . "</li>\n";
-	} ?>
+	}
+    echo '<br/>';
+    echo '<li>'.$this->Html->link('/lammies/') . "</li>\n";
+    echo '<li>'.$this->Html->link('/lammies/single') . "</li>\n";
+    echo '<li>'.$this->Html->link('/lammies/single/0') . "</li>\n";
+    echo '<li>'.$this->Html->link('/lammies/double') . "</li>\n";
+    echo '<li>'.$this->Html->link('/lammies/double/0') . "</li>\n";
+    echo '<li>'.$this->Html->link('/lammies/jobs/0') . "</li>\n";
+    echo '<li>'.$this->Html->link('/lammies/jobs/0/single') . "</li>\n";
+    echo '<li>'.$this->Html->link('/lammies/jobs/0/double') . "</li>\n";
+?>
 <br/>
 </ul>
 		</td>
