@@ -2,9 +2,8 @@ ToDo-list:
  - Project details
    - [x] project license
    - [ ] update README.md
-   - [x] improve installation instructions
+   - [x] installation instructions
    - [ ] write API documentation
-   - [ ] integrate DB Migrations into composer.json ?
  - REST interface
    - [x] after 'add' redirect to the new entity
    - [x] render exceptions as JSON
@@ -22,6 +21,7 @@ ToDo-list:
    - [x] add search functionality
    - [ ] implement skill prereq check
    - [x] order all the listings logicaly
+   - [ ] edit requires matching last-modified field
  - Lammy printing
    - [ ] create/fill printing queue
    - [ ] remove/reorder tasks from printing queue
@@ -54,5 +54,6 @@ ToDo-list:
    - [ ] Condition/Power uniq to assigned character (= like items)
    - [ ] Attributes: clean up & make consistent
    - [ ] templating for common condition/power/item
+   - [ ] use labels for factions/worlds/groups/etc...
  - Upstream changes
    - [ ] Crud cake3: support multiple primary keys
