@@ -17,14 +17,6 @@ use Cake\Routing\Router;
 use Cake\Error\Debugger;
 
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-
 <p>Display the currently connected routes.
 Add a matching route to <?= 'config' . DS . 'routes.php' ?></p>
 
@@ -47,6 +39,3 @@ foreach (Router::routes() as $key => $route):
 endforeach;
 ?>
 </table>
-
-</body>
-</html>
