@@ -512,7 +512,7 @@ class Initial extends AbstractMigration
             ->addPrimaryKey(['id'])
             ->addColumn('role', 'text', [
                 'comment' => 'authorisation information',
-                'default' => 'Player',
+                'default' => null,
                 'limit' => null,
                 'null' => false,
             ])
