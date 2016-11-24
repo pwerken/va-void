@@ -21,7 +21,7 @@ ToDo-list:
    - [x] add search functionality
    - [ ] implement skill prereq check
    - [x] order all the listings logicaly
-   - [ ] edit requires matching last-modified field
+   - [/] edit requires matching last-modified field
  - Lammy printing
    - [ ] create/fill printing queue
    - [ ] remove/reorder tasks from printing queue
