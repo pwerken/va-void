@@ -22,11 +22,11 @@ class CharactersConditionsTable
 	{
 		$validator->notEmpty('character_id');
 		$validator->notEmpty('condition_id');
-		$validaor->allowEmpty('expiry');
+		$validator->allowEmpty('expiry');
 
-		$validaor->add('character_id', 'valid', ['rule' => 'numeric']);
-		$validaor->add('condition_id', 'valid', ['rule' => 'numeric']);
-		$validaor->add('expiry', 'valid', ['rule' => 'date']);
+		$validator->add('character_id', 'valid', ['rule' => 'numeric']);
+		$validator->add('condition_id', 'valid', ['rule' => 'numeric']);
+		$validator->add('expiry', 'valid', ['rule' => 'date']);
 
 		$validator->requirePresence('character_id', 'create');
 		$validator->requirePresence('condition_id', 'create');
