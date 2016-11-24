@@ -39,7 +39,7 @@ class Player
 
 	public static function roleValues()
 	{
-		static $values = null;
+		static $data = null;
 		if(is_null($data))
 			$data = ['Player', 'Referee', 'Infobalie', 'Super'];
 		return $data;
