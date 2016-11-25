@@ -20,7 +20,9 @@ class AppController
 	public $helpers = [ 'Date' ];
 
 	protected $searchFields = [ ];
-	protected static $jsonResponse = true;
+
+	// Can be overriden to disable json output.
+	public static $jsonResponse = true;
 
 	public function initialize()
 	{
@@ -50,13 +52,14 @@ class AppController
 			, 'logoutRedirect' => '/'
 			]);
 
-		if($this->jsonResponse()) {
+		if(static::$jsonResponse) {
 			$this->viewBuilder()->className('Api');
 
 			$arr = ['exceptionRenderer' => 'App\Error\ApiExceptionRenderer']
 				+ Configure::read('Error');
 			(new ErrorHandler($arr))->register();
 		}
+
 		if(!$this->request->is('post'))
 			$this->request->data = $this->request->input('json_decode',1) ?: [];
 
@@ -66,11 +69,6 @@ class AppController
 							, $error, json_last_error_msg());
 			throw new BadRequestException($msg);
 		}
-	}
-
-	public static function jsonResponse()
-	{
-		return static::$jsonResponse;
 	}
 
 	public function implementedEvents()
