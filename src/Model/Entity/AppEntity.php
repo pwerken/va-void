@@ -3,6 +3,7 @@ namespace App\Model\Entity;
 
 use App\AuthState;
 use Cake\ORM\Entity;
+use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 
 abstract class AppEntity
@@ -85,5 +86,23 @@ abstract class AppEntity
 	public function getUrl()
 	{
 		return '/'.$this->getBaseUrl().'/'.$this->id;
+	}
+
+	public function refresh()
+	{
+		$table = TableRegistry::get(Inflector::pluralize($this->getClass()));
+		$query = $table->find('withContain');
+
+		$keys = $table->primaryKey();
+		if(is_array($keys)) {
+			foreach($keys as $i => $key) {
+				$field = current($query->aliasField($key));
+				$query->where([$field => $this->$key]);
+			}
+		} else {
+			$field = current($query->aliasField($keys));
+			$query->where([$field => $this->$keys]);
+		}
+		return $query->first();
 	}
 }
