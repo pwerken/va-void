@@ -38,25 +38,16 @@ class CharactersSkillsTable
 		$rules->add($rules->existsIn('character_id', 'characters'));
 		$rules->add($rules->existsIn('skill_id', 'skills'));
 
-		$rules->addCreate([$this, 'addRelations']);
 		$rules->addCreate([$this, 'disallowDeprecated']);
 		$rules->addCreate([$this, 'hasXPAvailable']);
 
 		return $rules;
 	}
 
-	public function addRelations($entity, $options)
-	{
-		$entity->Character = $this->Characters->findWithContainById($entity->character_id)->first();
-		$entity->Skill = $this->Skills->findWithContainById($entity->skill_id)->first();
-	}
-
 	public function disallowDeprecated($entity, $options)
 	{
-		if(!$entity->Character || !$entity->Skill)
-			return false;
-
-		if($entity->Skill->deprecated) {
+		$skill = $this->Skills->findWithContainById($entity->skill_id)->first();
+		if($skill->deprecated) {
 			$entity->errors('skill_id', 'deprecated skill');
 			return false;
 		}
@@ -66,14 +57,14 @@ class CharactersSkillsTable
 
 	public function hasXPAvailable($entity, $options)
 	{
-		if(!$entity->Character || !$entity->Skill)
-			return false;
+		$character = $this->Characters->findWithContainById($entity->character_id)->first();
+		$skill = $this->Skills->findWithContainById($entity->skill_id)->first();
 
-		$total = $entity->Character->xp;
-		$cost = $entity->Skill->cost;
+		$total = $character->xp;
+		$cost = $skill->cost;
 
 		$spend = 0;
-		foreach($entity->Character->characters_skills as $skill) {
+		foreach($character->characters_skills as $skill) {
 			$spend += $skill->skill->cost;
 		}
 
@@ -84,4 +75,5 @@ class CharactersSkillsTable
 
 		return true;
 	}
+
 }

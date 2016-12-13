@@ -150,7 +150,7 @@ class AppController
 
 		if($event->subject->created) {
 			$this->response->statusCode(201);
-			$this->response->location($event->subject->entity->getUrl());
+			$this->response->location($event->subject->entity->refresh()->getUrl());
 			return $this->response;
 		}
 
