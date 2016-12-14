@@ -27,19 +27,22 @@ class ItemsController
 
 	public function edit($itin)
 	{
-		if(isset($this->request->data['plin'])
-		|| isset($this->request->data['chin']))
+		if(array_key_exists('plin', $this->request->data)
+		|| array_key_exists('chin', $this->request->data))
 		{
 			$plin = $this->request->data('plin');
 			$chin = $this->request->data('chin');
 
-			$this->loadModel('Characters');
-			$char = $this->Characters->findByPlayerIdAndChin($plin, $chin)->first();
-			$this->request->data('character_id', $char ? $char->id : -1);
+			if($plin || $chin) {
+				$this->loadModel('Characters');
+				$char = $this->Characters->findByPlayerIdAndChin($plin, $chin)->first();
+				$this->request->data('character_id', $char ? $char->id : -1);
+			} else {
+				$this->request->data('character_id', null);
+			}
 		}
-
-		$this->request->data('plin', null);
-		$this->request->data('chin', null);
+		unset($this->request->data['plin']);
+		unset($this->request->data['chin']);
 
 		return $this->Crud->execute();
 	}
