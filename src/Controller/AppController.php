@@ -7,7 +7,6 @@ use Cake\Core\Configure;
 use Cake\Error\ErrorHandler;
 use Cake\Event\Event;
 use Cake\Network\Exception\BadRequestException;
-use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 use Crud\Error\Exception\ValidationException;
 
@@ -126,9 +125,7 @@ class AppController
 			$plin = $event->subject->args[0];
 			$chin = $event->subject->args[1];
 
-			$this->loadModel('Characters');
-			$char = $this->Characters->plinChin($plin, $chin)->id;
-
+			$char = $this->loadModel('Characters')->plinChin($plin, $chin)->id;
 			array_shift($event->subject->args);
 			$event->subject->args[0] = $char;
 
@@ -139,7 +136,7 @@ class AppController
 
 		if(strcmp(substr($action, -5, 5), 'Index') == 0) {
 			$model = ucfirst(substr($action, 0, -5));
-			$parent = TableRegistry::get($model)->get($event->subject->args[0]);
+			$parent = $this->loadModel($model)->get($event->subject->args[0]);
 			$this->set('parent', $parent);
 		}
 	}
