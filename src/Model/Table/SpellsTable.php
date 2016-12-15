@@ -15,7 +15,7 @@ class SpellsTable
 		$this->table('spells');
 		$this->displayField('name');
 		$this->primaryKey('id');
-		$this->hasMany('CharactersSpells');
+		$this->hasMany('CharactersSpells', ['propertyName' => 'characters']);
 	}
 
 	public function orderBy()

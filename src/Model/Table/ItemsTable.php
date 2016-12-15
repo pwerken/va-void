@@ -17,7 +17,7 @@ class ItemsTable
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
 		$this->belongsTo('Characters');
-		$this->hasMany('AttributesItems');
+		$this->hasMany('AttributesItems', ['propertyName' => 'attributes']);
 	}
 
 	public function orderBy()

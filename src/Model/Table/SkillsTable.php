@@ -18,7 +18,7 @@ class SkillsTable
 		$this->displayField('name');
 		$this->primaryKey('id');
 		$this->belongsTo('Manatypes');
-		$this->hasMany('CharactersSkills');
+		$this->hasMany('CharactersSkills', ['propertyName' => 'characters']);
 	}
 
 	public function orderBy()

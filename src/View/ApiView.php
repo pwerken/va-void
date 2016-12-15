@@ -12,26 +12,12 @@ class ApiView
 {
 
 	private $_aliases =
-	[ 'Attribute'			=>	[ 'attributes_items' => 'items' ]
-	, 'Character'           =>	[ 'player_id' => 'plin'
-								, 'characters_conditions' => 'conditions'
-								, 'characters_powers'     => 'powers'
-								, 'characters_skills'     => 'skills'
-								, 'characters_spells'     => 'spells'
-								]
-	, 'Condition'           =>	[ 'id' => 'coin'
-								, 'characters_conditions' => 'characters'
-								]
-	, 'Item'                =>	[ 'id' => 'itin'
-								, 'attributes_items' => 'attributes'
-								]
+	[ 'Character'           =>	[ 'player_id' => 'plin' ]
+	, 'Condition'           =>	[ 'id' => 'coin' ]
+	, 'Item'                =>	[ 'id' => 'itin' ]
 	, 'Lammy'               =>	[ 'lammy' => 'pdf_page' ]
 	, 'Player'              =>	[ 'id' => 'plin' ]
-	, 'Power'               =>	[ 'id' => 'poin'
-								, 'characters_powers' => 'characters'
-								]
-	, 'Skill'	            =>	[ 'characters_skills' => 'characters' ]
-	, 'Spell'	            =>	[ 'characters_spells' => 'characters' ]
+	, 'Power'               =>	[ 'id' => 'poin' ]
 	];
 
 	public function render($view = null, $layout = null)

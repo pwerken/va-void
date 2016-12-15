@@ -16,7 +16,7 @@ class PowersTable
 		$this->displayField('displayName');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
-		$this->hasMany('CharactersPowers');
+		$this->hasMany('CharactersPowers', ['propertyName' => 'characters']);
 	}
 
 	public function orderBy()

@@ -15,7 +15,7 @@ class AttributesTable
 		$this->table('attributes');
 		$this->displayField('name');
 		$this->primaryKey('id');
-		$this->hasMany('AttributesItems');
+		$this->hasMany('AttributesItems', ['propertyName' => 'items']);
 	}
 
 	public function orderBy()

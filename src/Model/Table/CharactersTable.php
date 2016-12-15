@@ -29,10 +29,10 @@ class CharactersTable
 		$this->belongsTo('Groups');
 		$this->belongsTo('Worlds');
 		$this->hasMany('Items');
-		$this->hasMany('CharactersConditions');
-		$this->hasMany('CharactersPowers');
-		$this->hasMany('CharactersSkills');
-		$this->hasMany('CharactersSpells');
+		$this->hasMany('CharactersConditions', ['propertyName' => 'conditions']);
+		$this->hasMany('CharactersPowers', ['propertyName' => 'powers']);
+		$this->hasMany('CharactersSkills', ['propertyName' => 'skills']);
+		$this->hasMany('CharactersSpells', ['propertyName' => 'spells']);
 	}
 
 	public function orderBy()
