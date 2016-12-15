@@ -16,6 +16,8 @@ class Item
 
 	protected $_hidden = [ 'character_id' ];
 
+	protected $_virtual = [ 'plin', 'chin' ];
+
 	protected function _getPlin()
 	{
 		return @$this->character->player_id;
