@@ -7,6 +7,7 @@ use Cake\Core\Configure;
 use Cake\Error\ErrorHandler;
 use Cake\Event\Event;
 use Cake\Network\Exception\BadRequestException;
+use Cake\ORM\Association;
 use Cake\Utility\Inflector;
 use Crud\Error\Exception\ValidationException;
 
@@ -134,6 +135,14 @@ class AppController
 			}
 		}
 
+		if(strcmp(substr($action, -3, 3), 'add') == 0
+		|| strcmp(substr($action, -4, 4), 'edit') == 0) {
+			foreach($this->loadModel()->associations() as $a) {
+				if($a->property()) {
+					unset($this->request->data[$a->property()]);
+				}
+			}
+		}
 		if(strcmp(substr($action, -5, 5), 'Index') == 0) {
 			$model = ucfirst(substr($action, 0, -5));
 			$parent = $this->loadModel($model)->get($event->subject->args[0]);
