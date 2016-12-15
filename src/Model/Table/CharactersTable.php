@@ -80,6 +80,10 @@ class CharactersTable
 
 	public function buildRules(RulesChecker $rules)
 	{
+
+		$rules->add($rules->isUnique(['player_id', 'chin'],
+			'This plin & chin combination is already in use.'));
+
 		$rules->add($rules->existsIn('faction_id', 'factions'));
 		$rules->add($rules->existsIn('group_id', 'groups'));
 		$rules->add($rules->existsIn('belief_id', 'believes'));
