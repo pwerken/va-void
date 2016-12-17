@@ -26,13 +26,7 @@ class Character
 			[ 'comments'    => 'referee'
 			];
 
-	protected $_hidden =
-			[ 'id'
-			, 'belief_id'
-			, 'group_id'
-			, 'faction_id'
-			, 'world_id'
-			];
+	protected $_hidden = [ 'id' ];
 
 	protected $_compact = [ 'player_id' , 'chin' , 'name', 'status' ];
 
