@@ -24,10 +24,10 @@ class CharactersTable
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
 		$this->belongsTo('Players');
-		$this->belongsTo('Factions');
-		$this->belongsTo('Believes');
-		$this->belongsTo('Groups');
-		$this->belongsTo('Worlds');
+		$this->belongsTo('Factions', ['propertyName' => 'faction_object']);
+		$this->belongsTo('Believes', ['propertyName' => 'belief_object']);
+		$this->belongsTo('Groups', ['propertyName' => 'group_object']);
+		$this->belongsTo('Worlds', ['propertyName' => 'world_object']);
 		$this->hasMany('Items');
 		$this->hasMany('CharactersConditions', ['propertyName' => 'conditions']);
 		$this->hasMany('CharactersPowers', ['propertyName' => 'powers']);

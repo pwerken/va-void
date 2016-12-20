@@ -26,9 +26,17 @@ class Character
 			[ 'comments'    => 'referee'
 			];
 
-	protected $_hidden = [ 'id' ];
+	protected $_hidden =
+			[ 'id'
+			, 'belief_id', 'belief_object'
+			, 'faction_id', 'faction_object'
+			, 'group_id', 'group_object'
+			, 'world_id', 'world_object'
+			];
 
 	protected $_compact = [ 'player_id' , 'chin' , 'name', 'status' ];
+
+	protected $_virtual = [ 'belief', 'faction', 'group', 'world' ];
 
 	public static function soulpathValues()
 	{
@@ -49,6 +57,26 @@ class Character
 	public function getUrl()
 	{
 		return '/'.$this->getBaseUrl().'/'.$this->player_id.'/'.$this->chin;
+	}
+
+	protected function _getBelief()
+	{
+		return $this->belief_object->name;
+	}
+
+	protected function _getFaction()
+	{
+		return $this->faction_object->name;
+	}
+
+	protected function _getGroup()
+	{
+		return $this->group_object->name;
+	}
+
+	protected function _getWorld()
+	{
+		return $this->world_object->name;
 	}
 
 }
