@@ -35,6 +35,7 @@ class BelievesTable
 
 	public function buildRules(RulesChecker $rules)
 	{
+		$rules->add($rules->isUnique(['name'], 'This name is already in use.'));
 		$rules->addDelete([$this, 'ruleNoCharacters']);
 		return $rules;
 	}
