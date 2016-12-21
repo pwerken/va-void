@@ -25,7 +25,7 @@ class ItemsController
 		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], true);
 	}
 
-	public function edit($itin)
+	public function add()
 	{
 		if(array_key_exists('plin', $this->request->data)
 		|| array_key_exists('chin', $this->request->data))
@@ -45,6 +45,11 @@ class ItemsController
 		unset($this->request->data['chin']);
 
 		return $this->Crud->execute();
+	}
+
+	public function edit($itin)
+	{
+		return $this->add();
 	}
 
 	protected function hasAuthUser($id = null)
