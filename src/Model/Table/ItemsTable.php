@@ -83,7 +83,7 @@ class ItemsTable
 			if($max > 0)
 				$query->where(['id <' => $max]);
 
-			$newID = $query->toArray()['id'] + 1;
+			$newID = $query->first()['id'] + 1;
 			if($newID < $max || $max < 0)
 				return $newID;
 		}
