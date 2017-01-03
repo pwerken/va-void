@@ -14,10 +14,10 @@ class ApiExceptionRenderer extends ExceptionRenderer
 
 		$data = [];
 		$data['class'] = 'Error';
-		$data['code'] = $error->getCode();
+		$data['code'] = $error->getCode() ?: 500;
 		$data['url'] = '/'. $this->controller->request->url;
 		$data['message'] = $error->getMessage();
-		$data['errors'] = $this->controller->viewVars['errors'];
+		$data['errors'] = @$this->controller->viewVars['errors'];
 
 		if(Configure::read('debug')) {
 			$data['DEBUG']['trace'] = Debugger::formatTrace($error->getTrace()
