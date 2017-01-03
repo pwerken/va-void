@@ -60,7 +60,7 @@ class AppController
 			(new ErrorHandler($arr))->register();
 		}
 
-		if(!$this->request->is('post'))
+		if(!$this->request->is('post') && !empty($this->request->data))
 			$this->request->data = $this->request->input('json_decode',1) ?: [];
 
 		$error = json_last_error();
