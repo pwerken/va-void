@@ -56,7 +56,7 @@ class Initial extends AbstractMigration
 		$table = $this->table('believes');
 		$table
 			->addColumn('id', 'integer', [
-				'autoIncrement' => true,
+				'identity' => true,
 				'default' => null,
 				'limit' => 10,
 				'null' => false,
@@ -73,7 +73,7 @@ class Initial extends AbstractMigration
 		$table = $this->table('characters');
 		$table
 			->addColumn('id', 'integer', [
-				'autoIncrement' => true,
+				'identity' => true,
 				'default' => null,
 				'limit' => 10,
 				'null' => false,
@@ -251,7 +251,7 @@ class Initial extends AbstractMigration
 		$table = $this->table('conditions');
 		$table
 			->addColumn('id', 'integer', [
-				'autoIncrement' => true,
+				'identity' => true,
 				'default' => null,
 				'limit' => 10,
 				'null' => false,
@@ -288,7 +288,7 @@ class Initial extends AbstractMigration
 		$table = $this->table('factions');
 		$table
 			->addColumn('id', 'integer', [
-				'autoIncrement' => true,
+				'identity' => true,
 				'default' => null,
 				'limit' => 10,
 				'null' => false,
@@ -305,7 +305,7 @@ class Initial extends AbstractMigration
 		$table = $this->table('groups');
 		$table
 			->addColumn('id', 'integer', [
-				'autoIncrement' => true,
+				'identity' => true,
 				'default' => null,
 				'limit' => 10,
 				'null' => false,
@@ -376,7 +376,7 @@ class Initial extends AbstractMigration
 		$table = $this->table('lammies');
 		$table
 			->addColumn('id', 'integer', [
-				'autoIncrement' => true,
+				'identity' => true,
 				'default' => null,
 				'limit' => 10,
 				'null' => false,
@@ -492,7 +492,7 @@ class Initial extends AbstractMigration
 		$table = $this->table('powers');
 		$table
 			->addColumn('id', 'integer', [
-				'autoIncrement' => true,
+				'identity' => true,
 				'default' => null,
 				'limit' => 10,
 				'null' => false,
@@ -529,7 +529,7 @@ class Initial extends AbstractMigration
 		$table = $this->table('skills');
 		$table
 			->addColumn('id', 'integer', [
-				'autoIncrement' => true,
+				'identity' => true,
 				'default' => null,
 				'limit' => 10,
 				'null' => false,
@@ -568,7 +568,7 @@ class Initial extends AbstractMigration
 		$table = $this->table('spells');
 		$table
 			->addColumn('id', 'integer', [
-				'autoIncrement' => true,
+				'identity' => true,
 				'default' => null,
 				'limit' => 10,
 				'null' => false,
@@ -595,7 +595,7 @@ class Initial extends AbstractMigration
 		$table = $this->table('worlds');
 		$table
 			->addColumn('id', 'integer', [
-				'autoIncrement' => true,
+				'identity' => true,
 				'default' => null,
 				'limit' => 10,
 				'null' => false,
