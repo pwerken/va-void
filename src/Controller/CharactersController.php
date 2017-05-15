@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use Cake\Event\Event;
+use App\Model\Entity\Lammy;
 
 class CharactersController
 	extends AppController
@@ -20,6 +21,12 @@ class CharactersController
 		$this->mapMethod('edit',          [ 'referee'         ]);
 		$this->mapMethod('index',         [ 'referee'         ]);
 		$this->mapMethod('view',          [ 'referee', 'user' ], true);
+
+		$this->Crud->mapAction('print',
+			[ 'className' => 'Crud.View'
+			, 'auth' => [ 'referee' ]
+			, 'findMethod' => 'withContain'
+			]);
 
 		$this->mapMethod('believesIndex', [ 'referee'         ]);
 		$this->mapMethod('factionsIndex', [ 'referee'         ]);
@@ -52,6 +59,33 @@ class CharactersController
 		$this->dataNameToIdAndAddIfMissing('believes', 'belief');
 		$this->dataNameToIdAndAddIfMissing('groups', 'group');
 		$this->dataNameToIdAndAddIfMissing('worlds', 'world');
+
+		$this->Crud->execute();
+	}
+
+	public function print($plin, $chin)
+	{
+		$this->Crud->on('beforeRender', function ($event) {
+			$table = $this->loadModel('lammies');
+
+			$character = $event->subject()->entity;
+			$table->save($table->newEntity()->set('target', $character));
+			$count = 1;
+			foreach($character->powers as $power) {
+				$table->save($table->newEntity()->set('target', $power));
+				$count++;
+			}
+			foreach($character->conditions as $condition) {
+				$table->save($table->newEntity()->set('target', $condition));
+				$count++;
+			}
+			foreach($character->items as $item) {
+				$table->save($table->newEntity()->set('target', $item));
+				$count++;
+			}
+
+			$event->subject()->entity = $count;
+		});
 
 		$this->Crud->execute();
 	}

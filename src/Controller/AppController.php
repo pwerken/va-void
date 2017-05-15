@@ -119,7 +119,7 @@ class AppController
 
 		// = (A && B) || C
 		$startPlin  = strcmp($this->name, 'Characters') == 0;
-		$startPlin &= in_array($action, ['delete', 'edit', 'view']);
+		$startPlin &= in_array($action, ['delete', 'edit', 'view', 'print']);
 		$startPlin |= strcmp(substr($action, 0, 10), 'characters') == 0;
 
 		if($startPlin && isset($event->subject->args[1])) {

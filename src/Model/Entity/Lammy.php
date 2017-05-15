@@ -51,6 +51,26 @@ class Lammy
 		return $this->target;
 	}
 
+	public function _setTarget($target = NULL)
+	{
+		if(is_null($target))
+			return;
+
+		$table = TableRegistry::get($target->source());
+		$class = $table->entityClass();
+		if($pos = strrpos($class, '\\'))
+			$class = substr($class, $pos + 1);
+		$this->entity = $class;
+
+		$primary = $table->primaryKey();
+		if(!is_array($primary))
+			$primary = [$primary];
+
+		foreach($primary as $key => $field) {
+			$this->set("key".($key+1), $target->get($field));
+		}
+	}
+
 	protected function _getLammy()
 	{
 		if(is_null($this->lammy)) {
