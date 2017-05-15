@@ -44,15 +44,15 @@ class CharacterLammy
 		$this->text(61,  5,  7, 'C', sprintf('%02d', $this->entity->chin));
 		$this->text(12, 10, 60, 'L', $this->entity->player->fullName);
 		$this->text(12, 16, 60, 'L', $this->entity->name);
-		$this->text(12, 23, 60, 'L', $this->entity->faction->name);
+		$this->text(12, 23, 60, 'L', $this->entity->faction);
 
-		$belief = $this->entity->belief->name;
+		$belief = $this->entity->belief;
 		if(!empty($this->entity->soulpath)) {
 			$belief .= ' (' . $this->entity->soulpath . ')';
 		}
 		$this->text(12, 28, 60, 'L', $belief);
-		$this->text(12, 33, 60, 'L', $this->entity->group->name);
-		$this->text(12, 38, 60, 'L', $this->entity->world->name);
+		$this->text(12, 33, 60, 'L', $this->entity->group);
+		$this->text(12, 38, 60, 'L', $this->entity->world);
 	}
 
 	protected function _drawBack()
@@ -63,7 +63,7 @@ class CharacterLammy
 		$data['skills'] = [];
 		$data['spells'] = [[], []];
 
-		foreach($this->entity->characters_skills as $relation) {
+		foreach($this->entity->skills as $relation) {
 			$skill = $relation->skill;
 			$data['xp'] += $skill->cost;
 			$data['skills'][] = $skill->name.' ('.$skill->cost.')';
@@ -75,7 +75,7 @@ class CharacterLammy
 				$data['mana'][$skill->manatype->name] = 0;
 			$data['mana'][$skill->manatype->name] += $skill->mana_amount;
 		}
-		foreach($this->entity->characters_spells as $relation) {
+		foreach($this->entity->spells as $relation) {
 			$spell = $relation->spell;
 			$descr = $spell->short.': '.$relation->level;
 			$data['spells'][$spell->spiritual][] = $descr;

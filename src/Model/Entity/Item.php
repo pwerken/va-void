@@ -32,7 +32,7 @@ class Item
 	{
 		$seed = $this->id;
 		$attr = [];
-		foreach($this->attributes_items as $relation) {
+		foreach($this->attributes as $relation) {
 			$attribute = $relation->attribute;
 			$seed *= $attribute->id;
 			$attr[] = $attribute->code;
