@@ -23,9 +23,9 @@ ToDo-list:
    - [x] order all the listings logicaly
    - [/] edit requires matching last-modified field
  - Lammy printing
-   - [ ] create/fill printing queue
+   - [x] create/fill printing queue
    - [ ] remove/reorder tasks from printing queue
-   - [ ] mark queued items as printed
+   - [x] mark queued items as printed
    - [x] import pdf-lammy code into App namespace
    - [x] create custom PdfView
    - [x] merge Lammy/PdfSheet into View/PdfView
@@ -43,6 +43,7 @@ ToDo-list:
    - [x] convert MySQL imported data to database layout
  - Future...
    - [ ] performance analysis of queries
+   - [ ] Last-Modified / ETag header
    - [ ] rename 'Spells' to ... ? ('Casting', 'Domain', 'School', ?)
    - [ ] add individual spell descriptions
    - [ ] Characters: player text field (for background)
