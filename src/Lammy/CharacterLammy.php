@@ -5,11 +5,6 @@ class CharacterLammy
 	extends LammyCard
 {
 
-	public function sides()
-	{
-		return 2;
-	}
-
 	public function draw($side)
 	{
 		switch($side) {

@@ -5,6 +5,11 @@ class ItemLammy
 	extends LammyCard
 {
 
+	public function cards()
+	{
+		return 2;
+	}
+
 	public function sides()
 	{
 		return 3;

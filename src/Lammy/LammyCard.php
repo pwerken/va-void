@@ -28,11 +28,22 @@ abstract class LammyCard
 	/************************* USED BY PdfSheet ***************************/
 
 	/***
+	 *  Return the number of cards the lammy has.
+	 */
+	public function cards()
+	{
+		return 1;
+	}
+
+	/***
 	 *  Return the number of sides the lammy has.
 	 *
 	 *  Side 2n is the front and 2n+1 is the back of a single card.
 	 */
-	abstract public function sides();
+	public function sides()
+	{
+		return 2;
+	}
 
 	/***
 	 *  Called by the LammySheet to fill the pdf.

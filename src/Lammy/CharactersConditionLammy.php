@@ -5,11 +5,6 @@ class CharactersConditionLammy
 	extends LammyCard
 {
 
-	public function sides()
-	{
-		return 2;
-	}
-
 	public function draw($side, $data = null)
 	{
 		if(is_null($data)) {
