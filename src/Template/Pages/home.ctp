@@ -136,13 +136,9 @@ endif;
 	}
     echo '<br/>';
     echo '<li>'.$this->Html->link('/lammies/') . "</li>\n";
+    echo '<li>'.$this->Html->link('/lammies/queue') . "</li>\n";
     echo '<li>'.$this->Html->link('/lammies/single') . "</li>\n";
-    echo '<li>'.$this->Html->link('/lammies/single/0') . "</li>\n";
     echo '<li>'.$this->Html->link('/lammies/double') . "</li>\n";
-    echo '<li>'.$this->Html->link('/lammies/double/0') . "</li>\n";
-    echo '<li>'.$this->Html->link('/lammies/jobs/0') . "</li>\n";
-    echo '<li>'.$this->Html->link('/lammies/jobs/0/single') . "</li>\n";
-    echo '<li>'.$this->Html->link('/lammies/jobs/0/double') . "</li>\n";
 ?>
 </ul>
 		</td>

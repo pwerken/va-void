@@ -22,55 +22,117 @@ class LammiesController
 		$config = [];
 		$config['className']  = 'Crud.Index';
 		$config['auth']       = [ 'referee' ];
-		$this->Crud->mapAction('pdfSingle',    $config);
-		$this->Crud->mapAction('pdfDouble',    $config);
-		$this->Crud->mapAction('jobItems',     $config);
-		$this->Crud->mapAction('pdfJobSingle', $config);
-		$this->Crud->mapAction('pdfJobDouble', $config);
+		$this->Crud->mapAction('queue', $config);
+
+		$config['auth']       = [ 'super' ];
+		$this->Crud->mapAction('printed',     $config);
+		$this->Crud->mapAction('queueSingle', $config);
+		$this->Crud->mapAction('queueDouble', $config);
+		$this->Crud->mapAction('pdfSingle',   $config);
+		$this->Crud->mapAction('pdfDouble',   $config);
 	}
 
-	public function jobItems($id) {
-		$this->Crud->on('beforePaginate', function(Event $event) use ($id) {
-			$event->subject()->query->where(['job' => $id]);
+	public function queue()
+	{
+		$this->Crud->on('beforePaginate', function ($event) {
+			$query = $event->subject()->query;
+			$query->where(["Status =" => "Queued"]);
 		});
-		return $this->Crud->execute();
-	}
-	public function pdfJobSingle($id) {
-		return $this->jobItems($id);
-	}
-	public function pdfJobDouble($id) {
-		return $this->jobItems($id);
+		$this->Crud->execute();
 	}
 
-	public function implementedEvents()
+	public function queueSingle()
 	{
-		$events = parent::implementedEvents();
-		$events['Crud.beforeRender'] = 'CrudBeforeRender';
-		return $events;
+		$this->Crud->on('beforePaginate', function ($event) {
+			$query = $event->subject()->query;
+			$query->where(["Status =" => "Queued"]);
+			$query->limit(6);
+		});
+		$this->Crud->on('beforeRender', function ($event) {
+			$count = 0;
+			$id = -1;
+			foreach ($event->subject()->entities as $lammy) {
+				$count += $lammy->Lammy->sides();
+				if($count > 12)
+					break;
+				$id = $lammy->id;
+			}
+			$event->subject()->entities = $id;
+		});
+		$this->Crud->execute();
 	}
 
-	public function CrudBeforeRender(Event $event)
+	public function queueDouble()
 	{
-		if(strcmp($this->request->action, 'index') == 0)
-			return PdfView::addLayoutInfo($event->subject->entities);
+		$this->Crud->on('beforePaginate', function ($event) {
+			$query = $event->subject()->query;
+			$query->where(["Status =" => "Queued"]);
+			$query->limit(12);
+		});
+		$this->Crud->on('beforeRender', function ($event) {
+			$count = 0;
+			$id = -1;
+			foreach ($event->subject()->entities as $lammy) {
+				$count += $lammy->Lammy->cards();
+				if($count > 12)
+					break;
+				$id = $lammy->id;
+			}
+			$event->subject()->entities = $id;
+		});
+		$this->Crud->execute();
+	}
 
-		if($event->subject->entities->count() == 0)
-			throw new NotFoundException();
+	public function pdfSingle()
+	{
+		$this->uptoId('Queued', key($this->request->data));
+		$this->pdfOutput(false);
+		$this->Crud->execute();
+	}
 
-		if(strcmp(substr($this->request->action, 0, 3), 'pdf') !== 0)
-			return;
+	public function pdfDouble()
+	{
+		$this->uptoId('Queued', key($this->request->data));
+		$this->pdfOutput(true);
+		$this->Crud->execute();
+	}
 
-		PdfView::addLayoutInfo($event->subject->entities);
-		$this->viewBuilder()->className('Pdf');
+	public function printed()
+	{
+		$this->uptoId('Printing', key($this->request->data));
+		$this->Crud->on('beforeRender', function ($event) {
+			$this->setStatus($event->subject()->entities, 'Printed');
+		});
+		$this->Crud->execute();
+	}
 
-		$this->set('double', false);
-		if(strcmp(substr($this->request->action, -6), 'Double') === 0)
-			$this->set('double', true);
+	private function uptoId($status, $id)
+	{
+		$this->Crud->on('beforePaginate', function ($event) use ($status, $id)
+		{
+			$query = $event->subject()->query;
+			$query->where(["Status =" => $status, "id <=" => $id]);
+		});
+	}
 
-		$this->set('page', -1);
-		if(strcmp(substr($this->request->action, 0, 6), 'pdfJob') <> 0
-		&& isset($this->request->params['pass'][0]))
-			$this->set('page', $this->request->params['pass'][0]);
+	private function pdfOutput($double = false)
+	{
+		$this->Crud->on('beforeRender', function ($event) use ($double) {
+			$this->setStatus($event->subject()->entities, 'Printing');
+
+			PdfView::addLayoutInfo($event->subject()->entities);
+			$this->viewBuilder()->className('Pdf');
+			$this->set('double', $double);
+		});
+	}
+
+	private function setStatus($lammies, $status)
+	{
+		$table = $this->loadModel();
+		foreach($lammies as $lammy) {
+			$lammy->status = $status;
+			$table->save($lammy);
+		}
 	}
 
 }

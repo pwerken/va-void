@@ -12,14 +12,22 @@ class Lammy
 	private $lammy  = null;
 
 	protected $_defaults =
-			[ 'printed'     => false
+			[ 'status' => 'Queued'
 			];
 
 	protected $_hidden = [ 'lammy' ];
 
 	protected $_virtual = [ 'target', 'lammy' ];
 
-	protected $_compact = [ 'entity', 'key1', 'key2', 'job', 'printed' ];
+	protected $_compact = [ 'entity', 'key1', 'key2', 'status', 'modified'];
+
+	public static function statusValues()
+	{
+		static $data = null;
+		if(is_null($data))
+			$data = ['Queued', 'Printing', 'Printed'];
+		return $data;
+	}
 
 	protected function _getTarget()
 	{
