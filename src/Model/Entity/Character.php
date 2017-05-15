@@ -34,7 +34,7 @@ class Character
 			, 'world_id', 'world_object'
 			];
 
-	protected $_compact = [ 'player_id' , 'chin' , 'name', 'status' ];
+	protected $_compact = [ 'player_id', 'chin', 'name', 'status' ];
 
 	protected $_virtual = [ 'belief', 'faction', 'group', 'world' ];
 
