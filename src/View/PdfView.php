@@ -19,8 +19,6 @@ class PdfView
 
 	static private $LAMMIES_Y = 6;  // nr's of lammies that fit on one page
 
-	private $lammies = [];          // the lammies we want to print
-
 	public function render($view = null, $layout = null)
 	{
 		$this->layout('pdf');
@@ -29,6 +27,7 @@ class PdfView
 
 		$pageNr = $this->get('page');
 		$pageDouble = $this->get('double');
+		$lammies = [];
 
 		foreach($data as $entity)
 		{
@@ -38,12 +37,12 @@ class PdfView
 				$page = $entity->lammy->single;
 
 			if($page == $pageNr || $pageNr < 0)
-				$this->lammies[] = $entity->lammy;
+				$lammies[] = $entity->lammy;
 		}
 
 		$this->response->type('pdf');
 #		$this->response->header('Content-Disposition', 'inline; filename="lammies.pdf"');
-		return $this->createPdf($pageDouble);
+		return $this->createPdf($lammies, $pageDouble);
 	}
 
 	public static function addLayoutInfo($entities)
@@ -82,10 +81,10 @@ class PdfView
 		}
 	}
 
-	private function createPdf($twosided = false)
+	public function createPdf($lammies, $twosided = false)
 	{
 		$todo = [];
-		foreach($this->lammies as $key => $lammy) {
+		foreach($lammies as $key => $lammy) {
 			$todo[] = [$key, $lammy->sides()];
 		}
 
@@ -114,8 +113,8 @@ class PdfView
 						continue;
 
 					$x = self::col2x($col);
-					$this->lammies[$key]->preDraw($pdf, $x, $y);
-					$this->lammies[$key]->draw($side);
+					$lammies[$key]->preDraw($pdf, $x, $y);
+					$lammies[$key]->draw($side);
 				}
 			}
 		}
