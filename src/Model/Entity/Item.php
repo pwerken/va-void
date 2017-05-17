@@ -60,7 +60,7 @@ class Item
 					->select(['code'])
 					->where(['category LIKE' => 'random'])
 					->order(['id' => 'ASC'])
-					->limit(1)->page(mt_rand(0, $max - 1))
+					->limit(1)->page(mt_rand(1, $max))
 					->toArray()[0]['code'];
 			$output[$order[$key]] = $code;
 		}
