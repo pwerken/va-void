@@ -20,7 +20,7 @@ class LammiesTable
 	public function findQueued(Query $query, array $options = [])
 	{
 		$query = $this->findWithContain($query, $options);
-		$query->where(["status =" => "Queued"]);
+		$query->where(["status !=" => "Printed"]);
 		return $query;
 	}
 
