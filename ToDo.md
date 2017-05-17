@@ -33,7 +33,8 @@ ToDo-list:
    - [x] create Power/Condition lammy
    - [x] output multiple lammies and/or pages at once
    - [x] dummy lore code handling/generation
-   - [ ] queue monitor / actual printing of pdf
+   - [x] example queue monitor / pdf creation
+   - [ ] actual pdf printing script
  - Logging/accounting
    - [ ] logging of all modifications
    - [ ] entity versioning
