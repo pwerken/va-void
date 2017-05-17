@@ -1,6 +1,8 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\ORM\Query;
+use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 
@@ -13,6 +15,28 @@ class LammiesTable
 		$this->table('lammies');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
+	}
+
+	public function findQueued(Query $query, array $options = [])
+	{
+		$query = $this->findWithContain($query, $options);
+		$query->where(["status =" => "Queued"]);
+		return $query;
+	}
+
+	public function findPrinting(Query $query, array $options = [])
+	{
+		$query = $this->findWithContain($query, $options);
+		$query->where(["status =" => "Printing"]);
+		return $query;
+	}
+
+	public function findLastInQueue(Query $query, array $options = [])
+	{
+		$query = $this->findQueued($query, $options);
+		$query->order(["Lammies.id" => "DESC"]);
+		$query->limit(1);
+		return $query;
 	}
 
 	public function orderBy()
@@ -62,6 +86,14 @@ class LammiesTable
 		}
 
 		return true;
+	}
+
+	public function setStatuses(ResultSet $set, $status)
+	{
+		foreach($set as $lammy) {
+			$lammy->status = $status;
+			$this->save($lammy);
+		}
 	}
 
 }

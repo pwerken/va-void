@@ -108,6 +108,8 @@ endif;
 		, [ 'Worlds',               'view',               2            ]
 		, [ 'Characters',           'worldsIndex',        2            ]
 		, [ 'Pages',                'display',      'routes'           ]
+		, [ 'Lammies',              'index'                            ]
+		, [ 'Lammies',              'queue'                            ]
 		];
 
 	foreach ($list as $i => $url) {
@@ -119,7 +121,7 @@ endif;
 
 		switch($i) {
 		case 17:
-		case 32:
+		case 29:
 			echo "</ul></td>\n<td><ul>";
 			break;
 		case 3:
@@ -127,18 +129,13 @@ endif;
 		case 20:
 		case 23:
 		case 26:
-		case 29:
+		case 32:
 		case 35:
 		case 38:
 			echo '<br/>';
 		}
         echo '<li>'.$this->Html->link($url) . "</li>\n";
 	}
-    echo '<br/>';
-    echo '<li>'.$this->Html->link('/lammies/') . "</li>\n";
-    echo '<li>'.$this->Html->link('/lammies/queue') . "</li>\n";
-    echo '<li>'.$this->Html->link('/lammies/single') . "</li>\n";
-    echo '<li>'.$this->Html->link('/lammies/double') . "</li>\n";
 ?>
 </ul>
 		</td>

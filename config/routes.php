@@ -226,12 +226,10 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 
 	$defaults = [];
 	$defaults['controller'] = 'Lammies';
-	$actions =	[ [ 'queue'        , 'GET',  '/lammies/queue' ]
-				, [ 'printed'      , 'POST', '/lammies/printed'  ]
-				, [ 'queueSingle'  , 'GET',  '/lammies/single' ]
-				, [ 'pdfSingle'    , 'POST', '/lammies/single' ]
-				, [ 'queueDouble'  , 'GET',  '/lammies/double' ]
-				, [ 'pdfDouble'    , 'POST', '/lammies/double' ]
+	$actions =	[ [ 'queue'        , 'GET',  '/lammies/queue'   ]
+				, [ 'printed'      , 'POST', '/lammies/printed' ]
+				, [ 'pdfSingle'    , 'POST', '/lammies/single'  ]
+				, [ 'pdfDouble'    , 'POST', '/lammies/double'  ]
 				];
 	foreach($actions as list($action, $method, $url)) {
 		$defaults['_method'] = $method;
