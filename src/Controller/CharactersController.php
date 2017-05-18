@@ -22,7 +22,7 @@ class CharactersController
 		$this->mapMethod('index',         [ 'referee'         ]);
 		$this->mapMethod('view',          [ 'referee', 'user' ], true);
 
-		$this->Crud->mapAction('print',
+		$this->Crud->mapAction('queue',
 			[ 'className' => 'Crud.View'
 			, 'auth' => [ 'referee' ]
 			, 'findMethod' => 'withContain'
@@ -63,7 +63,7 @@ class CharactersController
 		$this->Crud->execute();
 	}
 
-	public function print($plin, $chin)
+	public function queue($plin, $chin)
 	{
 		$this->Crud->on('beforeRender', function ($event) {
 			$table = $this->loadModel('lammies');

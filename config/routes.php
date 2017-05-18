@@ -125,7 +125,7 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 	if($name == 'Characters') {
 		$defaults['_method'] = 'POST';
 		$defaults['controller'] = $name;
-		$defaults['action'] = 'print';
+		$defaults['action'] = 'queue';
 		$routes->connect($url.'/print', $defaults, $routeOptions);
 	}
 
