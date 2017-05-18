@@ -113,6 +113,10 @@ class AppController
 		return $query->all();
 	}
 
+	public function corsOptions()
+	{
+	}
+
 	public function CrudBeforeHandle(Event $event)
 	{
 		$action = $this->request->action;

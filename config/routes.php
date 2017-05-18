@@ -60,6 +60,18 @@ Router::scope('/', function (RouteBuilder $routes) {
 	$defaults['action'] = 'display';
     $routes->connect('/help/*', $defaults);
 
+	/**
+	 * CORS catch all OPTIONS method
+	 */
+	$defaults = [];
+	$defaults['_method'] = 'OPTIONS';
+	$defaults['controller'] = 'App';
+	$defaults['action'] = 'corsOptions';
+	$routes->connect('/*', $defaults);
+
+	/**
+	 *	Authentication related URIs
+	 */
 	$defaults = [];
 	$defaults['_method'] = ['GET', 'PUT', 'POST'];
 	$defaults['controller'] = 'Auth';
