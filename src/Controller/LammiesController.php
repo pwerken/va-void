@@ -8,6 +8,10 @@ class LammiesController
 	extends AppController
 {
 
+	protected $searchFields =
+		[ 'Lammies.status'
+		];
+
 	public function initialize()
 	{
 		parent::initialize();
