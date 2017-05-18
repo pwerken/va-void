@@ -28,6 +28,8 @@ ALTER TABLE `va-void`.`worlds`     auto_increment = 1;
 
 SELECT "import..." AS '';
 
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+
 SELECT " PLAYERS" AS '';
 INSERT INTO `va-void`.`players`
     ( `id`, `first_name`, `insertion`, `last_name`

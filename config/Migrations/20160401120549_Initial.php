@@ -4,19 +4,9 @@ use Phinx\Migration\AbstractMigration;
 class Initial extends AbstractMigration
 {
 
-	public $autoId = false;
-
 	public function up()
 	{
-		$table = $this->table('attributes');
-		$table
-			->addColumn('id', 'integer', [
-				'default' => null,
-				'limit' => 10,
-				'null' => false,
-				'signed' => false,
-			])
-			->addPrimaryKey(['id'])
+		$this->table('attributes')
 			->addColumn('name', 'string', [
 				'default' => null,
 				'limit' => 255,
@@ -34,8 +24,8 @@ class Initial extends AbstractMigration
 			])
 			->create();
 
-		$table = $this->table('attributes_items');
-		$table
+		$this->table('attributes_items', ['id' => false
+				, 'primary_key' => ['attribute_id', 'item_id']])
 			->addColumn('attribute_id', 'integer', [
 				'default' => null,
 				'limit' => 10,
@@ -48,21 +38,11 @@ class Initial extends AbstractMigration
 				'null' => false,
 				'signed' => false,
 			])
-			->addPrimaryKey(['attribute_id', 'item_id'])
 			->addIndex(['attribute_id'])
 			->addIndex(['item_id'])
 			->create();
 
-		$table = $this->table('believes');
-		$table
-			->addColumn('id', 'integer', [
-				'identity' => true,
-				'default' => null,
-				'limit' => 10,
-				'null' => false,
-				'signed' => false,
-			])
-			->addPrimaryKey(['id'])
+		$this->table('believes')
 			->addColumn('name', 'string', [
 				'default' => null,
 				'limit' => 255,
@@ -70,16 +50,7 @@ class Initial extends AbstractMigration
 			])
 			->create();
 
-		$table = $this->table('characters');
-		$table
-			->addColumn('id', 'integer', [
-				'identity' => true,
-				'default' => null,
-				'limit' => 10,
-				'null' => false,
-				'signed' => false,
-			])
-			->addPrimaryKey(['id'])
+		$this->table('characters')
 			->addColumn('player_id', 'integer', [
 				'comment' => 'PLIN',
 				'default' => null,
@@ -157,8 +128,8 @@ class Initial extends AbstractMigration
 			->addIndex(['player_id', 'chin'])
 			->create();
 
-		$table = $this->table('characters_conditions');
-		$table
+		$this->table('characters_conditions', ['id' => false
+				, 'primary_key' => ['character_id', 'condition_id']])
 			->addColumn('character_id', 'integer', [
 				'default' => null,
 				'limit' => 10,
@@ -171,7 +142,6 @@ class Initial extends AbstractMigration
 				'null' => false,
 				'signed' => false,
 			])
-			->addPrimaryKey(['character_id', 'condition_id'])
 			->addColumn('expiry', 'date', [
 				'default' => null,
 				'limit' => null,
@@ -181,8 +151,8 @@ class Initial extends AbstractMigration
 			->addIndex(['condition_id'])
 			->create();
 
-		$table = $this->table('characters_powers');
-		$table
+		$this->table('characters_powers', ['id' => false
+				, 'primary_key' => ['character_id', 'power_id']])
 			->addColumn('character_id', 'integer', [
 				'default' => null,
 				'limit' => 10,
@@ -195,7 +165,6 @@ class Initial extends AbstractMigration
 				'null' => false,
 				'signed' => false,
 			])
-			->addPrimaryKey(['character_id', 'power_id'])
 			->addColumn('expiry', 'date', [
 				'default' => null,
 				'limit' => null,
@@ -205,8 +174,8 @@ class Initial extends AbstractMigration
 			->addIndex(['power_id'])
 			->create();
 
-		$table = $this->table('characters_skills');
-		$table
+		$this->table('characters_skills', ['id' => false
+				, 'primary_key' => ['character_id', 'skill_id']])
 			->addColumn('character_id', 'integer', [
 				'default' => null,
 				'limit' => 10,
@@ -219,13 +188,12 @@ class Initial extends AbstractMigration
 				'null' => false,
 				'signed' => false,
 			])
-			->addPrimaryKey(['character_id', 'skill_id'])
 			->addIndex(['character_id'])
 			->addIndex(['skill_id'])
 			->create();
 
-		$table = $this->table('characters_spells');
-		$table
+		$this->table('characters_spells', ['id' => false
+				, 'primary_key' => ['character_id', 'spell_id']])
 			->addColumn('character_id', 'integer', [
 				'default' => null,
 				'limit' => 10,
@@ -238,7 +206,6 @@ class Initial extends AbstractMigration
 				'null' => false,
 				'signed' => false,
 			])
-			->addPrimaryKey(['character_id', 'spell_id'])
 			->addColumn('level', 'integer', [
 				'default' => 1,
 				'limit' => 10,
@@ -248,16 +215,7 @@ class Initial extends AbstractMigration
 			->addIndex(['spell_id'])
 			->create();
 
-		$table = $this->table('conditions');
-		$table
-			->addColumn('id', 'integer', [
-				'identity' => true,
-				'default' => null,
-				'limit' => 10,
-				'null' => false,
-				'signed' => false,
-			])
-			->addPrimaryKey(['id'])
+		$this->table('conditions')
 			->addColumn('name', 'string', [
 				'default' => null,
 				'limit' => 255,
@@ -285,16 +243,7 @@ class Initial extends AbstractMigration
 			])
 			->create();
 
-		$table = $this->table('factions');
-		$table
-			->addColumn('id', 'integer', [
-				'identity' => true,
-				'default' => null,
-				'limit' => 10,
-				'null' => false,
-				'signed' => false,
-			])
-			->addPrimaryKey(['id'])
+		$this->table('factions')
 			->addColumn('name', 'string', [
 				'default' => null,
 				'limit' => 255,
@@ -302,16 +251,7 @@ class Initial extends AbstractMigration
 			])
 			->create();
 
-		$table = $this->table('groups');
-		$table
-			->addColumn('id', 'integer', [
-				'identity' => true,
-				'default' => null,
-				'limit' => 10,
-				'null' => false,
-				'signed' => false,
-			])
-			->addPrimaryKey(['id'])
+		$this->table('groups')
 			->addColumn('name', 'string', [
 				'default' => null,
 				'limit' => 255,
@@ -319,16 +259,7 @@ class Initial extends AbstractMigration
 			])
 			->create();
 
-		$table = $this->table('items');
-		$table
-			->addColumn('id', 'integer', [
-				'comment' => 'ITIN',
-				'default' => null,
-				'limit' => 10,
-				'null' => false,
-				'signed' => false,
-			])
-			->addPrimaryKey(['id'])
+		$this->table('items')
 			->addColumn('name', 'string', [
 				'default' => null,
 				'limit' => 255,
@@ -373,16 +304,7 @@ class Initial extends AbstractMigration
 			->addIndex(['character_id'])
 			->create();
 
-		$table = $this->table('lammies');
-		$table
-			->addColumn('id', 'integer', [
-				'identity' => true,
-				'default' => null,
-				'limit' => 10,
-				'null' => false,
-				'signed' => false,
-			])
-			->addPrimaryKey(['id'])
+		$this->table('lammies')
 			->addColumn('entity', 'string', [
 				'default' => null,
 				'limit' => 255,
@@ -415,15 +337,7 @@ class Initial extends AbstractMigration
 			])
 			->create();
 
-		$table = $this->table('manatypes');
-		$table
-			->addColumn('id', 'integer', [
-				'default' => null,
-				'limit' => 10,
-				'null' => false,
-				'signed' => false,
-			])
-			->addPrimaryKey(['id'])
+		$this->table('manatypes')
 			->addColumn('name', 'string', [
 				'default' => null,
 				'limit' => 255,
@@ -431,16 +345,7 @@ class Initial extends AbstractMigration
 			])
 			->create();
 
-		$table = $this->table('players');
-		$table
-			->addColumn('id', 'integer', [
-				'comment' => 'PLIN',
-				'default' => null,
-				'limit' => 10,
-				'null' => false,
-				'signed' => false,
-			])
-			->addPrimaryKey(['id'])
+		$this->table('players')
 			->addColumn('role', 'text', [
 				'comment' => 'authorisation information',
 				'default' => null,
@@ -489,16 +394,7 @@ class Initial extends AbstractMigration
 			])
 			->create();
 
-		$table = $this->table('powers');
-		$table
-			->addColumn('id', 'integer', [
-				'identity' => true,
-				'default' => null,
-				'limit' => 10,
-				'null' => false,
-				'signed' => false,
-			])
-			->addPrimaryKey(['id'])
+		$this->table('powers')
 			->addColumn('name', 'string', [
 				'default' => null,
 				'limit' => 255,
@@ -526,16 +422,7 @@ class Initial extends AbstractMigration
 			])
 			->create();
 
-		$table = $this->table('skills');
-		$table
-			->addColumn('id', 'integer', [
-				'identity' => true,
-				'default' => null,
-				'limit' => 10,
-				'null' => false,
-				'signed' => false,
-			])
-			->addPrimaryKey(['id'])
+		$this->table('skills')
 			->addColumn('name', 'string', [
 				'default' => null,
 				'limit' => 255,
@@ -565,16 +452,7 @@ class Initial extends AbstractMigration
 			->addIndex(['manatype_id'])
 			->create();
 
-		$table = $this->table('spells');
-		$table
-			->addColumn('id', 'integer', [
-				'identity' => true,
-				'default' => null,
-				'limit' => 10,
-				'null' => false,
-				'signed' => false,
-			])
-			->addPrimaryKey(['id'])
+		$this->table('spells')
 			->addColumn('name', 'string', [
 				'default' => null,
 				'limit' => 255,
@@ -592,237 +470,17 @@ class Initial extends AbstractMigration
 			])
 			->create();
 
-		$table = $this->table('worlds');
-		$table
-			->addColumn('id', 'integer', [
-				'identity' => true,
-				'default' => null,
-				'limit' => 10,
-				'null' => false,
-				'signed' => false,
-			])
-			->addPrimaryKey(['id'])
+		$this->table('worlds')
 			->addColumn('name', 'string', [
 				'default' => null,
 				'limit' => 255,
 				'null' => false,
 			])
 			->create();
-
-		$this->table('attributes_items')
-			->addForeignKey(
-				'attribute_id',
-				'attributes',
-				'id',
-				[
-					'update' => 'CASCADE',
-					'delete' => 'RESTRICT'
-				]
-			)
-			->addForeignKey(
-				'item_id',
-				'items',
-				'id',
-				[
-					'update' => 'CASCADE',
-					'delete' => 'RESTRICT'
-				]
-			)
-			->update();
-
-		$this->table('characters')
-			->addForeignKey(
-				'belief_id',
-				'believes',
-				'id',
-				[
-					'update' => 'CASCADE',
-					'delete' => 'RESTRICT'
-				]
-			)
-			->addForeignKey(
-				'faction_id',
-				'factions',
-				'id',
-				[
-					'update' => 'CASCADE',
-					'delete' => 'RESTRICT'
-				]
-			)
-			->addForeignKey(
-				'group_id',
-				'groups',
-				'id',
-				[
-					'update' => 'CASCADE',
-					'delete' => 'RESTRICT'
-				]
-			)
-			->addForeignKey(
-				'player_id',
-				'players',
-				'id',
-				[
-					'update' => 'CASCADE',
-					'delete' => 'RESTRICT'
-				]
-			)
-			->addForeignKey(
-				'world_id',
-				'worlds',
-				'id',
-				[
-					'update' => 'CASCADE',
-					'delete' => 'RESTRICT'
-				]
-			)
-			->update();
-
-		$this->table('characters_conditions')
-			->addForeignKey(
-				'character_id',
-				'characters',
-				'id',
-				[
-					'update' => 'CASCADE',
-					'delete' => 'RESTRICT'
-				]
-			)
-			->addForeignKey(
-				'condition_id',
-				'conditions',
-				'id',
-				[
-					'update' => 'CASCADE',
-					'delete' => 'RESTRICT'
-				]
-			)
-			->update();
-
-		$this->table('characters_powers')
-			->addForeignKey(
-				'character_id',
-				'characters',
-				'id',
-				[
-					'update' => 'CASCADE',
-					'delete' => 'RESTRICT'
-				]
-			)
-			->addForeignKey(
-				'power_id',
-				'powers',
-				'id',
-				[
-					'update' => 'CASCADE',
-					'delete' => 'RESTRICT'
-				]
-			)
-			->update();
-
-		$this->table('characters_skills')
-			->addForeignKey(
-				'character_id',
-				'characters',
-				'id',
-				[
-					'update' => 'CASCADE',
-					'delete' => 'RESTRICT'
-				]
-			)
-			->addForeignKey(
-				'skill_id',
-				'skills',
-				'id',
-				[
-					'update' => 'CASCADE',
-					'delete' => 'RESTRICT'
-				]
-			)
-			->update();
-
-		$this->table('characters_spells')
-			->addForeignKey(
-				'character_id',
-				'characters',
-				'id',
-				[
-					'update' => 'CASCADE',
-					'delete' => 'CASCADE'
-				]
-			)
-			->addForeignKey(
-				'spell_id',
-				'spells',
-				'id',
-				[
-					'update' => 'CASCADE',
-					'delete' => 'RESTRICT'
-				]
-			)
-			->update();
-
-		$this->table('items')
-			->addForeignKey(
-				'character_id',
-				'characters',
-				'id',
-				[
-					'update' => 'CASCADE',
-					'delete' => 'RESTRICT'
-				]
-			)
-			->update();
-
-		$this->table('skills')
-			->addForeignKey(
-				'manatype_id',
-				'manatypes',
-				'id',
-				[
-					'update' => 'CASCADE',
-					'delete' => 'RESTRICT'
-				]
-			)
-			->update();
-
 	}
 
 	public function down()
 	{
-		$this->table('attributes_items')
-			->dropForeignKey('attribute_id')
-			->dropForeignKey('item_id');
-
-		$this->table('characters')
-			->dropForeignKey('belief_id')
-			->dropForeignKey('faction_id')
-			->dropForeignKey('group_id')
-			->dropForeignKey('player_id')
-			->dropForeignKey('world_id');
-
-		$this->table('characters_conditions')
-			->dropForeignKey('character_id')
-			->dropForeignKey('condition_id');
-
-		$this->table('characters_powers')
-			->dropForeignKey('character_id')
-			->dropForeignKey('power_id');
-
-		$this->table('characters_skills')
-			->dropForeignKey('character_id')
-			->dropForeignKey('skill_id');
-
-		$this->table('characters_spells')
-			->dropForeignKey('character_id')
-			->dropForeignKey('spell_id');
-
-		$this->table('items')
-			->dropForeignKey('character_id');
-
-		$this->table('skills')
-			->dropForeignKey('manatype_id');
-
 		$this->dropTable('attributes');
 		$this->dropTable('attributes_items');
 		$this->dropTable('believes');
