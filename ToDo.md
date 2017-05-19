@@ -1,61 +1,40 @@
 ToDo-list:
  - Project details
-   - [x] project license
-   - [ ] update README.md
-   - [x] installation instructions
+   - [ ] make nice welcome page
+   - [ ] add howto fill db
+   - [ ] add howto add accounts
+   - [ ] add howto setup printing
+   - [ ] use .md format for html pages?
    - [ ] write API documentation
- - REST interface
-   - [x] after 'add' redirect to the new entity
-   - [x] render exceptions as JSON
  - Authorization
-   - [x] add authenticate/login/logout
-   - [x] restrict page access based on role
-   - [x] adjust content based on role
-   - [x] limit editable fields based on role
-   - [ ] link to valea for credentials/password management
+   - [ ] account/password management
  - Business logic
-   - [x] implement 'add'/'delete'/'edit' functions
-   - [x] fix/implement add characters
-   - [x] assigning item to character
-   - [ ] extend validator rules
-   - [x] add search functionality
-   - [ ] implement skill prereq check
-   - [x] order all the listings logicaly
-   - [/] edit requires matching last-modified field
- - Lammy printing
-   - [x] create/fill printing queue
-   - [ ] remove/reorder tasks from printing queue
-   - [x] mark queued items as printed
-   - [x] import pdf-lammy code into App namespace
-   - [x] create custom PdfView
-   - [x] merge Lammy/PdfSheet into View/PdfView
-   - [x] create Item lammy
-   - [x] create Power/Condition lammy
-   - [x] output multiple lammies and/or pages at once
-   - [x] dummy lore code handling/generation
-   - [x] example queue monitor / pdf creation
-   - [ ] actual pdf printing script
- - Logging/accounting
-   - [ ] logging of all modifications
-   - [ ] entity versioning
-   - [ ] "track changes" so a super-referee can authorize/revert changes
- - Automate import of Access
-   - [x] import Access data to MySQL (1:1, no conversion)
-   - [x] convert MySQL imported data to database layout
- - Future...
-   - [ ] performance analysis of queries
-   - [ ] Last-Modified / ETag header
+   - [ ] queueing of individual cards
+   - [ ] update character->modified of when modifying relations
+   - [ ] more validator rules
+   - [ ] Condition/Power uniq per character (= like items)
    - [ ] rename 'Spells' to ... ? ('Casting', 'Domain', 'School', ?)
-   - [ ] add individual spell descriptions
    - [ ] Characters: player text field (for background)
    - [ ] Characters: CS notes field
    - [ ] Skills: add base/extra/deprecated
-   - [ ] Skills: grouping field [fighter,healing,mage,...]
+   - [ ] Skills: add class (fighter/healing/mage,...)
+   - [ ] Skills: prereq check
    - [ ] Teaching: track student/teacher relation
-   - [ ] Events: can be used for XP assignment?
-   - [ ] Condition/Power uniq to assigned character (= like items)
+   - [ ] Events: for teaching or checkout processing?
+   - [ ] use 'Labels' (?) for factions/worlds/groups/etc...
    - [ ] Attributes: clean up & make consistent
-   - [ ] templating for common condition/power/item
-   - [ ] use labels for factions/worlds/groups/etc...
+   - [ ] templating for common conditions/powers/items
+   - [ ] store spell-lists / add all the individual spells
+ - Logging
+   - [ ] logging of all modifications / actions
+   - [ ] entity versioning
+   - [ ] "track changes" so a super-referee can authorize/revert changes
+ - Optimizations
+   - [ ] headers: Last-Modified / ETag
+   - [ ] performance analysis of queries
+   - [ ] performance analysis of code
+   - [ ] only query needed data/fields for listings
+   - [ ] CORS: configurable allowOrigin
+   - [ ] lighttpd: baseurl detection
  - Upstream changes
    - [ ] Crud cake3: support multiple primary keys
