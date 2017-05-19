@@ -7,6 +7,8 @@ class AttributesItemsController
 	extends AppController
 {
 
+	protected $touchRelation = [ 'Items' => 'item_id'];
+
 	public function initialize()
 	{
 		parent::initialize();

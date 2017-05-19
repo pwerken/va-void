@@ -10,7 +10,7 @@ ToDo-list:
    - [ ] account/password management
  - Business logic
    - [ ] queueing of individual cards
-   - [ ] update character->modified of when modifying relations
+   - [x] update character->modified of when modifying relations
    - [ ] more validator rules
    - [ ] Condition/Power uniq per character (= like items)
    - [ ] rename 'Spells' to ... ? ('Casting', 'Domain', 'School', ?)

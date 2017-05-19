@@ -21,6 +21,8 @@ class AppController
 
 	protected $searchFields = [ ];
 
+	protected $touchRelation = [ ];
+
 	// Can be overriden to disable json output.
 	public static $jsonResponse = true;
 
@@ -158,6 +160,10 @@ class AppController
 		if(!$event->subject->success)
 			throw new ValidationException($event->subject->entity);
 
+		foreach($this->touchRelation as $model => $keyField) {
+			$this->touchEntity($model, $event->subject->entity->$keyField);
+		}
+
 		if($event->subject->created) {
 			$this->response->statusCode(201);
 			$this->response->location($event->subject->entity->refresh()->getUrl());
@@ -177,6 +183,10 @@ class AppController
 	{
 		if(!$event->subject->success)
 			throw new BadRequestException('Failed to delete');
+
+		foreach($this->touchRelation as $model => $keyField) {
+			$this->touchEntity($model, $event->subject->entity->$keyField);
+		}
 
 		$this->response->statusCode(204);
 		return $this->response;
@@ -209,6 +219,14 @@ class AppController
 			$config['findMethod'] = 'withContain';
 
 		$this->Crud->mapAction($action, $config);
+	}
+
+	private function touchEntity($model, $id)
+	{
+		$table = $this->loadModel($model);
+		$entity = $table->get($id);
+		$table->touch($entity);
+		$table->save($entity);
 	}
 
 }

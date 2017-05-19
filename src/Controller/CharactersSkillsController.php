@@ -5,6 +5,8 @@ class CharactersSkillsController
 	extends AppController
 {
 
+	protected $touchRelation = [ 'Characters' => 'character_id'];
+
 	public function initialize()
 	{
 		parent::initialize();
