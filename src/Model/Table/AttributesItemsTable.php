@@ -1,6 +1,8 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
 use Cake\Validation\Validator;
 
 class AttributesItemsTable
@@ -16,6 +18,11 @@ class AttributesItemsTable
 		$this->primaryKey(['attribute_id', 'item_id']);
 		$this->belongsTo('Attributes');
 		$this->belongsTo('Items');
+	}
+
+	public function afterSave(Event $event, EntityInterface $entity, $options)
+	{
+		$this->touchEntity('Items', $entity->item_id);
 	}
 
 	public function validationDefault(Validator $validator)

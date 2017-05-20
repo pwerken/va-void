@@ -1,6 +1,8 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
 use Cake\Validation\Validator;
 
 class CharactersSpellsTable
@@ -16,6 +18,11 @@ class CharactersSpellsTable
 		$this->primaryKey(['character_id', 'spell_id']);
 		$this->belongsTo('Characters');
 		$this->belongsTo('Spells');
+	}
+
+	public function afterSave(Event $event, EntityInterface $entity, $options)
+	{
+		$this->touchEntity('Characters', $entity->character_id);
 	}
 
 	public function orderBy()

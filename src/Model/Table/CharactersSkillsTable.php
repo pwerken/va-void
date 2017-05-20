@@ -1,6 +1,8 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 
@@ -17,6 +19,11 @@ class CharactersSkillsTable
 		$this->primaryKey(['character_id', 'skill_id']);
 		$this->belongsTo('Characters');
 		$this->belongsTo('Skills');
+	}
+
+	public function afterSave(Event $event, EntityInterface $entity, $options)
+	{
+		$this->touchEntity('Characters', $entity->character_id);
 	}
 
 	public function validationDefault(Validator $validator)

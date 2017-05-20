@@ -53,4 +53,11 @@ abstract class AppTable
 		return [ ];
 	}
 
+	protected function touchEntity($model, $id)
+	{
+		$table = TableRegistry::get($model);
+		$entity = $table->get($id);
+		$table->touch($entity);
+		$table->save($entity);
+	}
 }
