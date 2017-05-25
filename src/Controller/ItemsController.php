@@ -23,6 +23,12 @@ class ItemsController
 		$this->mapMethod('view',             [ 'referee', 'user' ], true);
 
 		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], true);
+
+		$this->Crud->mapAction('queue',
+			[ 'className' => 'Crud.View'
+			, 'auth' => [ 'referee' ]
+			, 'findMethod' => 'withContain'
+			]);
 	}
 
 	public function add()
@@ -93,6 +99,18 @@ class ItemsController
 			, 'url' => '/' . rtrim($this->request->url, '/')
 			, 'list' => $content
 			]);
+	}
+
+	public function queue($itin)
+	{
+		$this->Crud->on('beforeRender', function ($event) {
+			$table = $this->loadModel('lammies');
+			$item = $event->subject()->entity;
+			$table->save($table->newEntity()->set('target', $item));
+			$event->subject()->entity = 1;
+		});
+
+		$this->Crud->execute();
 	}
 
 	protected function hasAuthUser($id = null)

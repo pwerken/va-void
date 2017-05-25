@@ -134,7 +134,7 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 		}
 	}
 
-	if($name == 'Characters') {
+	if($name == 'Characters' || $name == 'Items') {
 		$defaults['_method'] = 'POST';
 		$defaults['controller'] = $name;
 		$defaults['action'] = 'queue';
@@ -200,6 +200,13 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 				$urlNest .= '/'.$path;
 				$routes->connect($urlNest, $defaults, $routeOptions2);
 			}
+		}
+
+		if($controller == 'CharactersConditions' || $controller == 'CharactersPowers') {
+			$defaults['_method'] = 'POST';
+			$defaults['controller'] = $controller;
+			$defaults['action'] = 'charactersQueue';
+			$routes->connect($urlNest.'/print', $defaults, $routeOptions2);
 		}
 	}
 
