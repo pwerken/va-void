@@ -27,7 +27,7 @@ class ApiView
 			$data = $this->get('_serialize', $this->viewVars);
 		} elseif(is_array($data) || $data instanceof ResultSet) {
 			$data = $this->_jsonList($data, $this->get('parent'));
-			$data['url'] = '/'.$this->request->url;
+			$data['url'] = '/' . rtrim($this->request->url, '/');
 		} else {
 			$data = $this->_jsonData($data);
 		}
