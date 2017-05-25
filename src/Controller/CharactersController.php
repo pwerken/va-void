@@ -98,17 +98,20 @@ class CharactersController
 			$character = $event->subject()->entity;
 			$table->save($table->newEntity()->set('target', $character));
 			$count = 1;
-			foreach($character->powers as $power) {
-				$table->save($table->newEntity()->set('target', $power));
-				$count++;
-			}
-			foreach($character->conditions as $condition) {
-				$table->save($table->newEntity()->set('target', $condition));
-				$count++;
-			}
-			foreach($character->items as $item) {
-				$table->save($table->newEntity()->set('target', $item));
-				$count++;
+
+			if(!empty($this->request->data)) {
+				foreach($character->powers as $power) {
+					$table->save($table->newEntity()->set('target', $power));
+					$count++;
+				}
+				foreach($character->conditions as $condition) {
+					$table->save($table->newEntity()->set('target', $condition));
+					$count++;
+				}
+				foreach($character->items as $item) {
+					$table->save($table->newEntity()->set('target', $item));
+					$count++;
+				}
 			}
 
 			$event->subject()->entity = $count;
