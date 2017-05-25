@@ -26,9 +26,8 @@ class ConditionsController
 
 	public function index()
 	{
-		$query = 'SELECT `conditions`.`id`, `conditions`.`name`'
-				.' FROM `conditions`'
-				.' ORDER BY `conditions`.`id`';
+		$query = $this->Conditions->find()
+					->select(['Conditions.id', 'Conditions.name'], true);
 		$this->doRawIndex($query, 'Condition', '/conditions/', 'coin');
 	}
 

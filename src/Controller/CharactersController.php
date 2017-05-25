@@ -65,11 +65,13 @@ class CharactersController
 
 	public function index()
 	{
-		$query = 'SELECT `characters`.`player_id`, `characters`.`chin`,'
-					.' `characters`.`name`, `characters`.`status`'
-				.' FROM `characters`'
-				.' ORDER BY `characters`.`player_id` ASC,'
-				.		' `characters`.`chin` DESC';
+		$query = $this->Characters->find()
+					->select([], true)
+					->select('Characters.player_id')
+					->select('Characters.chin')
+					->select('Characters.name')
+					->select('Characters.status');
+
 		$content = [];
 		foreach($this->doRawQuery($query) as $row) {
 			$content[] =

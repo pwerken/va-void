@@ -23,10 +23,11 @@ class AttributesController
 
 	public function index()
 	{
-		$query = 'SELECT `attributes`.`id`, `attributes`.`name`,'
-					.' `attributes`.`code`'
-				.' FROM `attributes`'
-				.' ORDER BY `attributes`.`name` ASC, `attributes`.`id` ASC';
+		$query = $this->Attributes->find()
+					->select([], true)
+					->select('Attributes.id')
+					->select('Attributes.name')
+					->select('Attributes.code');
 		$content = [];
 		foreach($this->doRawQuery($query) as $row) {
 			$content[] =
@@ -37,7 +38,11 @@ class AttributesController
 				, 'code' => $row[2]
 				];
 		}
-		$this->set('viewVar', $content);
+		$this->set('_serialize',
+			[ 'class' => 'List'
+			, 'url' => '/' . rtrim($this->request->url, '/')
+			, 'list' => $content
+			]);
 	}
 
 }

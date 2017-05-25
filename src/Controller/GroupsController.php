@@ -20,9 +20,8 @@ class GroupsController
 
 	public function index()
 	{
-		$query = 'SELECT `groups`.`id`, `groups`.`name`'
-				.' FROM `groups`'
-				.' ORDER BY `groups`.`name` ASC';
+		$query = $this->Groups->find()
+					->select(['Groups.id', 'Groups.name'], true);
 		$this->doRawIndex($query, 'Group', '/groups/');
 	}
 

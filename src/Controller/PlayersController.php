@@ -24,10 +24,13 @@ class PlayersController
 
 	public function index()
 	{
-		$query = 'SELECT `players`.`id`, `players`.`first_name`,'
-					.' `players`.`insertion`, `players`.`last_name`'
-				.' FROM `players`'
-				.' ORDER BY `players`.`id` ASC';
+		$query = $this->Players->find()
+					->select([], true)
+					->select('Players.id')
+					->select('Players.first_name')
+					->select('Players.insertion')
+					->select('Players.last_name');
+
 		$content = [];
 		foreach($this->doRawQuery($query) as $row) {
 			$name = $row[1];

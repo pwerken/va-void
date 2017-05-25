@@ -96,16 +96,7 @@ class AppController
 	{
 		$action = $this->request->action;
 		$nested = strcmp(substr($action, -5, 5), 'Index') === 0;
-		if(!$nested) {
-			foreach(explode(' ', $this->request->query('q')) as $q) {
-				foreach($this->searchFields as $field) {
-					$ORs["$field LIKE"] = "%$q%";
-				}
-				if(empty($q) || empty($ORs))
-					continue;
-				$query->where(["OR" => $ORs]);
-			}
-		} else if(isset($this->viewVars['parent'])) {
+		if($nested && isset($this->viewVars['parent'])) {
 			$key = Inflector::singularize(substr($action, 0, -5)).'_id';
 			$query->where([$key => $this->viewVars['parent']->id]);
 		}
@@ -210,11 +201,21 @@ class AppController
 		$this->Crud->mapAction($action, $config);
 	}
 
-	protected function doRawQuery($query) {
+	protected function doRawQuery($query)
+	{
+		$params = [];
+		foreach(explode(' ', $this->request->query('q')) as $q) {
+			foreach($this->searchFields as $field) {
+				$query->orWhere("$field LIKE ?");
+				$params[] = "%$q%";
+			}
+		}
+
 		$conn = \Cake\Datasource\ConnectionManager::get('default');
-		return $conn->query($query)->fetchAll();
+		return $conn->execute($query->sql(), $params)->fetchAll();
 	}
-	protected function doRawIndex($query, $class, $url, $id = 'id') {
+	protected function doRawIndex($query, $class, $url, $id = 'id')
+	{
 		$content = [];
 		foreach($this->doRawQuery($query) as $row) {
 			$content[] =

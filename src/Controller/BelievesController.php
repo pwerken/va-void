@@ -20,9 +20,8 @@ class BelievesController
 
 	public function index()
 	{
-		$query = 'SELECT `believes`.`id`, `believes`.`name`'
-				.' FROM `believes`'
-				.' ORDER BY `believes`.`name` ASC';
+		$query = $this->Believes->find()
+					->select(['Believes.id', 'Believes.name'], true);
 		$this->doRawIndex($query, 'Belief', '/believes/');
 	}
 

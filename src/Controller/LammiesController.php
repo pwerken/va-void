@@ -39,11 +39,14 @@ class LammiesController
 
 	public function index()
 	{
-		$query = 'SELECT `lammies`.`id`, `lammies`.`status`,'
-					.' `lammies`.`entity`, `lammies`.`key1`, `lammies`.`key2`,'
-					.' `lammies`.`modified`'
-				.' FROM `lammies`'
-				.' ORDER BY `lammies`.`id` ASC';
+		$query = $this->Lammies->find()
+					->select([], true)
+					->select('Lammies.id')
+					->select('Lammies.status')
+					->select('Lammies.entity')
+					->select('Lammies.key1')
+					->select('Lammies.key2')
+					->select('Lammies.modified');
 		$content = [];
 		foreach($this->doRawQuery($query) as $row) {
 			$content[] =

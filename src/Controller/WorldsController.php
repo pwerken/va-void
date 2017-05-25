@@ -20,9 +20,8 @@ class WorldsController
 
 	public function index()
 	{
-		$query = 'SELECT `worlds`.`id`, `worlds`.`name`'
-				.' FROM `worlds`'
-				.' ORDER BY `worlds`.`name` ASC';
+		$query = $this->Worlds->find()
+					->select(['Worlds.id', 'Worlds.name'], true);
 		$this->doRawIndex($query, 'World', '/worlds/');
 	}
 

@@ -54,12 +54,18 @@ class ItemsController
 
 	public function index()
 	{
-		$query = 'SELECT `items`.`id`, `items`.`name`, `items`.`expiry`,'
-					.' `characters`.`player_id`, `characters`.`chin`,'
-					.' `characters`.`name`, `characters`.`status`'
-				.' FROM `items`'
-				.' LEFT JOIN `characters`'
-					.' ON `characters`.`id` = `items`.`character_id`';
+		$query = $this->Items->find()
+					->select([], true)
+					->select('Items.id')
+					->select('Items.name')
+					->select('Items.expiry')
+					->select('Characters.player_id')
+					->select('Characters.chin')
+					->select('Characters.name')
+					->select('Characters.status')
+					->leftJoin(['Characters' => 'characters'],
+						    ['Characters.id = Items.character_id']);
+
 		$content = [];
 		foreach($this->doRawQuery($query) as $row) {
 			$char = NULL;
@@ -82,7 +88,11 @@ class ItemsController
 				, 'character' => $char
 				];
 		}
-		$this->set('viewVar', $content);
+		$this->set('_serialize',
+			[ 'class' => 'List'
+			, 'url' => '/' . rtrim($this->request->url, '/')
+			, 'list' => $content
+			]);
 	}
 
 	protected function hasAuthUser($id = null)

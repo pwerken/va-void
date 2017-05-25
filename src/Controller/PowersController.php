@@ -24,9 +24,8 @@ class PowersController
 
 	public function index()
 	{
-		$query = 'SELECT `powers`.`id`, `powers`.`name`'
-				.' FROM `powers`'
-				.' ORDER BY `powers`.`id`';
+		$query = $this->Powers->find()
+					->select(['Powers.id', 'Powers.name'], true);
 		$this->doRawIndex($query, 'Power', '/powers/', 'poin');
 	}
 
