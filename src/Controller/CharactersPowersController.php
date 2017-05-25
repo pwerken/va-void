@@ -11,9 +11,9 @@ class CharactersPowersController
 
 		$this->mapMethod('charactersAdd',    [ 'referee'         ]);
 		$this->mapMethod('charactersDelete', [ 'referee'         ]);
-		$this->mapMethod('charactersEdit',   [ 'referee'         ], true);
+		$this->mapMethod('charactersEdit',   [ 'referee'         ]);
 		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], true);
-		$this->mapMethod('charactersView',   [ 'referee'         ], true);
+		$this->mapMethod('charactersView',   [ 'referee', 'user' ], true);
 
 		$this->mapMethod('powersIndex',      [ 'referee'         ], true);
 
