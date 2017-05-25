@@ -22,6 +22,14 @@ class PowersController
 		$this->mapmethod('view',   [ 'referee', 'user' ], true);
 	}
 
+	public function index()
+	{
+		$query = 'SELECT `powers`.`id`, `powers`.`name`'
+				.' FROM `powers`'
+				.' ORDER BY `powers`.`id`';
+		$this->doRawIndex($query, 'Power', '/powers/', 'poin');
+	}
+
 	protected function hasAuthUser($id = null)
 	{
 		$poin = $this->request->param('poin');

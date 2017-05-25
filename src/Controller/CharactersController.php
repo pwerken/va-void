@@ -19,7 +19,7 @@ class CharactersController
 		$this->mapMethod('add',           [ 'infobalie'       ]);
 		$this->mapMethod('delete',        [ 'super'           ]);
 		$this->mapMethod('edit',          [ 'referee'         ]);
-		$this->mapMethod('index',         [ 'referee'         ]);
+		$this->mapMethod('index',         [ 'referee'         ], false, true);
 		$this->mapMethod('view',          [ 'referee', 'user' ], true);
 
 		$this->Crud->mapAction('queue',
@@ -61,6 +61,31 @@ class CharactersController
 		$this->dataNameToIdAndAddIfMissing('worlds', 'world');
 
 		$this->Crud->execute();
+	}
+
+	public function index()
+	{
+		$query = 'SELECT `characters`.`player_id`, `characters`.`chin`,'
+					.' `characters`.`name`, `characters`.`status`'
+				.' FROM `characters`'
+				.' ORDER BY `characters`.`player_id` ASC,'
+				.		' `characters`.`chin` DESC';
+		$content = [];
+		foreach($this->doRawQuery($query) as $row) {
+			$content[] =
+				[ 'class' => 'Character'
+				, 'url' => '/characters/'.$row[0].'/'.$row[1]
+				, 'plin' => (int)$row[0]
+				, 'chin' => (int)$row[1]
+				, 'name' => $row[2]
+				, 'status' => $row[3]
+				];
+		}
+		$this->set('_serialize',
+			[ 'class' => 'List'
+			, 'url' => '/' . rtrim($this->request->url, '/')
+			, 'list' => $content
+			]);
 	}
 
 	public function queue($plin, $chin)

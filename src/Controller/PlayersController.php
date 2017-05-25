@@ -22,4 +22,31 @@ class PlayersController
 		$this->mapMethod('view',   [ 'referee',   'user' ], true);
 	}
 
+	public function index()
+	{
+		$query = 'SELECT `players`.`id`, `players`.`first_name`,'
+					.' `players`.`insertion`, `players`.`last_name`'
+				.' FROM `players`'
+				.' ORDER BY `players`.`id` ASC';
+		$content = [];
+		foreach($this->doRawQuery($query) as $row) {
+			$name = $row[1];
+			if(!empty($row[2]))
+				$name .= ' '.$row[2];
+			$name .= ' '.$row[3];
+
+			$content[] =
+				[ 'class' => 'Player'
+				, 'url' => '/players/'.$row[0]
+				, 'plin' => (int)$row[0]
+				, 'full_name' => $name
+				];
+		}
+		$this->set('_serialize',
+			[ 'class' => 'List'
+			, 'url' => '/' . rtrim($this->request->url, '/')
+			, 'list' => $content
+			]);
+	}
+
 }

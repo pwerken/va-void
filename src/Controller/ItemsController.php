@@ -52,6 +52,39 @@ class ItemsController
 		return $this->add();
 	}
 
+	public function index()
+	{
+		$query = 'SELECT `items`.`id`, `items`.`name`, `items`.`expiry`,'
+					.' `characters`.`player_id`, `characters`.`chin`,'
+					.' `characters`.`name`, `characters`.`status`'
+				.' FROM `items`'
+				.' LEFT JOIN `characters`'
+					.' ON `characters`.`id` = `items`.`character_id`';
+		$content = [];
+		foreach($this->doRawQuery($query) as $row) {
+			$char = NULL;
+			if(!is_null($row[3])) {
+				$char = [ 'class' => 'Character'
+						, 'url' => '/characters/'.$row[3].'/'.$row[4]
+						, 'plin' => (int)$row[3]
+						, 'chin' => (int)$row[4]
+						, 'name' => $row[5]
+						, 'status' => $row[6]
+						];
+			}
+
+			$content[] =
+				[ 'class' => 'Item'
+				, 'url' => '/items/'.$row[0]
+				, 'itin' => (int)$row[0]
+				, 'name' => $row[1]
+				, 'expiry' => $row[2]
+				, 'character' => $char
+				];
+		}
+		$this->set('viewVar', $content);
+	}
+
 	protected function hasAuthUser($id = null)
 	{
 		$itin = $this->request->param('itin');

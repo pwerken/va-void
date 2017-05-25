@@ -210,4 +210,25 @@ class AppController
 		$this->Crud->mapAction($action, $config);
 	}
 
+	protected function doRawQuery($query) {
+		$conn = \Cake\Datasource\ConnectionManager::get('default');
+		return $conn->query($query)->fetchAll();
+	}
+	protected function doRawIndex($query, $class, $url, $id = 'id') {
+		$content = [];
+		foreach($this->doRawQuery($query) as $row) {
+			$content[] =
+				[ 'class' => $class
+				, 'url'   => $url . $row[0]
+				, $id     => (int)$row[0]
+				, 'name'  => $row[1]
+				];
+		}
+
+		$this->set('_serialize',
+			[ 'class' => 'List'
+			, 'url' => '/' . rtrim($this->request->url, '/')
+			, 'list' => $content
+			]);
+	}
 }

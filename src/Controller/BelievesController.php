@@ -18,4 +18,12 @@ class BelievesController
 		$this->mapMethod('view',   [ 'player'  ]);
 	}
 
+	public function index()
+	{
+		$query = 'SELECT `believes`.`id`, `believes`.`name`'
+				.' FROM `believes`'
+				.' ORDER BY `believes`.`name` ASC';
+		$this->doRawIndex($query, 'Belief', '/believes/');
+	}
+
 }

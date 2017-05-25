@@ -30,10 +30,8 @@ ToDo-list:
    - [ ] entity versioning
    - [ ] "track changes" so a super-referee can authorize/revert changes
  - Optimizations
+   - [x] speed up index() listings
    - [ ] headers: Last-Modified / ETag
-   - [ ] performance analysis of queries
-   - [ ] performance analysis of code
-   - [ ] only query needed data/fields for listings
    - [ ] CORS: configurable allowOrigin
    - [ ] lighttpd: baseurl detection
  - Upstream changes

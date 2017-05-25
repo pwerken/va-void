@@ -18,4 +18,12 @@ class GroupsController
 		$this->mapMethod('view',   [ 'player'  ], true);
 	}
 
+	public function index()
+	{
+		$query = 'SELECT `groups`.`id`, `groups`.`name`'
+				.' FROM `groups`'
+				.' ORDER BY `groups`.`name` ASC';
+		$this->doRawIndex($query, 'Group', '/groups/');
+	}
+
 }

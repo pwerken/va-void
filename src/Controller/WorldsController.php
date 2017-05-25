@@ -18,4 +18,12 @@ class WorldsController
 		$this->mapMethod('view',   [ 'player'  ], true);
 	}
 
+	public function index()
+	{
+		$query = 'SELECT `worlds`.`id`, `worlds`.`name`'
+				.' FROM `worlds`'
+				.' ORDER BY `worlds`.`name` ASC';
+		$this->doRawIndex($query, 'World', '/worlds/');
+	}
+
 }

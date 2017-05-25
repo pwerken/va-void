@@ -37,6 +37,32 @@ class LammiesController
 		$this->Crud->mapAction('pdfDouble', $config);
 	}
 
+	public function index()
+	{
+		$query = 'SELECT `lammies`.`id`, `lammies`.`status`,'
+					.' `lammies`.`entity`, `lammies`.`key1`, `lammies`.`key2`,'
+					.' `lammies`.`modified`'
+				.' FROM `lammies`'
+				.' ORDER BY `lammies`.`id` ASC';
+		$content = [];
+		foreach($this->doRawQuery($query) as $row) {
+			$content[] =
+				[ 'class' => 'Lammy'
+				, 'url' => '/lammies/'.$row[0]
+				, 'status' => $row[1]
+				, 'entity' => $row[2]
+				, 'key1' => (int)$row[3]
+				, 'key2' => (int)$row[4]
+				, 'modified' => $row[5]
+				];
+		}
+		$this->set('_serialize',
+			[ 'class' => 'List'
+			, 'url' => '/' . rtrim($this->request->url, '/')
+			, 'list' => $content
+			]);
+	}
+
 	public function queue()
 	{
 		$this->Crud->on('beforeRender', function ($event) {

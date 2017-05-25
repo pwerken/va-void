@@ -24,6 +24,14 @@ class ConditionsController
 		$this->mapMethod('view',   [ 'referee', 'user' ], true);
 	}
 
+	public function index()
+	{
+		$query = 'SELECT `conditions`.`id`, `conditions`.`name`'
+				.' FROM `conditions`'
+				.' ORDER BY `conditions`.`id`';
+		$this->doRawIndex($query, 'Condition', '/conditions/', 'coin');
+	}
+
 	protected function hasAuthUser($id = null)
 	{
 		$coin = $this->request->param('coin');
