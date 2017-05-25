@@ -62,7 +62,7 @@ endif;
 <table cellpadding="0" cellspacing="0">
 <thead>
     <tr>
-        <th colspan=3>Uri's</th>
+        <th colspan=2>Uri's</th>
     </tr>
 </thead>
 <tbody>
@@ -71,9 +71,11 @@ endif;
 <ul>
 <?php
     $list =
-		[ [ 'Players',              'index'                            ]
+		[ [ 'Pages',                'display',      'routes'           ]
+		, [ 'Players',              'index'                            ]
 		, [ 'Players',              'view',             987            ]
 		, [ 'Characters',           'playersIndex',     987            ]
+		, [ 'Characters',           'index',                           ]
 		, [ 'Characters',           'view',             987,   2       ]
 		, [ 'Items',                'charactersIndex',  987,   2       ]
 		, [ 'CharactersConditions', 'charactersIndex',  987,   2       ]
@@ -109,7 +111,6 @@ endif;
 		, [ 'Worlds',               'index'                            ]
 		, [ 'Worlds',               'view',               2            ]
 		, [ 'Characters',           'worldsIndex',        2            ]
-		, [ 'Pages',                'display',      'routes'           ]
 		, [ 'Lammies',              'index'                            ]
 		, [ 'Lammies',              'queue'                            ]
 		];
@@ -122,18 +123,20 @@ endif;
 		$url['_method']    = 'GET';
 
 		switch($i) {
-		case 17:
-		case 29:
+		case 22:
 			echo "</ul></td>\n<td><ul>";
 			break;
-		case 3:
-		case 13:
-		case 20:
-		case 23:
-		case 26:
-		case 32:
-		case 35:
-		case 38:
+		case 1:
+		case 4:
+		case 15:
+		case 19:
+		case 22:
+		case 25:
+		case 28:
+		case 31:
+		case 34:
+		case 37:
+		case 40:
 			echo '<br/>';
 		}
         echo '<li>'.$this->Html->link($url) . "</li>\n";
