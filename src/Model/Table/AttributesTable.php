@@ -20,7 +20,7 @@ class AttributesTable
 
 	public function orderBy()
 	{
-		return	[ 'name' => 'ASC' ];
+		return	[ 'name' => 'ASC', 'id' => 'ASC' ];
 	}
 
 	public function validationDefault(Validator $validator)
