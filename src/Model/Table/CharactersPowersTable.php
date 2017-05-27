@@ -1,6 +1,8 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
 use Cake\Validation\Validator;
 
 class CharactersPowersTable
@@ -16,6 +18,16 @@ class CharactersPowersTable
 		$this->primaryKey(['character_id', 'power_id']);
 		$this->belongsTo('Characters');
 		$this->belongsTo('Powers');
+	}
+
+	public function afterDelete(Event $event, EntityInterface $entity, $options)
+	{
+		$this->touchEntity('Characters', $entity->character_id);
+	}
+
+	public function afterSave(Event $event, EntityInterface $entity, $options)
+	{
+		$this->touchEntity('Characters', $entity->character_id);
 	}
 
 	public function validationDefault(Validator $validator)

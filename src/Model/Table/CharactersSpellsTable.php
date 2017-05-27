@@ -20,6 +20,11 @@ class CharactersSpellsTable
 		$this->belongsTo('Spells');
 	}
 
+	public function afterDelete(Event $event, EntityInterface $entity, $options)
+	{
+		$this->touchEntity('Characters', $entity->character_id);
+	}
+
 	public function afterSave(Event $event, EntityInterface $entity, $options)
 	{
 		$this->touchEntity('Characters', $entity->character_id);

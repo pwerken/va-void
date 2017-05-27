@@ -21,6 +21,11 @@ class CharactersSkillsTable
 		$this->belongsTo('Skills');
 	}
 
+	public function afterDelete(Event $event, EntityInterface $entity, $options)
+	{
+		$this->touchEntity('Characters', $entity->character_id);
+	}
+
 	public function afterSave(Event $event, EntityInterface $entity, $options)
 	{
 		$this->touchEntity('Characters', $entity->character_id);
