@@ -41,16 +41,12 @@ class PlayersTable
 		$validator->add('gender', 'valid', ['rule' => ['inList', Player::genderValues()]]);
 		$validator->add('date_of_birth', 'valid', ['rule' => 'date']);
 
-
-		$validator->add('modified', 'valid', ['rule' => 'datetime']);
-		$validator->requirePresence('modified', 'update');
 		return $validator;
 	}
 
 	public function buildRules(RulesChecker $rules)
 	{
 		$rules->add([$this, 'ruleRoleChange']);
-		$rules->addUpdate([$this, 'ruleMatchingModified']);
 		$rules->addDelete([$this, 'ruleNoCharacters']);
 		return $rules;
 	}
@@ -91,12 +87,4 @@ class PlayersTable
 		return true;
 	}
 
-	public function ruleMatchingModified($entity, $options)
-	{
-		if(!$entity->dirty('modified'))
-			return true;
-
-		$entity->errors('modified', 'Current value required');
-		return false;
-	}
 }
