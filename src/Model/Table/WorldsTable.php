@@ -15,6 +15,7 @@ class WorldsTable
 		$this->table('worlds');
 		$this->displayField('name');
 		$this->primaryKey('id');
+		$this->addBehavior('Timestamp');
 		$this->hasMany('Characters');
 	}
 

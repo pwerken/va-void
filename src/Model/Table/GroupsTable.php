@@ -15,6 +15,7 @@ class GroupsTable
 		$this->table('groups');
 		$this->displayField('name');
 		$this->primaryKey('id');
+		$this->addBehavior('Timestamp');
 		$this->hasMany('Characters');
 	}
 
