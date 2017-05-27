@@ -99,7 +99,7 @@ class CharactersController
 			$table->save($table->newEntity()->set('target', $character));
 			$count = 1;
 
-			if(!empty($this->request->data)) {
+			if(isset($this->request->data['all'])) {
 				foreach($character->powers as $power) {
 					$table->save($table->newEntity()->set('target', $power));
 					$count++;
