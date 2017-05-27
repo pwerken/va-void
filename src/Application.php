@@ -20,6 +20,8 @@ use Cake\Http\BaseApplication;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 
+use App\Routing\Middleware\CorsMiddleware;
+
 /**
  * Application setup class.
  *
@@ -43,6 +45,9 @@ class Application extends BaseApplication
 
             // Handle plugin/theme assets like CakePHP normally does.
             ->add(AssetMiddleware::class)
+
+            // Apply routing
+            ->add(CorsMiddleware::class)
 
             // Apply routing
             ->add(RoutingMiddleware::class);
