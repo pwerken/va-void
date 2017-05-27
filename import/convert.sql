@@ -61,7 +61,7 @@ SELECT " CHARACTERS" AS '';
 -- remove duplication of plin/chin: 318:2, 4129:1
 INSERT INTO `va-void`.`characters` ( `id`, `player_id`, `chin`, `name`, `xp`
     , `faction_id`, `belief_id`, `group_id`, `world_id`, `soulpath`, `status`
-	, `comments`, `created`, `modified` )
+	, `comments`, `modified` )
 SELECT `chaID`, `plaPLIN`
 	, IF(`plaPLIN` = 318, 1, IF(`plaPLIN` = 4129, 2, `chaCHIN`))
 	, `chaName`, `Total Points`
@@ -71,7 +71,7 @@ SELECT `chaID`, `plaPLIN`
     , IFNULL(`chaWorldIDFK`, 1)
 	, `chaSoulpath`
     , IF(`chaDeadJN` = 1, "dead", IF(`chaActiveJN` = 1, "active", "inactive"))
-    , `chaRemarks`, IFNULL(`chaCreationDate`, `chaLastUpdate`), `chaLastUpdate`
+    , `chaRemarks`, `chaLastUpdate`
   FROM  `va`.`Tbl_Characters`
   LEFT JOIN `va`.`Tbl_Players`
     ON (`Tbl_Characters`.`chaPLINIDFK` = `Tbl_Players`.`plaPLIN`)
@@ -199,10 +199,10 @@ SELECT DISTINCT `itmCodeDam2`, `itmITIN`
 -- clean up
 SELECT "clean up ..." AS '';
 
-SELECT " manatypes" AS '';
+SELECT " MANATYPES" AS '';
 DELETE FROM `va-void`.`manatypes` WHERE `id` = 7;
 
-SELECT " attributes" AS '';
+SELECT " ATTRIBUTES" AS '';
 DELETE FROM `va-void`.`attributes` WHERE `id` = 5922;
 DELETE FROM `va-void`.`attributes` WHERE `id` = 6245;
 UPDATE `va-void`.`attributes` SET `id` = 7000+`id` WHERE `id` < 2000;
@@ -214,47 +214,44 @@ UPDATE `va-void`.`attributes` SET `id`
         , ORD(SUBSTR(`code`,2,1)) - 55
         , ORD(SUBSTR(`code`,2,1)) - 48);
 
-SELECT " believes" AS '';
+SELECT " BELIEVES" AS '';
 SET @a:=0;
 UPDATE `va-void`.`characters` SET `belief_id` = 5 WHERE `belief_id` = 1;
 DELETE FROM `va-void`.`believes` WHERE `id` = 1;
 UPDATE `va-void`.`believes` SET `id` = 1 WHERE `id` = 5;
 UPDATE `va-void`.`believes` SET `id` = @a:=@a+1 ORDER BY `id`;
-ALTER TABLE `va-void`.`believes` MODIFY COLUMN `id` INT(10) UNSIGNED;
-ALTER TABLE `va-void`.`believes`
-    MODIFY COLUMN `id` INT(10) UNSIGNED AUTO_INCREMENT;
 
-SELECT " groups" AS '';
+SELECT " GROUPS" AS '';
 SET @a:=0;
 UPDATE `va-void`.`groups` SET `name` = "-" WHERE `id` = 1;
+UPDATE `va-void`.`characters` SET `group_id` = 1 WHERE `group_id` IN
+	(SELECT `group_id` FROM `va-void`.`groups` WHERE `groups`.`name` = "-");
+DELETE FROM `va-void`.`groups` WHERE `name` = "-" AND `id` != 1;
 UPDATE `va-void`.`groups` SET `id` = @a:=@a+1 ORDER BY `id`;
-ALTER TABLE `va-void`.`groups` MODIFY COLUMN `id` INT(10) UNSIGNED;
-ALTER TABLE `va-void`.`groups`
-    MODIFY COLUMN `id` INT(10) UNSIGNED AUTO_INCREMENT;
 
-SELECT " worlds" AS '';
+SELECT " WORLDS" AS '';
 SET @a:=0;
 UPDATE `va-void`.`characters` SET `world_id` = 5 WHERE `world_id` = 1;
 DELETE FROM `va-void`.`worlds` WHERE `id` = 1;
 UPDATE `va-void`.`worlds` SET `id` = 1 WHERE `id` = 5;
 UPDATE `va-void`.`worlds` SET `id` = @a:=@a+1 ORDER BY `id`;
-ALTER TABLE `va-void`.`worlds` MODIFY COLUMN `id` INT(10) UNSIGNED;
-ALTER TABLE `va-void`.`worlds`
-    MODIFY COLUMN `id` INT(10) UNSIGNED AUTO_INCREMENT;
 
-SELECT " characters" AS '';
+SELECT " CHARACTERS" AS '';
 SET @a:=0;
 UPDATE `va-void`.`characters` SET `id` = `id` + 5000;
 UPDATE `va-void`.`characters` SET `id` = @a:=@a+1 ORDER BY `player_id`, `chin`;
-ALTER TABLE `va-void`.`characters` MODIFY COLUMN `id` INT(10) UNSIGNED;
-ALTER TABLE `va-void`.`characters`
-    MODIFY COLUMN `id` INT(10) UNSIGNED AUTO_INCREMENT;
 
-SELECT " skills" AS '';
+SELECT " SKILLS" AS '';
 SET @a:=0;
 UPDATE `va-void`.`skills` SET `id` = `id` + 1000;
 UPDATE `va-void`.`skills` SET `id` = @a:=@a+1 ORDER BY `sort_order`, `name`;
-ALTER TABLE `va-void`.`skills` MODIFY COLUMN `id` INT(10) UNSIGNED;
-ALTER TABLE `va-void`.`skills`
-    MODIFY COLUMN `id` INT(10) UNSIGNED AUTO_INCREMENT;
 UPDATE `va-void`.`skills` SET `deprecated` = 1 WHERE `sort_order` = 200;
+
+SELECT " auto increments" AS '';
+ALTER TABLE `va-void`.`believes`   auto_increment = 1;
+ALTER TABLE `va-void`.`characters` auto_increment = 1;
+ALTER TABLE `va-void`.`factions`   auto_increment = 1;
+ALTER TABLE `va-void`.`groups`     auto_increment = 1;
+ALTER TABLE `va-void`.`skills`     auto_increment = 1;
+ALTER TABLE `va-void`.`spells`     auto_increment = 1;
+ALTER TABLE `va-void`.`worlds`     auto_increment = 1;
