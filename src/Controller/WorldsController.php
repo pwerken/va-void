@@ -20,6 +20,9 @@ class WorldsController
 
 	public function index()
 	{
+		if($this->setResponseModified())
+			return $this->response;
+
 		$query = $this->Worlds->find()
 					->select(['Worlds.id', 'Worlds.name'], true);
 		$this->doRawIndex($query, 'World', '/worlds/');

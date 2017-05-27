@@ -60,6 +60,9 @@ class ItemsController
 
 	public function index()
 	{
+		if($this->setResponseModified())
+			return $this->response;
+
 		$query = $this->Items->find()
 					->select([], true)
 					->select('Items.id')

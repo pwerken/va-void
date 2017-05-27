@@ -20,6 +20,9 @@ class BelievesController
 
 	public function index()
 	{
+		if($this->setResponseModified())
+			return $this->response;
+
 		$query = $this->Believes->find()
 					->select(['Believes.id', 'Believes.name'], true);
 		$this->doRawIndex($query, 'Belief', '/believes/');

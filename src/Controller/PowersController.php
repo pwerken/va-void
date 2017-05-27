@@ -24,6 +24,9 @@ class PowersController
 
 	public function index()
 	{
+		if($this->setResponseModified())
+			return $this->response;
+
 		$query = $this->Powers->find()
 					->select(['Powers.id', 'Powers.name'], true);
 		$this->doRawIndex($query, 'Power', '/powers/', 'poin');

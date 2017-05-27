@@ -24,6 +24,9 @@ class PlayersController
 
 	public function index()
 	{
+		if($this->setResponseModified())
+			return $this->response;
+
 		$query = $this->Players->find()
 					->select([], true)
 					->select('Players.id')

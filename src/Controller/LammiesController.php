@@ -39,6 +39,9 @@ class LammiesController
 
 	public function index()
 	{
+		if($this->setResponseModified())
+			return $this->response;
+
 		$query = $this->Lammies->find()
 					->select([], true)
 					->select('Lammies.id')

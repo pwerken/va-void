@@ -26,6 +26,9 @@ class ConditionsController
 
 	public function index()
 	{
+		if($this->setResponseModified())
+			return $this->response;
+
 		$query = $this->Conditions->find()
 					->select(['Conditions.id', 'Conditions.name'], true);
 		$this->doRawIndex($query, 'Condition', '/conditions/', 'coin');

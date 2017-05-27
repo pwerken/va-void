@@ -201,6 +201,17 @@ class AppController
 		$this->Crud->mapAction($action, $config);
 	}
 
+	protected function setResponseModified()
+	{
+		$model = $this->modelClass;
+		$query = $this->$model->find();
+		$query->select(['last' => $query->func()->max("$model.modified")]);
+		$modified = $this->doRawQuery($query);
+		$this->response = $this->response->withModified($modified[0][0]);
+
+		return $this->response->checkNotModified($this->request);
+	}
+
 	protected function doRawQuery($query)
 	{
 		$params = [];
