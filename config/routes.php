@@ -55,7 +55,7 @@ Router::scope('/', function (RouteBuilder $routes) {
      * ...and connect the rest of 'Pages' controller's URLs.
      */
 	$defaults = [];
-	$defaults['_method'] = 'GET';
+	$defaults['_method'] = ['GET','POST'];
 	$defaults['controller'] = 'Pages';
 	$defaults['action'] = 'display';
     $routes->connect('/help/*', $defaults);
