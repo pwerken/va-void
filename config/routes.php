@@ -266,7 +266,7 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 });
 
 /**
- * Load all plugin routes.  See the Plugin documentation on
+ * Load all plugin routes. See the Plugin documentation on
  * how to customize the loading of plugin routes.
  */
 Plugin::routes();

@@ -11,20 +11,23 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
-        "cakephp/cakephp": "~3.2",
+        "php": ">=5.6",
+        "cakephp/cakephp": "3.4.*",
         "mobiledetect/mobiledetectlib": "2.*",
         "friendsofcake/crud": "dev-master-pwerken",
         "cakephp/migrations": "~1.0",
-        "cakephp/plugin-installer": "*",
+        "cakephp/plugin-installer": "~1.0",
         "admad/cakephp-jwt-auth": "^2.0",
         "setasign/fpdf": "^1.8"
     },
     "require-dev": {
         "psy/psysh": "@stable",
-        "cakephp/bake": "~1.1"
+        "cakephp/bake": "~1.1",
+        "cakephp/cakephp-codesniffer": "^3.0"
     },
     "suggest": {
+        "markstory/asset_compress": "An asset compression plugin which provides file concatenation and a flexible filter system for preprocessing and minification.",
+        "dereuromark/cakephp-ide-helper": "After baking your code, this keeps your annotations in sync with the code evolving from there on for maximum IDE and PHPStan compatibility.",
         "phpunit/phpunit": "Allows automated tests to be run without system-wide install.",
         "cakephp/cakephp-codesniffer": "Allows to check the code against the coding standards used in CakePHP."
     },
@@ -42,8 +45,14 @@
     "scripts": {
         "post-install-cmd": "App\\Console\\Installer::postInstall",
         "post-create-project-cmd": "App\\Console\\Installer::postInstall",
-        "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump"
+        "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump",
+        "check": [
+            "@test",
+            "@cs-check"
+        ],
+        "cs-check": "phpcs --colors -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
+        "cs-fix": "phpcbf --colors --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
+        "test": "phpunit --colors=always"
     },
-    "minimum-stability": "stable",
     "prefer-stable": true
 }

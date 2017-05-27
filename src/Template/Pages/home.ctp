@@ -21,7 +21,7 @@ use Cake\Network\Exception\NotFoundException;
 
 $this->layout = false;
 
-if (!Configure::read('debug')):
+if (!Configure::read('debug')) :
     throw new NotFoundException('Please replace src/Template/Pages/home.ctp with your own version.');
 endif;
 
@@ -35,6 +35,8 @@ endif;
     <?= $this->Html->meta('icon') ?>
     <?= $this->Html->css('base.css') ?>
     <?= $this->Html->css('cake.css') ?>
+    <?= $this->Html->css('home.css') ?>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
 </head>
 <body class="home">
     <div id="content">

@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use Cake\Core\Configure;
+use Cake\Network\Exception\ForbiddenException;
 use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
 
@@ -18,13 +19,14 @@ class PagesController
 		$this->Auth->allow(['display', 'lighttpd']);
 	}
 
-	public function display()
+	public function display(...$path)
 	{
-		$path = func_get_args();
-
 		$count = count($path);
 		if (!$count) {
 			return $this->redirect('/');
+		}
+		if (in_array('..', $path, true) || in_array('.', $path, true)) {
+			throw new ForbiddenException();
 		}
 		$page = $subpage = null;
 
@@ -40,9 +42,9 @@ class PagesController
 
 		try {
 			$this->render(implode('/', $path));
-		} catch (MissingTemplateException $e) {
+		} catch (MissingTemplateException $exception) {
 			if (Configure::read('debug')) {
-				throw $e;
+				throw $exception;
 			}
 			throw new NotFoundException();
 		}
