@@ -59,8 +59,7 @@ class AppController
 			(new ErrorHandler($arr))->register();
 		}
 
-		if(!$this->request->is('post') && !empty($this->request->data))
-			$this->request->data = $this->request->input('json_decode',1) ?: [];
+		$this->request->data = $this->request->input('json_decode',1) ?: [];
 
 		$error = json_last_error();
 		if($error != JSON_ERROR_NONE) {
