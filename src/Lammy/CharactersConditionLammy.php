@@ -14,6 +14,13 @@ class CharactersConditionLammy
 			$data['id']   = $this->entity->condition_id;
 			$data['name'] = $this->entity->condition->name;
 			$data['text'] = $this->entity->condition->player_text;
+			$data['plin'] = $this->entity->character->player_id
+							. ' - ' . $this->entity->character->chin;
+			$data['char'] = $this->entity->character->name;
+
+			$expiry = $this->entity->expiry ?: 'Until death';
+			if(!is_string($expiry)) $expiry = $expiry->jsonSerialize();
+			$data['expiry'] = $expiry;
 		}
 
 		switch($side) {
@@ -39,21 +46,14 @@ class CharactersConditionLammy
 		$this->text( 0, 33, 12, 'R', 'Character');
 		$this->text( 0, 38, 12, 'R', 'Expiry');
 
-		$plin = $this->entity->character->player_id
-			. ' - ' . $this->entity->character->chin;
-		$char = $this->entity->character->name;
-
-		$expiry = $this->entity->expiry ?: 'Until death';
-		if(!is_string($expiry)) $expiry = $expiry->jsonSerialize();
-
 		$this->pdf->SetTextColor(0);
 
 		$this->font(11, 'B');
 		$this->text(57.5, 5, 60, 'L', $data['id']);
 		$this->textblock(12, 13, 60, 'L', $data['name']);
-		$this->text(12, 28, 60, 'L', $plin);
-		$this->text(12, 33, 60, 'L', $char);
-		$this->text(12, 38, 60, 'L', $expiry);
+		$this->text(12, 28, 60, 'L', $data['plin']);
+		$this->text(12, 33, 60, 'L', $data['char']);
+		$this->text(12, 38, 60, 'L', $data['expiry']);
 	}
 
 	protected function _drawBack($data)

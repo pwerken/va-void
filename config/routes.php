@@ -134,7 +134,10 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 		}
 	}
 
-	if($name == 'Characters' || $name == 'Items') {
+	if($name == 'Characters'
+	|| $name == 'Items'
+	|| $name == 'Powers'
+	|| $name == 'Conditions') {
 		$defaults['_method'] = 'POST';
 		$defaults['controller'] = $name;
 		$defaults['action'] = 'queue';

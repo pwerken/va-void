@@ -20,6 +20,12 @@ class PowersController
 		$this->mapMethod('edit',   [ 'referee'         ]);
 		$this->mapMethod('index',  [ 'referee'         ]);
 		$this->mapmethod('view',   [ 'referee', 'user' ], true);
+
+		$this->Crud->mapAction('queue',
+			[ 'className' => 'Crud.View'
+			, 'auth' => [ 'referee' ]
+			, 'findMethod' => 'withContain'
+			]);
 	}
 
 	public function index()
@@ -30,6 +36,18 @@ class PowersController
 		$query = $this->Powers->find()
 					->select(['Powers.id', 'Powers.name'], true);
 		$this->doRawIndex($query, 'Power', '/powers/', 'poin');
+	}
+
+	public function queue($poin)
+	{
+		$this->Crud->on('beforeRender', function ($event) {
+			$table = $this->loadModel('lammies');
+			$entity = $event->subject()->entity;
+			$table->save($table->newEntity()->set('target', $entity));
+			$event->subject()->entity = 1;
+		});
+
+		$this->Crud->execute();
 	}
 
 	protected function hasAuthUser($id = null)
