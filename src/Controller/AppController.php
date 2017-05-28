@@ -57,6 +57,8 @@ class AppController
 			$arr = ['exceptionRenderer' => 'App\Error\ApiExceptionRenderer']
 				+ Configure::read('Error');
 			(new ErrorHandler($arr))->register();
+
+			$this->response->compress();
 		}
 
 		if(!$this->request->is('POST'))
