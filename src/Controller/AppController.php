@@ -63,14 +63,19 @@ class AppController
 			$this->response->compress();
 		}
 
-		if(!$this->request->is('POST'))
-			$this->request->data = $this->request->input('json_decode',1) ?: [];
-
-		$error = json_last_error();
-		if($error != JSON_ERROR_NONE) {
-			$msg = sprintf("Failed to parse json, error: %s '%s'"
-							, $error, json_last_error_msg());
-			throw new BadRequestException($msg);
+		if(!$this->request->is('POST')) {
+			$this->request->data = $this->request->input(function($input) {
+				if(empty($input))
+					return [];
+				$json = json_decode($input, true);
+				$error = json_last_error();
+				if($error != JSON_ERROR_NONE) {
+					$msg = sprintf("Failed to parse json, error: %s '%s'"
+									, $error, json_last_error_msg());
+					throw new BadRequestException($msg);
+				}
+				return $json;
+			});
 		}
 	}
 
