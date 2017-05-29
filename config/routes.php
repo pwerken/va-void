@@ -245,6 +245,7 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 	rest($routes, 'Worlds',   [ 'Characters' ]);
 
 	rest($routes, 'Lammies');
+	rest($routes, 'Events');
 
 	$defaults = [];
 	$defaults['controller'] = 'Lammies';
