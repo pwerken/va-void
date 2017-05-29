@@ -44,30 +44,23 @@ use Cake\Utility\Inflector;
 #Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
-    /**
-     * Here, we are connecting '/' (base path) to a controller called 'Pages',
-     * its action called 'display', and we pass a param to select the view file
-     * to use (in this case, src/Template/Pages/home.ctp)...
-     */
-    $routes->connect('/', ['controller' => 'Pages', 'action' => 'display', 'index']);
 
-    /**
-     * ...and connect the rest of 'Pages' controller's URLs.
-     */
-	$defaults = [];
-	$defaults['_method'] = ['GET','POST'];
-	$defaults['controller'] = 'Pages';
-	$defaults['action'] = 'display';
-    $routes->connect('/help/*', $defaults);
+    $routes->connect('/', ['controller' => 'Root', 'action' => 'root']);
 
-	/**
-	 * CORS catch all OPTIONS method
-	 */
 	$defaults = [];
 	$defaults['_method'] = 'OPTIONS';
-	$defaults['controller'] = 'App';
-	$defaults['action'] = 'corsOptions';
+	$defaults['controller'] = 'Root';
+	$defaults['action'] = 'cors';
 	$routes->connect('/*', $defaults);
+
+    /**
+     *  Debug helper pages
+     */
+	$defaults = [];
+	$defaults['_method'] = ['GET', 'POST'];
+	$defaults['controller'] = 'Debug';
+	$defaults['action'] = 'display';
+	$routes->connect('/debug/*', $defaults);
 
 	/**
 	 *	Authentication related URIs
