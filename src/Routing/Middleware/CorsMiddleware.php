@@ -11,7 +11,7 @@ class CorsMiddleware
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
 	{
 		$response->cors($request)
-			->allowOrigin(['*.the-vortex.nl', 'yvo.muze.nl'])
+			->allowOrigin(['*.the-vortex.nl', 'yvo.muze.nl', 'localhost'])
 			->allowCredentials(true)
 			->allowMethods(['GET','PUT','DELETE','POST','OPTIONS'])
 			->allowHeaders(['x-requested-with', 'Content-Type', 'origin'
