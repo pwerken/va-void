@@ -23,12 +23,13 @@ function setRole($plin, $role) {
 	if(is_null($player))
 		return "No player found with plin $plin";
 
-	$player->role = $role;
+	$table->patchEntity($player, ['role' => $role]);
 	$table->save($player);
 
 	$errors = $player->errors('role');
-	if(!empty($errors))
-		return $errors[0];
+	if(!empty($errors)) {
+		return reset($errors);
+	}
 
 	return "Player #$plin now has role '$role'.";
 }

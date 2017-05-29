@@ -23,12 +23,12 @@ function setPassword($plin, $password) {
 	if(is_null($player))
 		return "No player found with plin $plin";
 
-	$player->password = $password;
+	$table->patchEntity($player, ['password' => $password]);
 	$table->save($player);
 
 	$errors = $player->errors('password');
 	if(!empty($errors))
-		return $errors[0];
+		return reset($errors);
 
 	return "Player #$plin password set.";
 }
