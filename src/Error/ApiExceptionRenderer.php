@@ -19,16 +19,6 @@ class ApiExceptionRenderer extends ExceptionRenderer
 		$data['message'] = $error->getMessage();
 		$data['errors'] = @$this->controller->viewVars['errors'];
 
-		if(Configure::read('debug')) {
-			$data['DEBUG']['trace'] = Debugger::formatTrace($error->getTrace()
-					, ['format' => 'array', 'args' => false]);
-
-			$queryLog = $this->_getQueryLog();
-			if($queryLog) {
-				$data['DEBUG']['queryLog'] = $queryLog;
-			}
-		}
-
 		$jsonOptions = JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT;
 		if(Configure::read('debug'))
 			$jsonOptions = $jsonOptions | JSON_PRETTY_PRINT;
