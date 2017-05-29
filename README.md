@@ -12,3 +12,4 @@ Download [Composer](http://getcomposer.org/doc/00-intro.md) or update `composer 
 2. Run `composer install`
 3. Read and edit `config/app.php` and setup the `'Datasources'` and any other configuration relevant for your site.
 4. Create the database tables with `./bin/cake migrations migrate`
+4. Fill the database tables with `./bin/cake migrations seed`
