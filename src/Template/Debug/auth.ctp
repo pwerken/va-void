@@ -18,7 +18,15 @@ use Cake\ORM\TableRegistry;
     <h3><?= __('Account authorisations') ?></h3>
 
 <?php
-
+if(is_null($user)) {
+	echo "<h3>You need to be logged in!</h3>";
+	echo "<p>".$this->Html->link('Click here to login.', '/debug/login')."</p>";
+	echo "</div>";
+	return;
+}
+?>
+    <h3><?= __('Account authorisations') ?></h3>
+<?php
 	$players = TableRegistry::get('players');
 	$query = $players->find();
 	$query->select(['role'], true);
