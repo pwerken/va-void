@@ -4,6 +4,7 @@ namespace App\Shell;
 use App\View\PdfView;
 use Cake\Console\ConsoleIo;
 use Cake\Console\Shell;
+use Cake\Filesystem\File;
 
 /**
  * Simple console wrapper around Psy\Shell.
@@ -27,17 +28,17 @@ class QueueShell extends Shell
 			$this->quiet($result->first()->id);
 	}
 
-    public function single($id = 0)
+    public function single($id = 0, $filename = NULL)
     {
-		$this->createPdf($id);
+		$this->createPdf($id, $filename);
     }
 
-    public function double($id = 0)
+    public function double($id = 0, $filename = NULL)
     {
-		$this->createPdf($id, true);
+		$this->createPdf($id, $filename, true);
     }
 
-	private function createPdf($id, $double = false)
+	private function createPdf($id, $filename, $double = false)
 	{
 		$query = $this->Lammies->find('queued');
 		$query->where(["id <=" => $id]);
@@ -50,7 +51,15 @@ class QueueShell extends Shell
 		$lammies = $lammies->map(function($value, $key) {
 				return $value->lammy;
 			})->toArray();
-		$this->quiet((new PdfView())->createPdf($lammies, $double));
+
+		if(empty($filename)) {
+			$this->quiet((new PdfView())->createPdf($lammies, $double));
+			return;
+		}
+
+		$file = new File($filename, true);
+		$file->write((new PdfView())->createPdf($lammies, $double));
+		$file->close();
 	}
 
 	public function printed($id)
