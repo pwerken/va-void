@@ -15,8 +15,6 @@ use Cake\ORM\TableRegistry;
     </ul>
 </nav>
 <div class="players index large-9 medium-8 columns content">
-    <h3><?= __('Account authorisations') ?></h3>
-
 <?php
 if(is_null($user)) {
 	echo "<h3>You need to be logged in!</h3>";
