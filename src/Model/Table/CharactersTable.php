@@ -15,6 +15,10 @@ class CharactersTable
 		, 'CharactersPowers'     => [ 'Powers' ]
 		, 'CharactersSkills'     => [ 'Skills' => [ 'Manatypes' ] ]
 		, 'CharactersSpells'     => [ 'Spells' ]
+		, 'Teachings' => [ 'Teacher', 'Student', 'Skills' => [ 'Manatypes' ]
+						 , 'Started', 'Updated' ]
+		, 'Students'  => [ 'Teacher', 'Student', 'Skills' => [ 'Manatypes' ]
+						 , 'Started', 'Updated' ]
 		];
 
 	public function initialize(array $config)
@@ -24,10 +28,16 @@ class CharactersTable
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
 		$this->belongsTo('Players');
+		$this->belongsTo('Teachings',
+			[ 'className' => 'Teachings', 'foreignKey' => 'id'
+			, 'bindingKey' => 'student_id', 'propertyName' => 'teacher' ]);
 		$this->belongsTo('Factions', ['propertyName' => 'faction_object']);
 		$this->belongsTo('Believes', ['propertyName' => 'belief_object']);
 		$this->belongsTo('Groups', ['propertyName' => 'group_object']);
 		$this->belongsTo('Worlds', ['propertyName' => 'world_object']);
+		$this->hasMany('Students',
+			[ 'className' => 'Teachings', 'foreignKey' => 'teacher_id'
+			, 'bindingKey' => 'id', 'propertyName' => 'students']);
 		$this->hasMany('Items');
 		$this->hasMany('CharactersConditions', ['propertyName' => 'conditions']);
 		$this->hasMany('CharactersPowers', ['propertyName' => 'powers']);

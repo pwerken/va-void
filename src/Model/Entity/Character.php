@@ -36,7 +36,7 @@ class Character
 
 	protected $_compact = [ 'player_id', 'chin', 'name', 'status' ];
 
-	protected $_virtual = [ 'belief', 'faction', 'group', 'world' ];
+	protected $_virtual = [ 'teacher', 'belief', 'faction', 'group', 'world' ];
 
 	public static function soulpathValues()
 	{
