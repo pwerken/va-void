@@ -112,6 +112,7 @@ endif;
 		, [ 'Worlds',               'index'                            ]
 		, [ 'Worlds',               'view',               2            ]
 		, [ 'Characters',           'worldsIndex',        2            ]
+		, [ 'Events',               'index'                            ]
 		, [ 'Lammies',              'index'                            ]
 		, [ 'Lammies',              'queue'                            ]
 		];
@@ -138,6 +139,7 @@ endif;
 		case 34:
 		case 37:
 		case 40:
+		case 41:
 			echo '<br/>';
 		}
         echo '<li>'.$this->Html->link($url) . "</li>\n";
