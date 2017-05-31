@@ -3,6 +3,8 @@ namespace App\Error;
 
 use Cake\Core\Configure;
 use Cake\Error\Debugger;
+use Cake\Network\Exception\HttpException;
+use Cake\Network\Exception\InternalErrorException;
 use Crud\Error\ExceptionRenderer;
 
 class ApiExceptionRenderer extends ExceptionRenderer
@@ -11,6 +13,8 @@ class ApiExceptionRenderer extends ExceptionRenderer
 	protected function _outputMessage($template)
 	{
 		$error = $this->controller->viewVars['error'];
+		if(!($error instanceof HttpException))
+			$error = new InternalErrorException($error->getMessage());
 
 		$data = [];
 		$data['class'] = 'Error';

@@ -228,11 +228,7 @@ class AppController
 		}
 
 		$conn = \Cake\Datasource\ConnectionManager::get('default');
-		try {
-			return $conn->execute($query->sql(), $params)->fetchAll();
-		} catch(PDOException $e) {
-			throw new InternalErrorException($e->getMessage());
-		}
+		return $conn->execute($query->sql(), $params)->fetchAll();
 	}
 	protected function doRawIndex($query, $class, $url, $id = 'id')
 	{
