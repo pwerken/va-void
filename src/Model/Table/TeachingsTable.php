@@ -5,12 +5,12 @@ class TeachingsTable
 	extends AppTable
 {
 
-	protected $_contain = ['Student','Skills','Started','Update'];
+	protected $_contain = ['Student','Teacher','Skills','Started','Update'];
 
 	public function initialize(array $config)
 	{
 		$this->table('teachings');
-		$this->primaryKey('character_id');
+		$this->primaryKey('student_id');
 		$this->addBehavior('Timestamp');
 		$this->belongsTo('Teacher',
 			[ 'className' => 'Characters', 'foreignKey' => 'teacher_id'
