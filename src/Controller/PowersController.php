@@ -40,14 +40,7 @@ class PowersController
 
 	public function queue($poin)
 	{
-		$this->Crud->on('beforeRender', function ($event) {
-			$table = $this->loadModel('lammies');
-			$entity = $event->subject()->entity;
-			$table->save($table->newEntity()->set('target', $entity));
-			$event->subject()->entity = 1;
-		});
-
-		$this->Crud->execute();
+		$this->queueLammy();
 	}
 
 	protected function hasAuthUser($id = null)

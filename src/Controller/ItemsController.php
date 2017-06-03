@@ -106,14 +106,7 @@ class ItemsController
 
 	public function queue($itin)
 	{
-		$this->Crud->on('beforeRender', function ($event) {
-			$table = $this->loadModel('lammies');
-			$item = $event->subject()->entity;
-			$table->save($table->newEntity()->set('target', $item));
-			$event->subject()->entity = 1;
-		});
-
-		$this->Crud->execute();
+		$this->queueLammy();
 	}
 
 	protected function hasAuthUser($id = null)
