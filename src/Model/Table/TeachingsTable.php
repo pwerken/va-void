@@ -5,7 +5,7 @@ class TeachingsTable
 	extends AppTable
 {
 
-	protected $_contain = ['Student','Teacher','Skills','Started','Update'];
+	protected $_contain = ['Student','Teacher','Skills','Started','Updated'];
 
 	public function initialize(array $config)
 	{

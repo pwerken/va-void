@@ -5,6 +5,9 @@ class Teaching
 	extends AppEntity
 {
 
+	protected $_hidden = [ 'student_id', 'teacher_id', 'skill_id'
+		, 'started_id', 'started_object', 'updated_id', 'updated_object' ];
+
 	protected $_compact =
 		[ 'student', 'teacher', 'skill', 'xp', 'started', 'updated' ];
 
