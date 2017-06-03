@@ -22,8 +22,6 @@ class Teaching
 
 	public function getUrl($fallback = NULL)
 	{
-		$a = ($this->teacher ?: $fallback)->getUrl();
-		$b = ($this->student ?: $fallback)->getUrl();
-		return $a . '/students' . substr($b, 11);
+		return ($this->student ?: $fallback)->getUrl() . '/teacher';
 	}
 }

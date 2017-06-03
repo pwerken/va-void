@@ -215,6 +215,30 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 		$routeOptions = [ 'pass' => ['plin'], 'plin' => '[0-9]+' ];
 		$routes->connect('/players/:plin/characters', $defaults, $routeOptions);
 	}
+	if($name == 'Characters') {
+		$map =  [ 'View'    => [ '_method' => 'GET',    'path' => 1 ]
+				, 'Edit'    => [ '_method' => 'PUT',    'path' => 1 ]
+				, 'Delete'  => [ '_method' => 'DELETE', 'path' => 1 ]
+				];
+
+		$urlNest = $url.'/students';
+		$defaults = [];
+		$defaults['_method'] = 'GET';
+		$defaults['controller'] = 'Teachings';
+		$defaults['action'] = 'charactersIndex';
+		$routes->connect($urlNest, $defaults, $routeOptions);
+
+		$urlNest = $url.'/teacher';
+		foreach($map as $method => $options) {
+			$defaults['_method'] = $options['_method'];
+			$defaults['action'] = 'characters'.$method;
+			$routes->connect($urlNest, $defaults, $routeOptions);
+		}
+
+		$defaults['_method'] = 'POST';
+		$defaults['action'] = 'charactersQueue';
+		$routes->connect($urlNest.'/print', $defaults, $routeOptions);
+	}
 }
 
 	rest($routes, 'Players',  [ 'Characters' ]);
