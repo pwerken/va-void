@@ -6,12 +6,8 @@ use Cake\Console\ConsoleIo;
 use Cake\Console\Shell;
 use Cake\Filesystem\File;
 
-/**
- * Simple console wrapper around Psy\Shell.
- */
 class QueueShell extends Shell
 {
-
 	public function initialize()
 	{
 		parent::initialize();
@@ -28,15 +24,15 @@ class QueueShell extends Shell
 			$this->quiet($result->first()->id);
 	}
 
-    public function single($id = 0, $filename = NULL)
-    {
+	public function single($id = 0, $filename = NULL)
+	{
 		$this->createPdf($id, $filename);
-    }
+	}
 
-    public function double($id = 0, $filename = NULL)
-    {
+	public function double($id = 0, $filename = NULL)
+	{
 		$this->createPdf($id, $filename, true);
-    }
+	}
 
 	private function createPdf($id, $filename, $double = false)
 	{
@@ -68,5 +64,4 @@ class QueueShell extends Shell
 		$this->Lammies->setStatuses($lammies, 'Printed');
 		$this->quiet($lammies->count());
 	}
-
 }
