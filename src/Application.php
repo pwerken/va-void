@@ -46,7 +46,7 @@ class Application extends BaseApplication
             // Handle plugin/theme assets like CakePHP normally does.
             ->add(AssetMiddleware::class)
 
-            // Apply routing
+            // Support Cross-Origin Request Sharing
             ->add(CorsMiddleware::class)
 
             // Apply routing
