@@ -64,7 +64,7 @@ class ApiView
 				$value = $this->_jsonList($value, $obj, $key);
 				unset($value['parent']);
 			} else {
-				$value = $this->_jsonCompact($value, $obj);
+				$value = $this->_jsonCompact($value, $obj, $obj->getUrl());
 			}
 
 			$result[$key] = $value;
@@ -86,13 +86,13 @@ class ApiView
 
 		$result['list'] = [];
 		foreach($list as $obj) {
-			$value = $this->_jsonCompact($obj, $parent);
+			$value = $this->_jsonCompact($obj, $parent, $parent->getUrl());
 			unset($value[$remove]);
 			$result['list'][] = $value;
 		}
 		return $result;
 	}
-	private function _jsonCompact($obj, $parent = null)
+	private function _jsonCompact($obj, $parent = null, $url = null)
 	{
 		if(!($obj instanceof AppEntity))
 			return $obj;
@@ -110,6 +110,10 @@ class ApiView
 			$value = $this->_jsonCompact($obj->get($key), $obj);
 			if(isset($this->_aliases[$class][$key]))
 				$key = $this->_aliases[$class][$key];
+			if(isset($url) && is_array($value) && isset($value['url'])) {
+				if($url == $value['url'])
+					continue;
+			}
 			$result[$key] = $value;
 		}
 		return $result;
