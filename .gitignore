@@ -4,3 +4,4 @@
 /tmp/*
 /logs/*
 /import/*.mdb
+/backups/*.sql
