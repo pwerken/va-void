@@ -44,7 +44,7 @@ class BackupShell extends Shell
 	{
 		$filename = $this->_exportFile();
 
-        $auth = $this->_storeAuth();
+        $auth = $this->_storeAuth('mysqldump');
 		exec(sprintf('%s --defaults-file=%s -t %s %s > %s'
 			, 'mysqldump'
 			, $auth
@@ -76,7 +76,7 @@ class BackupShell extends Shell
 			$this->loadModel($tbl)->query()->delete()->execute();
 		}
 
-        $auth = $this->_storeAuth();
+        $auth = $this->_storeAuth('mysql');
 		exec(sprintf('%s --defaults-extra-file=%s %s < %s'
 			, 'mysql'
 			, $auth
@@ -90,54 +90,66 @@ class BackupShell extends Shell
 
 	private function _tableOrder($fill = true)
 	{
-		$tables = ConnectionManager::get('default')->schemaCollection()->listTables();
+		if($fill) {
+			$order =
+				[ "believes"
+				, "players"
+				, "factions"
+				, "groups"
+				, "worlds"
+				, "characters"
+				, "manatypes"
+				, "attributes"
+				, "items"
+				, "conditions"
+				, "powers"
+				, "skills"
+				, "spells"
+				, "events"
+				, "attributes_items"
+				, "characters_conditions"
+				, "characters_powers"
+				, "characters_skills"
+				, "characters_spells"
+				, "lammies"
+				, "teachings"
+				];
+		} else {
+			$order =
+				[ "attributes_items"
+				, "characters_conditions"
+				, "characters_powers"
+				, "characters_skills"
+				, "characters_spells"
+				, "lammies"
+				, "teachings"
+				, "attributes"
+				, "items"
+				, "conditions"
+				, "powers"
+				, "skills"
+				, "spells"
+				, "events"
+				, "characters"
+				, "manatypes"
+				, "believes"
+				, "players"
+				, "factions"
+				, "groups"
+				, "worlds"
+				];
+		}
 
-		$usedBy = [];
+		$tables = ConnectionManager::get('default')->schemaCollection()->listTables();
+		$count = 0;
 		foreach($tables as $name) {
 			$table = $this->loadModel($name);
-			if(!($table instanceof AppTable))
-				continue;
-
-			if(!isset($usedBy[$name]))
-				$usedBy[$name] = [];
-
-			foreach($table->associations() as $assoc) {
-				if($assoc->type() == Association::ONE_TO_MANY) {
-					$usedBy[$name][] = $assoc->getTarget()->getTable();
-				}
-				if($assoc->type() == Association::MANY_TO_ONE) {
-					$src = $assoc->getTarget()->getTable();
-					$usedBy[$src][] = $name;
-				}
-			}
+			if($table instanceof AppTable)
+				$count++;
 		}
 
-		$order = [];
-		while(!empty($usedBy))
-		{
-			$done = [];
-			foreach($usedBy as $name => $deps) {
-				if(!empty($deps))
-					continue;
-				$done[] = $name;
-				unset($usedBy[$name]);
-			}
-
-			foreach($done as $name) {
-				foreach($usedBy as $tbl => $deps) {
-					foreach($deps as $key => $value) {
-						if($value == $name)
-							unset($usedBy[$tbl][$key]);
-					}
-				}
-			}
-
-			if($fill) {
-				$order = array_merge($done, $order);
-			} else {
-				$order = array_merge($order, $done);
-			}
-		}
+		if(count($order) != $count)
+			throw new InternalErrorException('Inconsistent table count.');
 
 		return $order;
 	}
@@ -153,11 +165,11 @@ class BackupShell extends Shell
         }
 
         if (!is_writable(dirname($filename))) {
-            throw new InternalErrorException(__d('mysql_backup', 'File or directory `{0}` not writable', dirname($filename)));
+            throw new InternalErrorException('File or directory `{0}` not writable', dirname($filename));
         }
 
         if (file_exists($filename)) {
-            throw new InternalErrorException(__d('mysql_backup', 'File `{0}` already exists', $filename));
+            throw new InternalErrorException('File `{0}` already exists', $filename);
         }
 
 		return $filename;
@@ -172,23 +184,23 @@ class BackupShell extends Shell
         }
 
         if (!is_readable(dirname($filename))) {
-            throw new InternalErrorException(__d('mysql_backup', 'File or directory `{0}` not readable', dirname($filename)));
+            throw new InternalErrorException(sprintf('File or directory `%s` not readable', dirname($filename)));
         }
 
         if (!file_exists($filename)) {
-            throw new InternalErrorException(__d('mysql_backup', 'File `{0}` does not exists', $filename));
+            throw new InternalErrorException(sprintf('File `%s` does not exists', $filename));
         }
 
 		return $filename;
 	}
 
-    protected function _storeAuth()
+    protected function _storeAuth($app)
     {
         $auth = tempnam(sys_get_temp_dir(), 'auth');
 
         file_put_contents($auth, sprintf(
-            "[mysqldump]\nuser=%s\npassword=\"%s\"\nhost=%s",
-            $this->connection['username'],
+            "[%s]\nuser=%s\npassword=\"%s\"\nhost=%s",
+			$app, $this->connection['username'],
             empty($this->connection['password']) ? null : $this->connection['password'],
             $this->connection['host']
         ));
