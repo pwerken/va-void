@@ -14,7 +14,6 @@ class CharactersConditionsTable
 	public function initialize(array $config)
 	{
 		$this->table('characters_conditions');
-		$this->displayField('character_id');
 		$this->primaryKey(['character_id', 'condition_id']);
 		$this->belongsTo('Characters');
 		$this->belongsTo('Conditions');

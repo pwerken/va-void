@@ -13,10 +13,10 @@ class PowersTable
 	public function initialize(array $config)
 	{
 		$this->table('powers');
-		$this->displayField('displayName');
+		$this->displayField('name');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
-		$this->hasMany('CharactersPowers', ['propertyName' => 'characters']);
+		$this->hasMany('CharactersPowers')->setProperty('characters');
 	}
 
 	public function orderBy()

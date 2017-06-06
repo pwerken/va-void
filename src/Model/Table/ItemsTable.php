@@ -13,11 +13,11 @@ class ItemsTable
 	public function initialize(array $config)
 	{
 		$this->table('items');
-		$this->displayField('displayName');
+		$this->displayField('name');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
 		$this->belongsTo('Characters');
-		$this->hasMany('AttributesItems', ['propertyName' => 'attributes']);
+		$this->hasMany('AttributesItems')->setProperty('attributes');
 	}
 
 	public function orderBy()

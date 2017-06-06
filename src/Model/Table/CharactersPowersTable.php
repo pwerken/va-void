@@ -14,7 +14,6 @@ class CharactersPowersTable
 	public function initialize(array $config)
 	{
 		$this->table('characters_powers');
-		$this->displayField('character_id');
 		$this->primaryKey(['character_id', 'power_id']);
 		$this->belongsTo('Characters');
 		$this->belongsTo('Powers');

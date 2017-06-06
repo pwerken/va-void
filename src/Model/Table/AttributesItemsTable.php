@@ -14,7 +14,6 @@ class AttributesItemsTable
 	public function initialize(array $config)
 	{
 		$this->table('attributes_items');
-		$this->displayField('attribute_id');
 		$this->primaryKey(['attribute_id', 'item_id']);
 		$this->belongsTo('Attributes');
 		$this->belongsTo('Items');

@@ -15,34 +15,32 @@ class CharactersTable
 		, 'CharactersPowers'     => [ 'Powers' ]
 		, 'CharactersSkills'     => [ 'Skills' => [ 'Manatypes' ] ]
 		, 'CharactersSpells'     => [ 'Spells' ]
-		, 'Teachings' => [ 'Teacher', 'Student', 'Skills' => [ 'Manatypes' ]
-						 , 'Started', 'Updated' ]
-		, 'Students'  => [ 'Teacher', 'Student', 'Skills' => [ 'Manatypes' ]
-						 , 'Started', 'Updated' ]
+		, 'MyTeacher'  =>	[ 'Teacher', 'Student', 'Skills' => [ 'Manatypes' ]
+							, 'Started', 'Updated' ]
+		, 'MyStudents' =>	[ 'Teacher', 'Student', 'Skills' => [ 'Manatypes' ]
+							, 'Started', 'Updated' ]
 		];
 
 	public function initialize(array $config)
 	{
 		$this->table('characters');
-		$this->displayField('displayName');
+		$this->displayField('name');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
 		$this->belongsTo('Players');
-		$this->belongsTo('Teachings',
-			[ 'className' => 'Teachings', 'foreignKey' => 'id'
-			, 'bindingKey' => 'student_id', 'propertyName' => 'teacher' ]);
-		$this->belongsTo('Factions', ['propertyName' => 'faction_object']);
-		$this->belongsTo('Believes', ['propertyName' => 'belief_object']);
-		$this->belongsTo('Groups', ['propertyName' => 'group_object']);
-		$this->belongsTo('Worlds', ['propertyName' => 'world_object']);
-		$this->hasMany('Students',
-			[ 'className' => 'Teachings', 'foreignKey' => 'teacher_id'
-			, 'bindingKey' => 'id', 'propertyName' => 'students']);
+		$this->belongsTo('Factions')->setProperty('faction_object');
+		$this->belongsTo('Believes')->setProperty('belief_object');
+		$this->belongsTo('Groups')->setProperty('group_object');
+		$this->belongsTo('Worlds')->setProperty('world_object');
 		$this->hasMany('Items');
-		$this->hasMany('CharactersConditions', ['propertyName' => 'conditions']);
-		$this->hasMany('CharactersPowers', ['propertyName' => 'powers']);
-		$this->hasMany('CharactersSkills', ['propertyName' => 'skills']);
-		$this->hasMany('CharactersSpells', ['propertyName' => 'spells']);
+		$this->hasMany('CharactersConditions')->setProperty('conditions');
+		$this->hasMany('CharactersPowers')->setProperty('powers');
+		$this->hasMany('CharactersSkills')->setProperty('skills');
+		$this->hasMany('CharactersSpells')->setProperty('spells');
+		$this->hasMany('MyStudents', ['className' => 'Teachings'])
+				->setForeignKey('teacher_id')->setProperty('students');
+		$this->hasOne('MyTeacher', ['className' => 'Teachings'])
+				->setForeignKey('student_id')->setProperty('teacher');
 	}
 
 	public function orderBy()

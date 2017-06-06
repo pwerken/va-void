@@ -13,10 +13,9 @@ class ConditionsTable
 	public function initialize(array $config)
 	{
 		$this->table('conditions');
-		$this->displayField('displayName');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
-		$this->hasMany('CharactersConditions', ['propertyName' => 'characters']);
+		$this->hasMany('CharactersConditions')->setProperty('characters');
 	}
 
 	public function orderBy()
