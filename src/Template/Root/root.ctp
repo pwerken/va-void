@@ -87,6 +87,8 @@ endif;
 		, [ 'CharactersSkills',     'charactersView',   987,   2,    1 ]
 		, [ 'CharactersSpells',     'charactersIndex',  987,   2       ]
 		, [ 'CharactersSpells',     'charactersView',   987,   2,    9 ]
+		, [ 'Teachings',            'charactersIndex',  987,   2       ]
+		, [ 'Teachings',            'charactersView',   987,   2       ]
 		, [ 'Items',                'index'                            ]
 		, [ 'Items',                'view',             724            ]
 		, [ 'AttributesItems',      'itemsIndex',       724            ]
@@ -125,21 +127,21 @@ endif;
 		$url['_method']    = 'GET';
 
 		switch($i) {
-		case 22:
+		case 24:
 			echo "</ul></td>\n<td><ul>";
 			break;
 		case 1:
 		case 4:
-		case 15:
-		case 19:
-		case 22:
-		case 25:
-		case 28:
-		case 31:
-		case 34:
-		case 37:
-		case 40:
-		case 41:
+		case 17:
+		case 21:
+		case 24:
+		case 27:
+		case 30:
+		case 33:
+		case 36:
+		case 39:
+		case 42:
+		case 43:
 			echo '<br/>';
 		}
         echo '<li>'.$this->Html->link($url) . "</li>\n";
