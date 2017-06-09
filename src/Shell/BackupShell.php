@@ -2,28 +2,20 @@
 namespace App\Shell;
 
 use App\Model\Table\AppTable;
-use Cake\Console\ConsoleIo;
 use Cake\Console\Shell;
 use Cake\Datasource\ConnectionManager;
 use Cake\Filesystem\Folder;
-use Cake\I18n\FrozenTime;
-use Cake\Network\Exception\InternalErrorException;
-use Cake\ORM\Association;
-use Cake\ORM\Entity;
 
 class BackupShell extends Shell
 {
-    protected $connection = NULL;
 	protected $target = ROOT . DS . 'backups';
 
-    public function __construct()
+	public function main()
 	{
-		parent::__construct();
-
-		$this->connection = ConnectionManager::getConfig('default');
+		$this->index();
 	}
 
-	public function main()
+	public function index()
 	{
 		$files = (new Folder($this->target))->find('.+\.sql');
 		sort($files);
@@ -42,50 +34,84 @@ class BackupShell extends Shell
 
 	public function export()
 	{
-		$filename = $this->_exportFile();
+		if(!is_writable($this->target)) {
+			$this->err(sprintf('Directory `%s` not writable', $this->target));
+			return false;
+		}
 
-        $auth = $this->_storeAuth('mysqldump');
+		$connection = ConnectionManager::getConfig('default');
+		$filename = $this->target . DS . sprintf('backup_%s_%s.sql'
+						, $connection['database'], date('YmdHis'));
+
+		if(file_exists($filename)) {
+			$this->err(sprintf('File `%s` already exists', $filename));
+			return false;
+		}
+
+		$tables = $this->_tableOrder(true);
+		if(empty($tables)) {
+			return false;
+		}
+
+		$this->out('Exporting database content to file:');
+		$this->quiet($filename);
+
+		$auth = $this->_storeAuth($connection, 'mysqldump');
 		exec(sprintf('%s --defaults-file=%s -t %s %s > %s'
-			, 'mysqldump'
-			, $auth
-			, $this->connection['database']
-			, implode($this->_tableOrder(true), ' ')
-			, $filename));
+			, 'mysqldump', $auth, $connection['database']
+			, implode($tables, ' '), $filename));
 		unlink($auth);
 
-		$this->out("Exported database content to file:");
-		$this->quiet($filename);
+		$this->out('Done');
 	}
 
-	public function import($sqlname = NULL)
+	public function import($filename = NULL)
 	{
-		if(empty($sqlname)) {
-			$this->out("Input filename.sql missing.");
-			return;
+		if(empty($filename)) {
+			$this->err('Missing `filename` parameter');
+			return false;
 		}
 
-		$filename = $this->_importFile($sqlname);
+		if(!Folder::isAbsolute($filename)) {
+			$filename = $this->target . DS . $filename;
+		}
+
+		if(!file_exists($filename)) {
+			$this->err(sprintf('File `%s` does not exists', $filename));
+			return false;
+		}
+
+		if(!is_readable($filename)) {
+			$this->err(sprintf('File `%s` not readable', $filename));
+			return false;
+		}
 
 		if(filesize($filename) == 0) {
-			$this->out("Refusing to import empty file!");
-			return;
+			$this->err(sprintf('File `%s` is empty', $filename));
+			return false;
 		}
 
-		$this->out("Truncating database tables...");
-		foreach($this->_tableOrder(false) as $tbl) {
-			$this->loadModel($tbl)->query()->delete()->execute();
+		$tables = $this->_tableOrder(false);
+		if(empty($tables)) {
+			return false;
 		}
 
-        $auth = $this->_storeAuth('mysql');
+		$this->out('Truncating database tables...');
+		foreach($tables as $table) {
+			$this->loadModel($table)->query()->delete()->execute();
+		}
+
+		$this->out("Importing database content from file:");
+		$this->quiet($filename);
+
+		$connection = ConnectionManager::getConfig('default');
+		$auth = $this->_storeAuth($connection, 'mysql');
 		exec(sprintf('%s --defaults-extra-file=%s %s < %s'
-			, 'mysql'
-			, $auth
-			, $this->connection['database']
+			, 'mysql', $auth, $connection['database']
 			, $filename));
 		unlink($auth);
 
-		$this->out("Imported database content from file:");
-		$this->quiet($filename);
+		$this->out('Done');
 	}
 
 	private function _tableOrder($fill = true)
@@ -140,71 +166,33 @@ class BackupShell extends Shell
 				];
 		}
 
-		$tables = ConnectionManager::get('default')->schemaCollection()->listTables();
+		$connection = ConnectionManager::get('default');
+		$tables = $connection->schemaCollection()->listTables();
 		$count = 0;
 		foreach($tables as $name) {
 			$table = $this->loadModel($name);
 			if($table instanceof AppTable)
 				$count++;
 		}
-
-		if(count($order) != $count)
-			throw new InternalErrorException('Inconsistent table count.');
+		if(count($order) != $count) {
+			$this->err('Inconsistent table count.');
+			return [];
+		}
 
 		return $order;
 	}
 
-	protected function _exportFile()
+	protected function _storeAuth($conn, $app)
 	{
-		$filename = sprintf('backup_%s_%s.sql'
-						, $this->connection['database']
-						, date('YmdHis'));
+		$auth = tempnam(sys_get_temp_dir(), 'auth');
 
-        if (!Folder::isAbsolute($filename)) {
-            $filename = $this->target . DS . $filename;
-        }
+		file_put_contents($auth
+			, sprintf("[%s]\nuser=%s\npassword=\"%s\"\nhost=%s"
+				, $app, $conn['username']
+				, empty($conn['password'])? NULL : $conn['password']
+				, $conn['host']
+			)	);
 
-        if (!is_writable(dirname($filename))) {
-            throw new InternalErrorException('File or directory `{0}` not writable', dirname($filename));
-        }
-
-        if (file_exists($filename)) {
-            throw new InternalErrorException('File `{0}` already exists', $filename);
-        }
-
-		return $filename;
+		return $auth;
 	}
-
-	protected function _importFile($import)
-	{
-		$filename = $import;
-
-        if (!Folder::isAbsolute($filename)) {
-            $filename = $this->target . DS . $filename;
-        }
-
-        if (!is_readable(dirname($filename))) {
-            throw new InternalErrorException(sprintf('File or directory `%s` not readable', dirname($filename)));
-        }
-
-        if (!file_exists($filename)) {
-            throw new InternalErrorException(sprintf('File `%s` does not exists', $filename));
-        }
-
-		return $filename;
-	}
-
-    protected function _storeAuth($app)
-    {
-        $auth = tempnam(sys_get_temp_dir(), 'auth');
-
-        file_put_contents($auth, sprintf(
-            "[%s]\nuser=%s\npassword=\"%s\"\nhost=%s",
-			$app, $this->connection['username'],
-            empty($this->connection['password']) ? null : $this->connection['password'],
-            $this->connection['host']
-        ));
-
-        return $auth;
-    }
 }
