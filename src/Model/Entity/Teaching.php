@@ -28,4 +28,18 @@ class Teaching
 		$student = $this->student ?: $fallback;
 		return $student->getUrl() . '/teacher';
 	}
+
+	public function progress()
+	{
+		$txp = $xp = 0;
+		for($i = $this->xp * 2; $i >= 6; $i -= 6) {
+			$xp += 2;
+			$txp += 2;
+		}
+		for( ; $i >= 2; $i -= 2) {
+			$xp += 1;
+		}
+		$txp += $i;
+		return [$txp, $xp];
+	}
 }
