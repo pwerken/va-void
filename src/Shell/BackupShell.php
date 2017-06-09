@@ -114,6 +114,30 @@ class BackupShell extends Shell
 		$this->out('Done');
 	}
 
+	public function getOptionParser()
+	{
+		$parser = parent::getOptionParser();
+		$parser->setDescription('Shell to handle database backups.');
+
+		$parser->addSubcommand('index',
+			[ 'help' => 'List database backups.' ]);
+
+		$parser->addSubcommand('export',
+			[ 'help' => 'Exports a database backup.' ]);
+
+		$parser->addSubcommand('import',
+			[ 'help' => 'Imports a database backup.'
+			, 'parser' =>
+				[ 'options' =>
+					[ 'filename' =>
+						[ 'help' => 'Filename. It can be an absolute path.'
+						, 'required' => true
+						, 'short' => 'f'
+			]	]	]	]);
+
+		return $parser;
+	}
+
 	private function _tableOrder($fill = true)
 	{
 		if($fill) {
