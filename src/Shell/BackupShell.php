@@ -3,12 +3,27 @@ namespace App\Shell;
 
 use App\Model\Table\AppTable;
 use Cake\Console\Shell;
+use Cake\Core\Configure;
 use Cake\Datasource\ConnectionManager;
 use Cake\Filesystem\Folder;
+use Cake\Utility\Hash;
 
 class BackupShell extends Shell
 {
-	protected $target = ROOT . DS . 'backups';
+	protected $config;
+
+	public function initialize()
+	{
+		parent::initialize();
+
+		$defaults =
+			[ 'target' => ROOT . DS . 'backups' . DS
+			, 'mysql' => '/usr/bin/mysql'
+			, 'mysqldump' => '/usr/bin/mysqldump'
+			];
+
+		$this->config = (Hash::merge($defaults, Configure::read('Backups')));
+	}
 
 	public function main()
 	{
@@ -17,12 +32,12 @@ class BackupShell extends Shell
 
 	public function index()
 	{
-		$files = (new Folder($this->target))->find('.+\.sql');
+		$files = (new Folder($this->config['target']))->find('.+\.sql');
 		sort($files);
 
 		$backups = collection($files)
 			->map(function ($file) {
-				$fullpath = $this->target . DS . $file;
+				$fullpath = $this->config['target'] . $file;
 				$datetime = date('Y-m-d H:i:s', filemtime($fullpath));
 				return [ $file, filesize($fullpath), $datetime ];
 			})
@@ -34,13 +49,14 @@ class BackupShell extends Shell
 
 	public function export()
 	{
-		if(!is_writable($this->target)) {
-			$this->err(sprintf('Directory `%s` not writable', $this->target));
+		$target = $this->config['target'];
+		if(!is_writable($target)) {
+			$this->err(sprintf('Directory `%s` not writable', $target));
 			return false;
 		}
 
 		$connection = ConnectionManager::getConfig('default');
-		$filename = $this->target . DS . sprintf('backup_%s_%s.sql'
+		$filename = sprintf('%sbackup_%s_%s.sql', $target
 						, $connection['database'], date('YmdHis'));
 
 		if(file_exists($filename)) {
@@ -57,9 +73,9 @@ class BackupShell extends Shell
 		$this->quiet($filename);
 
 		$auth = $this->_storeAuth($connection, 'mysqldump');
-		exec(sprintf('%s --defaults-file=%s -t %s %s > %s'
-			, 'mysqldump', $auth, $connection['database']
-			, implode($tables, ' '), $filename));
+		exec(sprintf('%s --defaults-file=%s -t --result-file=%s %s %s'
+			, $this->config['mysqldump'], $auth
+			, $filename, $connection['database'], implode($tables, ' ')));
 		unlink($auth);
 
 		$this->out('Done');
@@ -73,7 +89,7 @@ class BackupShell extends Shell
 		}
 
 		if(!Folder::isAbsolute($filename)) {
-			$filename = $this->target . DS . $filename;
+			$filename = Configure::read('Backups.target') . $filename;
 		}
 
 		if(!file_exists($filename)) {
@@ -107,8 +123,8 @@ class BackupShell extends Shell
 		$connection = ConnectionManager::getConfig('default');
 		$auth = $this->_storeAuth($connection, 'mysql');
 		exec(sprintf('%s --defaults-extra-file=%s %s < %s'
-			, 'mysql', $auth, $connection['database']
-			, $filename));
+			, $this->config['mysql'], $auth
+			, $connection['database'], $filename));
 		unlink($auth);
 
 		$this->out('Done');

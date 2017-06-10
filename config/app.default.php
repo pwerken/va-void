@@ -79,6 +79,15 @@ return [
         // 'timestamp' => true,
     ],
 
+	/**
+	 * BackupShell configuration
+	 */
+	'Backups' => [
+		'target' => ROOT .DS . 'backups' . DS,
+		'mysql' => '/usr/bin/mysql',
+		'mysqldump' => '/usr/bin/mysqldump',
+	],
+
     /**
      * Configure the cache adapters.
      */
