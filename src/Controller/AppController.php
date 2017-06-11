@@ -91,7 +91,7 @@ class AppController
 
 	public function isAuthorized($user)
 	{
-		AuthState::setAuth($this->Auth, $this->hasAuthUser());
+		AuthState::setAuth($this->Auth, $this->request->param('plin'));
 
 		$auths = $this->Crud->action()->config('auth') ?: ['super'];
 		foreach($auths as $role) {
@@ -181,12 +181,6 @@ class AppController
 		if(method_exists($this->Crud->action(), 'publishViewVar'))
 			$this->Crud->action()->publishViewVar($event);
 		return $this->render();
-	}
-
-	protected function hasAuthUser($id = null)
-	{
-		$id = ($id ?: $this->request->param('plin'));
-		return ($this->Auth->user('id') == $id);
 	}
 
 	protected function mapMethod($action, $auth = [], $contain = false)

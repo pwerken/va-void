@@ -1,6 +1,8 @@
 <?php
 namespace App;
 
+use App\Model\Entity\Player;
+
 class AuthState
 {
 	private static $_auth = NULL;
@@ -23,17 +25,16 @@ class AuthState
 		return self::roleToInt($role) <= self::$_role;
 	}
 
-	public static function setAuth($auth, $isUser)
+	public static function setAuth($auth, $plin)
 	{
 		self::$_auth = $auth;
-		self::$_user = $isUser;
+		self::$_user = $auth->user('id') == $plin;
 		self::$_role = self::roleToInt($auth->user('role'));
 	}
 
 	private static function roleToInt($role)
 	{
-		$roles = ['player','referee','infobalie','super'];
-		foreach($roles as $key => $value) {
+		foreach(Player::roleValues() as $key => $value) {
 			if(strcasecmp($role, $value) == 0)
 				return $key + 1;
 		}
