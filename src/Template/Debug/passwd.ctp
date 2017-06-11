@@ -8,13 +8,15 @@ foreach($links as $url => $descr)
     </ul>
 </nav>
 <div class="players index large-9 medium-8 columns content">
-    <h3>Create database password hash</h3>
+    <h3>Set Player Password</h3>
 <?php
 
 echo $this->Form->create();
-echo $this->Form->input('password',
-		['label' => 'Password', 'type' => 'password']);
-echo $this->Form->button(__('Generate'));
+echo $this->Form->input('plin'
+		, ['label' => 'Plin', 'type' => 'text']);
+echo $this->Form->input('password'
+		, ['label' => 'Password', 'type' => 'password']);
+echo $this->Form->button(__('Set'));
 
 ?>
 </div>

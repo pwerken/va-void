@@ -59,8 +59,10 @@ Router::scope('/', function (RouteBuilder $routes) {
 	$defaults = [];
 	$defaults['_method'] = ['GET', 'POST'];
 	$defaults['controller'] = 'Debug';
-	$defaults['action'] = 'display';
-	$routes->connect('/debug/*', $defaults);
+	$defaults['action'] = 'index';
+	$routes->connect('/debug', $defaults);
+	unset($defaults['action']);
+	$routes->connect('/debug/:action', $defaults);
 
 	/**
 	 *	Authentication related URIs
