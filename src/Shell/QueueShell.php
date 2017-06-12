@@ -60,7 +60,10 @@ class QueueShell extends Shell
 
 	public function printed($id)
 	{
-		$lammies = $this->Lammies->find('printing')->all();
+		$query = $this->Lammies->find('printing');
+		$query->where(["Lammies.id <=" => $id]);
+		$lammies = $query->all();
+
 		$this->Lammies->setStatuses($lammies, 'Printed');
 		$this->quiet($lammies->count());
 	}
