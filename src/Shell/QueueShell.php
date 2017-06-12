@@ -64,4 +64,59 @@ class QueueShell extends Shell
 		$this->Lammies->setStatuses($lammies, 'Printed');
 		$this->quiet($lammies->count());
 	}
+
+	public function getOptionParser()
+	{
+		$parser = parent::getOptionParser();
+		$parser->setDescription(
+				[ 'Handle lammy printing queue and pdf generation.', ''
+				, 'Returns the <id> of the last unprinted lammy in the queue'
+				. ' when called with out any parameters.'
+				])
+			->addSubcommand('single',
+				[ 'help' => 'Create a PDF for single-sided printing.'
+				, 'parser' =>
+					[ 'arguments' =>
+						[ 'id' =>
+							[ 'help' => '<id> of the last lammy to include.'
+							, 'required' => true
+							]
+						, 'filename' =>
+							[ 'help' => 'It can be an absolute path.'
+							, 'required' => false
+				]	]	]	])
+			->addSubcommand('double',
+				[ 'help' => 'Create a PDF for double-sided printing.'
+				, 'parser' =>
+					[ 'arguments' =>
+						[ 'id' =>
+							[ 'help' => '<id> of the last lammy to include.'
+							, 'required' => true
+							]
+						, 'filename' =>
+							[ 'help' => 'It can be an absolute path.'
+							, 'required' => false
+				]	]	]	])
+			->addSubcommand('printed',
+				[ 'help' => 'Mark queued lammies as printed.'
+				, 'parser' =>
+					[ 'arguments' =>
+						[ 'id' =>
+							[ 'help' => 'Mark lammies as printed'
+										. ' up to and including <id>.'
+							, 'required' => true
+				]	]	]	])
+			->removeOption('quiet')
+			->removeOption('verbose');
+
+		foreach($parser->subcommands() as $sub) {
+			$sub = $sub->parser();
+			if(!$sub) continue;
+
+			$sub->removeOption('quiet');
+			$sub->removeOption('verbose');
+		}
+
+		return $parser;
+	}
 }
