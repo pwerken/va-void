@@ -83,11 +83,6 @@ class BackupShell extends Shell
 
 	public function import($filename = NULL)
 	{
-		if(empty($filename)) {
-			$this->err('Missing `filename` parameter');
-			return false;
-		}
-
 		if(!Folder::isAbsolute($filename)) {
 			$filename = Configure::read('Backups.target') . $filename;
 		}
@@ -144,11 +139,10 @@ class BackupShell extends Shell
 		$parser->addSubcommand('import',
 			[ 'help' => 'Imports a database backup.'
 			, 'parser' =>
-				[ 'options' =>
+				[ 'arguments' =>
 					[ 'filename' =>
-						[ 'help' => 'Filename. It can be an absolute path.'
+						[ "help" => "Backup sql-file to import.\nIt can be an absolute path."
 						, 'required' => true
-						, 'short' => 'f'
 			]	]	]	]);
 
 		return $parser;
