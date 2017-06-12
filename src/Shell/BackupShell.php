@@ -73,9 +73,12 @@ class BackupShell extends Shell
 		$this->quiet($filename);
 
 		$auth = $this->_storeAuth($connection, 'mysqldump');
-		exec(sprintf('%s --defaults-file=%s -t --result-file=%s %s %s'
-			, $this->config['mysqldump'], $auth
-			, $filename, $connection['database'], implode($tables, ' ')));
+		$cmd = sprintf('%s --defaults-file=%s -t --result-file=%s %s %s'
+					, $this->config['mysqldump'], $auth
+					, $filename, $connection['database']
+					, implode($tables, ' '));
+		$this->verbose("exec: $cmd");
+		exec($cmd);
 		unlink($auth);
 
 		$this->out('Done');
@@ -109,6 +112,7 @@ class BackupShell extends Shell
 
 		$this->out('Truncating database tables...');
 		foreach($tables as $table) {
+			$this->verbose("- $table");
 			$this->loadModel($table)->query()->delete()->execute();
 		}
 
@@ -117,9 +121,11 @@ class BackupShell extends Shell
 
 		$connection = ConnectionManager::getConfig('default');
 		$auth = $this->_storeAuth($connection, 'mysql');
-		exec(sprintf('%s --defaults-extra-file=%s %s < %s'
-			, $this->config['mysql'], $auth
-			, $connection['database'], $filename));
+		$cmd = sprintf('%s --defaults-extra-file=%s %s < %s'
+					, $this->config['mysql'], $auth
+					, $connection['database'], $filename);
+		$this->verbose("exec: $cmd");
+		exec($cmd);
 		unlink($auth);
 
 		$this->out('Done');
