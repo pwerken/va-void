@@ -8,10 +8,8 @@ use Cake\Filesystem\File;
 
 class QueueShell extends Shell
 {
-	public function initialize()
+	public function startup()
 	{
-		parent::initialize();
-		$this->_io->level(ConsoleIo::QUIET);
 		$this->loadModel('Lammies');
 	}
 
@@ -19,9 +17,9 @@ class QueueShell extends Shell
 	{
 		$result = $this->Lammies->find('lastInQueue')->all();
 		if($result->count() == 0)
-			$this->quiet(0);
+			$this->out(0);
 		else
-			$this->quiet($result->first()->id);
+			$this->out($result->first()->id);
 	}
 
 	public function single($id = 0, $filename = NULL)
@@ -49,7 +47,7 @@ class QueueShell extends Shell
 			})->toArray();
 
 		if(empty($filename)) {
-			$this->quiet((new PdfView())->createPdf($lammies, $double));
+			$this->out((new PdfView())->createPdf($lammies, $double));
 			return;
 		}
 
@@ -65,7 +63,8 @@ class QueueShell extends Shell
 		$lammies = $query->all();
 
 		$this->Lammies->setStatuses($lammies, 'Printed');
-		$this->quiet($lammies->count());
+
+		$this->out($lammies->count());
 	}
 
 	public function getOptionParser()
