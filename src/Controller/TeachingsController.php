@@ -66,27 +66,4 @@ class TeachingsController
 		return $query->all();
 	}
 
-	private function dataNameToId($table, $field)
-	{
-		if(!array_key_exists($field, $this->request->data)) {
-			return null;
-		}
-
-		$name = $this->request->data($field);
-		unset($this->request->data[$field]);
-		if(empty($name)) {
-			$name = "-";
-		}
-
-		$model = $this->loadModel($table);
-		$ids = $model->findByName($name)->select('id', true)
-					->hydrate(false)->all();
-		if($ids->count() == 0) {
-			$this->request->data($field.'_id', -1);
-		} else {
-			$this->request->data($field.'_id', $ids->first()['id']);
-		}
-		return $name;
-	}
-
 }

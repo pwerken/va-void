@@ -236,4 +236,41 @@ class AppController
 			, 'list' => $content
 			]);
 	}
+
+	protected function dataNameToId($table, $field)
+	{
+		if(!array_key_exists($field, $this->request->data)) {
+			return null;
+		}
+
+		$name = $this->request->data($field);
+		unset($this->request->data[$field]);
+		if(empty($name)) {
+			$name = "-";
+		}
+
+		$model = $this->loadModel($table);
+		$ids = $model->findByName($name)->select('id', true)
+					->hydrate(false)->all();
+		if($ids->count() == 0) {
+			$this->request->data($field.'_id', -1);
+		} else {
+			$this->request->data($field.'_id', $ids->first()['id']);
+		}
+		return $name;
+	}
+
+	protected function dataNameToIdAndAddIfMissing($table, $field)
+	{
+		$name = $this->dataNameToId($table, $field);
+		$id = $this->request->data($field.'_id');
+		if($id < 0) {
+			$model = $this->loadModel($table);
+			$obj = $model->newEntity();
+			$obj->name = $name;
+			$model->save($obj);
+			$this->request->data($field.'_id', $obj->id);
+		}
+		return $name;
+	}
 }
