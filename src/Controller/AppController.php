@@ -116,24 +116,6 @@ class AppController
 	{
 		$action = $this->request->action;
 
-		// = (A && B) || C
-		$startPlin  = strcmp($this->name, 'Characters') == 0;
-		$startPlin &= in_array($action, ['delete', 'edit', 'view', 'queue']);
-		$startPlin |= strcmp(substr($action, 0, 10), 'characters') == 0;
-
-		if($startPlin && isset($event->subject->args[1])) {
-			$plin = $event->subject->args[0];
-			$chin = $event->subject->args[1];
-
-			$char = $this->loadModel('Characters')->plinChin($plin, $chin)->id;
-			array_shift($event->subject->args);
-			$event->subject->args[0] = $char;
-
-			if(strcmp($action, 'charactersAdd') == 0) {
-				$this->request->data('character_id', $char);
-			}
-		}
-
 		if(strcmp(substr($action, -3, 3), 'add') == 0
 		|| strcmp(substr($action, -4, 4), 'edit') == 0) {
 			foreach($this->loadModel()->associations() as $a) {

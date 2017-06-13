@@ -24,7 +24,7 @@ class CharactersPowersController
 			]);
 	}
 
-	public function charactersQueue($plin, $chin, $coin)
+	public function charactersQueue($character_id, $coin)
 	{
 		$this->queueLammy();
 	}

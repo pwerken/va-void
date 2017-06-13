@@ -22,17 +22,12 @@ class TeachingsController
 			]);
 	}
 
-	public function charactersEdit($plin, $chin)
+	public function charactersEdit($student_id)
 	{
-		$student_id = ($this->Teachings->findStudent($plin, $chin));
-
-		$this->loadModel('Characters');
-		if(is_null($student_id)) {
+		$action = 'charactersEdit';
+		if(!$this->Teachings->exists(['student_id = ' => $student_id])) {
 			$action = 'charactersAdd';
-			$char = $this->Characters->findByPlayerIdAndChin($plin, $chin)->first();
-			$this->request->data('student_id', $char ? $char->id : -1);
-		} else {
-			$action = 'charactersEdit';
+			$this->request->data('student_id', $student_id);
 		}
 
 		if(array_key_exists('plin', $this->request->data)
@@ -42,7 +37,8 @@ class TeachingsController
 			$chin = $this->request->data('chin');
 
 			if($plin || $chin) {
-				$char = $this->Characters->findByPlayerIdAndChin($plin, $chin)->first();
+				$chars = $this->loadModel('Characters');
+				$char = $chars->findByPlayerIdAndChin($plin, $chin)->first();
 				$this->request->data('teacher_id', $char ? $char->id : -1);
 			} else {
 				$this->request->data('teacher_id', null);
@@ -57,7 +53,7 @@ class TeachingsController
 		return $this->Crud->execute($action);
 	}
 
-	public function charactersQueue($plin, $chin)
+	public function charactersQueue($student_id)
 	{
 		$this->queueLammy();
 	}

@@ -14,13 +14,13 @@
  */
 namespace App;
 
+use App\Routing\Middleware\CorsMiddleware;
+use App\Routing\Middleware\PlinChinMiddleware;
 use Cake\Core\Configure;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
-
-use App\Routing\Middleware\CorsMiddleware;
 
 /**
  * Application setup class.
@@ -50,7 +50,10 @@ class Application extends BaseApplication
             ->add(CorsMiddleware::class)
 
             // Apply routing
-            ->add(RoutingMiddleware::class);
+            ->add(RoutingMiddleware::class)
+
+            // Convert url's :plin/:chin to :character_id
+            ->add(PlinChinMiddleware::class);
 
         return $middlewareQueue;
     }

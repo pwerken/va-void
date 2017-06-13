@@ -52,7 +52,7 @@ class CharactersController
 		$this->Crud->execute();
 	}
 
-	public function edit($plin, $chin)
+	public function edit($id)
 	{
 		// make the virtual fields assignable
 		$this->dataNameToId('factions', 'faction');
@@ -90,7 +90,7 @@ class CharactersController
 			]);
 	}
 
-	public function queue($plin, $chin)
+	public function queue($id)
 	{
 		$this->Crud->on('beforeRender', function ($event) {
 			$table = $this->loadModel('lammies');
