@@ -27,6 +27,9 @@ class BackupShell extends Shell
 
 	public function main()
 	{
+		$this->checkApp($this->config['mysql']);
+		$this->checkApp($this->config['mysqldump']);
+
 		$this->index();
 	}
 
@@ -69,6 +72,10 @@ class BackupShell extends Shell
 			return false;
 		}
 
+		if(!$this->checkApp($this->config['mysqldump'])) {
+			return false;
+		}
+
 		$this->out('Exporting database content to file:');
 		$this->quiet($filename);
 
@@ -107,6 +114,10 @@ class BackupShell extends Shell
 
 		$tables = $this->_tableOrder(false);
 		if(empty($tables)) {
+			return false;
+		}
+
+		if(!$this->checkApp($this->config['mysql'])) {
 			return false;
 		}
 
@@ -234,5 +245,18 @@ class BackupShell extends Shell
 			)	);
 
 		return $auth;
+	}
+
+	protected function checkApp($app)
+	{
+		exec("$app --help 2>&1", $output, $retval);
+
+		if($retval <> 0) {
+			$this->err(sprintf("Error executing `%s`, check your config."
+							, $app));
+			return false;
+		}
+
+		return true;
 	}
 }
