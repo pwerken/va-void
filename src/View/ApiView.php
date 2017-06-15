@@ -45,7 +45,7 @@ class ApiView
 		if(!($obj instanceof AppEntity))
 			return $obj;
 
-        $class = $obj->getClass();
+		$class = $obj->getClass();
 		$result = [];
 		$result['class'] = $class;
 		$result['url']   = $obj->getUrl();

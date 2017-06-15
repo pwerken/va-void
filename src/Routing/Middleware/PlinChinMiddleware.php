@@ -9,7 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class PlinChinMiddleware
 {
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
+	public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
 	{
 		$controller = $request->getParam('controller');
 		$action = $request->getParam('action');
@@ -29,7 +29,7 @@ class PlinChinMiddleware
 			$request = $request->withParam('pass', $pass);
 		}
 
-        return $next($request, $response);
-    }
+		return $next($request, $response);
+	}
 
 }

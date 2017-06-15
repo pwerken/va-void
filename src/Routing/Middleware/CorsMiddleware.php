@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class CorsMiddleware
 {
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
+	public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
 	{
 		$response->cors($request)
 			->allowOrigin(['*.the-vortex.nl', 'yvo.muze.nl', 'localhost'])
@@ -22,7 +22,7 @@ class CorsMiddleware
 		if($request->is('options')) {
 			return $response;
 		}
-        return $next($request, $response);
-    }
+		return $next($request, $response);
+	}
 
 }

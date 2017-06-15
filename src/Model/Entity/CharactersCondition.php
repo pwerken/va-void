@@ -6,8 +6,7 @@ class CharactersCondition
 {
 
 	protected $_hidden = [ 'character_id', 'condition_id' ];
-
-    protected $_compact = [ 'expiry', 'character', 'condition' ];
+	protected $_compact = [ 'expiry', 'character', 'condition' ];
 
 	public function getUrl($parent = null)
 	{

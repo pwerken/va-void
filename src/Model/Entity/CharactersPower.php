@@ -6,8 +6,7 @@ class CharactersPower
 {
 
 	protected $_hidden = [ 'character_id', 'power_id' ];
-
-    protected $_compact = [ 'expiry', 'character', 'power' ];
+	protected $_compact = [ 'expiry', 'character', 'power' ];
 
 	public function getUrl($parent = null)
 	{
