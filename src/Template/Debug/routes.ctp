@@ -24,8 +24,16 @@ foreach (Router::routes() as $key => $route)
 	if(is_array($method))
 		$method = implode(',', $method);
 
-	$action = @$route->defaults['action'] ?: ':action';
-	$function = $route->defaults['controller'].'->'.$action;
+	$prefix = '';
+	if(isset($route->defaults['prefix'])) {
+		$prefix = $route->defaults['prefix'] . '\\';
+	}
+
+	$action = ':action';
+	if(isset($route->defaults['action'])) {
+		$action = $route->defaults['action'];
+	}
+	$function = $prefix.$route->defaults['controller'].'->'.$action;
 
     printf( "<tr><td>%s</td><td>%s</td><td>%s( %s )</td></tr>\n"
 			, $route->template
