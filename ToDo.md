@@ -9,7 +9,7 @@ ToDo-list:
  - Authorization
    - [ ] account/password management
  - Business logic
-   - [ ] queueing of individual cards
+   - [x] queueing of individual cards
    - [x] update character->modified of when modifying relations
    - [ ] more validator rules
    - [ ] Condition/Power uniq per character (= like items)
@@ -19,8 +19,8 @@ ToDo-list:
    - [ ] Skills: add base/extra/deprecated
    - [ ] Skills: add class (fighter/healing/mage,...)
    - [ ] Skills: prereq check
-   - [ ] Teaching: track student/teacher relation
-   - [ ] Events: for teaching or checkout processing?
+   - [x] Teaching: track student/teacher relation
+   - [x] Events: for teaching or checkout processing?
    - [ ] use 'Labels' (?) for factions/worlds/groups/etc...
    - [ ] Attributes: clean up & make consistent
    - [ ] templating for common conditions/powers/items
@@ -33,6 +33,5 @@ ToDo-list:
    - [x] speed up index() listings
    - [ ] headers: Last-Modified / ETag
    - [ ] CORS: configurable allowOrigin
-   - [ ] lighttpd: baseurl detection
  - Upstream changes
    - [ ] Crud cake3: support multiple primary keys
