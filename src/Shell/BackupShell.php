@@ -88,6 +88,16 @@ class BackupShell extends Shell
 		exec($cmd);
 		unlink($auth);
 
+		if(!file_exists($filename)) {
+			$this->err(sprintf('File `%s` not created', $filename));
+			return false;
+		}
+
+		if(filesize($filename) == 0) {
+			$this->err(sprintf('File `%s` is empty', $filename));
+			return false;
+		}
+
 		$this->out('Done');
 	}
 
