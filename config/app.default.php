@@ -129,6 +129,18 @@ return [
         ],
     ],
 
+	/**
+	 * Configure Cross Origin Request Headers (CORS).
+	 */
+	'Cors' => [
+		'allowOrigin' => [ '*' ],
+		'allowCredentials' => true,
+		'allowMethods' => [ 'GET', 'PUT', 'DELETE', 'POST', 'OPTIONS' ],
+		'allowHeaders' => [ 'x-requested-with', 'Content-type', 'origin',
+		                    'authorization', 'accept' ],
+		'exposeHeaders' => [ 'Location' ],
+	],
+
     /**
      * Configure the Error and Exception handlers used by your application.
      *
