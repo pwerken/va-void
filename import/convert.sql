@@ -7,6 +7,7 @@ DELETE FROM `va-void`.`characters_spells`;
 DELETE FROM `va-void`.`attributes`;
 DELETE FROM `va-void`.`conditions`;
 DELETE FROM `va-void`.`powers`;
+DELETE FROM `va-void`.`teachings`;
 DELETE FROM `va-void`.`skills`;
 DELETE FROM `va-void`.`spells`;
 DELETE FROM `va-void`.`manatypes`;
