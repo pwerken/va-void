@@ -77,16 +77,18 @@ class ApiView
 		$result['class'] = 'List';
 		$result['url'] = '';
 
+		$parentUrl = null;
 		$remove = '';
 		if($parent) {
+			$parentUrl = $parent->getUrl();
 			$remove = strtolower($parent->getClass());
-			$result['url'] = $parent->getUrl().'/'.$key;
+			$result['url'] = $parentUrl.'/'.$key;
 			$result['parent'] = $this->_jsonCompact($parent);
 		}
 
 		$result['list'] = [];
 		foreach($list as $obj) {
-			$value = $this->_jsonCompact($obj, $parent, $parent->getUrl());
+			$value = $this->_jsonCompact($obj, $parent, $parentUrl);
 			unset($value[$remove]);
 			$result['list'][] = $value;
 		}
