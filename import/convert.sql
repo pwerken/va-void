@@ -248,6 +248,18 @@ UPDATE `va-void`.`skills` SET `id` = `id` + 1000;
 UPDATE `va-void`.`skills` SET `id` = @a:=@a+1 ORDER BY `sort_order`, `name`;
 UPDATE `va-void`.`skills` SET `deprecated` = 1 WHERE `sort_order` = 200;
 
+UPDATE `va-void`.`skills` SET `id` = 1101 WHERE `id` =  101;
+UPDATE `va-void`.`skills` SET `id` =  101 WHERE `id` =  102;
+UPDATE `va-void`.`skills` SET `id` =  102 WHERE `id` = 1101;
+UPDATE `va-void`.`skills` SET `sort_order` = `sort_order` + 1
+	WHERE `id` > 101 AND `sort_order` < 79;
+
+UPDATE `va-void`.`skills` SET `id` = 1126 WHERE `id` =  126;
+UPDATE `va-void`.`skills` SET `id` =  126 WHERE `id` =  127;
+UPDATE `va-void`.`skills` SET `id` =  127 WHERE `id` = 1126;
+UPDATE `va-void`.`skills` SET `sort_order` = `sort_order` + 1
+	WHERE `id` > 126 AND `sort_order` < 99;
+
 SELECT " auto increments" AS '';
 ALTER TABLE `va-void`.`believes`   auto_increment = 1;
 ALTER TABLE `va-void`.`characters` auto_increment = 1;
