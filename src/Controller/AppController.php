@@ -135,20 +135,13 @@ class AppController
 		if(!$event->subject->success)
 			throw new ValidationException($event->subject->entity);
 
-		if($event->subject->created) {
-			$this->response->statusCode(201);
-			$this->response->location($event->subject->entity->refresh()->getUrl());
-			return $this->response;
+		if(!$event->subject->created) {
+			return $this->Crud->execute('view');
 		}
 
-		$action = $this->request->params['action'];
-		$action = preg_replace('/^(.*?)[A-Z]?[a-z]*$/', '${1}', $action);
-		$action .= empty($action) ? 'view' : 'View';
-
-		$this->request->params['_method'] = 'GET';
-		$this->request->params['action'] = $action;
-		$this->Crud->beforeFilter($event);
-		return $this->Crud->execute();
+		$this->response->statusCode(201);
+		$this->response->location($event->subject->entity->refresh()->getUrl());
+		return $this->response;
 	}
 	public function CrudAfterDelete(Event $event)
 	{
