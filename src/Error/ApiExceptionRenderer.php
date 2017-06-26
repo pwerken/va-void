@@ -10,6 +10,13 @@ use Exception;
 
 class ApiExceptionRenderer extends ExceptionRenderer
 {
+	public function configuration($error)
+	{
+		$this->controller->set('error', $error);
+		$this->controller->set('errors', $error->getErrors());
+
+		return $this->_outputMessage('error400');
+	}
 
 	protected function _outputMessage($template)
 	{
