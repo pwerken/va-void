@@ -6,6 +6,7 @@ use Cake\Error\Debugger;
 use Cake\Network\Exception\HttpException;
 use Cake\Network\Exception\InternalErrorException;
 use Crud\Error\ExceptionRenderer;
+use Exception;
 
 class ApiExceptionRenderer extends ExceptionRenderer
 {
@@ -13,15 +14,25 @@ class ApiExceptionRenderer extends ExceptionRenderer
 	protected function _outputMessage($template)
 	{
 		$error = $this->controller->viewVars['error'];
-		if(!($error instanceof HttpException))
-			$error = new InternalErrorException($error->getMessage());
+		$status = $code = $error->getCode();
+		try {
+			$this->controller->response->statusCode($status);
+		} catch(Exception $e) {
+			$status = 500;
+			$this->controller->response->statusCode($status);
+		}
+
+		$errors = [];
+		if(isset($this->controller->viewVars['errors'])) {
+			$errors = $this->controller->viewVars['errors'];
+		}
 
 		$data = [];
 		$data['class'] = 'Error';
-		$data['code'] = $error->getCode() ?: 500;
-		$data['url'] = '/'. $this->controller->request->url;
+		$data['code'] = $code;
+		$data['url'] = $this->controller->request->here();
 		$data['message'] = $error->getMessage();
-		$data['errors'] = @$this->controller->viewVars['errors'];
+		$data['errors'] = $errors;
 
 		$jsonOptions = JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT;
 		if(Configure::read('debug'))
@@ -29,8 +40,6 @@ class ApiExceptionRenderer extends ExceptionRenderer
 
 		$this->controller->response->type('json');
 		$this->controller->response->body(json_encode($data, $jsonOptions));
-		$this->controller->response->statusCode($data['code']);
 		return $this->controller->response;
 	}
-
 }
