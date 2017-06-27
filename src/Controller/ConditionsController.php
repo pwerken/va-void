@@ -20,7 +20,7 @@ class ConditionsController
 		$this->mapMethod('add',    [ 'referee'         ]);
 		$this->mapMethod('delete', [ 'super'           ]);
 		$this->mapMethod('edit',   [ 'referee'         ]);
-		$this->mapMethod('index',  [ 'referee'         ]);
+		$this->mapMethod('index',  [ 'players'         ]);
 		$this->mapMethod('view',   [ 'referee', 'user' ], true);
 
 		$this->Crud->mapAction('queue',
@@ -37,6 +37,16 @@ class ConditionsController
 
 		$query = $this->Conditions->find()
 					->select(['Conditions.id', 'Conditions.name'], true);
+
+		if(!AuthState::hasRole('referee')) {
+			$plin = $this->Auth->user('id');
+			$query->where(["Characters.player_id = $plin"])
+					->leftJoin(['CharactersConditions' => 'characters_conditions'],
+						    ['CharactersConditions.condition_id = Conditions.id'])
+					->leftJoin(['Characters' => 'characters'],
+						    ['Characters.id = CharactersConditions.character_id']);
+		}
+
 		$this->doRawIndex($query, 'Condition', '/conditions/', 'coin');
 	}
 

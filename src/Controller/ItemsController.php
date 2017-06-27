@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller;
 
+use App\AuthState;
+
 class ItemsController
 	extends AppController
 {
@@ -19,7 +21,7 @@ class ItemsController
 		$this->mapMethod('add',              [ 'referee'         ]);
 		$this->mapMethod('delete',           [ 'super'           ]);
 		$this->mapMethod('edit',             [ 'referee'         ]);
-		$this->mapMethod('index',            [ 'referee'         ], true);
+		$this->mapMethod('index',            [ 'players'         ], true);
 		$this->mapMethod('view',             [ 'referee', 'user' ], true);
 
 		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], true);
@@ -74,6 +76,12 @@ class ItemsController
 					->select('Characters.status')
 					->leftJoin(['Characters' => 'characters'],
 						    ['Characters.id = Items.character_id']);
+
+		if(!AuthState::hasRole('referee')) {
+			$plin = $this->Auth->user('id');
+			$query->where(["Characters.player_id = $plin"]);
+		}
+
 
 		$content = [];
 		foreach($this->doRawQuery($query) as $row) {

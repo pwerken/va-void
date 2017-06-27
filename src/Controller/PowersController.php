@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller;
 
+use App\AuthState;
+
 class PowersController
 	extends AppController
 {
@@ -18,7 +20,7 @@ class PowersController
 		$this->mapMethod('add',    [ 'referee'         ]);
 		$this->mapMethod('delete', [ 'super'           ]);
 		$this->mapMethod('edit',   [ 'referee'         ]);
-		$this->mapMethod('index',  [ 'referee'         ]);
+		$this->mapMethod('index',  [ 'players'         ]);
 		$this->mapmethod('view',   [ 'referee', 'user' ], true);
 
 		$this->Crud->mapAction('queue',
@@ -35,6 +37,16 @@ class PowersController
 
 		$query = $this->Powers->find()
 					->select(['Powers.id', 'Powers.name'], true);
+
+		if(!AuthState::hasRole('referee')) {
+			$plin = $this->Auth->user('id');
+			$query->where(["Characters.player_id = $plin"])
+					->leftJoin(['CharactersPowers' => 'characters_powers'],
+						    ['CharactersPowers.power_id = Powers.id'])
+					->leftJoin(['Characters' => 'characters'],
+						    ['Characters.id = CharactersPowers.character_id']);
+		}
+
 		$this->doRawIndex($query, 'Power', '/powers/', 'poin');
 	}
 

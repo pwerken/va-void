@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller;
 
+use App\AuthState;
+
 class PlayersController
 	extends AppController
 {
@@ -18,7 +20,7 @@ class PlayersController
 		$this->mapMethod('add',    [ 'infobalie'         ]);
 		$this->mapMethod('edit',   [ 'infobalie', 'user' ]);
 		$this->mapMethod('delete', [ 'super'             ]);
-		$this->mapMethod('index',  [ 'referee'           ]);
+		$this->mapMethod('index',  [ 'players'           ]);
 		$this->mapMethod('view',   [ 'referee',   'user' ], true);
 	}
 
@@ -33,6 +35,11 @@ class PlayersController
 					->select('Players.first_name')
 					->select('Players.insertion')
 					->select('Players.last_name');
+
+		if(!AuthState::hasRole('referee')) {
+			$plin = $this->Auth->user('id');
+			$query->where(["Players.id = $plin"]);
+		}
 
 		$content = [];
 		foreach($this->doRawQuery($query) as $row) {

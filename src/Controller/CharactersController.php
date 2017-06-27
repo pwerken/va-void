@@ -1,8 +1,9 @@
 <?php
 namespace App\Controller;
 
-use Cake\Event\Event;
+use App\AuthState;
 use App\Model\Entity\Lammy;
+use Cake\Event\Event;
 
 class CharactersController
 	extends AppController
@@ -19,7 +20,7 @@ class CharactersController
 		$this->mapMethod('add',           [ 'infobalie'       ]);
 		$this->mapMethod('delete',        [ 'super'           ]);
 		$this->mapMethod('edit',          [ 'referee'         ]);
-		$this->mapMethod('index',         [ 'referee'         ], false, true);
+		$this->mapMethod('index',         [ 'players'         ], false);
 		$this->mapMethod('view',          [ 'referee', 'user' ], true);
 
 		$this->Crud->mapAction('queue',
@@ -71,6 +72,11 @@ class CharactersController
 					->select('Characters.chin')
 					->select('Characters.name')
 					->select('Characters.status');
+
+		if(!AuthState::hasRole('referee')) {
+			$plin = $this->Auth->user('id');
+			$query->where(["Characters.player_id = $plin"]);
+		}
 
 		$content = [];
 		foreach($this->doRawQuery($query) as $row) {
