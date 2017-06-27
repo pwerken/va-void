@@ -200,12 +200,16 @@ class AppController
 
 	protected function doRawQuery($query)
 	{
+		$orWhere = [];
 		$params = [];
 		foreach(explode(' ', $this->request->query('q')) as $q) {
 			foreach($this->searchFields as $field) {
-				$query->orWhere("$field LIKE ?");
+				$orWhere[] = "$field LIKE ?";
 				$params[] = "%$q%";
 			}
+			$query->andWhere(function($exp) use ($orWhere) {
+				return $exp->or_($orWhere);
+			});
 		}
 
 		$conn = ConnectionManager::get('default');
