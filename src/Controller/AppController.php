@@ -1,22 +1,22 @@
 <?php
 namespace App\Controller;
 
-use PDOException;
 use App\AuthState;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
+use Cake\Datasource\ConnectionManager;
 use Cake\Error\ErrorHandler;
 use Cake\Event\Event;
 use Cake\Network\Exception\BadRequestException;
-use Cake\Network\Exception\InternalErrorException;
 use Cake\Utility\Inflector;
 use Crud\Error\Exception\ValidationException;
+use Crud\Controller\ControllerTrait;
+use PDOException;
 
 class AppController
 	extends Controller
 {
-
-	use \Crud\Controller\ControllerTrait;
+	use ControllerTrait;
 
 	public $helpers = [ 'Date' ];
 
@@ -208,7 +208,7 @@ class AppController
 			}
 		}
 
-		$conn = \Cake\Datasource\ConnectionManager::get('default');
+		$conn = ConnectionManager::get('default');
 		return $conn->execute($query->sql(), $params)->fetchAll();
 	}
 	protected function doRawIndex($query, $class, $url, $id = 'id')
