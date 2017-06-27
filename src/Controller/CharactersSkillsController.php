@@ -19,4 +19,10 @@ class CharactersSkillsController
 		$this->mapMethod('skillsIndex',      [ 'referee'         ], true);
 	}
 
+	public function charactersAdd($character_id)
+	{
+		$this->request->data('character_id', $character_id);
+		$this->Crud->execute();
+	}
+
 }

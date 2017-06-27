@@ -24,6 +24,12 @@ class CharactersConditionsController
 			]);
 	}
 
+	public function charactersAdd($character_id)
+	{
+		$this->request->data('character_id', $character_id);
+		$this->Crud->execute();
+	}
+
 	public function charactersQueue($character_id, $coin)
 	{
 		$this->queueLammy();
