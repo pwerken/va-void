@@ -88,6 +88,34 @@ class AdminShell extends Shell
 		$this->out(sprintf('<warning>%s</warning> <info>%d</info> %s', $player->role, $player->id, $player->fullName));
 	}
 
+	public function password($plin)
+	{
+		$this->loadModel('Players');
+		$player = $this->Players->findById($plin)->first();
+		if(is_null($player) || strcmp($player->id, $plin)) {
+			$this->abort(sprintf('No player found with plin `%s`.', $plin));
+		}
+
+		if($this->params['remove']) {
+			$player->password = NULL;
+			$msg = 'Password removed';
+		} else {
+			$player->set('password', $this->in('Password?'));
+			$msg = 'Password set';
+		}
+
+		$this->Players->save($player);
+		$errors = $player->errors('password');
+		if(!empty($errors)) {
+			foreach($errors as $error) {
+				$this->err($error);
+			}
+			return 1;
+		}
+
+		$this->out(sprintf('<info>%4d</info> %s: <warning>%s</warning>', $player->id, $player->fullName, $msg));
+	}
+
 	public function getOptionParser()
 	{
 		$parser = parent::getOptionParser();
@@ -107,6 +135,20 @@ class AdminShell extends Shell
 							[ 'help' => 'The new authorization role to assign to player <plin>.'
 							, 'required' => false
 							, 'choice' => Player::roleValues()
+				]	]	]	])
+			->addSubcommand('password',
+				[ 'help' => 'Set/remove user password.'
+				, 'parser' =>
+					[ 'options' =>
+						[ 'remove' =>
+							[ 'help' => 'Remove password instead of setting it.'
+							, 'required' => false
+							, 'boolean' => true
+						]	]
+					, 'arguments' =>
+						[ 'plin' =>
+							[ 'help' => '<plin> of the player to view/modify.'
+							, 'required' => true
 				]	]	]	])
 			->removeOption('verbose');
 
