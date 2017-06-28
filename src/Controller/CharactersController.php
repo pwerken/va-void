@@ -1,8 +1,8 @@
 <?php
 namespace App\Controller;
 
-use App\AuthState;
 use App\Model\Entity\Lammy;
+use App\Utility\AuthState;
 use Cake\Event\Event;
 
 class CharactersController

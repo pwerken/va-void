@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 
-use App\AuthState;
+use App\Utility\AuthState;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Datasource\ConnectionManager;

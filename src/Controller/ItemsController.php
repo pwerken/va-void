@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 
-use App\AuthState;
+use App\Utility\AuthState;
 
 class ItemsController
 	extends AppController

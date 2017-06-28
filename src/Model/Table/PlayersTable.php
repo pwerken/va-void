@@ -1,7 +1,7 @@
 <?php
 namespace App\Model\Table;
 
-use App\AuthState;
+use App\Utility\AuthState;
 use App\Model\Entity\Player;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;

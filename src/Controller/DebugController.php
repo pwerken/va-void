@@ -1,8 +1,8 @@
 <?php
 namespace App\Controller;
 
-use App\AuthState;
 use App\Model\Entity\Player;
+use App\Utility\AuthState;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;

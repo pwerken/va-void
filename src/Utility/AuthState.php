@@ -1,5 +1,5 @@
 <?php
-namespace App;
+namespace App\Utility;
 
 use App\Model\Entity\Player;
 

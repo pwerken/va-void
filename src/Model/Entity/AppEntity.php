@@ -1,7 +1,7 @@
 <?php
 namespace App\Model\Entity;
 
-use App\AuthState;
+use App\Utility\AuthState;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
