@@ -11,13 +11,13 @@ class CharactersTable
 
 	protected $_contain =
 		[ 'Believes', 'Factions', 'Groups', 'Players', 'Worlds', 'Items'
-		, 'CharactersConditions' => [ 'Conditions' ]
-		, 'CharactersPowers'     => [ 'Powers' ]
-		, 'CharactersSkills'     => [ 'Skills' => [ 'Manatypes' ] ]
-		, 'CharactersSpells'     => [ 'Spells' ]
-		, 'MyTeacher'  =>	[ 'Teacher', 'Student', 'Skills' => [ 'Manatypes' ]
+		, 'CharactersConditions.Conditions'
+		, 'CharactersPowers.Powers'
+		, 'CharactersSkills.Skills.Manatypes'
+		, 'CharactersSpells.Spells'
+		, 'MyTeacher'  =>	[ 'Teacher', 'Student', 'Skills.Manatypes'
 							, 'Started', 'Updated' ]
-		, 'MyStudents' =>	[ 'Teacher', 'Student', 'Skills' => [ 'Manatypes' ]
+		, 'MyStudents' =>	[ 'Teacher', 'Student', 'Skills.Manatypes'
 							, 'Started', 'Updated' ]
 		];
 

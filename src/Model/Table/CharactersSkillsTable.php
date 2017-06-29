@@ -10,7 +10,7 @@ class CharactersSkillsTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'Characters', 'Skills' => [ 'Manatypes' ] ];
+	protected $_contain = [ 'Characters', 'Skills.Manatypes' ];
 
 	public function initialize(array $config)
 	{

@@ -8,7 +8,7 @@ class ItemsTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'Characters', 'AttributesItems' => ['Attributes'] ];
+	protected $_contain = [ 'Characters', 'AttributesItems.Attributes' ];
 
 	public function initialize(array $config)
 	{

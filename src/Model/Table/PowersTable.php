@@ -8,7 +8,7 @@ class PowersTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'CharactersPowers' => [ 'Characters' ] ];
+	protected $_contain = [ 'CharactersPowers.Characters' ];
 
 	public function initialize(array $config)
 	{

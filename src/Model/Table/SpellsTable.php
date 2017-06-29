@@ -8,7 +8,7 @@ class SpellsTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'CharactersSpells' => [ 'Characters' ] ];
+	protected $_contain = [ 'CharactersSpells.Characters' ];
 
 	public function initialize(array $config)
 	{

@@ -8,7 +8,7 @@ class ConditionsTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'CharactersConditions' => [ 'Characters' ] ];
+	protected $_contain = [ 'CharactersConditions.Characters' ];
 
 	public function initialize(array $config)
 	{
