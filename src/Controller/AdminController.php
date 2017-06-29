@@ -10,7 +10,7 @@ use Cake\Network\Exception\ForbiddenException;
 use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
 
-class DebugController
+class AdminController
 	extends Controller
 {
 
@@ -35,7 +35,7 @@ class DebugController
 				]	]
 			, 'unauthorizedRedirect' => false
 			, 'checkAuthIn' => 'Controller.initialize'
-			, 'loginAction' => '/debug/login'
+			, 'loginAction' => '/admin/login'
 			]);
 
 		if(Configure::read('debug') || AuthState::hasRole('Super'))
@@ -163,12 +163,12 @@ class DebugController
 
 	private function links()
 	{
-		return	[ '/debug/routes' => 'View Configured Routes'
-				, '/debug/auth'   => 'View Authorisations'
-				, '/debug/hash'   => 'Create DB Password Hash'
-				, '/debug/login'  => 'Account Login / Logout'
-				, '/debug/passwd' => 'Set Player Password'
-				, '/debug/role'   => 'Set Authorisation'
+		return	[ '/admin/routes' => 'View Configured Routes'
+				, '/admin/auth'   => 'View Authorisations'
+				, '/admin/hash'   => 'Create DB Password Hash'
+				, '/admin/login'  => 'Account Login / Logout'
+				, '/admin/passwd' => 'Set Player Password'
+				, '/admin/role'   => 'Set Authorisation'
 				];
 	}
 

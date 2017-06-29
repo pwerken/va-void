@@ -72,7 +72,7 @@ endif;
 <ul>
 <?php
     $list =
-		[ [ 'Debug',                'index',                           ]
+		[ [ 'Admin',                'index',                           ]
 		, [ 'Players',              'index'                            ]
 		, [ 'Players',              'view',             987            ]
 		, [ 'Characters',           'playersIndex',     987            ]

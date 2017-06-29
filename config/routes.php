@@ -58,11 +58,11 @@ Router::scope('/', function (RouteBuilder $routes) {
      */
 	$defaults = [];
 	$defaults['_method'] = ['GET', 'POST'];
-	$defaults['controller'] = 'Debug';
+	$defaults['controller'] = 'Admin';
 	$defaults['action'] = 'index';
-	$routes->connect('/debug', $defaults);
+	$routes->connect('/admin', $defaults);
 	unset($defaults['action']);
-	$routes->connect('/debug/:action', $defaults);
+	$routes->connect('/admin/:action', $defaults);
 
 	/**
 	 *	Authentication related URIs

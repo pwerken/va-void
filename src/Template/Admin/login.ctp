@@ -14,9 +14,9 @@ foreach($links as $url => $descr)
 if($user) {
 	echo "<p>Logged in as: ".$user['full_name']."<br/>";
 	echo "With auth level: ".$user['role']."</p>";
-	echo $this->Html->link(__('Click here to logout.'), '/debug/logout');
+	echo $this->Html->link(__('Click here to logout.'), '/admin/logout');
 } else {
-	echo $this->Form->create('', ['url' => '/debug/login']);
+	echo $this->Form->create('', ['url' => '/admin/login']);
 	echo "<fieldset>\n";
 	echo $this->Form->input('id', ['label' => 'Plin', 'type' => 'text']);
 	echo $this->Form->input('password', ['type'=>'password']);
