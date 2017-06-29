@@ -5,10 +5,7 @@ class Condition
 	extends AppEntity
 {
 
-	protected $_showAuth =
-			[ 'cs_text'         => 'referee'
-			, 'characters'      => 'referee'
-			];
+	protected $_showAuth = [ 'cs_text' => 'referee' ];
 
 	protected $_compact = [ 'id', 'name' ];
 

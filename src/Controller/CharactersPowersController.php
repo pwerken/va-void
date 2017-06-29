@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller;
 
+use App\Utility\AuthState;
+
 class CharactersPowersController
 	extends AppController
 {
@@ -12,10 +14,10 @@ class CharactersPowersController
 		$this->mapMethod('charactersAdd',    [ 'referee'         ]);
 		$this->mapMethod('charactersDelete', [ 'referee'         ]);
 		$this->mapMethod('charactersEdit',   [ 'referee'         ]);
-		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], true);
+		$this->mapMethod('charactersIndex',  [ 'players'         ], true);
 		$this->mapMethod('charactersView',   [ 'referee', 'user' ], true);
 
-		$this->mapMethod('powersIndex',      [ 'referee'         ], true);
+		$this->mapMethod('powersIndex',      [ 'referee', 'user' ], true);
 
 		$this->Crud->mapAction('charactersQueue',
 			[ 'className' => 'Crud.View'
@@ -35,4 +37,33 @@ class CharactersPowersController
 		$this->queueLammy();
 	}
 
+	public function powersIndex()
+	{
+		if(!AuthState::hasRole('referee')) {
+			$this->Crud->on('beforePaginate', function ($event) {
+				$cond = ['Characters.player_id' => $this->Auth->user('id')];
+				$event->subject()->query->where($cond);
+			});
+		}
+
+		$this->Crud->execute();
+	}
+
+	protected function wantAuthUser()
+	{
+		$plin = parent::wantAuthUser();
+		if($plin !== false) {
+			return $plin;
+		}
+
+		$poin = $this->request->param('poin');
+		$data = $this->CharactersPowers->find()
+					->hydrate(false)
+					->select(['player_id' => 'Characters.player_id'])
+					->where(['CharactersPowers.power_id' => $poin])
+					->contain('Characters')
+					->first();
+
+		return isset($data['player_id']) ? $data['player_id'] : NULL;
+	}
 }

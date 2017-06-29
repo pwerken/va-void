@@ -50,6 +50,23 @@ class ConditionsController
 		$this->doRawIndex($query, 'Condition', '/conditions/', 'coin');
 	}
 
+	public function view($coin)
+	{
+		if(!AuthState::hasRole('referee')) {
+			$this->Crud->on('beforeFind', function ($event) {
+				$cond = ['Characters.player_id' => $this->Auth->user('id')];
+				$event->subject()->query->contain(
+					['CharactersConditions' => function ($query) use ($cond)
+						{
+							return $query->where($cond);
+						}
+					]);
+			});
+		}
+
+		$this->Crud->execute();
+	}
+
 	public function queue($coin)
 	{
 		$this->queueLammy();
@@ -57,6 +74,11 @@ class ConditionsController
 
 	protected function wantAuthUser()
 	{
+		$plin = parent::wantAuthUser();
+		if($plin !== false) {
+			return $plin;
+		}
+
 		$coin = $this->request->param('coin');
 		$this->loadModel('CharactersConditions');
 		$data = $this->CharactersConditions->find()
@@ -66,11 +88,6 @@ class ConditionsController
 					->contain('Characters')
 					->first();
 
-		if(!is_null($data)) {
-			return $data['player_id'];
-		}
-
-		return parent::wantAuthUser();
+		return isset($data['player_id']) ? $data['player_id'] : NULL;
 	}
-
 }

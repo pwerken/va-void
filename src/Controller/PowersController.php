@@ -50,6 +50,23 @@ class PowersController
 		$this->doRawIndex($query, 'Power', '/powers/', 'poin');
 	}
 
+	public function view($poin)
+	{
+		if(!AuthState::hasRole('referee')) {
+			$this->Crud->on('beforeFind', function ($event) {
+				$cond = ['Characters.player_id' => $this->Auth->user('id')];
+				$event->subject()->query->contain(
+					['CharactersPowers' => function ($query) use ($cond)
+						{
+							return $query->where($cond);
+						}
+					]);
+			});
+		}
+
+		$this->Crud->execute();
+	}
+
 	public function queue($poin)
 	{
 		$this->queueLammy();
@@ -57,6 +74,11 @@ class PowersController
 
 	protected function wantAuthUser()
 	{
+		$plin = parent::wantAuthUser();
+		if($plin !== false) {
+			return $plin;
+		}
+
 		$poin = $this->request->param('poin');
 		$this->loadModel('CharactersPowers');
 		$data = $this->CharactersPowers->find()
@@ -66,11 +88,6 @@ class PowersController
 					->contain('Characters')
 					->first();
 
-		if(!is_null($data)) {
-			return $data['player_id'];
-		}
-
-		return parent::wantAuthUser();
+		return isset($data['player_id']) ? $data['player_id'] : NULL;
 	}
-
 }
