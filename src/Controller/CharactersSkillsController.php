@@ -13,7 +13,7 @@ class CharactersSkillsController
 		$this->mapMethod('charactersDelete', [ 'infobalie'       ]);
 # There are no properties on this relation to edit
 #		$this->mapMethod('charactersEdit',   [ 'infobalie'       ]);
-		$this->mapMethod('charactersIndex',  [ 'referee'         ], true);
+		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], true);
 		$this->mapMethod('charactersView',   [ 'referee', 'user' ], true);
 
 		$this->mapMethod('skillsIndex',      [ 'referee'         ], true);
