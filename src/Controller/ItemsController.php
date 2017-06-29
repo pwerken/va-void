@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller;
 
-use App\Utility\AuthState;
-
 class ItemsController
 	extends AppController
 {
@@ -77,7 +75,7 @@ class ItemsController
 					->leftJoin(['Characters' => 'characters'],
 						    ['Characters.id = Items.character_id']);
 
-		if(!AuthState::hasRole('referee')) {
+		if(!$this->hasAuth('referee')) {
 			$plin = $this->Auth->user('id');
 			$query->where(["Characters.player_id = $plin"]);
 		}

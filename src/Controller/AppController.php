@@ -95,10 +95,15 @@ class AppController
 
 		$auths = $this->Crud->action()->config('auth') ?: ['super'];
 		foreach($auths as $role) {
-			if(AuthState::hasRole($role))
+			if($this->hasAuth($role))
 				return true;
 		}
 		return false;
+	}
+
+	protected function hasAuth($role)
+	{
+		return AuthState::hasRole($role);
 	}
 
 	protected function wantAuthUser()

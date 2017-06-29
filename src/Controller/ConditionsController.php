@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller;
 
-use App\Utility\AuthState;
-
 class ConditionsController
 	extends AppController
 {
@@ -38,7 +36,7 @@ class ConditionsController
 		$query = $this->Conditions->find()
 					->select(['Conditions.id', 'Conditions.name'], true);
 
-		if(!AuthState::hasRole('referee')) {
+		if(!$this->hasAuth('referee')) {
 			$plin = $this->Auth->user('id');
 			$query->where(["Characters.player_id = $plin"])
 					->leftJoin(['CharactersConditions' => 'characters_conditions'],
@@ -52,7 +50,7 @@ class ConditionsController
 
 	public function view($coin)
 	{
-		if(!AuthState::hasRole('referee')) {
+		if(!$this->hasAuth('referee')) {
 			$this->Crud->on('beforeFind', function ($event) {
 				$cond = ['Characters.player_id' => $this->Auth->user('id')];
 				$event->subject()->query->contain(

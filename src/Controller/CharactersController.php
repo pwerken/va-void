@@ -2,7 +2,6 @@
 namespace App\Controller;
 
 use App\Model\Entity\Lammy;
-use App\Utility\AuthState;
 use Cake\Event\Event;
 
 class CharactersController
@@ -73,7 +72,7 @@ class CharactersController
 					->select('Characters.name')
 					->select('Characters.status');
 
-		if(!AuthState::hasRole('referee')) {
+		if(!$this->hasAuth('referee')) {
 			$plin = $this->Auth->user('id');
 			$query->where(["Characters.player_id = $plin"]);
 		}

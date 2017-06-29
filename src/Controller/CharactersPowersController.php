@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller;
 
-use App\Utility\AuthState;
-
 class CharactersPowersController
 	extends AppController
 {
@@ -39,7 +37,7 @@ class CharactersPowersController
 
 	public function powersIndex()
 	{
-		if(!AuthState::hasRole('referee')) {
+		if(!$this->hasAuth('referee')) {
 			$this->Crud->on('beforePaginate', function ($event) {
 				$cond = ['Characters.player_id' => $this->Auth->user('id')];
 				$event->subject()->query->where($cond);

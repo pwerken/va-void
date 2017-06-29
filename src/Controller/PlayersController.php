@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller;
 
-use App\Utility\AuthState;
-
 class PlayersController
 	extends AppController
 {
@@ -36,7 +34,7 @@ class PlayersController
 					->select('Players.insertion')
 					->select('Players.last_name');
 
-		if(!AuthState::hasRole('referee')) {
+		if(!$this->hasAuth('referee')) {
 			$plin = $this->Auth->user('id');
 			$query->where(["Players.id = $plin"]);
 		}
