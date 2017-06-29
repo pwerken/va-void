@@ -7,7 +7,8 @@ ToDo-list:
    - [ ] use .md format for html pages?
    - [ ] write API documentation
  - Authorization
-   - [ ] account/password management
+   - [x] basic account/password management
+   - [ ] new user registration / password recovery
  - Business logic
    - [x] queueing of individual cards
    - [x] update character->modified of when modifying relations
@@ -32,6 +33,6 @@ ToDo-list:
  - Optimizations
    - [x] speed up index() listings
    - [ ] headers: Last-Modified / ETag
-   - [ ] CORS: configurable allowOrigin
+   - [x] CORS: configurable allowOrigin
  - Upstream changes
    - [ ] Crud cake3: support multiple primary keys
