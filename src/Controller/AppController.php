@@ -91,7 +91,7 @@ class AppController
 
 	public function isAuthorized($user)
 	{
-		AuthState::setAuth($this->Auth, $this->request->param('plin'));
+		AuthState::setAuth($this->Auth, $this->wantAuthUser());
 
 		$auths = $this->Crud->action()->config('auth') ?: ['super'];
 		foreach($auths as $role) {
@@ -99,6 +99,11 @@ class AppController
 				return true;
 		}
 		return false;
+	}
+
+	protected function wantAuthUser()
+	{
+		return $this->request->param('plin');
 	}
 
 	public function paginate($query = null, array $settings = [])

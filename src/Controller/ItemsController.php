@@ -117,7 +117,7 @@ class ItemsController
 		$this->queueLammy();
 	}
 
-	protected function hasAuthUser($id = null)
+	protected function wantAuthUser()
 	{
 		$itin = $this->request->param('itin');
 		$data = $this->Items->find()
@@ -126,7 +126,12 @@ class ItemsController
 					->where(['Items.id' => $itin])
 					->contain('Characters')
 					->first();
-		return parent::hasAuthUser(@$data['player_id']);
+
+		if(!is_null($data)) {
+			return $data['player_id'];
+		}
+
+		return parent::wantAuthUser();
 	}
 
 }

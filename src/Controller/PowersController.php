@@ -55,7 +55,7 @@ class PowersController
 		$this->queueLammy();
 	}
 
-	protected function hasAuthUser($id = null)
+	protected function wantAuthUser()
 	{
 		$poin = $this->request->param('poin');
 		$this->loadModel('CharactersPowers');
@@ -65,7 +65,12 @@ class PowersController
 					->where(['CharactersPowers.power_id' => $poin])
 					->contain('Characters')
 					->first();
-		return parent::hasAuthUser(@$data['player_id']);
+
+		if(!is_null($data)) {
+			return $data['player_id'];
+		}
+
+		return parent::wantAuthUser();
 	}
 
 }

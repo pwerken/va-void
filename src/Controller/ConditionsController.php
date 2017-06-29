@@ -55,7 +55,7 @@ class ConditionsController
 		$this->queueLammy();
 	}
 
-	protected function hasAuthUser($id = null)
+	protected function wantAuthUser()
 	{
 		$coin = $this->request->param('coin');
 		$this->loadModel('CharactersConditions');
@@ -65,7 +65,12 @@ class ConditionsController
 					->where(['CharactersConditions.condition_id' => $coin])
 					->contain('Characters')
 					->first();
-		return parent::hasAuthUser(@$data['player_id']);
+
+		if(!is_null($data)) {
+			return $data['player_id'];
+		}
+
+		return parent::wantAuthUser();
 	}
 
 }
