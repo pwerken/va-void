@@ -3,12 +3,8 @@ namespace App\Controller;
 
 use App\Model\Entity\Player;
 use App\Utility\AuthState;
-use Cake\Auth\DefaultPasswordHasher;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
-use Cake\Network\Exception\ForbiddenException;
-use Cake\Network\Exception\NotFoundException;
-use Cake\View\Exception\MissingTemplateException;
 
 class AdminController
 	extends Controller
@@ -35,51 +31,27 @@ class AdminController
 				]	]
 			, 'unauthorizedRedirect' => false
 			, 'checkAuthIn' => 'Controller.initialize'
-			, 'loginAction' => '/admin/login'
+			, 'loginAction' => '/admin'
 			]);
 
 		if(Configure::read('debug') || AuthState::hasRole('Super'))
 		{
-			$this->Auth->allow(['index', 'login', 'logout', 'routes']);
+			$this->Auth->allow(['index', 'logout', 'routes']);
 			if(AuthState::hasRole('Player')) {
-				$this->Auth->allow(['auth', 'hash', 'role']);
+				$this->Auth->allow(['authorisation']);
 			}
 			if(AuthState::hasRole('Super')) {
-				$this->Auth->allow(['passwd']);
+				$this->Auth->allow(['authentication']);
 			}
 		}
 
-		$this->set('links', $this->links());
+		$this->viewBuilder()->setLayout('admin');
+		$this->set('user', $this->Auth->user());
 	}
 
 	public function index()
 	{
-	}
-
-	public function auth()
-	{
-		$this->loadModel('Players');
-		$query = $this->Players->find('list',
-			[ 'valueField' => 'id'
-			, 'groupField' => 'role'
-			]);
-
-		$this->set('perms', $query->toArray());
-	}
-
-	public function hash()
-	{
-		if(!empty($this->request->data('password'))) {
-			$hasher = new DefaultPasswordHasher();
-			$hash = $hasher->hash($this->request->data('password'));
-			$this->Flash->success($hash);
-		}
-	}
-
-	public function login()
-	{
 		if(!$this->request->is('post')) {
-			$this->set('user', $this->Auth->user());
 			return;
 		}
 
@@ -99,7 +71,7 @@ class AdminController
 		return $this->redirect($this->Auth->logout());
 	}
 
-	public function passwd()
+	public function authentication()
 	{
 		if(!$this->request->is('post')) {
 			return;
@@ -127,7 +99,7 @@ class AdminController
 		}
 	}
 
-	public function role()
+	public function authorisation()
 	{
 		$this->set('roles', Player::roleValues());
 
@@ -146,30 +118,18 @@ class AdminController
 			return;
 		}
 
-		$this->Players->patchEntity($player, ['role' => $role]);
-		$this->Players->save($player);
+		$player->role = $role;
 
-		$errors = $player->errors('role');
-		if(!empty($errors)) {
+		if(!$this->Players->save($player)) {
+			$errors = $player->errors('role');
 			$this->Flash->error(reset($errors));
 		} else {
-			$this->Flash->success("Player#$plin role set to `$role`");
+			$this->Flash->success("Player#$plin has `$role` authorisation");
 		}
 	}
 
 	public function routes()
 	{
-	}
-
-	private function links()
-	{
-		return	[ '/admin/routes' => 'View Configured Routes'
-				, '/admin/auth'   => 'View Authorisations'
-				, '/admin/hash'   => 'Create DB Password Hash'
-				, '/admin/login'  => 'Account Login / Logout'
-				, '/admin/passwd' => 'Set Player Password'
-				, '/admin/role'   => 'Set Authorisation'
-				];
 	}
 
 }
