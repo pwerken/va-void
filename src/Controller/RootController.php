@@ -1,10 +1,6 @@
 <?php
 namespace App\Controller;
 
-use App\Error\Exception\ConfigurationException;
-use App\Utility\CheckConfig;
-use Cake\Core\Configure;
-
 class RootController
 	extends AppController
 {
@@ -19,18 +15,6 @@ class RootController
 
 	public function root()
 	{
-		if(Configure::read('debug')) {
-			$errors = [];
-			foreach(CheckConfig::installation() as $msg => $ok) {
-				if(!$ok) {
-					$errors[] = $msg;
-				}
-			}
-			if(!empty($errors)) {
-				throw new ConfigurationException($errors);
-			}
-		}
-
 		$this->set('user', $user = $this->Auth->user());
 		$this->render('root');
 	}

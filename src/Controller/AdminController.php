@@ -36,7 +36,7 @@ class AdminController
 
 		if(Configure::read('debug') || AuthState::hasRole('Super'))
 		{
-			$this->Auth->allow(['index', 'logout', 'routes']);
+			$this->Auth->allow(['index', 'logout', 'checks', 'routes']);
 			if(AuthState::hasRole('Player')) {
 				$this->Auth->allow(['authorisation']);
 			}
@@ -126,6 +126,10 @@ class AdminController
 		} else {
 			$this->Flash->success("Player#$plin has `$role` authorisation");
 		}
+	}
+
+	public function checks()
+	{
 	}
 
 	public function routes()

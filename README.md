@@ -20,8 +20,9 @@ Download [Composer](http://getcomposer.org/doc/00-intro.md) or update `composer 
    * The database tables can be created with Migrations
      `./bin/cake migrations migrate`
 4. Configure apache to serve the `webroot` folder.
-   * Browse to it, it should now work!
-5. Optionally: load some initial database content with
+5. Browse to /admin/checks
+   * Again, fix everything it reports as NOT ok.
+6. Optionally: load some initial database content with
    `./bin/cake migrations seed`
 
 

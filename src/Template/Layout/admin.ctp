@@ -3,6 +3,7 @@
 $cakeDescription = 'VOID';
 $nav =	[ '/admin/authentication' => 'Authentication'
 		, '/admin/authorisation' => 'Authorisation'
+		, '/admin/checks' => 'Check Configuration'
 		, '/admin/routes' => 'Configured Routes'
 		];
 ?>
