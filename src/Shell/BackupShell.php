@@ -35,16 +35,7 @@ class BackupShell extends Shell
 
 	public function index()
 	{
-		$files = (new Folder($this->config['target']))->find('.+\.sql');
-		sort($files);
-
-		$backups = collection($files)
-			->map(function ($file) {
-				$fullpath = $this->config['target'] . $file;
-				$datetime = date('Y-m-d H:i:s', filemtime($fullpath));
-				return [ $file, filesize($fullpath), $datetime ];
-			})
-			->toList();
+		$backups = $this->getBackupFiles();
 		$headers = [ 'Filename', 'Size', 'Datetime' ];
 
 		$this->helper('table')->output(array_merge([$headers], $backups));
@@ -173,6 +164,20 @@ class BackupShell extends Shell
 			]	]	]	]);
 
 		return $parser;
+	}
+
+	public function getBackupFiles()
+	{
+		$files = (new Folder($this->config['target']))->find('.+\.sql');
+		sort($files);
+
+		return collection($files)
+			->map(function ($file) {
+				$fullpath = $this->config['target'] . $file;
+				$datetime = date('Y-m-d H:i:s', filemtime($fullpath));
+				return [ $file, filesize($fullpath), $datetime ];
+			})
+			->toList();
 	}
 
 	private function _tableOrder($fill = true)

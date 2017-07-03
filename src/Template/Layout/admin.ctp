@@ -5,6 +5,7 @@ $nav =	[ '/admin/authentication' => 'Authentication'
 		, '/admin/authorisation' => 'Authorisation'
 		, '/admin/checks' => 'Check Configuration'
 		, '/admin/routes' => 'Configured Routes'
+		, '/admin/backups' => 'Database Backups'
 		];
 ?>
 <!DOCTYPE html>

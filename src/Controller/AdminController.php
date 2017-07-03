@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Model\Entity\Player;
+use App\Shell\BackupShell;
 use App\Utility\AuthState;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
@@ -134,6 +135,14 @@ class AdminController
 
 	public function routes()
 	{
+	}
+
+	public function backups()
+	{
+		$backupShell = new BackupShell();
+		$backupShell->initialize();
+
+		$this->set('backups', $backupShell->getBackupFiles());
 	}
 
 }
