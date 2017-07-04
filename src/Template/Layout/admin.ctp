@@ -1,12 +1,18 @@
 <?php
 
 $cakeDescription = 'VOID';
-$nav =	[ '/admin/authentication' => 'Authentication'
-		, '/admin/authorisation' => 'Authorisation'
-		, '/admin/checks' => 'Check Configuration'
-		, '/admin/routes' => 'Configured Routes'
-		, '/admin/backups' => 'Database Backups'
-		];
+if(!isset($user)) {
+	$nav =	[ '/admin/checks' => 'Check Configuration'
+			, '/admin/routes' => 'Configured Routes'
+			];
+} else {
+	$nav =	[ '/admin/authentication' => 'Authentication'
+			, '/admin/authorisation' => 'Authorisation'
+			, '/admin/checks' => 'Check Configuration'
+			, '/admin/routes' => 'Configured Routes'
+			, '/admin/backups' => 'Database Backups'
+			];
+}
 ?>
 <!DOCTYPE html>
 <html>
