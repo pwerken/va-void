@@ -18,11 +18,11 @@ foreach (Router::routes() as $key => $route)
 		$prefix = $route->defaults['prefix'] . '\\';
 	}
 
-	$action = ':action';
+	$action = '{:action}';
 	if(isset($route->defaults['action'])) {
 		$action = $route->defaults['action'];
 	}
-	$function = $prefix.$route->defaults['controller'].'->'.$action;
+	$function = $prefix.$route->defaults['controller'].'&rarr;'.$action;
 
     printf( "<tr><td>%s</td><td>%s</td><td>%s( %s )</td></tr>\n"
 			, $route->template
