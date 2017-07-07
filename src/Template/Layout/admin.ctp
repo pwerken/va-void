@@ -1,6 +1,6 @@
 <?php
 
-$cakeDescription = 'VOID';
+$cakeDescription = 'VOID-API';
 if(!isset($user)) {
 	$nav =	[ '/admin/checks' => 'Check Configuration'
 			, '/admin/routes' => 'Configured Routes'
@@ -36,16 +36,19 @@ if(!isset($user)) {
     <nav class="top-bar expanded" data-topbar role="navigation">
         <ul class="title-area large-3 medium-4 columns">
             <li class="name">
-                <h1><a href="/"><?= $cakeDescription ?></a></h1>
+				<h1><?= $this->Html->link($cakeDescription, '/') ?></h1>
             </li>
         </ul>
         <div class="top-bar-section">
             <ul class="right">
 <?php if(!isset($user)) : ?>
-                <li><a target="_blank" href="/admin">LOGIN</a></li>
-<?php else: ?>
-				<li><a href="/players/<?=$user['id']?>"><?= $user['full_name'] ?> (<?= $user['role'] ?>)</a></li>
-                <li><a target="_blank" href="/admin/logout">LOGOUT</a></li>
+				<li><?= $this->Html->link('LOGIN', '/admin') ?></li>
+<?php else:
+				$descr = $user['full_name'].' ('.$user['role'].')';
+				$link = '/players/'.$user['id'];
+?>
+				<li><?= $this->Html->link($descr, $link); ?></li>
+				<li><?= $this->Html->link('LOGOUT', '/admin/logout') ?></li>
 <?php endif ?>
             </ul>
         </div>
@@ -54,13 +57,11 @@ if(!isset($user)) {
     <div class="container clearfix">
 		<nav class="large-3 medium-4 columns" id="actions-sidebar">
 			<ul class="side-nav">
-				<li class="heading"><a href="/admin"><?= __('Admin links') ?></a></li>
+				<li class="heading"><?= $this->Html->link('Admin links', '/admin') ?></li>
 
-<?php
-foreach($nav as $url => $descr) {
-	echo '<li>'.$this->Html->link($descr, $url)."</il>\n";
-}
-?>
+<?php foreach($nav as $url => $descr) : ?>
+				<li><?= $this->Html->link($descr, $url) ?></il>
+<?php endforeach; ?>
 			</ul>
 		</nav>
 		<div class="large-9 medium-8 columns content">
