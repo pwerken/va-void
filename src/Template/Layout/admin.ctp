@@ -11,6 +11,7 @@ if(!isset($user)) {
 			, '/admin/checks' => 'Check Configuration'
 			, '/admin/routes' => 'Configured Routes'
 			, '/admin/backups' => 'Database Backups'
+			, '/admin/migrations' => 'Database Migrations'
 			];
 }
 ?>

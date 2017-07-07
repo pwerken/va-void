@@ -6,6 +6,7 @@ use App\Shell\BackupShell;
 use App\Utility\AuthState;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
+use Migrations\Migrations;
 
 class AdminController
 	extends Controller
@@ -143,6 +144,12 @@ class AdminController
 		$backupShell->initialize();
 
 		$this->set('backups', $backupShell->getBackupFiles());
+	}
+
+	public function migrations()
+	{
+		$migrations = new Migrations();
+		$this->set('migrations', $migrations->status());
 	}
 
 }
