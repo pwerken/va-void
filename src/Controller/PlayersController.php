@@ -60,4 +60,10 @@ class PlayersController
 			]);
 	}
 
+	public function add()
+	{
+		$this->request->data('id', $this->request->data('plin'));
+		$this->Crud->execute();
+	}
+
 }
