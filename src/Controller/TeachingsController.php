@@ -10,14 +10,14 @@ class TeachingsController
 		parent::initialize();
 
 		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], true);
-		$this->mapMethod('charactersAdd',    [ 'referee'         ]);
-		$this->mapMethod('charactersDelete', [ 'referee'         ]);
-		$this->mapMethod('charactersEdit',   [ 'referee'         ]);
+		$this->mapMethod('charactersAdd',    [ 'infobalie'       ]);
+		$this->mapMethod('charactersDelete', [ 'infobalie'       ]);
+		$this->mapMethod('charactersEdit',   [ 'infobalie'       ]);
 		$this->mapMethod('charactersView',   [ 'referee', 'user' ], true);
 
 		$this->Crud->mapAction('charactersQueue',
 			[ 'className' => 'Crud.View'
-			, 'auth' => [ 'referee' ]
+			, 'auth' => [ 'infobalie' ]
 			, 'findMethod' => 'withContain'
 			]);
 	}

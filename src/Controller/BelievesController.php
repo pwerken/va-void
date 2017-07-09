@@ -11,11 +11,11 @@ class BelievesController
 	{
 		parent::initialize();
 
-		$this->mapMethod('add',    [ 'referee' ]);
-		$this->mapMethod('delete', [ 'referee' ]);
-		$this->mapMethod('edit',   [ 'referee' ]);
-		$this->mapMethod('index',  [ 'player'  ]);
-		$this->mapMethod('view',   [ 'player'  ]);
+		$this->mapMethod('add',    [ 'infobalie' ]);
+		$this->mapMethod('delete', [ 'infobalie' ]);
+		$this->mapMethod('edit',   [ 'infobalie' ]);
+		$this->mapMethod('index',  [ 'player'    ]);
+		$this->mapMethod('view',   [ 'player'    ]);
 	}
 
 	public function index()

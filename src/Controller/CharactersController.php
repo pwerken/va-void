@@ -18,13 +18,13 @@ class CharactersController
 
 		$this->mapMethod('add',           [ 'infobalie'       ]);
 		$this->mapMethod('delete',        [ 'super'           ]);
-		$this->mapMethod('edit',          [ 'referee'         ]);
+		$this->mapMethod('edit',          [ 'infobalie'       ]);
 		$this->mapMethod('index',         [ 'players'         ], false);
 		$this->mapMethod('view',          [ 'referee', 'user' ], true);
 
 		$this->Crud->mapAction('queue',
 			[ 'className' => 'Crud.View'
-			, 'auth' => [ 'referee' ]
+			, 'auth' => [ 'infobalie' ]
 			, 'findMethod' => 'withContain'
 			]);
 

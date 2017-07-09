@@ -15,9 +15,9 @@ class PowersController
 	{
 		parent::initialize();
 
-		$this->mapMethod('add',    [ 'referee'         ]);
+		$this->mapMethod('add',    [ 'infobalie'       ]);
 		$this->mapMethod('delete', [ 'super'           ]);
-		$this->mapMethod('edit',   [ 'referee'         ]);
+		$this->mapMethod('edit',   [ 'infobalie'       ]);
 		$this->mapMethod('index',  [ 'players'         ]);
 		$this->mapmethod('view',   [ 'referee', 'user' ], true);
 

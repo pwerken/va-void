@@ -9,9 +9,9 @@ class CharactersConditionsController
 	{
 		parent::initialize();
 
-		$this->mapMethod('charactersAdd',    [ 'referee'         ]);
-		$this->mapMethod('charactersDelete', [ 'referee'         ]);
-		$this->mapMethod('charactersEdit',   [ 'referee'         ]);
+		$this->mapMethod('charactersAdd',    [ 'infobalie'       ]);
+		$this->mapMethod('charactersDelete', [ 'infobalie'       ]);
+		$this->mapMethod('charactersEdit',   [ 'infobalie'       ]);
 		$this->mapMethod('charactersIndex',  [ 'players'         ], true);
 		$this->mapMethod('charactersView',   [ 'referee', 'user' ], true);
 
