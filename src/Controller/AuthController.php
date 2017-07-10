@@ -36,6 +36,8 @@ class AuthController
 					, 'exp' =>  time() + 604800
 					], Security::salt())
 				, 'player' => '/players/'.$user['id']
+				, 'name' => $user['full_name']
+				, 'role' => $user['role']
 				]
 			]);
 	}
