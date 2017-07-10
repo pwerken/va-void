@@ -18,7 +18,7 @@ class AuthController
 
 	public function login()
 	{
-		$user = $this->Auth->user();
+		$user = $this->Auth->identify();
 		if (!$user) {
 			$this->request->data('id', (string)$this->request->data('id'));
 			if($this->request->is('put') || $this->request->is('post'))
