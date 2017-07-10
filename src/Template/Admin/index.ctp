@@ -5,6 +5,7 @@ if(isset($user)) {
 	echo "With auth level: ".$user['role']."</p>";
 	echo $this->Html->link(__('Click here to logout.'), '/admin/logout');
 } else {
+	echo "<h3>Login</h3>";
 	echo $this->Form->create();
 	echo "<fieldset>\n";
 	echo $this->Form->input('id', ['label' => 'Plin', 'type' => 'text']);

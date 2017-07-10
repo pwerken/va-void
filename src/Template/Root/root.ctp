@@ -42,24 +42,7 @@ endif;
 <body class="home">
     <div id="content">
         <div class="row">
-<?php
 
-	if ($user):
-		echo "<hr>Logged in as: ";
-		echo $user['full_name']." (".$user['role'].") ";
-		echo $this->Html->link(__('Logout'), '/auth/logout');
-	else:
-		echo $this->Form->create('', ['url' => '/auth/login']);
-		echo "<fieldset>\n";
-		echo $this->Form->input('id', ['label' => 'Plin', 'type' => 'text']);
-		echo $this->Form->input('password', ['type'=>'password']);
-		echo $this->Form->button(__('Login'));
-		echo "</fieldset>\n";
-		echo $this->Form->end();
-	endif;
-
-?>
-<hr/>
 <table cellpadding="0" cellspacing="0">
 <thead>
     <tr>
