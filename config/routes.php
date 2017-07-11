@@ -68,7 +68,7 @@ Router::scope('/', function (RouteBuilder $routes) {
 	 *	Authentication related URIs
 	 */
 	$defaults = [];
-	$defaults['_method'] = ['GET', 'PUT', 'POST'];
+	$defaults['_method'] = ['GET', 'PUT'];
 	$defaults['controller'] = 'Auth';
 	$defaults['action'] = 'login';
 	$routes->connect('/auth/login', $defaults);
