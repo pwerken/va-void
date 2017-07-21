@@ -83,7 +83,7 @@ try {
 
 <?php
 try {
-	$connection = ConnectionManager::get('default');
+	$connection = ConnectionManager::get('valea');
 	$connected = $connection->connect();
 } catch (Exception $connectionError) {
 	$connected = false;
