@@ -12,6 +12,7 @@ if(!isset($user)) {
 			, '/admin/routes' => 'Configured Routes'
 			, '/admin/backups' => 'Database Backups'
 			, '/admin/migrations' => 'Database Migrations'
+			, '/admin/valea' => 'VALEA'
 			];
 }
 ?>
@@ -32,6 +33,14 @@ if(!isset($user)) {
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
+
+	<style>
+.cmp td { vertical-align: middle; }
+.cmp .same td { color: #bbc; }
+.cmp .different td.here { background-color: #faa; }
+.cmp .onlyValea, .cmp .onlyValea:nth-of-type(even),
+.cmp .onlyVoid, .cmp .onlyVoid:nth-of-type(even) { background-color: #fafafa; }
+	</style>
 </head>
 <body>
     <nav class="top-bar expanded" data-topbar role="navigation">
