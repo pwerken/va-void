@@ -30,7 +30,7 @@ class ItemLammy
 		$this->cardFront('Item Card');
 		$this->QRcode();
 
-		$this->pdf->SetTextColor(63);
+		$this->pdf->SetTextColor(31);
 
 		$this->font(5);
 		$this->text(57.5, 2, 10, 'R', 'ITIN');
@@ -84,7 +84,7 @@ class ItemLammy
 	{
 		$this->cardFront('Item Explanation');
 
-		$this->pdf->SetTextColor(63);
+		$this->pdf->SetTextColor(31);
 		$this->font(5);
 		$this->text(57.5, 2, 10, 'R', 'ITIN');
 		$this->font(6);

@@ -35,7 +35,7 @@ class CharactersConditionLammy
 		$this->cardFront($data['type'].' Card');
 		$this->QRcode();
 
-		$this->pdf->SetTextColor(63);
+		$this->pdf->SetTextColor(31);
 
 		$this->font(5);
 		$this->text(57.5, 2, 10, 'R', $data['key']);

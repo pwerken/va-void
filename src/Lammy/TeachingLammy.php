@@ -33,13 +33,13 @@ class TeachingLammy
 		$this->text(48, 3, 20, 'C', 'Teaching');
 		$this->text(48, 7, 20, 'C', 'Card');
 
-		$this->pdf->SetTextColor(127);
+		$this->pdf->SetTextColor(63);
 		$this->font(5);
 		$this->text(10, 16.5, 12, 'R', 'PLIN');
 		$this->text(21, 16.5,  7, 'C', 'CHIN');
 		$this->text(28, 16.5, 47, 'L', 'Name');
 
-		$this->pdf->SetTextColor(63);
+		$this->pdf->SetTextColor(31);
 		$this->font(6);
 		$this->text( 0, 13, 12, 'R', 'Teacher');
 		$this->text( 0, 20, 12, 'R', 'Student');
@@ -53,7 +53,7 @@ class TeachingLammy
 		$this->square( 0,  0, 16,  8);
 		$this->square( 0, 37, 16, 45);
 
-		$this->pdf->SetTextColor(127);
+		$this->pdf->SetTextColor(63);
 		$this->font(26, 'B');
 
 		list($txp, $xp) = $this->entity->progress();

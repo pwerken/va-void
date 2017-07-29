@@ -19,7 +19,7 @@ class CharacterLammy
 		$this->cardFront('Character Card');
 		$this->QRcode();
 
-		$this->pdf->SetTextColor(63);
+		$this->pdf->SetTextColor(31);
 
 		$this->font(5);
 		$this->text(52,  2, 10, 'R', 'PLIN');
