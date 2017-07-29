@@ -38,7 +38,7 @@ class Item
 			$attr[] = $attribute->code;
 		}
 
-		mt_srand($seed);
+		mt_srand((int)$seed);
 		$order = $this->randomOrder();
 
 		$key = -1;
