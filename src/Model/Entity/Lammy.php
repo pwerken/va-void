@@ -75,7 +75,10 @@ class Lammy
 	{
 		if(is_null($this->lammy)) {
 			$class = 'App\\Lammy\\'.$this->entity.'Lammy';
-			$this->lammy = new $class($this->_getTarget());
+			$target = $this->_getTarget();
+			if(!is_null($target)) {
+				$this->lammy = new $class($target);
+			}
 		}
 		return $this->lammy;
 	}
