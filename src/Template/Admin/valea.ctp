@@ -13,6 +13,10 @@
 <?php
 
 foreach($diff as $row) {
+
+	if($row[0] == 'same')
+		continue;
+
 	echo "<tr class=\"$row[0]\">\n"
 		."<td>$row[0]</td>\n";
 
