@@ -18,7 +18,7 @@ echo $this->Form->button(__('Delete selected'));
 foreach($printing as $row) {
 	echo "<tr>\n"
 		."<td>$row[id] ";
-	
+
 	if($row['status'] == 'Queued') {
 		echo $this->Form->checkbox('delete[]'
 			, ['value' => $row['id'], 'hiddenField' => false]);

@@ -169,13 +169,13 @@ class AdminController
 	public function valea()
 	{
 		$q1 = 'SELECT `id`, `first_name`, `insertion`,'
-		   	. ' `last_name`, `date_of_birth`, `gender`'
+			. ' `last_name`, `date_of_birth`, `gender`'
 			. ' FROM `players`'
 			. ' ORDER BY `id`';
 		$void = ConnectionManager::get('default')->query($q1);
 
 		$q2 = 'SELECT `plin`, `voornaam`, `tussenvoegsels`,'
-		   	. ' `achternaam`, `geboortedatum`, `mv`'
+			. ' `achternaam`, `geboortedatum`, `mv`'
 			. ' FROM `deelnemers`'
 			. ' ORDER BY `plin`, `id`';
 		$valea = ConnectionManager::get('valea')->query($q2);
@@ -202,14 +202,14 @@ class AdminController
 			$cmp = [];
 			switch(self::playerCmp($playerVoid, $playerValea)) {
 			case 1:
-				for($i = 0; $i < 6; $i++)	
+				for($i = 0; $i < 6; $i++)
 					$cmp[] = [true, $playerVoid[$i], NULL];
 
 				$diff[] = ['onlyVoid', $cmp];
 				$playerVoid = $void->fetch();
 				continue;
 			case -1:
-				for($i = 0; $i < 6; $i++)	
+				for($i = 0; $i < 6; $i++)
 					$cmp[] = [true, NULL, $playerValea[$i]];
 
 				$diff[] = ['onlyValea', $cmp];
@@ -236,10 +236,10 @@ class AdminController
 			return -1;
 		if($valea === false)
 			return 1;
-	
+
 		if($valea[0] === null)	// geen plin!
 			return -1;
-	
+
 		$cmp = $valea[0] - $void[0];
 		if($cmp < 0)
 			return -1;
