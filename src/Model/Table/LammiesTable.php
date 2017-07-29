@@ -20,14 +20,14 @@ class LammiesTable
 	public function findQueued(Query $query, array $options = [])
 	{
 		$query = $this->findWithContain($query, $options);
-		$query->where(["Lammies.status NOT LIKE" => "Printed"]);
+		$query->where(["status NOT LIKE" => "Printed"]);
 		return $query;
 	}
 
 	public function findPrinting(Query $query, array $options = [])
 	{
 		$query = $this->findWithContain($query, $options);
-		$query->where(["Lammies.status LIKE" => "Printing"]);
+		$query->where(["status LIKE" => "Printing"]);
 		return $query;
 	}
 
