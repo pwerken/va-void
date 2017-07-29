@@ -12,6 +12,7 @@ if(!isset($user)) {
 			, '/admin/routes' => 'Configured Routes'
 			, '/admin/backups' => 'Database Backups'
 			, '/admin/migrations' => 'Database Migrations'
+			, '/admin/printing' => 'Printing Queue'
 			, '/admin/valea' => 'VALEA'
 			];
 }

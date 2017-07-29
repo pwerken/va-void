@@ -153,6 +153,19 @@ class AdminController
 		$this->set('migrations', $migrations->status());
 	}
 
+	public function printing()
+	{
+		$lammies = $this->loadModel('lammies');
+
+		if($this->request->is('post')) {
+			$ids = $this->request->data('delete');
+			// delete queued items
+		}
+
+		$query = $lammies->find()->order(['id' => 'DESC']);
+		$this->set('printing', $query->all());
+	}
+
 	public function valea()
 	{
 		$q1 = 'SELECT `id`, `first_name`, `insertion`,'
