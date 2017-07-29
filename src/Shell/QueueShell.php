@@ -34,7 +34,7 @@ class QueueShell extends Shell
 
 	private function createPdf($id, $filename, $double = false)
 	{
-		$query = $this->Lammies->find('queued');
+		$query = $this->Lammies->find('Queued');
 		$query->where(["Lammies.id <=" => $id]);
 		$lammies = $query->all();
 		if($lammies->count() == 0)
