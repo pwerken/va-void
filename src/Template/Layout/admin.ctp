@@ -41,6 +41,10 @@ if(!isset($user)) {
 .cmp .different td.here { background-color: #faa; }
 .cmp .onlyValea, .cmp .onlyValea:nth-of-type(even),
 .cmp .onlyVoid, .cmp .onlyVoid:nth-of-type(even) { background-color: #fafafa; }
+.cmp button { margin: 0px; padding: 0.3em 1.5em; width: 4em; }
+.cmp button.red { background-color: #FF0000; }
+.cmp button.green { background-color: #009900; }
+.cmp button.blue{ background-color: #007095; }
 	</style>
 </head>
 <body>

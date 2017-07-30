@@ -32,6 +32,7 @@ class AdminController
 					, 'queryDatasource' => true
 					, 'unauthenticatedException' => '\Cake\Network\Exception\ForbiddenException'
 				]	]
+			, 'authorize' => ['Controller']
 			, 'unauthorizedRedirect' => false
 			, 'checkAuthIn' => 'Controller.initialize'
 			, 'loginAction' => '/admin'
@@ -53,6 +54,12 @@ class AdminController
 
 		$this->viewBuilder()->setLayout('admin');
 		$this->set('user', $this->Auth->user());
+	}
+
+	public function isAuthorized($user)
+	{
+		AuthState::setAuth($this->Auth, $user['id']);
+		return true;
 	}
 
 	public function index()
@@ -176,6 +183,12 @@ class AdminController
 
 	public function valea()
 	{
+		if($this->request->is('post')) {
+			$this->voidValeaImport($this->request->data('insert'));
+			$this->voidValeaUpdate($this->request->data('update'));
+			$this->voidDelete($this->request->data('delete'));
+		}
+
 		$q1 = 'SELECT `id`, `first_name`, `insertion`,'
 			. ' `last_name`, `date_of_birth`, `gender`'
 			. ' FROM `players`'
@@ -213,14 +226,14 @@ class AdminController
 				for($i = 0; $i < 6; $i++)
 					$cmp[] = [true, $playerVoid[$i], NULL];
 
-				$diff[] = ['onlyVoid', $cmp];
+				$diff[] = [1, $cmp];
 				$playerVoid = $void->fetch();
 				continue;
 			case -1:
 				for($i = 0; $i < 6; $i++)
 					$cmp[] = [true, NULL, $playerValea[$i]];
 
-				$diff[] = ['onlyValea', $cmp];
+				$diff[] = [-1, $cmp];
 				$playerValea = $valea->fetch();
 				continue;
 			default:
@@ -230,13 +243,95 @@ class AdminController
 					$same &= $field;
 					$cmp[] = [$field, $playerVoid[$i], $playerValea[$i]];
 				}
-				$diff[] = [($same?"same":"different"), $cmp];
+				if(!$same) {
+					$diff[] = [0, $cmp];
+				}
 				$playerVoid = $void->fetch();
 				$playerValea = $valea->fetch();
 			}
 		}
 
 		$this->set('diff', $diff);
+	}
+
+	private function voidValeaImport($plin)
+	{
+		if(is_null($plin))
+			return;
+
+		$q = 'SELECT `plin` as "id", `voornaam` as "first_name"'
+			. ', `tussenvoegsels` as "insertion"'
+			. ', `achternaam` as "last_name"'
+			. ', `geboortedatum` as "date_of_birth"'
+			. ', `mv` as "gender"'
+			. ' FROM `deelnemers`'
+			. ' WHERE `plin` = ?';
+
+		$valea = ConnectionManager::get('valea');
+		$data = $valea->execute($q, [$plin])->fetch('assoc');
+
+		switch(strtoupper($data['gender'])) {
+		case 'M':	$data['gender'] = 'M'; break;
+		case 'V':	$data['gender'] = 'F'; break;
+		default:	$data['gender'] = ''; break;
+		}
+
+		$player = new Player($data);
+
+		if($this->loadModel('players')->save($player)) {
+			$this->Flash->success('Imported plin #'.$plin);
+		} else {
+			$this->Flash->error('Failed to import plin #'.$plin);
+
+			var_dump($player->errors());
+			die;
+		}
+	}
+	private function voidValeaUpdate($plin)
+	{
+		if(is_null($plin))
+			return;
+
+		$q = 'SELECT `plin` as "id", `voornaam` as "first_name"'
+			. ', `tussenvoegsels` as "insertion"'
+			. ', `achternaam` as "last_name"'
+			. ', `geboortedatum` as "date_of_birth"'
+			. ', `mv` as "gender"'
+			. ' FROM `deelnemers`'
+			. ' WHERE `plin` = ?';
+
+		$valea = ConnectionManager::get('valea');
+		$data = $valea->execute($q, [$plin])->fetch('assoc');
+
+		switch(strtoupper($data['gender'])) {
+		case 'M':	$data['gender'] = 'M'; break;
+		case 'V':	$data['gender'] = 'F'; break;
+		default:	$data['gender'] = ''; break;
+		}
+
+		$players = $this->loadModel('players');
+		$player = $players->get($plin);
+		$player = $players->patchEntity($player, $data);
+
+		if($players->save($player)) {
+			$this->Flash->success('Updated plin #'.$plin);
+		} else {
+			$this->Flash->error('Failed to update plin #'.$plin);
+		}
+	}
+	private function voidDelete($plin)
+	{
+		if(is_null($plin))
+			return;
+
+		$players = $this->loadModel('Players');
+		$player = $players->get($plin);
+
+		if($players->delete($player)) {
+			$this->Flash->success('Removed Player#'.$plin.' from void');
+		} else {
+			$this->Flash->error('Failed to delete Player#'.$plin);
+		}
 	}
 
 	private function playerCmp($void, $valea) {
