@@ -31,7 +31,7 @@ class CharacterLammy
 		$this->text( 0, 23, 12, 'R', 'Faction');
 		$this->text( 0, 28, 12, 'R', 'Belief');
 		$this->text( 0, 33, 12, 'R', 'Group');
-		$this->text( 0, 38, 12, 'R', 'Faction');
+		$this->text( 0, 38, 12, 'R', 'World');
 
 		$this->pdf->SetTextColor(0);
 		$this->font(11, 'B');
