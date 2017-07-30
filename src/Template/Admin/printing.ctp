@@ -36,3 +36,7 @@ foreach($printing as $row) {
 ?>
 </table>
 </form>
+
+<?php
+
+echo $this->Form->end();
