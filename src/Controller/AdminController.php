@@ -43,6 +43,9 @@ class AdminController
 			if(AuthState::hasRole('Player')) {
 				$this->Auth->allow(['authorisation']);
 			}
+			if(AuthState::hasRole('Infobalie')) {
+				$this->Auth->allow(['printing']);
+			}
 			if(AuthState::hasRole('Super')) {
 				$this->Auth->allow(['authentication']);
 			}
@@ -159,10 +162,15 @@ class AdminController
 
 		if($this->request->is('post')) {
 			$ids = $this->request->data('delete');
-			// delete queued items
+			if(empty($ids)) {
+				$this->Flash->error("Nothing selected");
+			} else {
+				$nr = $lammies->deleteAll(['id IN' => $ids]);
+				$this->Flash->success("Removed $nr lammies from queue");
+			}
 		}
 
-		$query = $lammies->find()->order(['id' => 'DESC']);
+		$query = $lammies->find()->order(['id' => 'DESC'])->hydrate(false);
 		$this->set('printing', $query->all());
 	}
 
