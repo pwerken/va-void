@@ -275,6 +275,7 @@ class AdminController
 		switch(strtoupper($data['gender'])) {
 		case 'M':	$data['gender'] = 'M'; break;
 		case 'V':	$data['gender'] = 'F'; break;
+		case 'F':	$data['gender'] = 'F'; break;
 		default:	$data['gender'] = ''; break;
 		}
 
@@ -308,6 +309,7 @@ class AdminController
 		switch(strtoupper($data['gender'])) {
 		case 'M':	$data['gender'] = 'M'; break;
 		case 'V':	$data['gender'] = 'F'; break;
+		case 'F':	$data['gender'] = 'F'; break;
 		default:	$data['gender'] = ''; break;
 		}
 
