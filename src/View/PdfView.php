@@ -85,6 +85,9 @@ class PdfView
 	{
 		$todo = [];
 		foreach($lammies as $key => $lammy) {
+			if(is_null($lammy)) {
+				continue;
+			}
 			$todo[] = [$key, $lammy->sides()];
 		}
 
