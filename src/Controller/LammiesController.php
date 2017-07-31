@@ -122,8 +122,6 @@ class LammiesController
 		$this->Crud->on('beforeRender', function ($event) use ($double) {
 			$table = $this->loadModel();
 			$table->setStatuses($event->subject()->entities, 'Printing');
-
-			PdfView::addLayoutInfo($event->subject()->entities);
 			$this->viewBuilder()->className('Pdf');
 			$this->set('double', $double);
 		});

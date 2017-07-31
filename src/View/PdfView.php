@@ -45,42 +45,6 @@ class PdfView
 		return $this->createPdf($lammies, $pageDouble);
 	}
 
-	public static function addLayoutInfo($entities)
-	{
-		$maxLammies = self::$LAMMIES_Y * 2;
-		$singlePage = 0; $single = 0;
-		$doublePage = 0; $double = 0;
-
-		foreach($entities as $entity)
-		{
-			$sides = $entity->lammy->sides();
-			if($single + $sides > $maxLammies) {
-				$singlePage++;
-				$single = 0;
-			}
-			$single += $sides;
-
-			$sides = (int)(($sides + 1) / 2);
-			if($double + $sides > $maxLammies) {
-				$doublePage++;
-				$double = 0;
-			}
-			$double += $sides;
-
-			$entity->lammy->single = $singlePage;
-			$entity->lammy->double = $doublePage;
-		}
-
-		$singleFull = ($maxLammies - $single < 2);
-		$doubleFull = ($maxLammies - $double < 2);
-		foreach($entities as $entity) {
-			if($entity->lammy->single == $singlePage && !$singleFull)
-				$entity->lammy->single = null;
-			if($entity->lammy->double == $doublePage && !$doubleFull)
-				$entity->lammy->double = null;
-		}
-	}
-
 	public function createPdf($lammies, $twosided = false)
 	{
 		$todo = [];
