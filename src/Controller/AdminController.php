@@ -38,28 +38,30 @@ class AdminController
 			, 'loginAction' => '/admin'
 			]);
 
-		if(Configure::read('debug') || AuthState::hasRole('Super'))
-		{
-			$this->Auth->allow(['index', 'logout', 'checks', 'routes']);
-			if(AuthState::hasRole('Player')) {
-				$this->Auth->allow(['authorisation']);
-			}
-			if(AuthState::hasRole('Infobalie')) {
-				$this->Auth->allow(['printing']);
-			}
-			if(AuthState::hasRole('Super')) {
-				$this->Auth->allow(['authentication']);
-			}
-		}
+		$user = $this->Auth->user();
+		AuthState::setAuth($this->Auth, $user['id']);
+
+		$this->Auth->allow(['index', 'logout', 'checks', 'routes']);
 
 		$this->viewBuilder()->setLayout('admin');
-		$this->set('user', $this->Auth->user());
+		$this->set('user', $user);
 	}
 
 	public function isAuthorized($user)
 	{
 		AuthState::setAuth($this->Auth, $user['id']);
-		return true;
+
+		if(AuthState::hasRole('Super'))
+			return true;
+
+		switch($this->request->action) {
+		case 'authorisation':
+			return AuthState::hasRole('Referee');
+		case 'printing':
+		case 'valea':
+			return AuthState::hasRole('Infobalie');
+		}
+		return AuthState::hasRole('Player');
 	}
 
 	public function index()
@@ -167,7 +169,7 @@ class AdminController
 	{
 		$lammies = $this->loadModel('lammies');
 
-		if($this->request->is('post')) {
+		if($this->request->is('post') && AuthState::hasRole('Infobalie')) {
 			$ids = $this->request->data('delete');
 			if(empty($ids)) {
 				$this->Flash->error("Nothing selected");
@@ -183,7 +185,7 @@ class AdminController
 
 	public function valea()
 	{
-		if($this->request->is('post')) {
+		if($this->request->is('post') && AuthState::hasRole('Infobalie')) {
 			$this->voidValeaImport($this->request->data('insert'));
 			$this->voidValeaUpdate($this->request->data('update'));
 			$this->voidDelete($this->request->data('delete'));
