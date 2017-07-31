@@ -41,13 +41,12 @@ class CharacterLammy
 		$this->text(12, 16, 60, 'L', $this->entity->name);
 		$this->text(12, 23, 60, 'L', $this->entity->faction);
 
-		$belief = $this->entity->belief;
 		if(!empty($this->entity->soulpath)) {
-			$belief .= ' (' . $this->entity->soulpath . ')';
+			$this->text(56, 22, 18, 'L', $this->entity->soulpath);
 		}
-		$this->text(12, 28, 60, 'L', $belief);
-		$this->text(12, 33, 60, 'L', $this->entity->group);
-		$this->text(12, 38, 60, 'L', $this->entity->world);
+		$this->text(12, 28, 44, 'L', $this->entity->belief);
+		$this->text(12, 33, 44, 'L', $this->entity->group);
+		$this->text(12, 38, 44, 'L', $this->entity->world);
 	}
 
 	protected function _drawBack()

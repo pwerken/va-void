@@ -51,9 +51,9 @@ class CharactersConditionLammy
 		$this->font(11, 'B');
 		$this->text(57.5, 5, 60, 'L', $data['id']);
 		$this->textblock(12, 13, 60, 'L', $data['name']);
-		$this->text(12, 28, 60, 'L', $data['plin']);
-		$this->text(12, 33, 60, 'L', $data['char']);
-		$this->text(12, 38, 60, 'L', $data['expiry']);
+		$this->text(12, 28, 44, 'L', $data['plin']);
+		$this->text(12, 33, 44, 'L', $data['char']);
+		$this->text(12, 38, 44, 'L', $data['expiry']);
 	}
 
 	protected function _drawBack($data)
