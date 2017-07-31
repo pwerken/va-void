@@ -2,6 +2,8 @@
 namespace App\Model\Table;
 
 use App\Model\Entity\Character;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 
@@ -41,6 +43,20 @@ class CharactersTable
 				->setForeignKey('teacher_id')->setProperty('students');
 		$this->hasOne('MyTeacher', ['className' => 'Teachings'])
 				->setForeignKey('student_id')->setProperty('teacher');
+	}
+
+	public function afterSave(Event $event, EntityInterface $entity, $options)
+	{
+		if($entity->dirty('status') && $entity->status == 'active') {
+			$chars = $this->findByPlayerId($entity->player_id);
+			foreach($chars as $char) {
+				if($char->id == $entity->id || $char->status != 'active') {
+					continue;
+				}
+				$char->status = 'inactive';
+				$this->save($char);
+			}
+		}
 	}
 
 	public function orderBy()
