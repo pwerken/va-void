@@ -23,13 +23,19 @@ foreach($printing as $row) {
 	if($row['status'] == 'Queued') {
 		echo ' <input type="checkbox" name="delete[]" value="'.$row['id'].'">';
 	}
+	if(!is_null($row['created'])) {
+		$row['created'] = $row['created']->i18nFormat('yyyy-MM-dd HH:mm:ss');
+	}
+	if(!is_null($row['modified'])) {
+		$row['modified'] = $row['modified']->i18nFormat('yyyy-MM-dd HH:mm:ss');
+	}
 	echo "</td>\n"
 		."<td>" . $row['status'] . "</td>\n"
 		."<td>" . $row['entity'] . "</td>\n"
 		."<td>" . $row['key1'] . "</td>\n"
 		."<td>" . $row['key2'] . "</td>\n"
-		."<td>" . $row['created']->i18nFormat('yyyy-MM-dd HH:mm:ss') . "</td>\n"
-		."<td>" . $row['modified']->i18nFormat('yyyy-MM-dd HH:mm:ss') . "</td>\n"
+		."<td>" . $row['created'] . "</td>\n"
+		."<td>" . $row['modified'] . "</td>\n"
 		."</tr>\n";
 }
 
