@@ -16,9 +16,9 @@
 foreach($diff as $row) {
 
 	switch($row[0]) {
-	case -1:	$cmp = 'onlyVelea'; break;
+	case -1:	$cmp = 'onlyValea'; break;
 	case 0:		$cmp = 'different'; break;
-	case 1:		$cmp = 'onlyVoid'; break;
+	case 1:		$cmp = 'onlyVoid';  break;
 	}
 
 	echo "<tr class=\"$cmp\">\n"

@@ -37,10 +37,11 @@ if(!isset($user)) {
 
 	<style>
 .cmp td { vertical-align: middle; }
-.cmp .same td { color: #bbc; }
-.cmp .different td.here { background-color: #faa; }
-.cmp .onlyValea, .cmp .onlyValea:nth-of-type(even),
-.cmp .onlyVoid, .cmp .onlyVoid:nth-of-type(even) { background-color: #fafafa; }
+.cmp .different td.here { background-color: #ddf; }
+.cmp .onlyValea, .cmp .onlyValea:nth-of-type(even)
+{ background-color: #dfd; }
+.cmp .onlyVoid, .cmp .onlyVoid:nth-of-type(even)
+ { background-color: #fdd; }
 .cmp button { margin: 0px; padding: 0.3em 1.5em; width: 4em; }
 .cmp button.red { background-color: #FF0000; }
 .cmp button.green { background-color: #009900; }
