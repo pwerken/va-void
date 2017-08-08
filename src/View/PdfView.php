@@ -12,9 +12,9 @@ class PdfView
 {
 
 	static private $M_TOP	=  8;   // paper margins
-	static private $M_SIDE	= 29.5;
+	static private $M_SIDE	= 29;
 
-	static private $P_HORZ	=  1;   // padding between lammmies
+	static private $P_HORZ	=  2;   // padding between lammmies
 	static private $P_VERT	=  2;
 
 	static private $LAMMIES_Y = 6;  // nr's of lammies that fit on one page
