@@ -155,8 +155,9 @@ class AppController
 	}
 	public function CrudAfterDelete(Event $event)
 	{
-		if(!$event->subject->success)
-			throw new BadRequestException('Failed to delete');
+		if(!$event->subject->success) {
+			throw new ValidationException($event->subject->entity);
+		}
 
 		$this->response->statusCode(204);
 		return $this->response;
