@@ -123,9 +123,13 @@ class BackupShell extends Shell
 		}
 
 		$this->out('Truncating database tables...');
+		$sql = 'ALTER TABLE `%s` auto_increment = 1;';
 		foreach($tables as $table) {
 			$this->verbose("- $table");
-			$this->loadModel($table)->query()->delete()->execute();
+
+			$model = $this->loadModel($table);
+			$model->query()->delete()->execute();
+			$model->connection()->execute(sprintf($sql, $model->table()));
 		}
 
 		$this->out("Importing database content from file:");
