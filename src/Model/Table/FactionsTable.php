@@ -12,6 +12,8 @@ class FactionsTable
 
 	public function initialize(array $config)
 	{
+		parent::initialize($config);
+
 		$this->table('factions');
 		$this->displayField('name');
 		$this->primaryKey('id');

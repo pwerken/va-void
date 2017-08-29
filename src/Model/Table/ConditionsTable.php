@@ -12,9 +12,10 @@ class ConditionsTable
 
 	public function initialize(array $config)
 	{
+		parent::initialize($config);
+
 		$this->table('conditions');
 		$this->primaryKey('id');
-		$this->addBehavior('Timestamp');
 		$this->hasMany('CharactersConditions')->setProperty('characters');
 	}
 

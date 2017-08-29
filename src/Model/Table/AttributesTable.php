@@ -12,6 +12,8 @@ class AttributesTable
 
 	public function initialize(array $config)
 	{
+		parent::initialize($config);
+
 		$this->table('attributes');
 		$this->displayField('name');
 		$this->primaryKey('id');

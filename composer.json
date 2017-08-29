@@ -18,7 +18,8 @@
         "cakephp/migrations": "~1.0",
         "cakephp/plugin-installer": "~1.0",
         "admad/cakephp-jwt-auth": "^2.0",
-        "setasign/fpdf": "^1.8"
+        "setasign/fpdf": "^1.8",
+        "loadsys/cakephp-creatormodifier": "~1.0"
     },
     "require-dev": {
         "psy/psysh": "@stable",

@@ -12,10 +12,11 @@ class GroupsTable
 
 	public function initialize(array $config)
 	{
+		parent::initialize($config);
+
 		$this->table('groups');
 		$this->displayField('name');
 		$this->primaryKey('id');
-		$this->addBehavior('Timestamp');
 		$this->hasMany('Characters');
 	}
 

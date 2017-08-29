@@ -9,10 +9,11 @@ class EventsTable
 {
 	public function initialize(array $config)
 	{
+		parent::initialize($config);
+
 		$this->table('events');
 		$this->displayField('name');
 		$this->primaryKey('id');
-		$this->addBehavior('Timestamp');
 	}
 
 	public function orderBy()

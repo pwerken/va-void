@@ -216,6 +216,7 @@ Type::build('timestamp')
 Plugin::load('Migrations');
 
 Plugin::load('Crud');
+Plugin::load('CreatorModifier');
 Plugin::load('ADmad/JwtAuth');
 
 /**

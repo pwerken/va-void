@@ -14,10 +14,11 @@ class PlayersTable
 
 	public function initialize(array $config)
 	{
+		parent::initialize($config);
+
 		$this->table('players');
 		$this->displayField('full_name');
 		$this->primaryKey('id');
-		$this->addBehavior('Timestamp');
 		$this->hasMany('Characters');
 	}
 

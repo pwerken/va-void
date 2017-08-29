@@ -12,6 +12,14 @@ abstract class AppTable
 
 	protected $_contain = [ ];
 
+	public function initialize(array $config)
+	{
+		parent::initialize($config);
+
+		$this->addBehavior('Timestamp');
+		$this->addBehavior('CreatorModifier.CreatorModifier');
+	}
+
 	public function findWithContain(Query $query, array $options = [])
 	{
 		if(!empty($this->_contain))

@@ -13,6 +13,8 @@ class CharactersSpellsTable
 
 	public function initialize(array $config)
 	{
+		parent::initialize($config);
+
 		$this->table('characters_spells');
 		$this->primaryKey(['character_id', 'spell_id']);
 		$this->belongsTo('Characters');

@@ -13,6 +13,8 @@ class CharactersConditionsTable
 
 	public function initialize(array $config)
 	{
+		parent::initialize($config);
+
 		$this->table('characters_conditions');
 		$this->primaryKey(['character_id', 'condition_id']);
 		$this->belongsTo('Characters');

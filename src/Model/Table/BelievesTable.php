@@ -10,6 +10,8 @@ class BelievesTable
 
 	public function initialize(array $config)
 	{
+		parent::initialize($config);
+
 		$this->table('believes');
 		$this->displayField('name');
 		$this->primaryKey('id');

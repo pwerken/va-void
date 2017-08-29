@@ -12,6 +12,8 @@ class TeachingsTable
 
 	public function initialize(array $config)
 	{
+		parent::initialize($config);
+
 		$this->table('teachings');
 		$this->primaryKey('student_id');
 		$this->addBehavior('Timestamp');

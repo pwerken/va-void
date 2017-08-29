@@ -12,10 +12,11 @@ class ItemsTable
 
 	public function initialize(array $config)
 	{
+		parent::initialize($config);
+
 		$this->table('items');
 		$this->displayField('name');
 		$this->primaryKey('id');
-		$this->addBehavior('Timestamp');
 		$this->belongsTo('Characters');
 		$this->hasMany('AttributesItems')->setProperty('attributes');
 	}

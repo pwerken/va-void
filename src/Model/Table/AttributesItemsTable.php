@@ -13,6 +13,8 @@ class AttributesItemsTable
 
 	public function initialize(array $config)
 	{
+		parent::initialize($config);
+
 		$this->table('attributes_items');
 		$this->primaryKey(['attribute_id', 'item_id']);
 		$this->belongsTo('Attributes');

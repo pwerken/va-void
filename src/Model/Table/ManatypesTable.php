@@ -12,6 +12,8 @@ class ManatypesTable
 
 	public function initialize(array $config)
 	{
+		parent::initialize($config);
+
 		$this->table('manatypes');
 		$this->displayField('name');
 		$this->primaryKey('id');

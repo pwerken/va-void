@@ -12,6 +12,8 @@ class SpellsTable
 
 	public function initialize(array $config)
 	{
+		parent::initialize($config);
+
 		$this->table('spells');
 		$this->displayField('name');
 		$this->primaryKey('id');

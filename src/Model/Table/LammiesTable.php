@@ -12,6 +12,8 @@ class LammiesTable
 
 	public function initialize(array $config)
 	{
+		parent::initialize($config);
+
 		$this->table('lammies');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');

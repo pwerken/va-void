@@ -25,10 +25,11 @@ class CharactersTable
 
 	public function initialize(array $config)
 	{
+		parent::initialize($config);
+
 		$this->table('characters');
 		$this->displayField('name');
 		$this->primaryKey('id');
-		$this->addBehavior('Timestamp');
 		$this->belongsTo('Players');
 		$this->belongsTo('Factions')->setProperty('faction_object');
 		$this->belongsTo('Believes')->setProperty('belief_object');

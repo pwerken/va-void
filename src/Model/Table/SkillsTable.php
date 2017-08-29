@@ -14,6 +14,8 @@ class SkillsTable
 
 	public function initialize(array $config)
 	{
+		parent::initialize($config);
+
 		$this->table('skills');
 		$this->displayField('name');
 		$this->primaryKey('id');
