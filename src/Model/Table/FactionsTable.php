@@ -15,8 +15,8 @@ class FactionsTable
 		parent::initialize($config);
 
 		$this->table('factions');
-		$this->displayField('name');
 		$this->primaryKey('id');
+
 		$this->hasMany('Characters');
 	}
 

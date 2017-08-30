@@ -13,8 +13,8 @@ class BelievesTable
 		parent::initialize($config);
 
 		$this->table('believes');
-		$this->displayField('name');
 		$this->primaryKey('id');
+
 		$this->hasMany('Characters');
 	}
 

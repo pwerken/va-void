@@ -17,6 +17,7 @@ class CharactersConditionsTable
 
 		$this->table('characters_conditions');
 		$this->primaryKey(['character_id', 'condition_id']);
+
 		$this->belongsTo('Characters');
 		$this->belongsTo('Conditions');
 	}

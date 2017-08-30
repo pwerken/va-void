@@ -16,6 +16,7 @@ class LammiesTable
 
 		$this->table('lammies');
 		$this->primaryKey('id');
+
 		$this->addBehavior('Timestamp');
 	}
 

@@ -17,6 +17,7 @@ class AttributesItemsTable
 
 		$this->table('attributes_items');
 		$this->primaryKey(['attribute_id', 'item_id']);
+
 		$this->belongsTo('Attributes');
 		$this->belongsTo('Items');
 	}

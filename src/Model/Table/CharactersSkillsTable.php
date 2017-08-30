@@ -18,6 +18,7 @@ class CharactersSkillsTable
 
 		$this->table('characters_skills');
 		$this->primaryKey(['character_id', 'skill_id']);
+
 		$this->belongsTo('Characters');
 		$this->belongsTo('Skills');
 	}

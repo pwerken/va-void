@@ -28,18 +28,20 @@ class CharactersTable
 		parent::initialize($config);
 
 		$this->table('characters');
-		$this->displayField('name');
 		$this->primaryKey('id');
+
 		$this->belongsTo('Players');
 		$this->belongsTo('Factions')->setProperty('faction_object');
 		$this->belongsTo('Believes')->setProperty('belief_object');
 		$this->belongsTo('Groups')->setProperty('group_object');
 		$this->belongsTo('Worlds')->setProperty('world_object');
+
 		$this->hasMany('Items');
 		$this->hasMany('CharactersConditions')->setProperty('conditions');
 		$this->hasMany('CharactersPowers')->setProperty('powers');
 		$this->hasMany('CharactersSkills')->setProperty('skills');
 		$this->hasMany('CharactersSpells')->setProperty('spells');
+
 		$this->hasMany('MyStudents', ['className' => 'Teachings'])
 				->setForeignKey('teacher_id')->setProperty('students');
 		$this->hasOne('MyTeacher', ['className' => 'Teachings'])

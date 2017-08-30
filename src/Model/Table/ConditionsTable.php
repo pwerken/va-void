@@ -16,6 +16,7 @@ class ConditionsTable
 
 		$this->table('conditions');
 		$this->primaryKey('id');
+
 		$this->hasMany('CharactersConditions')->setProperty('characters');
 	}
 

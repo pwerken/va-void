@@ -15,8 +15,8 @@ class PowersTable
 		parent::initialize($config);
 
 		$this->table('powers');
-		$this->displayField('name');
 		$this->primaryKey('id');
+
 		$this->hasMany('CharactersPowers')->setProperty('characters');
 	}
 

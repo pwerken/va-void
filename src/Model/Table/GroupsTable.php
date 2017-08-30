@@ -15,8 +15,8 @@ class GroupsTable
 		parent::initialize($config);
 
 		$this->table('groups');
-		$this->displayField('name');
 		$this->primaryKey('id');
+
 		$this->hasMany('Characters');
 	}
 

@@ -12,7 +12,6 @@ class EventsTable
 		parent::initialize($config);
 
 		$this->table('events');
-		$this->displayField('name');
 		$this->primaryKey('id');
 	}
 

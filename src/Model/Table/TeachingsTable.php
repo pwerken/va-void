@@ -16,6 +16,7 @@ class TeachingsTable
 
 		$this->table('teachings');
 		$this->primaryKey('student_id');
+
 		$this->addBehavior('Timestamp');
 		$this->belongsTo('Teacher', ['className' => 'Characters'])
 			->setForeignKey('teacher_id')->setProperty('teacher');

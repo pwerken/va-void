@@ -17,6 +17,7 @@ class CharactersPowersTable
 
 		$this->table('characters_powers');
 		$this->primaryKey(['character_id', 'power_id']);
+
 		$this->belongsTo('Characters');
 		$this->belongsTo('Powers');
 	}

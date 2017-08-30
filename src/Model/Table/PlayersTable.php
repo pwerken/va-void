@@ -17,8 +17,8 @@ class PlayersTable
 		parent::initialize($config);
 
 		$this->table('players');
-		$this->displayField('full_name');
 		$this->primaryKey('id');
+
 		$this->hasMany('Characters');
 	}
 

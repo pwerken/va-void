@@ -15,8 +15,8 @@ class ItemsTable
 		parent::initialize($config);
 
 		$this->table('items');
-		$this->displayField('name');
 		$this->primaryKey('id');
+
 		$this->belongsTo('Characters');
 		$this->hasMany('AttributesItems')->setProperty('attributes');
 	}

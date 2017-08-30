@@ -17,8 +17,8 @@ class SkillsTable
 		parent::initialize($config);
 
 		$this->table('skills');
-		$this->displayField('name');
 		$this->primaryKey('id');
+
 		$this->belongsTo('Manatypes');
 		$this->hasMany('CharactersSkills')->setProperty('characters');
 	}

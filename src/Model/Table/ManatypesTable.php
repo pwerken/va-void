@@ -15,8 +15,8 @@ class ManatypesTable
 		parent::initialize($config);
 
 		$this->table('manatypes');
-		$this->displayField('name');
 		$this->primaryKey('id');
+
 		$this->hasMany('Skills');
 	}
 
