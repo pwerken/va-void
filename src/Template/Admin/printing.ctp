@@ -13,6 +13,7 @@ echo $this->Form->button(__('Delete selected'));
 	<th>Key #1</th>
 	<th>Key #2</th>
 	<th>Created</th>
+	<th>Creator</th>
 	<th>Modified</th>
 </tr>
 <?php
@@ -26,6 +27,9 @@ foreach($printing as $row) {
 	if(!is_null($row['created'])) {
 		$row['created'] = $row['created']->i18nFormat('yyyy-MM-dd HH:mm:ss');
 	}
+	if(is_null($row['creator_id'])) {
+		$row['creator_id'] = '(??)';
+	}
 	if(!is_null($row['modified'])) {
 		$row['modified'] = $row['modified']->i18nFormat('yyyy-MM-dd HH:mm:ss');
 	}
@@ -35,6 +39,7 @@ foreach($printing as $row) {
 		."<td>" . $row['key1'] . "</td>\n"
 		."<td>" . $row['key2'] . "</td>\n"
 		."<td>" . $row['created'] . "</td>\n"
+		."<td>" . $row['creator_id'] . "</td>\n"
 		."<td>" . $row['modified'] . "</td>\n"
 		."</tr>\n";
 }
