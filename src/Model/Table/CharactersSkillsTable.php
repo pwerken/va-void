@@ -78,7 +78,7 @@ class CharactersSkillsTable
 		$cost = $skill->cost;
 
 		$spend = 0;
-		foreach($character->characters_skills as $skill) {
+		foreach($character->skills as $skill) {
 			$spend += $skill->skill->cost;
 		}
 
