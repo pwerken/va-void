@@ -128,11 +128,16 @@ class AppController
 
 		if(strcmp(substr($action, -3, 3), 'add') == 0
 		|| strcmp(substr($action, -4, 4), 'edit') == 0) {
-			foreach($this->loadModel()->associations() as $a) {
-				if($a->property()) {
-					unset($this->request->data[$a->property()]);
-				}
+			# remove stuff that's not in the db
+			foreach($this->request->data as $key => $value) {
+				if(!$this->loadModel()->hasField($key))
+					unset($this->request->data[$key]);
 			}
+			# these can never be set through the rest-api
+			unset($this->request->data['created']);
+			unset($this->request->data['creator_id']);
+			unset($this->request->data['modified']);
+			unset($this->request->data['modifier_id']);
 		}
 		if(strcmp(substr($action, -5, 5), 'Index') == 0) {
 			$model = ucfirst(substr($action, 0, -5));
