@@ -41,7 +41,7 @@ class BackupShell extends Shell
 		$this->helper('table')->output(array_merge([$headers], $backups));
 	}
 
-	public function export()
+	public function export($descr = NULL)
 	{
 		$target = $this->config['target'];
 		if(!is_writable($target)) {
@@ -49,9 +49,12 @@ class BackupShell extends Shell
 			return false;
 		}
 
-		$connection = ConnectionManager::getConfig('default');
-		$filename = sprintf('%sbackup_%s_%s.sql', $target
-						, $connection['database'], date('YmdHis'));
+		if(is_null($descr)) {
+			$descr = '';
+		} else {
+			$descr = '_'.preg_replace("/[^a-zA-Z0-9]+/", "_", $descr);;
+		}
+		$filename = sprintf('%s%s%s.sql', $target , date('YmdHis'), $descr);
 
 		if(file_exists($filename)) {
 			$this->err(sprintf('File `%s` already exists', $filename));
@@ -70,6 +73,7 @@ class BackupShell extends Shell
 		$this->out('Exporting database content to file:');
 		$this->quiet($filename);
 
+		$connection = ConnectionManager::getConfig('default');
 		$auth = $this->_storeAuth($connection, 'mysqldump');
 		$cmd = sprintf('%s --defaults-file=%s -t --result-file=%s %s %s'
 					, $this->config['mysqldump'], $auth
@@ -156,7 +160,12 @@ class BackupShell extends Shell
 			[ 'help' => 'List database backups.' ]);
 
 		$parser->addSubcommand('export',
-			[ 'help' => 'Exports a database backup.' ]);
+			[ 'help' => 'Exports a database backup.'
+			, 'parser' =>
+				[ 'arguments' =>
+					[ 'description' =>
+						[ "help" => "Append [description] to created backup sql-file."
+			]	]	]	]);
 
 		$parser->addSubcommand('import',
 			[ 'help' => 'Imports a database backup.'
