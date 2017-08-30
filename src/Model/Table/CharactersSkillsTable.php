@@ -53,7 +53,7 @@ class CharactersSkillsTable
 		$rules->add($rules->existsIn('skill_id', 'skills'));
 
 		$rules->addCreate([$this, 'disallowDeprecated']);
-		$rules->addCreate([$this, 'hasXPAvailable']);
+#		$rules->addCreate([$this, 'hasXPAvailable']);
 
 		return $rules;
 	}
