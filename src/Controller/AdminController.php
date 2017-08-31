@@ -24,13 +24,6 @@ class AdminController
 				[ 'Form' =>
 					[ 'userModel' => 'Players'
 					, 'fields' => [ 'username' => 'id' ]
-					]
-				, 'ADmad/JwtAuth.Jwt' =>
-					[ 'userModel' => 'Players'
-					, 'fields' => [ 'username' => 'id' ]
-					, 'parameter' => 'token'
-					, 'queryDatasource' => true
-					, 'unauthenticatedException' => '\Cake\Network\Exception\ForbiddenException'
 				]	]
 			, 'authorize' => ['Controller']
 			, 'unauthorizedRedirect' => false
