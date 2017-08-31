@@ -1,6 +1,8 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
@@ -40,6 +42,14 @@ class LammiesTable
 		$query->order(["Lammies.id" => "DESC"]);
 		$query->limit(1);
 		return $query;
+	}
+
+	public function beforeDelete(Event $event, EntityInterface $entity, $options)
+	{
+	}
+
+	public function beforeSave(Event $event, EntityInterface $entity, $options)
+	{
 	}
 
 	public function orderBy()

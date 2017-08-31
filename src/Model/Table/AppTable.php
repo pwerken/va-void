@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\Table;
@@ -26,6 +27,19 @@ abstract class AppTable
 			$query->contain($this->_contain);
 
 		return $query;
+	}
+
+	public function beforeDelete(Event $event, EntityInterface $entity, $options)
+	{
+		TableRegistry::get('audits')->logDeletion($entity);
+	}
+
+	public function beforeSave(Event $event, EntityInterface $entity, $options)
+	{
+		if($entity->isNew())
+			return;
+
+		TableRegistry::get('audits')->logChange($entity);
 	}
 
 	public function beforeFind(Event $event, Query $query, $options, $primary)

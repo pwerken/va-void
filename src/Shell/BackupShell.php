@@ -218,6 +218,7 @@ class BackupShell extends Shell
 				, "characters_spells"
 				, "lammies"
 				, "teachings"
+				, "audits"
 				];
 		} else {
 			$order =
@@ -226,6 +227,7 @@ class BackupShell extends Shell
 				, "characters_powers"
 				, "characters_skills"
 				, "characters_spells"
+				, "audits"
 				, "lammies"
 				, "teachings"
 				, "attributes"
@@ -254,8 +256,7 @@ class BackupShell extends Shell
 				$count++;
 		}
 		if(count($order) != $count) {
-			$this->err('Inconsistent table count.');
-			return [];
+			$this->warn('Inconsistent table count.');
 		}
 
 		return $order;
