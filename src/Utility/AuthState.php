@@ -9,6 +9,11 @@ class AuthState
 	private static $_user = NULL;
 	private static $_role = 0;
 
+	public static function getId()
+	{
+		return self::$_auth->user('id');
+	}
+
 	public static function getRole()
 	{
 		return self::$_auth->user('role');

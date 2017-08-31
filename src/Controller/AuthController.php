@@ -27,7 +27,6 @@ class AuthController
 		if (!$user)
 			throw new UnauthorizedException('Invalid username or password');
 
-		$this->Auth->setUser($user);
 		$this->set(
 			[ '_serialize' =>
 				[ 'class' => 'Auth'

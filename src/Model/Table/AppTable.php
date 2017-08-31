@@ -17,7 +17,7 @@ abstract class AppTable
 		parent::initialize($config);
 
 		$this->addBehavior('Timestamp');
-		$this->addBehavior('CreatorModifier.CreatorModifier');
+		$this->addBehavior('CreatorModifier');
 	}
 
 	public function findWithContain(Query $query, array $options = [])

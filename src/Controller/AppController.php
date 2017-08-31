@@ -33,7 +33,7 @@ class AppController
 			[ 'listeners' => ['Crud.RelatedModels']
 			]);
 		$this->loadComponent('Auth',
-			[ 'storage' => 'Session'
+			[ 'storage' => 'Memory'
 			, 'authenticate' =>
 				[ 'Form' =>
 					[ 'userModel' => 'Players'
