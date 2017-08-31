@@ -149,13 +149,13 @@ class AdminController
 		$backupShell = new BackupShell();
 		$backupShell->initialize();
 
-		$this->set('backups', $backupShell->getBackupFiles());
+		$this->set('backups', array_reverse($backupShell->getBackupFiles()));
 	}
 
 	public function migrations()
 	{
 		$migrations = new Migrations();
-		$this->set('migrations', $migrations->status());
+		$this->set('migrations', array_reverse($migrations->status()));
 	}
 
 	public function printing()
