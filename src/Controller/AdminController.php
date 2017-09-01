@@ -164,9 +164,7 @@ class AdminController
 
 		if($this->request->is('post') && AuthState::hasRole('Infobalie')) {
 			$ids = $this->request->data('delete');
-			if(empty($ids)) {
-				$this->Flash->error("Nothing selected");
-			} else {
+			if(!empty($ids)) {
 				$nr = $lammies->deleteAll(['id IN' => $ids]);
 				$this->Flash->success("Removed $nr lammies from queue");
 			}
