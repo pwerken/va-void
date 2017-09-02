@@ -66,7 +66,14 @@ class AuditsTable
 	public function logChange(EntityInterface $entity)
 	{
 		$table = TableRegistry::get($entity->source());
-		$data = $entity->extractOriginal($table->getSchema()->columns());
+		$columns = $table->getSchema()->columns();
+
+		if($entity->dirty('modified')
+		&& count($entity->extractOriginalChanged($columns)) == 1) {
+			return;
+		}
+
+		$data = $entity->extractOriginal($columns);
 
 		$primary = $table->primaryKey();
 		if(!is_array($primary))
