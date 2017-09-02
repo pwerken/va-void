@@ -79,6 +79,26 @@ class AdminController
 		return $this->redirect($this->Auth->logout());
 	}
 
+	public function audit()
+	{
+		$select = 'SELECT "%s" AS "entity", `id` AS "key1", NULL as "key2"'
+				. ', `modified`, `modifier_id`'
+				. ' FROM `%s` WHERE `modified` IS NOT NULL';
+
+		$list = ConnectionManager::get('default')->execute(
+			'SELECT "Character" AS "entity", `player_id` as "key1"'
+				. ', `chin` as "key2", `modified`, `modifier_id`'
+				. ' FROM `characters` WHERE `modified` IS NOT NULL'
+			. ' UNION ' . sprintf($select, 'Player', 'players')
+			. ' UNION ' . sprintf($select, 'Condition', 'conditions')
+			. ' UNION ' . sprintf($select, 'Power', 'powers')
+			. ' UNION ' . sprintf($select, 'Item', 'items')
+			. ' ORDER BY `modified` DESC, `entity` ASC, `key1` ASC, `key2` DESC'
+			, [])->fetchAll();
+
+		$this->set('list', $list);
+	}
+
 	public function authentication()
 	{
 		if(!$this->request->is('post')) {
