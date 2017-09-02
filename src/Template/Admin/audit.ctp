@@ -13,6 +13,8 @@ foreach($list as $row) {
 		$link .= '/'.$row[2];
 	if(is_null($row[4]))
 		$row[4] = '(??)';
+	else if($row[4] < 0)
+		$row[4] = '(cli)';
 
 	echo "<tr>\n"
 		."<td>".$link."</td>\n"
