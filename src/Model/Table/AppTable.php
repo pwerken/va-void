@@ -31,7 +31,7 @@ abstract class AppTable
 
 	public function beforeDelete(Event $event, EntityInterface $entity, $options)
 	{
-		TableRegistry::get('audits')->logDeletion($entity);
+		TableRegistry::get('history')->logDeletion($entity);
 	}
 
 	public function beforeSave(Event $event, EntityInterface $entity, $options)
@@ -39,7 +39,12 @@ abstract class AppTable
 		if($entity->isNew())
 			return;
 
-		TableRegistry::get('audits')->logChange($entity);
+		if($entity->dirty('modified') && $entity->dirty('modifier_id')
+		&& $entity->get('modifier_id') == $entity->getOriginal('modifier_id')
+		&& count($entity->getDirty()) == 2)
+			return;
+
+		TableRegistry::get('history')->logChange($entity);
 	}
 
 	public function beforeFind(Event $event, Query $query, $options, $primary)

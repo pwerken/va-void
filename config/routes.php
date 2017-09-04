@@ -62,7 +62,7 @@ Router::scope('/', function (RouteBuilder $routes) {
 	$defaults['action'] = 'index';
 	$routes->connect('/admin', $defaults);
 	unset($defaults['action']);
-	$routes->connect('/admin/:action', $defaults);
+	$routes->connect('/admin/:action/*', $defaults);
 
 	/**
 	 *	Authentication related URIs

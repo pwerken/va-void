@@ -7,6 +7,7 @@ use App\Utility\AuthState;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Datasource\ConnectionManager;
+use Cake\Network\Exception\NotFoundException;
 use Migrations\Migrations;
 
 class AdminController
@@ -50,6 +51,7 @@ class AdminController
 		switch($this->request->action) {
 		case 'authorisation':
 			return AuthState::hasRole('Referee');
+		case 'history':
 		case 'printing':
 		case 'valea':
 			return AuthState::hasRole('Infobalie');
@@ -77,26 +79,6 @@ class AdminController
 	public function logout()
 	{
 		return $this->redirect($this->Auth->logout());
-	}
-
-	public function audit()
-	{
-		$select = 'SELECT "%s" AS "entity", `id` AS "key1", NULL as "key2"'
-				. ', `modified`, `modifier_id`'
-				. ' FROM `%s` WHERE `modified` IS NOT NULL';
-
-		$list = ConnectionManager::get('default')->execute(
-			'SELECT "Character" AS "entity", `player_id` as "key1"'
-				. ', `chin` as "key2", `modified`, `modifier_id`'
-				. ' FROM `characters` WHERE `modified` IS NOT NULL'
-			. ' UNION ' . sprintf($select, 'Player', 'players')
-			. ' UNION ' . sprintf($select, 'Condition', 'conditions')
-			. ' UNION ' . sprintf($select, 'Power', 'powers')
-			. ' UNION ' . sprintf($select, 'Item', 'items')
-			. ' ORDER BY `modified` DESC, `entity` ASC, `key1` ASC, `key2` DESC'
-			, [])->fetchAll();
-
-		$this->set('list', $list);
 	}
 
 	public function authentication()
@@ -170,6 +152,23 @@ class AdminController
 		$backupShell->initialize();
 
 		$this->set('backups', array_reverse($backupShell->getBackupFiles()));
+	}
+
+	public function history($e = NULL, $k1 = NULL, $k2 = NULL)
+	{
+		$table = $this->loadModel('history');
+		if(!is_null($e)) {
+			$this->viewBuilder()->setTemplate('historyEntity');
+			$list = $table->getEntityHistory($e, $k1, $k2);
+		} else {
+			$list = $table->getAllLastModified();
+		}
+
+		if(empty($list)) {
+			throw new NotFoundException();
+		}
+
+		$this->set('list', $list);
 	}
 
 	public function migrations()

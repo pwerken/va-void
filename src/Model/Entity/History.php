@@ -5,7 +5,7 @@ use Cake\Datasource\EntityInterface;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 
-class Audit
+class History
 	extends Entity
 {
 
@@ -22,23 +22,23 @@ class Audit
 		if(!is_array($primary))
 			$primary = [$primary];
 
-		$audit = new Audit();
-		$audit->set('entity', $entity->getClass());
+		$history = new History();
+		$history->set('entity', $entity->getClass());
 		foreach($primary as $key => $field) {
-			$audit->set("key".($key+1), $data[$field]);
+			$history->set("key".($key+1), $data[$field]);
 			unset($data[$field]);
 		}
-		$audit->set('modified', $data['modified']);
-		$audit->set('modifier_id', $data['modifier_id']);
+		$history->set('modified', $data['modified']);
+		$history->set('modifier_id', $data['modifier_id']);
 		unset($data['modified']);
 		unset($data['modifier_id']);
 
 		if(empty($data)) {
-			$audit->set('data', '{}');
+			$history->set('data', '{}');
 		} else {
-			$audit->set('data', json_encode($data));
+			$history->set('data', json_encode($data));
 		}
-		return $audit;
+		return $history;
 	}
 
 	public static function compare($a, $b)
@@ -80,6 +80,7 @@ class Audit
 		}
 		return $key;
 	}
+
 	public function modifiedString()
 	{
 		$modified = $this->get('modified');
@@ -88,6 +89,7 @@ class Audit
 
 		return $modified->jsonSerialize();
 	}
+
 	public function modifierString()
 	{
 		$modifier = $this->get('modifier_id');

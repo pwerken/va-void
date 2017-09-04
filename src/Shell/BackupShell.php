@@ -218,7 +218,7 @@ class BackupShell extends Shell
 				, "characters_spells"
 				, "lammies"
 				, "teachings"
-				, "audits"
+				, "history"
 				];
 		} else {
 			$order =
@@ -227,7 +227,7 @@ class BackupShell extends Shell
 				, "characters_powers"
 				, "characters_skills"
 				, "characters_spells"
-				, "audits"
+				, "history"
 				, "lammies"
 				, "teachings"
 				, "attributes"
