@@ -1,9 +1,10 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\Audit;
+
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
-use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
@@ -65,31 +66,12 @@ class AuditsTable
 
 	public function logChange(EntityInterface $entity)
 	{
-		$table = TableRegistry::get($entity->source());
-		$columns = $table->getSchema()->columns();
-
-		if($entity->dirty('modified')
-		&& count($entity->extractOriginalChanged($columns)) == 1) {
+		if($entity->dirty('modified') && count($entity->getDirty()) == 1) {
 			return;
 		}
 
-		$data = $entity->extractOriginal($columns);
-
-		$primary = $table->primaryKey();
-		if(!is_array($primary))
-			$primary = [$primary];
-
-		$audit = $this->newEntity();
-		$audit->set('entity', $entity->getClass());
-		foreach($primary as $key => $field) {
-			$audit->set("key".($key+1), $data[$field]);
-		}
-		$audit->set('data', json_encode($data));
-		$audit->set('modified', $data['modified']);
-		$audit->set('modifier_id', $data['modifier_id']);
-
+		$audit = Audit::fromEntity($entity);
 		$this->save($audit);
-
 		return $audit;
 	}
 }
