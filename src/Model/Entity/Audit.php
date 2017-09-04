@@ -40,4 +40,62 @@ class Audit
 		}
 		return $audit;
 	}
+
+	public static function compare($a, $b)
+	{
+		if(is_null($a) && is_null($b))
+			return 0;
+		else if(is_null($a))
+			return 1;
+		else if(is_null($b))
+			return -1;
+
+		$cmp = strcmp($b->modifiedString(), $a->modifiedString());
+		if($cmp != 0)
+			return $cmp;
+
+		if(!is_null($a->get('id')) && !is_null($b->get('id')))
+			return $b->get('id') - $a->get('id');
+		if(!is_null($a->get('id')))
+			return 1;
+		if(!is_null($b->get('id')))
+			return -1;
+
+		$cmp = strcmp($a->get('entity'), $b->get('entity'));
+		if($cmp != 0)
+			return $cmp;
+
+		$cmp = $a->get('key1') - $b->get('key1');
+		if($cmp != 0)
+			return $cmp;
+
+		return $a->get('key2') - $b->get('key2');
+	}
+
+	public function keyString()
+	{
+		$key = $this->get('entity').'#'.$this->get('key1');
+		if(!is_null($this->get('key2'))) {
+			$key .= '#'.$this->get('key2');
+		}
+		return $key;
+	}
+	public function modifiedString()
+	{
+		$modified = $this->get('modified');
+		if(is_null($modified))
+			return '(??)';
+
+		return $modified->jsonSerialize();
+	}
+	public function modifierString()
+	{
+		$modifier = $this->get('modifier_id');
+		if(is_null($modifier))
+			return '(??)';
+		if($modifier < 0)
+			return '(cli)';
+
+		return $modifier;
+	}
 }
