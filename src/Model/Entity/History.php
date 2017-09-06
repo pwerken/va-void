@@ -74,9 +74,9 @@ class History
 
 	public function keyString()
 	{
-		$key = $this->get('entity').'#'.$this->get('key1');
+		$key = $this->get('entity').'/'.$this->get('key1');
 		if(!is_null($this->get('key2'))) {
-			$key .= '#'.$this->get('key2');
+			$key .= '/'.$this->get('key2');
 		}
 		return $key;
 	}
