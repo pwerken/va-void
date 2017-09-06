@@ -73,18 +73,6 @@ abstract class AppEntity
 		return $props;
 	}
 
-	protected function _setModified($new)
-	{
-		$cur = $this->get('modified');
-		if(is_object($cur) && is_object($new)) {
-			if($cur->jsonSerialize() == $new->jsonSerialize()) {
-				$this->dirty('modified', false);
-				return $cur;
-			}
-		}
-		return $new;
-	}
-
 	protected function getBaseUrl()
 	{
 		return strtolower(Inflector::pluralize($this->getClass()));
