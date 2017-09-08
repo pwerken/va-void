@@ -9,8 +9,6 @@ class AttributesItemsTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'Attributes', 'Items.Characters' ];
-
 	public function initialize(array $config)
 	{
 		parent::initialize($config);
@@ -45,4 +43,8 @@ class AttributesItemsTable
 		return $validator;
 	}
 
+	protected function contain()
+	{
+		return [ 'Attributes', 'Items.Characters' ];
+	}
 }

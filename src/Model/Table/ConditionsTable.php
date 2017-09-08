@@ -8,18 +8,11 @@ class ConditionsTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'CharactersConditions.Characters' ];
-
 	public function initialize(array $config)
 	{
 		parent::initialize($config);
 
 		$this->hasMany('CharactersConditions')->setProperty('characters');
-	}
-
-	protected function orderBy()
-	{
-		return	[ 'id' => 'ASC' ];
 	}
 
 	public function validationDefault(Validator $validator)
@@ -56,4 +49,13 @@ class ConditionsTable
 		return true;
 	}
 
+	protected function contain()
+	{
+		return [ 'CharactersConditions.Characters' ];
+	}
+
+	protected function orderBy()
+	{
+		return	[ 'id' => 'ASC' ];
+	}
 }

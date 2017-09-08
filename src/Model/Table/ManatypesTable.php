@@ -8,18 +8,11 @@ class ManatypesTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'Skills' ];
-
 	public function initialize(array $config)
 	{
 		parent::initialize($config);
 
 		$this->hasMany('Skills');
-	}
-
-	protected function orderBy()
-	{
-		return	[ 'name' => 'ASC' ];
 	}
 
 	public function validationDefault(Validator $validator)
@@ -53,4 +46,13 @@ class ManatypesTable
 		return true;
 	}
 
+	protected function contain()
+	{
+		return [ 'Skills' ];
+	}
+
+	protected function orderBy()
+	{
+		return	[ 'name' => 'ASC' ];
+	}
 }

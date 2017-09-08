@@ -8,18 +8,11 @@ class SpellsTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'CharactersSpells.Characters' ];
-
 	public function initialize(array $config)
 	{
 		parent::initialize($config);
 
 		$this->hasMany('CharactersSpells')->setProperty('characters');
-	}
-
-	protected function orderBy()
-	{
-		return	[ 'name' => 'ASC' ];
 	}
 
 	public function validationDefault(Validator $validator)
@@ -58,4 +51,13 @@ class SpellsTable
 		return true;
 	}
 
+	protected function contain()
+	{
+		return [ 'CharactersSpells.Characters' ];
+	}
+
+	protected function orderBy()
+	{
+		return	[ 'name' => 'ASC' ];
+	}
 }

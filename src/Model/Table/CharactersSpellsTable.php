@@ -9,8 +9,6 @@ class CharactersSpellsTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'Characters', 'Spells' ];
-
 	public function initialize(array $config)
 	{
 		parent::initialize($config);
@@ -31,11 +29,6 @@ class CharactersSpellsTable
 		$this->touchEntity('Characters', $entity->character_id);
 	}
 
-	protected function orderBy()
-	{
-		return [ 'level' => 'DESC' ];
-	}
-
 	public function validationDefault(Validator $validator)
 	{
 		$validator->notEmpty('character_id');
@@ -53,4 +46,13 @@ class CharactersSpellsTable
 		return $validator;
 	}
 
+	protected function contain()
+	{
+		return [ 'Characters', 'Spells' ];
+	}
+
+	protected function orderBy()
+	{
+		return [ 'level' => 'DESC' ];
+	}
 }

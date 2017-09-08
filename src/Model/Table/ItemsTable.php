@@ -8,19 +8,12 @@ class ItemsTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'Characters', 'AttributesItems.Attributes' ];
-
 	public function initialize(array $config)
 	{
 		parent::initialize($config);
 
 		$this->belongsTo('Characters');
 		$this->hasMany('AttributesItems')->setProperty('attributes');
-	}
-
-	protected function orderBy()
-	{
-		return	[ 'id' => 'ASC' ];
 	}
 
 	public function validationDefault(Validator $validator)
@@ -88,4 +81,13 @@ class ItemsTable
 		return NULL;
 	}
 
+	protected function contain()
+	{
+		return [ 'Characters', 'AttributesItems.Attributes' ];
+	}
+
+	protected function orderBy()
+	{
+		return	[ 'id' => 'ASC' ];
+	}
 }

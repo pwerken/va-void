@@ -8,18 +8,11 @@ class GroupsTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'Characters' ];
-
 	public function initialize(array $config)
 	{
 		parent::initialize($config);
 
 		$this->hasMany('Characters');
-	}
-
-	protected function orderBy()
-	{
-		return	[ 'name' => 'ASC' ];
 	}
 
 	public function validationDefault(Validator $validator)
@@ -54,4 +47,13 @@ class GroupsTable
 		return true;
 	}
 
+	protected function contain()
+	{
+		return [ 'Characters' ];
+	}
+
+	protected function orderBy()
+	{
+		return	[ 'name' => 'ASC' ];
+	}
 }

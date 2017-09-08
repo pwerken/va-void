@@ -11,18 +11,6 @@ class CharactersTable
 	extends AppTable
 {
 
-	protected $_contain =
-		[ 'Believes', 'Factions', 'Groups', 'Players', 'Worlds', 'Items'
-		, 'CharactersConditions.Conditions'
-		, 'CharactersPowers.Powers'
-		, 'CharactersSkills.Skills.Manatypes'
-		, 'CharactersSpells.Spells'
-		, 'MyTeacher'  =>	[ 'Teacher', 'Student', 'Skills.Manatypes'
-							, 'Started', 'Updated' ]
-		, 'MyStudents' =>	[ 'Teacher', 'Student', 'Skills.Manatypes'
-							, 'Started', 'Updated' ]
-		];
-
 	public function initialize(array $config)
 	{
 		parent::initialize($config);
@@ -57,11 +45,6 @@ class CharactersTable
 				$this->save($char);
 			}
 		}
-	}
-
-	protected function orderBy()
-	{
-		return [ 'player_id' => 'ASC', 'chin' => 'DESC' ];
 	}
 
 	public function validationDefault(Validator $validator)
@@ -183,4 +166,23 @@ class CharactersTable
 		return true;
 	}
 
+	protected function contain()
+	{
+		return
+			[ 'Believes', 'Factions', 'Groups', 'Players', 'Worlds', 'Items'
+			, 'CharactersConditions.Conditions'
+			, 'CharactersPowers.Powers'
+			, 'CharactersSkills.Skills.Manatypes'
+			, 'CharactersSpells.Spells'
+			, 'MyTeacher'  =>	[ 'Teacher', 'Student', 'Skills.Manatypes'
+								, 'Started', 'Updated' ]
+			, 'MyStudents' =>	[ 'Teacher', 'Student', 'Skills.Manatypes'
+								, 'Started', 'Updated' ]
+			];
+	}
+
+	protected function orderBy()
+	{
+		return [ 'player_id' => 'ASC', 'chin' => 'DESC' ];
+	}
 }

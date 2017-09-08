@@ -11,8 +11,6 @@ abstract class AppTable
 	extends Table
 {
 
-	protected $_contain = [ ];
-
 	public function initialize(array $config)
 	{
 		parent::initialize($config);
@@ -23,8 +21,9 @@ abstract class AppTable
 
 	public function findWithContain(Query $query, array $options = [])
 	{
-		if(!empty($this->_contain))
-			$query->contain($this->_contain);
+		$contain = $this->contain();
+		if(!empty($contain))
+			$query->contain($contain);
 
 		return $query;
 	}
@@ -74,6 +73,11 @@ abstract class AppTable
 		}
 
 		return $query;
+	}
+
+	protected function contain()
+	{
+		return [ ];
 	}
 
 	protected function orderBy() {

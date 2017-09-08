@@ -10,18 +10,11 @@ class PlayersTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'Characters' ];
-
 	public function initialize(array $config)
 	{
 		parent::initialize($config);
 
 		$this->hasMany('Characters');
-	}
-
-	protected function orderBy()
-	{
-		return	[ 'id' => 'ASC' ];
 	}
 
 	public function validationDefault(Validator $validator)
@@ -85,4 +78,13 @@ class PlayersTable
 		return true;
 	}
 
+	protected function contain()
+	{
+		return [ 'Characters' ];
+	}
+
+	protected function orderBy()
+	{
+		return	[ 'id' => 'ASC' ];
+	}
 }

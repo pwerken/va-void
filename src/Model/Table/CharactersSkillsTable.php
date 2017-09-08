@@ -10,8 +10,6 @@ class CharactersSkillsTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'Characters', 'Skills.Manatypes' ];
-
 	public function initialize(array $config)
 	{
 		parent::initialize($config);
@@ -89,4 +87,8 @@ class CharactersSkillsTable
 		return true;
 	}
 
+	protected function contain()
+	{
+		return [ 'Characters', 'Skills.Manatypes' ];
+	}
 }

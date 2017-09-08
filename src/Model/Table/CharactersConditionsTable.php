@@ -9,8 +9,6 @@ class CharactersConditionsTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'Characters', 'Conditions' ];
-
 	public function initialize(array $config)
 	{
 		parent::initialize($config);
@@ -47,4 +45,8 @@ class CharactersConditionsTable
 		return $validator;
 	}
 
+	protected function contain()
+	{
+		return [ 'Characters', 'Conditions' ];
+	}
 }

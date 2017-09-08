@@ -8,19 +8,12 @@ class SkillsTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'Manatypes' ];
-
 	public function initialize(array $config)
 	{
 		parent::initialize($config);
 
 		$this->belongsTo('Manatypes');
 		$this->hasMany('CharactersSkills')->setProperty('characters');
-	}
-
-	protected function orderBy()
-	{
-		return	[ 'sort_order' => 'ASC', 'name' => 'ASC' ];
 	}
 
 	public function validationDefault(Validator $validator)
@@ -63,4 +56,13 @@ class SkillsTable
 		return true;
 	}
 
+	protected function contain()
+	{
+		return [ 'Manatypes' ];
+	}
+
+	protected function orderBy()
+	{
+		return	[ 'sort_order' => 'ASC', 'name' => 'ASC' ];
+	}
 }

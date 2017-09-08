@@ -8,8 +8,6 @@ class TeachingsTable
 	extends AppTable
 {
 
-	protected $_contain = ['Student','Teacher','Skills','Started','Updated'];
-
 	public function initialize(array $config)
 	{
 		parent::initialize($config);
@@ -25,11 +23,6 @@ class TeachingsTable
 			->setForeignKey('started_id')->setProperty('started_object');
 		$this->belongsTo('Updated', ['className' => 'Events'])
 			->setForeignKey('updated_id')->setProperty('updated_object');
-	}
-
-	protected function orderBy()
-	{
-		return	[ 'student_id' => 'ASC' ];
 	}
 
 	public function validationDefault(Validator $validator)
@@ -79,4 +72,13 @@ class TeachingsTable
 		return $query->first();
 	}
 
+	protected function contain()
+	{
+		return [ 'Student', 'Teacher', 'Skills', 'Started', 'Updated' ];
+	}
+
+	protected function orderBy()
+	{
+		return	[ 'student_id' => 'ASC' ];
+	}
 }

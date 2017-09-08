@@ -8,18 +8,11 @@ class PowersTable
 	extends AppTable
 {
 
-	protected $_contain = [ 'CharactersPowers.Characters' ];
-
 	public function initialize(array $config)
 	{
 		parent::initialize($config);
 
 		$this->hasMany('CharactersPowers')->setProperty('characters');
-	}
-
-	protected function orderBy()
-	{
-		return	[ 'id' => 'ASC' ];
 	}
 
 	public function validationDefault(Validator $validator)
@@ -56,4 +49,13 @@ class PowersTable
 		return true;
 	}
 
+	protected function contain()
+	{
+		return [ 'CharactersPowers.Characters' ];
+	}
+
+	protected function orderBy()
+	{
+		return	[ 'id' => 'ASC' ];
+	}
 }
