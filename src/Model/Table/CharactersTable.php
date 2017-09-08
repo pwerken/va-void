@@ -59,7 +59,7 @@ class CharactersTable
 		}
 	}
 
-	public function orderBy()
+	protected function orderBy()
 	{
 		return [ 'player_id' => 'ASC', 'chin' => 'DESC' ];
 	}

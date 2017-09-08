@@ -8,7 +8,7 @@ class EventsTable
 	extends AppTable
 {
 
-	public function orderBy()
+	protected function orderBy()
 	{
 		return	[ 'id' => 'ASC' ];
 	}

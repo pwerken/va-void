@@ -18,7 +18,7 @@ class SkillsTable
 		$this->hasMany('CharactersSkills')->setProperty('characters');
 	}
 
-	public function orderBy()
+	protected function orderBy()
 	{
 		return	[ 'sort_order' => 'ASC', 'name' => 'ASC' ];
 	}

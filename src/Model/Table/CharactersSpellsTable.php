@@ -31,7 +31,7 @@ class CharactersSpellsTable
 		$this->touchEntity('Characters', $entity->character_id);
 	}
 
-	public function orderBy()
+	protected function orderBy()
 	{
 		return [ 'level' => 'DESC' ];
 	}

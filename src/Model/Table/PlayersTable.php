@@ -19,7 +19,7 @@ class PlayersTable
 		$this->hasMany('Characters');
 	}
 
-	public function orderBy()
+	protected function orderBy()
 	{
 		return	[ 'id' => 'ASC' ];
 	}

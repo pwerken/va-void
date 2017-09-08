@@ -17,7 +17,7 @@ class ConditionsTable
 		$this->hasMany('CharactersConditions')->setProperty('characters');
 	}
 
-	public function orderBy()
+	protected function orderBy()
 	{
 		return	[ 'id' => 'ASC' ];
 	}

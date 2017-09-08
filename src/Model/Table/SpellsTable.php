@@ -17,7 +17,7 @@ class SpellsTable
 		$this->hasMany('CharactersSpells')->setProperty('characters');
 	}
 
-	public function orderBy()
+	protected function orderBy()
 	{
 		return	[ 'name' => 'ASC' ];
 	}

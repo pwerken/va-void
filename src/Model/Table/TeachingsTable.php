@@ -27,7 +27,7 @@ class TeachingsTable
 			->setForeignKey('updated_id')->setProperty('updated_object');
 	}
 
-	public function orderBy()
+	protected function orderBy()
 	{
 		return	[ 'student_id' => 'ASC' ];
 	}

@@ -76,7 +76,7 @@ abstract class AppTable
 		return $query;
 	}
 
-	public function orderBy() {
+	protected function orderBy() {
 		return [ ];
 	}
 

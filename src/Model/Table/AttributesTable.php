@@ -17,7 +17,7 @@ class AttributesTable
 		$this->hasMany('AttributesItems')->setProperty('items');
 	}
 
-	public function orderBy()
+	protected function orderBy()
 	{
 		return	[ 'name' => 'ASC', 'id' => 'ASC' ];
 	}

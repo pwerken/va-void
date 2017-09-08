@@ -17,7 +17,7 @@ class PowersTable
 		$this->hasMany('CharactersPowers')->setProperty('characters');
 	}
 
-	public function orderBy()
+	protected function orderBy()
 	{
 		return	[ 'id' => 'ASC' ];
 	}

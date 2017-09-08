@@ -33,8 +33,9 @@ class HistoryTable
 		return $validator;
 	}
 
-	public function orderBy() {
-		return ['modified' => 'DESC', 'id' => 'DESC'];
+	protected function orderBy()
+	{
+		return [ 'modified' => 'DESC', 'id' => 'DESC' ];
 	}
 
 	public function logDeletion(EntityInterface $entity)

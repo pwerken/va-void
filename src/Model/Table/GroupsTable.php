@@ -17,7 +17,7 @@ class GroupsTable
 		$this->hasMany('Characters');
 	}
 
-	public function orderBy()
+	protected function orderBy()
 	{
 		return	[ 'name' => 'ASC' ];
 	}

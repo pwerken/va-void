@@ -17,7 +17,7 @@ class ManatypesTable
 		$this->hasMany('Skills');
 	}
 
-	public function orderBy()
+	protected function orderBy()
 	{
 		return	[ 'name' => 'ASC' ];
 	}

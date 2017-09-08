@@ -42,7 +42,7 @@ class LammiesTable
 	{
 	}
 
-	public function orderBy()
+	protected function orderBy()
 	{
 		return [ 'id' => 'ASC' ];
 	}
