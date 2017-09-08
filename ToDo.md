@@ -1,38 +1,26 @@
 ToDo-list:
  - Project details
    - [ ] make nice welcome page
-   - [ ] add howto fill db
-   - [ ] add howto add accounts
-   - [ ] add howto setup printing
-   - [ ] use .md format for html pages?
    - [ ] write API documentation
  - Authorization
    - [x] basic account/password management
    - [ ] new user registration / password recovery
  - Business logic
-   - [x] queueing of individual cards
-   - [x] update character->modified of when modifying relations
    - [ ] more validator rules
-   - [ ] Condition/Power uniq per character (= like items)
-   - [ ] rename 'Spells' to ... ? ('Casting', 'Domain', 'School', ?)
+   - [ ] rename 'Spells' to 'Casting'
+   - [ ] store spell-lists / add all the individual spells
    - [ ] Characters: player text field (for background)
    - [ ] Characters: CS notes field
    - [ ] Skills: add base/extra/deprecated
    - [ ] Skills: add class (fighter/healing/mage,...)
    - [ ] Skills: prereq check
-   - [x] Teaching: track student/teacher relation
-   - [x] Events: for teaching or checkout processing?
-   - [ ] use 'Labels' (?) for factions/worlds/groups/etc...
    - [ ] Attributes: clean up & make consistent
    - [ ] templating for common conditions/powers/items
-   - [ ] store spell-lists / add all the individual spells
- - Logging
-   - [ ] logging of all modifications / actions
-   - [ ] entity versioning
-   - [ ] "track changes" so a super-referee can authorize/revert changes
+   - [ ] use 'Labels' (?) for factions/worlds/groups/etc...
  - Optimizations
-   - [x] speed up index() listings
-   - [ ] headers: Last-Modified / ETag
-   - [x] CORS: configurable allowOrigin
+   - [ ] headers: add Last-Modified / ETag
+ - Technical dept
+   - [ ] rename db tables to conform to cakephp conventions
+   - [ ] stop using deprecated methods/classes
  - Upstream changes
    - [ ] Crud cake3: support multiple primary keys
