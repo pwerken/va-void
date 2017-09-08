@@ -37,7 +37,6 @@ class AdminController
 
 		$this->Auth->allow(['index', 'logout', 'checks', 'routes']);
 
-		$this->viewBuilder()->setLayout('admin');
 		$this->set('user', $user);
 	}
 

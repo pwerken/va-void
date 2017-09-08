@@ -15,8 +15,7 @@ class RootController
 
 	public function root()
 	{
-		$this->set('user', $user = $this->Auth->user());
-		$this->render('root');
+		$this->set('nomenu', true);
 	}
 
 	public function cors()
