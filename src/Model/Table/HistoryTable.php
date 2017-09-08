@@ -4,6 +4,7 @@ namespace App\Model\Table;
 use App\Model\Entity\History;
 
 use Cake\Datasource\EntityInterface;
+use Cake\Database\Type\DateTimeType;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
@@ -58,20 +59,21 @@ class HistoryTable
 		return $history;
 	}
 
-	public function getAllLastModified($limit = 1000)
+	public function getAllLastModified()
 	{
+		$dateParser = new DateTimeType();
 		$list = [];
 
 		$result = TableRegistry::get('Characters')->find()
 			->select(["key1" => "player_id", "key2" => "chin"
 				, "modified" , "modifier_id"])
 			->where(["modified IS NOT" => "NULL"])
-			->order(['modified' => 'DESC', 'key1' => 'ASC', 'key2' => 'DESC'])
-			->limit($limit)->hydrate(false)->all();
+			->order(['modified' => 'DESC'])
+			->hydrate(false)->all();
 		foreach($result as $row) {
 			$row['entity'] = 'Character';
-			$row['data'] = NULL;
-			$list[] = new History($row);
+			$row['modified'] = $dateParser->marshal($row['modified'])->jsonSerialize();
+			$list[] = $row;
 		}
 
 		$entities = ['Player', 'Condition', 'Power', 'Item'];
@@ -80,16 +82,17 @@ class HistoryTable
 				->select(["key1" => "id", "modified", "modifier_id"])
 				->where(["modified IS NOT" => "NULL"])
 				->order(['modified' => 'DESC', 'key1' => 'ASC'])
-				->limit($limit)->hydrate(false)->all();
+				->hydrate(false)->all();
 			foreach($result as $row) {
 				$row['entity'] = $entity;
-				$row['key2'] = $row['data'] = NULL;
-				$list[] = new History($row);
+				$row['key2'] = NULL;
+				$row['modified'] = $dateParser->marshal($row['modified'])->jsonSerialize();
+				$list[] = $row;
 			}
 		}
 
-		usort($list, array("App\Model\Entity\History", "compare"));
-		return array_slice($list, 0, $limit);
+		usort($list, array($this, "compare"));
+		return $list;
 	}
 
 	public function getEntityHistory($entity, $key1, $key2)
@@ -223,5 +226,29 @@ class HistoryTable
 
 		usort($list, array("App\Model\Entity\History", "compare"));
 		return $list;
+	}
+
+	public static function compare($a, $b)
+	{
+		if(is_null($a) && is_null($b))
+			return 0;
+		else if(is_null($a))
+			return 1;
+		else if(is_null($b))
+			return -1;
+
+		$cmp = strcmp($b['modified'], $a['modified']);
+		if($cmp != 0)
+			return $cmp;
+
+		$cmp = strcmp($a['entity'], $b['entity']);
+		if($cmp != 0)
+			return $cmp;
+
+		$cmp = $a['key1'] - $b['key1'];
+		if($cmp != 0)
+			return $cmp;
+
+		return $a['key2'] - $b['key2'];
 	}
 }
