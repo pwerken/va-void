@@ -14,9 +14,6 @@ class ConditionsTable
 	{
 		parent::initialize($config);
 
-		$this->table('conditions');
-		$this->primaryKey('id');
-
 		$this->hasMany('CharactersConditions')->setProperty('characters');
 	}
 

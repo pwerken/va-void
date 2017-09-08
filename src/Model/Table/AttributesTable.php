@@ -14,9 +14,6 @@ class AttributesTable
 	{
 		parent::initialize($config);
 
-		$this->table('attributes');
-		$this->primaryKey('id');
-
 		$this->hasMany('AttributesItems')->setProperty('items');
 	}
 

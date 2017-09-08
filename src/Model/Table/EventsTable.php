@@ -7,13 +7,6 @@ use Cake\Validation\Validator;
 class EventsTable
 	extends AppTable
 {
-	public function initialize(array $config)
-	{
-		parent::initialize($config);
-
-		$this->table('events');
-		$this->primaryKey('id');
-	}
 
 	public function orderBy()
 	{

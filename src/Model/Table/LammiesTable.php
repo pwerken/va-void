@@ -12,16 +12,6 @@ class LammiesTable
 	extends AppTable
 {
 
-	public function initialize(array $config)
-	{
-		parent::initialize($config);
-
-		$this->table('lammies');
-		$this->primaryKey('id');
-
-		$this->addBehavior('Timestamp');
-	}
-
 	public function findQueued(Query $query, array $options = [])
 	{
 		$query = $this->findWithContain($query, $options);

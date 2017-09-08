@@ -12,10 +12,8 @@ class WorldsTable
 
 	public function initialize(array $config)
 	{
-		$this->table('worlds');
-		$this->displayField('name');
-		$this->primaryKey('id');
-		$this->addBehavior('Timestamp');
+		parent::initialize($config);
+
 		$this->hasMany('Characters');
 	}
 

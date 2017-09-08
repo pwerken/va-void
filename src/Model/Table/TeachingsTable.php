@@ -14,10 +14,8 @@ class TeachingsTable
 	{
 		parent::initialize($config);
 
-		$this->table('teachings');
 		$this->primaryKey('student_id');
 
-		$this->addBehavior('Timestamp');
 		$this->belongsTo('Teacher', ['className' => 'Characters'])
 			->setForeignKey('teacher_id')->setProperty('teacher');
 		$this->belongsTo('Skills');

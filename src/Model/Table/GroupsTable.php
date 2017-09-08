@@ -14,9 +14,6 @@ class GroupsTable
 	{
 		parent::initialize($config);
 
-		$this->table('groups');
-		$this->primaryKey('id');
-
 		$this->hasMany('Characters');
 	}
 

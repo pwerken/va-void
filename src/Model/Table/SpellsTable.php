@@ -14,9 +14,6 @@ class SpellsTable
 	{
 		parent::initialize($config);
 
-		$this->table('spells');
-		$this->primaryKey('id');
-
 		$this->hasMany('CharactersSpells')->setProperty('characters');
 	}
 

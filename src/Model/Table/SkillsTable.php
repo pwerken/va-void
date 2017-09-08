@@ -8,16 +8,11 @@ class SkillsTable
 	extends AppTable
 {
 
-	protected $_contain =
-		[ 'Manatypes'
-		];
+	protected $_contain = [ 'Manatypes' ];
 
 	public function initialize(array $config)
 	{
 		parent::initialize($config);
-
-		$this->table('skills');
-		$this->primaryKey('id');
 
 		$this->belongsTo('Manatypes');
 		$this->hasMany('CharactersSkills')->setProperty('characters');

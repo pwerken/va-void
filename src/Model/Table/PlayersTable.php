@@ -16,9 +16,6 @@ class PlayersTable
 	{
 		parent::initialize($config);
 
-		$this->table('players');
-		$this->primaryKey('id');
-
 		$this->hasMany('Characters');
 	}
 

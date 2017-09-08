@@ -12,9 +12,6 @@ class BelievesTable
 	{
 		parent::initialize($config);
 
-		$this->table('believes');
-		$this->primaryKey('id');
-
 		$this->hasMany('Characters');
 	}
 

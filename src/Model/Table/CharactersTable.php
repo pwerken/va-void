@@ -27,9 +27,6 @@ class CharactersTable
 	{
 		parent::initialize($config);
 
-		$this->table('characters');
-		$this->primaryKey('id');
-
 		$this->belongsTo('Players');
 		$this->belongsTo('Factions')->setProperty('faction_object');
 		$this->belongsTo('Believes')->setProperty('belief_object');
