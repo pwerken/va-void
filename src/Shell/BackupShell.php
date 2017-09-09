@@ -75,11 +75,14 @@ class BackupShell extends Shell
 
 		$connection = ConnectionManager::getConfig('default');
 		$auth = $this->_storeAuth($connection, 'mysqldump');
-		$cmd = sprintf('%s --defaults-file=%s -t --result-file=%s %s %s'
-					, $this->config['mysqldump'], $auth
-					, $filename, $connection['database']
-					, implode($tables, ' '));
+
+		$cmd = $this->config['mysqldump'];
+		$cmd .= " --defaults-file=" . $auth;
+		$cmd .= " -t --result-file=" . $filename;
+		$cmd .= " --ignore-table=" . $connection['database'] . ".phinxlog";
+		$cmd .= " " . $connection['database'];
 		$this->verbose("exec: $cmd");
+
 		exec($cmd);
 		unlink($auth);
 
