@@ -119,12 +119,12 @@ class HistoryTable
 
 	public function getEntityHistory($entity, $key1, $key2)
 	{
-		switch($entity) {
-		case 'Player':		return $this->getPlayerHistory($key1);
-		case 'Character':	return $this->getCharacterHistory($key1, $key2);
-		case 'Condition':	return $this->getConditionHistory($key1);
-		case 'Power':		return $this->getPowerHistory($key1);
-		case 'Item':		return $this->getItemHistory($key1);
+		switch(strtolower($entity)) {
+		case 'player':		return $this->getPlayerHistory($key1);
+		case 'character':	return $this->getCharacterHistory($key1, $key2);
+		case 'condition':	return $this->getConditionHistory($key1);
+		case 'power':		return $this->getPowerHistory($key1);
+		case 'item':		return $this->getItemHistory($key1);
 		default:			return [];
 		}
 	}

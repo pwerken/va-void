@@ -8,9 +8,10 @@
 <?php
 
 foreach($list as $row) {
-	$link = $row['entity'].'/'.$row['key1'];
+	$name = $row['entity'].'/'.$row['key1'];
 	if(!is_null($row['key2']))
-		$link .= '/'.$row['key2'];
+		$name .= '/'.$row['key2'];
+	$link = '/admin/history/'.strtolower($name);
 
 	$modifier = $row['modifier_id'];
 	if(is_null($modifier))
@@ -19,7 +20,7 @@ foreach($list as $row) {
 		$modifier = '(cli)';
 
 	echo "<tr>\n"
-		."<td>".$this->Html->link($link, '/admin/history/'.$link)."</td>\n"
+		."<td>".$this->Html->link($name, $link)."</td>\n"
 		."<td>".$row['modified']." by ".$modifier."</td>\n"
 		."</tr>\n";
 
