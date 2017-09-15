@@ -38,6 +38,22 @@ class History
 		} else {
 			$history->set('data', json_encode($data));
 		}
+
+		if($history->get('entity') != 'Item' && $entity->get('character'))
+			$history->set('character', $entity->get('character'));
+		if($entity->get('condition'))
+			$history->set('condition', $entity->get('condition'));
+		if($entity->get('power'))
+			$history->set('power', $entity->get('power'));
+		if($entity->get('skill'))
+			$history->set('skill', $entity->get('skill'));
+		if($entity->get('spell'))
+			$history->set('spell', $entity->get('spell'));
+		if($entity->get('attribute'))
+			$history->set('attribute', $entity->get('attribute'));
+		if($entity->get('item'))
+			$history->set('item', $entity->get('item'));
+
 		return $history;
 	}
 
@@ -99,5 +115,39 @@ class History
 			return '(cli)';
 
 		return $modifier;
+	}
+
+	public function relation()
+	{
+		$relation = $this->get('character');
+		if(!is_null($relation)) {
+			return $relation->get('player_id')
+					. '/' . $relation->get('chin')
+					. ' ' . $relation->get('name');
+		}
+
+		switch($this->get('entity')) {
+		case 'AttributesItem':
+			$relation = $this->get('attribute');
+			if(is_null($relation))
+				$relation = $this->get('item');
+			break;
+		case 'CharactersCondition':
+			$relation = $this->get('condition');
+			break;
+		case 'CharactersPower':
+			$relation = $this->get('power');
+			break;
+		case 'CharactersSkill':
+			$relation = $this->get('skill');
+			break;
+		case 'CharactersSpell':
+			$relation = $this->get('spell');
+			break;
+		}
+		if(is_null($relation))
+			return NULL;
+
+		return $relation->get('name');
 	}
 }

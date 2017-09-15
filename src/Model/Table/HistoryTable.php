@@ -12,6 +12,27 @@ class HistoryTable
 	extends AppTable
 {
 
+	public function initialize(array $config)
+	{
+		parent::initialize($config);
+
+		$this->belongsTo('Characters')->setForeignKey('key1')
+			->conditions(['history.entity LIKE' => 'Characters%']);
+		$this->belongsTo('Conditions')->setForeignKey('key2')
+			->conditions(['history.entity' => 'CharactersCondition']);
+		$this->belongsTo('Powers')->setForeignKey('key2')
+			->conditions(['history.entity' => 'CharactersPower']);
+		$this->belongsTo('Skills')->setForeignKey('key2')
+			->conditions(['history.entity' => 'CharactersSkill']);
+		$this->belongsTo('Spells')->setForeignKey('key2')
+			->conditions(['history.entity' => 'CharactersSpell']);
+
+		$this->belongsTo('Attributes')->setForeignKey('key1')
+			->conditions(['history.entity' => 'AttributesItem']);
+		$this->belongsTo('Items')->setForeignKey('key2')
+			->conditions(['history.entity LIKE' => '%sItem']);
+	}
+
 	public function validationDefault(Validator $validator)
 	{
 		$validator->allowEmpty('id', 'create');
@@ -140,6 +161,7 @@ class HistoryTable
 		$id = $entity->get('id');
 		$list = $this->find()
 			->where(['entity LIKE' => 'Character%', 'key1' => $id])
+			->contain(['Conditions', 'Powers', 'Skills', 'Spells'])
 			->all()->toList();
 
 		$list[] = History::fromEntity($entity);
@@ -172,6 +194,7 @@ class HistoryTable
 		$list = $this->find()
 			->where(['entity' => 'Condition', 'key1' => $coin])
 			->orWhere(['AND' => ['entity' => 'CharactersCondition', 'key2' => $coin]])
+			->contain(['Characters'])
 			->all()->toList();
 
 		$list[] = History::fromEntity($entity);
@@ -195,6 +218,7 @@ class HistoryTable
 		$list = $this->find()
 			->where(['entity' => 'Power', 'key1' => $poin])
 			->orWhere(['AND' => ['entity' => 'CharactersPower', 'key2' => $poin]])
+			->contain(['Characters'])
 			->all()->toList();
 
 		$list[] = History::fromEntity($entity);
@@ -218,6 +242,7 @@ class HistoryTable
 		$list = $this->find()
 			->where(['entity' => 'Item', 'key1' => $itin])
 			->orWhere(['AND' => ['entity' => 'AttributesItem', 'key2' => $itin]])
+			->contain(['Attributes'])
 			->all()->toList();
 
 		$list[] = History::fromEntity($entity);

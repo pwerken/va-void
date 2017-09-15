@@ -20,6 +20,10 @@ for($i = count($list) - 1; $i >= 0; $i--)
 
 foreach($list as $cur)
 {
+	$related = $cur->relation();
+	if(!is_null($related))
+		$related = ' - <em>'.$related.'</em>';
+
 	$data = $cur->get('data');
 	if(strlen($data) > 2)
 		$data = "<br/>\n" . $cur->get('data');
@@ -36,7 +40,8 @@ foreach($list as $cur)
 	echo "<em$color>" . $cur->modifiedString() . " "
 		. $cur->get('state') . " by "
 		. $cur->modifierString() . "</em><br/>\n"
-		. $cur->keyString() . $data . "<br/>\n<br/>\n";
+		. $cur->keyString() . $related
+		. $data . "<br/>\n<br/>\n";
 }
 
 ?>
