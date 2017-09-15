@@ -269,7 +269,7 @@ class HistoryTable
 
 		$cmp = strcmp($a['entity'], $b['entity']);
 		if($cmp != 0)
-			return $cmp;
+			return -$cmp;
 
 		$cmp = $a['key1'] - $b['key1'];
 		if($cmp != 0)

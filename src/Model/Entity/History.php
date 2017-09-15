@@ -70,16 +70,22 @@ class History
 		if($cmp != 0)
 			return $cmp;
 
+		$aE = $a->get('entity');
+		$bE = $b->get('entity');
+		$cmp = strcmp($aE, $bE);
+		if($cmp != 0) {
+			// count upper-case letters
+			$aE = strlen(preg_replace('![^A-Z]+!', '', $aE));
+			$bE = strlen(preg_replace('![^A-Z]+!', '', $bE));
+			return $aE != $bE ? $bE - $aE : -$cmp;
+		}
+
 		if(!is_null($a->get('id')) && !is_null($b->get('id')))
 			return $b->get('id') - $a->get('id');
 		if(!is_null($a->get('id')))
 			return 1;
 		if(!is_null($b->get('id')))
 			return -1;
-
-		$cmp = strcmp($a->get('entity'), $b->get('entity'));
-		if($cmp != 0)
-			return $cmp;
 
 		$cmp = $a->get('key1') - $b->get('key1');
 		if($cmp != 0)
