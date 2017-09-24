@@ -5,3 +5,5 @@
 /logs/*
 /import/*.mdb
 /backups/*.sql
+/printing/log
+/printing/pdfs
