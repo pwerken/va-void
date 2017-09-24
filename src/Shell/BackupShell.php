@@ -2,13 +2,12 @@
 namespace App\Shell;
 
 use App\Model\Table\AppTable;
-use Cake\Console\Shell;
 use Cake\Core\Configure;
 use Cake\Datasource\ConnectionManager;
 use Cake\Filesystem\Folder;
 use Cake\Utility\Hash;
 
-class BackupShell extends Shell
+class BackupShell extends AppShell
 {
 	protected $config;
 
@@ -291,4 +290,5 @@ class BackupShell extends Shell
 
 		return true;
 	}
+
 }

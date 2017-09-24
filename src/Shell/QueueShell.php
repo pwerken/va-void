@@ -3,11 +3,11 @@ namespace App\Shell;
 
 use App\View\PdfView;
 use Cake\Console\ConsoleIo;
-use Cake\Console\Shell;
 use Cake\Filesystem\File;
 
-class QueueShell extends Shell
+class QueueShell extends AppShell
 {
+
 	public function startup()
 	{
 		$this->loadModel('Lammies');
@@ -121,4 +121,5 @@ class QueueShell extends Shell
 
 		return $parser;
 	}
+
 }

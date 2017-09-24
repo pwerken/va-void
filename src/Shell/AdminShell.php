@@ -2,30 +2,11 @@
 namespace App\Shell;
 
 use App\Model\Entity\Player;
-use App\Utility\AuthState;
 use App\Utility\CheckConfig;
-use Cake\Auth\Storage;
-use Cake\Console\Shell;
 use Cake\Controller\Component\AuthComponent;
 
-class AdminShell extends Shell
+class AdminShell extends AppShell
 {
-	public function initialize()
-	{
-		AuthState::setAuth($this, -2);
-	}
-
-	public function user($field)
-	{
-		switch($field) {
-		case 'id':
-			return -2;
-		case 'role':
-			return 'Super';
-		default:
-			return NULL;
-		}
-	}
 
 	public function checks()
 	{
@@ -187,4 +168,5 @@ class AdminShell extends Shell
 			return $password;
 		}
 	}
+
 }
