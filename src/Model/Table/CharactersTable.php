@@ -65,7 +65,7 @@ class CharactersTable
 		$validator->add('id', 'valid', ['rule' => 'numeric']);
 		$validator->add('player_id', 'valid', ['rule' => 'numeric']);
 		$validator->add('chin', 'valid', ['rule' => 'naturalNumber']);
-		$validator->add('xp', 'valid', ['rule' => ['custom', '/^[0-9]*([\.][05])?$/']]);
+		$validator->add('xp', 'valid', ['rule' => ['custom', '/^[0-9]*([.,][05])?$/']]);
 		$validator->add('faction_id', 'valid', ['rule' => 'numeric']);
 		$validator->add('belief_id', 'valid', ['rule' => 'numeric']);
 		$validator->add('group_id', 'valid', ['rule' => 'numeric']);

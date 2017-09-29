@@ -79,4 +79,8 @@ class Character
 		return $this->world_object->name;
 	}
 
+	protected function _setXp($xp)
+	{
+		return str_replace(',', '.', $xp);
+	}
 }
