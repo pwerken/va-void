@@ -32,7 +32,7 @@ class AuthController
 				[ 'class' => 'Auth'
 				, 'token' => JWT::encode(
 					[ 'sub' => $user['id']
-					, 'exp' =>  time() + 604800
+					, 'exp' =>  time() + 60*60*24*7
 					], Security::salt())
 				, 'player' => '/players/'.$user['id']
 				, 'name' => $user['full_name']
