@@ -2,7 +2,17 @@
 <?php
 
 echo $this->Form->create();
-echo $this->Form->button(__('Delete selected'));
+
+$role = (!isset($user) ? '' : $user['role']);
+switch($role) {
+case 'Super':
+case 'Infobalie':
+	echo $this->Form->button(__('Delete selected'));
+	break;
+case 'Referee':
+case 'Player':
+default:
+}
 
 ?>
 <table>
