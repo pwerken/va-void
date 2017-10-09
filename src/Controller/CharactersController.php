@@ -49,7 +49,7 @@ class CharactersController
 		$next = $next ? $next['nextChin'] + 1: 1;
 		$this->request->data('chin', $this->request->data('chin') ?: $next);
 
-		$this->Crud->execute();
+		$this->edit(NULL);
 	}
 
 	public function edit($id)
