@@ -15,7 +15,8 @@ class LammiesTable
 	public function findQueued(Query $query, array $options = [])
 	{
 		$query = $this->findWithContain($query, $options);
-		$query->where(["status NOT LIKE" => "Printed"]);
+		$query->where(["status LIKE" => "Queued"]);
+		$query->orWhere(["status LIKE" => "Printing"]);
 		return $query;
 	}
 
@@ -69,32 +70,10 @@ class LammiesTable
 		return $validator;
 	}
 
-	public function buildRules(RulesChecker $rules)
-	{
-		$rules->add([$this, 'ruleEntityExists']);
-		return $rules;
-	}
-
-	public function ruleEntityExists($entity, $options)
-	{
-		$class = 'App\\Model\\Entity\\'.$entity->entity;
-		if(!class_exists($class)) {
-			$entity->errors('entity', 'unknown entity type');
-			return false;
-		}
-
-		if(is_null($entity->target)) {
-			$entity->errors('key1', 'no such entity');
-			return false;
-		}
-
-		return true;
-	}
-
 	public function setStatuses(ResultSet $set, $status)
 	{
 		foreach($set as $lammy) {
-			$lammy->status = $status;
+			$lammy->status = (is_null($lammy->lammy) ? 'Failed' : $status);
 			$this->save($lammy);
 		}
 	}

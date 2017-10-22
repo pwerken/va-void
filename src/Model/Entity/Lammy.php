@@ -25,7 +25,7 @@ class Lammy
 	{
 		static $data = null;
 		if(is_null($data))
-			$data = ['Queued', 'Printing', 'Printed'];
+			$data = ['Queued', 'Failed', 'Printing', 'Printed'];
 		return $data;
 	}
 

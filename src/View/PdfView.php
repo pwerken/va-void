@@ -25,34 +25,26 @@ class PdfView
 
 		$data = $this->get($this->get('viewVar'));
 
-		$pageNr = $this->get('page');
-		$pageDouble = $this->get('double');
-		$lammies = [];
-
-		foreach($data as $entity)
-		{
-			if($pageDouble)
-				$page = $entity->lammy->double;
-			else
-				$page = $entity->lammy->single;
-
-			if($page == $pageNr || $pageNr < 0)
-				$lammies[] = $entity->lammy;
-		}
-
 		$this->response->type('pdf');
 #		$this->response->header('Content-Disposition', 'inline; filename="lammies.pdf"');
-		return $this->createPdf($lammies, $pageDouble);
+		return $this->createPdf($data, $this->get('double'));
 	}
 
-	public function createPdf($lammies, $twosided = false)
+	public function createPdf($data, $twosided = false)
 	{
+		$lammies = [];
 		$todo = [];
-		foreach($lammies as $key => $lammy) {
+		foreach($data as $key => $entity) {
+			$lammy = $entity->lammy;
 			if(is_null($lammy)) {
 				continue;
 			}
+			$lammies[$key] = $lammy;
 			$todo[] = [$key, $lammy->sides()];
+		}
+
+		if(empty($todo)) {
+			return NULL;
 		}
 
 		if(!$twosided) {

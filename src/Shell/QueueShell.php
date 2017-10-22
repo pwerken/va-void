@@ -42,17 +42,17 @@ class QueueShell extends AppShell
 
 		$this->Lammies->setStatuses($lammies, 'Printing');
 
-		$lammies = $lammies->map(function($value, $key) {
-				return $value->lammy;
-			})->toArray();
+		$pdf = (new PdfView())->createPdf($lammies, $double);
+		if(is_null($pdf))
+			return;
 
 		if(empty($filename)) {
-			$this->out((new PdfView())->createPdf($lammies, $double));
+			$this->out($pdf);
 			return;
 		}
 
 		$file = new File($filename, true);
-		$file->write((new PdfView())->createPdf($lammies, $double));
+		$file->write($pdf);
 		$file->close();
 	}
 
