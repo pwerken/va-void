@@ -16,4 +16,4 @@ SIDES="double"
 
 	nr=$(cake queue printed $ID)
 	echo "$(date +"%F_%T") Printed $nr lammies to '$pdf'"
-} 2>&1 | tee log
+} 2>&1 | tee -a log
