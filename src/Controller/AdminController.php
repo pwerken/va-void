@@ -159,12 +159,21 @@ class AdminController
 		if(!is_null($e)) {
 			$this->viewBuilder()->setTemplate('historyEntity');
 			$list = $table->getEntityHistory($e, $k1, $k2);
+			if(empty($list)) {
+				throw new NotFoundException();
+			}
 		} else {
-			$list = $table->getAllLastModified();
-		}
+			$plin = $this->request->data('plin');
+			$since = $this->request->data('since');
+			if(empty($since)) {
+				$date = new \DateTime();
+				$date->sub(new \DateInterval('P3M'));
+				$since = $date->format('Y-m-d');
+			}
 
-		if(empty($list)) {
-			throw new NotFoundException();
+			$this->set('plin', $plin);
+			$this->set('since', $since);
+			$list = $table->getAllLastModified($since, $plin);
 		}
 
 		$this->set('list', $list);

@@ -81,38 +81,48 @@ class HistoryTable
 		return $history;
 	}
 
-	public function getAllLastModified()
+	public function getAllLastModified($since = NULL, $byPlin = NULL)
 	{
-		$dateParser = new DateTimeType();
-		$list = [];
-
-		$result = TableRegistry::get('Characters')->find()
-			->select(["key1" => "player_id", "key2" => "chin"
-				, "modified" , "modifier_id"])
-			->where(["modified IS NOT" => "NULL"])
-			->order(['modified' => 'DESC'])
-			->hydrate(false)->all();
-		foreach($result as $row) {
-			$row['entity'] = 'Character';
-			$row['modified'] = $dateParser->marshal($row['modified'])->jsonSerialize();
-			$list[] = $row;
+		if($since == NULL) {
+			$where = ["modified IS NOT" => "NULL"];
+		} else {
+			$where = ["modified >" => $since];
+		}
+		if($byPlin != NULL) {
+			$where['modifier_id'] = $byPlin;
 		}
 
-		$entities = ['Player', 'Condition', 'Power', 'Item'];
-		foreach($entities as $entity) {
-			$result = TableRegistry::get($entity.'s')->find()
-				->select(["key1" => "id", "modified", "modifier_id"])
-				->where(["modified IS NOT" => "NULL"])
-				->order(['modified' => 'DESC', 'key1' => 'ASC'])
-				->hydrate(false)->all();
+		$tbls =
+			[ 'Player' =>
+				[ "key1" => "id", "key2" => "NULL"
+				, "name" => "CONCAT_WS(' ',first_name,insertion,last_name)"
+				, "modified", "modifier_id"]
+			, 'Character' =>
+				[ "key1" => "player_id", "key2" => "chin"
+				, "name", "modified" , "modifier_id"]
+			, 'Condition' =>
+				[ "key1" => "id", "key2" => "NULL"
+				, "name", "modified", "modifier_id"]
+			, 'Power' =>
+				[ "key1" => "id", "key2" => "NULL"
+				, "name", "modified", "modifier_id"]
+			, 'Item' =>
+				[ "key1" => "id", "key2" => "NULL"
+				, "name", "modified", "modifier_id"]
+			];
+
+		$dateParser = new DateTimeType();
+		$list = [];
+		foreach($tbls as $tbl => $select) {
+			$result = TableRegistry::get($tbl.'s')->find()
+				->select($select)->where($where)
+				->order(['modified' => 'DESC'])->hydrate(false)->all();
 			foreach($result as $row) {
-				$row['entity'] = $entity;
-				$row['key2'] = NULL;
+				$row['entity'] = $tbl;
 				$row['modified'] = $dateParser->marshal($row['modified'])->jsonSerialize();
 				$list[] = $row;
 			}
 		}
-
 		usort($list, array($this, "compare"));
 		return $list;
 	}

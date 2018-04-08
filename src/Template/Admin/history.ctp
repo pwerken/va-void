@@ -1,5 +1,15 @@
 <h3>Entity History</h3>
 
+<?php
+$style = ['style' => 'display: inline-block; width: auto; margin-right: 1rem'];
+echo $this->Form->create();
+$style['default'] = $since;
+echo 'Since: ' . $this->Form->text('since', $style);
+$style['default'] = $plin;
+echo 'Plin: ' . $this->Form->text('plin', $style);
+echo $this->Form->button(__('Update'));
+?>
+
 <table>
 <tr>
 	<th>entity</th>
@@ -20,10 +30,13 @@ foreach($list as $row) {
 		$modifier = '(cli)';
 
 	echo "<tr>\n"
-		."<td>".$this->Html->link($name, $link)."</td>\n"
+		."<td>".$this->Html->link($name, $link)." <em>".$row['name']."</em></td>\n"
 		."<td>".$row['modified']." by ".$modifier."</td>\n"
 		."</tr>\n";
 
+}
+if(empty($list)) {
+	echo "<tr>\n<td><em>No matches</em></td>\n</tr>\n";
 }
 
 ?>
