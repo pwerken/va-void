@@ -33,10 +33,10 @@ class AuthController
 				, 'token' => JWT::encode(
 					[ 'sub' => $user['id']
 					, 'exp' =>  time() + 60*60*24*7
+					, 'name' => $user['full_name']
+					, 'role' => $user['role']
 					], Security::salt())
 				, 'player' => '/players/'.$user['id']
-				, 'name' => $user['full_name']
-				, 'role' => $user['role']
 				]
 			]);
 	}
