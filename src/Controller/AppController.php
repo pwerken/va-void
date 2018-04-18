@@ -151,7 +151,12 @@ class AppController
 			throw new ValidationException($event->subject->entity);
 
 		if(!$event->subject->created) {
-			return $this->Crud->execute('view');
+			$action = 'view';
+			$oldAction = $this->request->params['action'];
+			if(strcmp(substr($oldAction, -4, 4), 'Edit') == 0) {
+				$action = substr($oldAction, 0, -4) . 'View';
+			}
+			return $this->Crud->execute($action);
 		}
 
 		$this->response->statusCode(201);
