@@ -9,9 +9,9 @@ case 'Super':
 	$nav['/admin/valea'] = 'VALEA';
 case 'Infobalie':
 	$nav['/admin/backups'] = 'Database Backups';
-	$nav['/admin/history'] = 'Entity History';
 case 'Referee':
 	$nav['/admin/authorisation'] = 'Authorisation';
+	$nav['/admin/history'] = 'Entity History';
 	$nav['/admin/printing'] = 'Printing Queue';
 case 'Player':
 	$nav['/admin/authentication'] = 'Authentication';
