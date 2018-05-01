@@ -15,7 +15,7 @@ class PlayersController
 	{
 		parent::initialize();
 
-		$this->mapMethod('add',    [ 'infobalie'         ]);
+		$this->mapMethod('add',    [ 'super'             ]);
 		$this->mapMethod('edit',   [ 'infobalie', 'user' ]);
 		$this->mapMethod('delete', [ 'super'             ]);
 		$this->mapMethod('index',  [ 'players'           ]);

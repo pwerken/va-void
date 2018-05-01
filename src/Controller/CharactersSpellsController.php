@@ -9,9 +9,9 @@ class CharactersSpellsController
 	{
 		parent::initialize();
 
-		$this->mapMethod('charactersAdd',    [ 'infobalie'       ]);
-		$this->mapMethod('charactersDelete', [ 'infobalie'       ]);
-		$this->mapMethod('charactersEdit',   [ 'infobalie'       ]);
+		$this->mapMethod('charactersAdd',    [ 'referee'         ]);
+		$this->mapMethod('charactersDelete', [ 'referee'         ]);
+		$this->mapMethod('charactersEdit',   [ 'referee'         ]);
 		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], true);
 		$this->mapMethod('charactersView',   [ 'referee', 'user' ], true);
 

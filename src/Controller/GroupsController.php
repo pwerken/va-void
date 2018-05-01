@@ -11,8 +11,8 @@ class GroupsController
 	{
 		parent::initialize();
 
-		$this->mapMethod('add',    [ 'infobalie' ]);
-		$this->mapMethod('delete', [ 'infobalie' ]);
+		$this->mapMethod('add',    [ 'referee'   ]);
+		$this->mapMethod('delete', [ 'super'     ]);
 		$this->mapMethod('edit',   [ 'infobalie' ]);
 		$this->mapMethod('index',  [ 'player'    ]);
 		$this->mapMethod('view',   [ 'player'    ], true);

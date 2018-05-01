@@ -9,8 +9,8 @@ class CharactersSkillsController
 	{
 		parent::initialize();
 
-		$this->mapMethod('charactersAdd',    [ 'infobalie'       ]);
-		$this->mapMethod('charactersDelete', [ 'infobalie'       ]);
+		$this->mapMethod('charactersAdd',    [ 'referee'         ]);
+		$this->mapMethod('charactersDelete', [ 'referee'         ]);
 # There are no properties on this relation to edit
 #		$this->mapMethod('charactersEdit',   [ 'infobalie'       ]);
 		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], true);

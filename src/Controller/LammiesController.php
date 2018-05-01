@@ -23,7 +23,7 @@ class LammiesController
 		$this->mapMethod('view',   [ 'referee' ]);
 
 		$config = [];
-		$config['auth']       = [ 'referee' ];
+		$config['auth']       = [ 'infobalie' ];
 		$config['className']  = 'Crud.Index';
 		$config['findMethod'] = 'lastInQueue';
 		$this->Crud->mapAction('queue', $config);

@@ -13,8 +13,8 @@ class AttributesItemsController
 
 		$this->mapMethod('attributesIndex', [ 'referee' ], true);
 
-		$this->mapMethod('itemsAdd',        [ 'infobalie' ]);
-		$this->mapMethod('itemsDelete',     [ 'infobalie' ]);
+		$this->mapMethod('itemsAdd',        [ 'referee' ]);
+		$this->mapMethod('itemsDelete',     [ 'referee' ]);
 # There are no properties on this relation to edit
 #		$this->mapMethod('itemsEdit',       [ 'referee' ]);
 		$this->mapMethod('itemsIndex',      [ 'referee' ], true);

@@ -15,15 +15,15 @@ class ConditionsController
 	{
 		parent::initialize();
 
-		$this->mapMethod('add',    [ 'infobalie'       ]);
+		$this->mapMethod('add',    [ 'referee'         ]);
 		$this->mapMethod('delete', [ 'super'           ]);
-		$this->mapMethod('edit',   [ 'infobalie'       ]);
+		$this->mapMethod('edit',   [ 'referee'         ]);
 		$this->mapMethod('index',  [ 'players'         ]);
 		$this->mapMethod('view',   [ 'referee', 'user' ], true);
 
 		$this->Crud->mapAction('queue',
 			[ 'className' => 'Crud.View'
-			, 'auth' => [ 'referee' ]
+			, 'auth' => [ 'infobalie' ]
 			, 'findMethod' => 'withContain'
 			]);
 	}

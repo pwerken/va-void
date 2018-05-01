@@ -11,11 +11,11 @@ class EventsController
 	{
 		parent::initialize();
 
-		$this->mapMethod('add',    [ 'super' ]);
-		$this->mapMethod('delete', [ 'super' ]);
-		$this->mapMethod('edit',   [ 'super' ]);
-		$this->mapMethod('index',  [ 'player'  ]);
-		$this->mapMethod('view',   [ 'player'  ], true);
+		$this->mapMethod('add',    [ 'super'  ]);
+		$this->mapMethod('delete', [ 'super'  ]);
+		$this->mapMethod('edit',   [ 'super'  ]);
+		$this->mapMethod('index',  [ 'player' ]);
+		$this->mapMethod('view',   [ 'player' ], true);
 	}
 
 	public function index()

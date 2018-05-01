@@ -17,7 +17,7 @@ class TeachingsController
 
 		$this->Crud->mapAction('charactersQueue',
 			[ 'className' => 'Crud.View'
-			, 'auth' => [ 'referee' ]
+			, 'auth' => [ 'infobalie' ]
 			, 'findMethod' => 'withContain'
 			]);
 	}

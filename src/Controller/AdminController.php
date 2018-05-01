@@ -49,9 +49,9 @@ class AdminController
 
 		switch($this->request->action) {
 		case 'authorisation':
-		case 'printing':
 		case 'history':
 			return AuthState::hasRole('Referee');
+		case 'printing':
 		case 'valea':
 			return AuthState::hasRole('Infobalie');
 		}
