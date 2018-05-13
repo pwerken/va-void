@@ -48,11 +48,10 @@ class AdminController
 			return true;
 
 		switch($this->request->action) {
-		case 'history':
-			return AuthState::hasRole('Read-only');
 		case 'authorisation':
-			return AuthState::hasRole('Referee');
+		case 'history':
 		case 'printing':
+			return AuthState::hasRole('Read-only');
 		case 'valea':
 			return AuthState::hasRole('Infobalie');
 		}
@@ -91,6 +90,11 @@ class AdminController
 		$pass = $this->request->data('password');
 
 		AuthState::setAuth($this->Auth, $plin);
+		if(!AuthState::hasRole('user') && !AuthState::hasRole('Super')) {
+			$this->Flash->error("Not authorized to change password for Player#$plin");
+			return;
+		}
+
 		$this->loadModel('Players');
 		$player = $this->Players->findById($plin)->first();
 		if(is_null($player)) {

@@ -3,26 +3,25 @@
 $cakeDescription = 'VOID-API';
 
 $role = (!isset($user) ? '' : $user['role']);
+$nav = [];
+
 switch($role) {
 case 'Super':
+	$nav['/admin/checks'] = 'Check Configuration';
+	$nav['/admin/routes'] = 'Configured Routes';
 	$nav['/admin/migrations'] = 'Database Migrations';
-	$nav['/admin/valea'] = 'VALEA';
-case 'Infobalie':
 	$nav['/admin/backups'] = 'Database Backups';
+case 'Infobalie':
+	$nav['/admin/valea'] = 'VALEA';
 case 'Referee':
+case 'Read-only':
 	$nav['/admin/authorisation'] = 'Authorisation';
 	$nav['/admin/history'] = 'Entity History';
 	$nav['/admin/printing'] = 'Printing Queue';
 case 'Player':
 	$nav['/admin/authentication'] = 'Authentication';
 default:
-	$nav['/admin/checks'] = 'Check Configuration';
-	$nav['/admin/routes'] = 'Configured Routes';
 	asort($nav);
-}
-
-if(isset($nomenu) && $nomenu) {
-	$nav = [];
 }
 
 ?>
