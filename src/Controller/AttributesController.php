@@ -14,11 +14,11 @@ class AttributesController
 	{
 		parent::initialize();
 
-		$this->mapMethod('add',    [ 'super'   ]);
-		$this->mapMethod('delete', [ 'super'   ]);
-		$this->mapMethod('edit',   [ 'super'   ]);
-		$this->mapMethod('index',  [ 'referee' ]);
-		$this->mapMethod('view',   [ 'referee' ]);
+		$this->mapMethod('add',    [ 'super'     ]);
+		$this->mapMethod('delete', [ 'super'     ]);
+		$this->mapMethod('edit',   [ 'super'     ]);
+		$this->mapMethod('index',  [ 'read-only' ]);
+		$this->mapMethod('view',   [ 'read-only' ]);
 	}
 
 	public function index()

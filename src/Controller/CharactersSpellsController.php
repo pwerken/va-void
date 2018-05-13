@@ -9,13 +9,13 @@ class CharactersSpellsController
 	{
 		parent::initialize();
 
-		$this->mapMethod('charactersAdd',    [ 'referee'         ]);
-		$this->mapMethod('charactersDelete', [ 'referee'         ]);
-		$this->mapMethod('charactersEdit',   [ 'referee'         ]);
-		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], true);
-		$this->mapMethod('charactersView',   [ 'referee', 'user' ], true);
+		$this->mapMethod('charactersAdd',    [ 'referee'           ]);
+		$this->mapMethod('charactersDelete', [ 'referee'           ]);
+		$this->mapMethod('charactersEdit',   [ 'referee'           ]);
+		$this->mapMethod('charactersIndex',  [ 'read-only', 'user' ], true);
+		$this->mapMethod('charactersView',   [ 'read-only', 'user' ], true);
 
-		$this->mapMethod('spellsIndex',      [ 'referee'         ], true);
+		$this->mapMethod('spellsIndex',      [ 'read-only'         ], true);
 	}
 
 	public function charactersAdd($character_id)

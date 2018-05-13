@@ -17,13 +17,13 @@ class Character
 	protected $_editAuth =
 			[ 'player_id'   => 'infobalie'
 			, 'chin'        => 'infobalie'
-			, 'xp'          => 'infobalie'
+			, 'xp'          => 'referee'
 			, 'status'      => 'referee'
 			, 'comments'    => 'referee'
 			];
 
 	protected $_showAuth =
-			[ 'comments'    => 'referee'
+			[ 'comments'    => 'read-only'
 			];
 
 	protected $_hidden =

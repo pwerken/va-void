@@ -19,7 +19,7 @@ class PlayersController
 		$this->mapMethod('edit',   [ 'infobalie', 'user' ]);
 		$this->mapMethod('delete', [ 'super'             ]);
 		$this->mapMethod('index',  [ 'players'           ]);
-		$this->mapMethod('view',   [ 'referee',   'user' ], true);
+		$this->mapMethod('view',   [ 'read-only', 'user' ], true);
 	}
 
 	public function index()
@@ -34,7 +34,7 @@ class PlayersController
 					->select('Players.insertion')
 					->select('Players.last_name');
 
-		if(!$this->hasAuth('referee')) {
+		if(!$this->hasAuth('read-only')) {
 			$plin = $this->Auth->user('id');
 			$query->where(["Players.id = $plin"]);
 		}

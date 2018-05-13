@@ -48,8 +48,9 @@ class AdminController
 			return true;
 
 		switch($this->request->action) {
-		case 'authorisation':
 		case 'history':
+			return AuthState::hasRole('Read-only');
+		case 'authorisation':
 			return AuthState::hasRole('Referee');
 		case 'printing':
 		case 'valea':

@@ -16,11 +16,11 @@ class CharactersController
 	{
 		parent::initialize();
 
-		$this->mapMethod('add',           [ 'referee'         ]);
-		$this->mapMethod('delete',        [ 'super'           ]);
-		$this->mapMethod('edit',          [ 'referee'         ]);
-		$this->mapMethod('index',         [ 'players'         ], false);
-		$this->mapMethod('view',          [ 'referee', 'user' ], true);
+		$this->mapMethod('add',           [ 'referee'           ]);
+		$this->mapMethod('delete',        [ 'super'             ]);
+		$this->mapMethod('edit',          [ 'referee'           ]);
+		$this->mapMethod('index',         [ 'players'           ], false);
+		$this->mapMethod('view',          [ 'read-only', 'user' ], true);
 
 		$this->Crud->mapAction('queue',
 			[ 'className' => 'Crud.View'
@@ -28,11 +28,11 @@ class CharactersController
 			, 'findMethod' => 'withContain'
 			]);
 
-		$this->mapMethod('believesIndex', [ 'referee'         ]);
-		$this->mapMethod('factionsIndex', [ 'referee'         ]);
-		$this->mapMethod('groupsIndex',   [ 'referee'         ]);
-		$this->mapMethod('playersIndex',  [ 'referee', 'user' ]);
-		$this->mapMethod('worldsIndex',   [ 'referee'         ]);
+		$this->mapMethod('believesIndex', [ 'read-only'         ]);
+		$this->mapMethod('factionsIndex', [ 'read-only'         ]);
+		$this->mapMethod('groupsIndex',   [ 'read-only'         ]);
+		$this->mapMethod('playersIndex',  [ 'read-only', 'user' ]);
+		$this->mapMethod('worldsIndex',   [ 'read-only'         ]);
 	}
 
 	public function add($plin)
@@ -72,7 +72,7 @@ class CharactersController
 					->select('Characters.name')
 					->select('Characters.status');
 
-		if(!$this->hasAuth('referee')) {
+		if(!$this->hasAuth('read-only')) {
 			$plin = $this->Auth->user('id');
 			$query->where(["Characters.player_id = $plin"]);
 		}

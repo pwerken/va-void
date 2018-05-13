@@ -16,11 +16,11 @@ class LammiesController
 	{
 		parent::initialize();
 
-		$this->mapMethod('add',    [ 'super'   ]);
-		$this->mapMethod('edit',   [ 'super'   ]);
-		$this->mapMethod('delete', [ 'super'   ]);
-		$this->mapMethod('index',  [ 'referee' ]);
-		$this->mapMethod('view',   [ 'referee' ]);
+		$this->mapMethod('add',    [ 'super'     ]);
+		$this->mapMethod('edit',   [ 'super'     ]);
+		$this->mapMethod('delete', [ 'super'     ]);
+		$this->mapMethod('index',  [ 'read-only' ]);
+		$this->mapMethod('view',   [ 'read-only' ]);
 
 		$config = [];
 		$config['auth']       = [ 'infobalie' ];

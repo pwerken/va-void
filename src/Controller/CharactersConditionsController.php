@@ -9,13 +9,13 @@ class CharactersConditionsController
 	{
 		parent::initialize();
 
-		$this->mapMethod('charactersAdd',    [ 'referee'         ]);
-		$this->mapMethod('charactersDelete', [ 'referee'         ]);
-		$this->mapMethod('charactersEdit',   [ 'referee'         ]);
-		$this->mapMethod('charactersIndex',  [ 'players'         ], true);
-		$this->mapMethod('charactersView',   [ 'referee', 'user' ], true);
+		$this->mapMethod('charactersAdd',    [ 'referee'           ]);
+		$this->mapMethod('charactersDelete', [ 'referee'           ]);
+		$this->mapMethod('charactersEdit',   [ 'referee'           ]);
+		$this->mapMethod('charactersIndex',  [ 'players'           ], true);
+		$this->mapMethod('charactersView',   [ 'read-only', 'user' ], true);
 
-		$this->mapMethod('conditionsIndex',  [ 'referee', 'user' ], true);
+		$this->mapMethod('conditionsIndex',  [ 'read-only', 'user' ], true);
 
 		$this->Crud->mapAction('charactersQueue',
 			[ 'className' => 'Crud.View'
@@ -37,7 +37,7 @@ class CharactersConditionsController
 
 	public function conditionsIndex()
 	{
-		if(!$this->hasAuth('referee')) {
+		if(!$this->hasAuth('read-only')) {
 			$this->Crud->on('beforePaginate', function ($event) {
 				$cond = ['Characters.player_id' => $this->Auth->user('id')];
 				$event->subject()->query->where($cond);

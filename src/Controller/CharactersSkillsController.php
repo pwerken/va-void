@@ -9,14 +9,14 @@ class CharactersSkillsController
 	{
 		parent::initialize();
 
-		$this->mapMethod('charactersAdd',    [ 'referee'         ]);
-		$this->mapMethod('charactersDelete', [ 'referee'         ]);
+		$this->mapMethod('charactersAdd',    [ 'referee'           ]);
+		$this->mapMethod('charactersDelete', [ 'referee'           ]);
 # There are no properties on this relation to edit
-#		$this->mapMethod('charactersEdit',   [ 'infobalie'       ]);
-		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], true);
-		$this->mapMethod('charactersView',   [ 'referee', 'user' ], true);
+#		$this->mapMethod('charactersEdit',   [ 'infobalie'         ]);
+		$this->mapMethod('charactersIndex',  [ 'read-only', 'user' ], true);
+		$this->mapMethod('charactersView',   [ 'read-only', 'user' ], true);
 
-		$this->mapMethod('skillsIndex',      [ 'referee'         ], true);
+		$this->mapMethod('skillsIndex',      [ 'read-only'         ], true);
 	}
 
 	public function charactersAdd($character_id)

@@ -9,11 +9,11 @@ class TeachingsController
 	{
 		parent::initialize();
 
-		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], true);
-		$this->mapMethod('charactersAdd',    [ 'infobalie'       ]);
-		$this->mapMethod('charactersDelete', [ 'infobalie'       ]);
-		$this->mapMethod('charactersEdit',   [ 'infobalie'       ]);
-		$this->mapMethod('charactersView',   [ 'referee', 'user' ], true);
+		$this->mapMethod('charactersIndex',  [ 'read-only', 'user' ], true);
+		$this->mapMethod('charactersAdd',    [ 'infobalie'         ]);
+		$this->mapMethod('charactersDelete', [ 'infobalie'         ]);
+		$this->mapMethod('charactersEdit',   [ 'infobalie'         ]);
+		$this->mapMethod('charactersView',   [ 'read-only', 'user' ], true);
 
 		$this->Crud->mapAction('charactersQueue',
 			[ 'className' => 'Crud.View'

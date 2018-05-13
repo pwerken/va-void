@@ -8,8 +8,8 @@ class Item
 {
 
 	protected $_showAuth =
-			[ 'cs_text'         => 'referee'
-			, 'attributes'      => 'referee'
+			[ 'cs_text'         => 'read-only'
+			, 'attributes'      => 'read-only'
 			];
 
 	protected $_compact = [ 'id', 'name', 'expiry', 'character' ];

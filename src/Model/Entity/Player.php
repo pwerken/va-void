@@ -41,7 +41,7 @@ class Player
 	{
 		static $data = null;
 		if(is_null($data))
-			$data = ['Player', 'Referee', 'Infobalie', 'Super'];
+			$data = ['Player', 'Read-only', 'Referee', 'Infobalie', 'Super'];
 		return $data;
 	}
 	public static function genderValues()

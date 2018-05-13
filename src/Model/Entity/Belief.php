@@ -5,7 +5,7 @@ class Belief
 	extends AppEntity
 {
 
-	protected $_showAuth = [ 'characters' => 'referee' ];
+	protected $_showAuth = [ 'characters' => 'read-only' ];
 
 	protected $_compact = [ 'id', 'name' ];
 

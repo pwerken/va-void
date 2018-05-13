@@ -16,13 +16,13 @@ class ItemsController
 	{
 		parent::initialize();
 
-		$this->mapMethod('add',              [ 'referee'         ]);
-		$this->mapMethod('delete',           [ 'super'           ]);
-		$this->mapMethod('edit',             [ 'referee'         ]);
-		$this->mapMethod('index',            [ 'players'         ], true);
-		$this->mapMethod('view',             [ 'referee', 'user' ], true);
+		$this->mapMethod('add',              [ 'referee'           ]);
+		$this->mapMethod('delete',           [ 'super'             ]);
+		$this->mapMethod('edit',             [ 'referee'           ]);
+		$this->mapMethod('index',            [ 'players'           ], true);
+		$this->mapMethod('view',             [ 'read-only', 'user' ], true);
 
-		$this->mapMethod('charactersIndex',  [ 'referee', 'user' ], true);
+		$this->mapMethod('charactersIndex',  [ 'read-only', 'user' ], true);
 
 		$this->Crud->mapAction('queue',
 			[ 'className' => 'Crud.View'
@@ -75,7 +75,7 @@ class ItemsController
 					->leftJoin(['Characters' => 'characters'],
 						    ['Characters.id = Items.character_id']);
 
-		if(!$this->hasAuth('referee')) {
+		if(!$this->hasAuth('read-only')) {
 			$plin = $this->Auth->user('id');
 			$query->where(["Characters.player_id = $plin"]);
 		}

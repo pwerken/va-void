@@ -15,11 +15,11 @@ class PowersController
 	{
 		parent::initialize();
 
-		$this->mapMethod('add',    [ 'referee'         ]);
-		$this->mapMethod('delete', [ 'super'           ]);
-		$this->mapMethod('edit',   [ 'referee'         ]);
-		$this->mapMethod('index',  [ 'players'         ]);
-		$this->mapmethod('view',   [ 'referee', 'user' ], true);
+		$this->mapMethod('add',    [ 'referee'           ]);
+		$this->mapMethod('delete', [ 'super'             ]);
+		$this->mapMethod('edit',   [ 'referee'           ]);
+		$this->mapMethod('index',  [ 'players'           ]);
+		$this->mapmethod('view',   [ 'read-only', 'user' ], true);
 
 		$this->Crud->mapAction('queue',
 			[ 'className' => 'Crud.View'
@@ -36,7 +36,7 @@ class PowersController
 		$query = $this->Powers->find()
 					->select(['Powers.id', 'Powers.name'], true);
 
-		if(!$this->hasAuth('referee')) {
+		if(!$this->hasAuth('read-only')) {
 			$plin = $this->Auth->user('id');
 			$query->where(["Characters.player_id = $plin"])
 					->leftJoin(['CharactersPowers' => 'characters_powers'],
@@ -50,7 +50,7 @@ class PowersController
 
 	public function view($poin)
 	{
-		if(!$this->hasAuth('referee')) {
+		if(!$this->hasAuth('read-only')) {
 			$this->Crud->on('beforeFind', function ($event) {
 				$cond = ['Characters.player_id' => $this->Auth->user('id')];
 				$event->subject()->query->contain(
