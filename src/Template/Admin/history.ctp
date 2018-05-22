@@ -8,6 +8,7 @@ echo 'Since: ' . $this->Form->text('since', $style);
 $style['default'] = $plin;
 echo 'Plin: ' . $this->Form->text('plin', $style);
 echo $this->Form->button(__('Update'));
+echo $this->Form->end();
 ?>
 
 <table>
