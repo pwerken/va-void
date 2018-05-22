@@ -202,7 +202,11 @@ class AdminController
 			}
 		}
 
-		$query = $lammies->find()->order(['id' => 'DESC'])->hydrate(false);
+		$since = (new \DateTime())->sub(new \DateInterval('P3M'));
+		$query = $lammies->find()
+			->where(['modified >' => $since->format('Y-m-d')])
+			->order(['id' => 'DESC'])
+			->hydrate(false);
 		$this->set('printing', $query->all());
 	}
 
