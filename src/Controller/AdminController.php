@@ -212,10 +212,42 @@ class AdminController
 
 	public function valea()
 	{
-		if($this->request->is('post') && AuthState::hasRole('Infobalie')) {
-			$this->voidValeaImport($this->request->data('insert'));
-			$this->voidValeaUpdate($this->request->data('update'));
-			$this->voidDelete($this->request->data('delete'));
+		if($this->request->is('post')
+		&& AuthState::hasRole('Infobalie')
+		&& isset($this->request->data['action'])
+		&& is_array($this->request->data['action'])
+		) {
+			$done = [];
+			$done['insert'] = [];
+			$done['update'] = [];
+			$done['delete'] = [];
+
+			foreach($this->request->data['action'] as $plin => $action) {
+				$ret = false;
+				switch($action) {
+				case 'insert': $ret = $this->voidValeaImport($plin); break;
+				case 'update': $ret = $this->voidValeaUpdate($plin); break;
+				case 'delete': $ret = $this->voidDelete($plin);      break;
+				}
+				if(!$ret) {
+					$this->Flash->error('FAILED: ' . $action . ' #' . $plin);
+					break;
+				}
+				$done[$action][] = $plin;
+			}
+			$str = '';
+			if(count($done['insert']) > 0) {
+				$str .= 'Added:#'.implode(',#', $done['insert']);
+			}
+			if(count($done['update']) > 0) {
+				if(strlen($str) > 0) $str .= '; ';
+				$str .= 'Updated:#'.implode(',#', $done['update']);
+			}
+			if(count($done['delete']) > 0) {
+				if(strlen($str) > 0) $str .= '; ';
+				$str .= 'Deleted:#'.implode(',#', $done['delete']);
+			}
+			if(strlen($str) > 0) $this->Flash->success($str);
 		}
 
 		$q1 = 'SELECT `id`, `first_name`, `insertion`,'
@@ -286,7 +318,7 @@ class AdminController
 	private function voidValeaImport($plin)
 	{
 		if(is_null($plin))
-			return;
+			return false;
 
 		$q = 'SELECT `plin` as "id", `voornaam` as "first_name"'
 			. ', `tussenvoegsels` as "insertion"'
@@ -306,21 +338,12 @@ class AdminController
 		default:	$data['gender'] = ''; break;
 		}
 
-		$player = new Player($data);
-
-		if($this->loadModel('players')->save($player)) {
-			$this->Flash->success('Imported plin #'.$plin);
-		} else {
-			$this->Flash->error('Failed to import plin #'.$plin);
-
-			var_dump($player->errors());
-			die;
-		}
+		return $this->loadModel('players')->save(new Player($data));
 	}
 	private function voidValeaUpdate($plin)
 	{
 		if(is_null($plin))
-			return;
+			return false;
 
 		$q = 'SELECT `plin` as "id", `voornaam` as "first_name"'
 			. ', `tussenvoegsels` as "insertion"'
@@ -344,11 +367,7 @@ class AdminController
 		$player = $players->get($plin);
 		$player = $players->patchEntity($player, $data);
 
-		if($players->save($player)) {
-			$this->Flash->success('Updated plin #'.$plin);
-		} else {
-			$this->Flash->error('Failed to update plin #'.$plin);
-		}
+		return $players->save($player);
 	}
 	private function voidDelete($plin)
 	{
@@ -358,11 +377,7 @@ class AdminController
 		$players = $this->loadModel('Players');
 		$player = $players->get($plin);
 
-		if($players->delete($player)) {
-			$this->Flash->success('Removed Player#'.$plin.' from void');
-		} else {
-			$this->Flash->error('Failed to delete Player#'.$plin);
-		}
+		return $players->delete($player);
 	}
 
 	private function playerCmp($void, $valea) {
