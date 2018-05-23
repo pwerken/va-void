@@ -42,7 +42,7 @@ class Character
 	{
 		static $data = null;
 		if(is_null($data))
-			$data = ['BO', 'LI', 'LU', 'MA', 'MO', 'NO', 'NY', 'RA', 'SO'];
+			$data = ['BO', 'LI', 'LU', 'MA', 'MO', 'NO', 'NY', 'RA', 'SO', 'TA'];
 		return $data;
 	}
 
