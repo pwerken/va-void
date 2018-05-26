@@ -1,6 +1,20 @@
 <h3>Printing queue</h3>
 <?php
 
+$uniq = [];
+$duplicates = 0;
+$queued = 0;
+foreach($printing as $row) {
+	if($row['status'] != 'Queued')
+		continue;
+	$queued ++;
+	$key = $row['entity'] . "_" . $row['key1'] . "_" . $row['key2'];
+	if(isset($uniq[$key])) {
+		$duplicates++;
+	}
+	$uniq[$key] = $row['id'];
+}
+
 echo $this->Form->create();
 
 $role = (!isset($user) ? '' : $user['role']);
@@ -11,6 +25,11 @@ case 'Infobalie':
 	break;
 default:
 }
+
+if($queued > 0)
+	echo "&nbsp;Queued : $queued";
+if($duplicates > 0)
+	echo " ($duplicates duplicates)";
 
 ?>
 <table>
@@ -30,7 +49,13 @@ foreach($printing as $row) {
 	echo "<tr>\n"
 		."<td>" . $row['id'];
 	if($row['status'] == 'Queued') {
-		echo ' <input type="checkbox" name="delete[]" value="'.$row['id'].'">';
+		$key = $row['entity'] . "_" . $row['key1'] . "_" . $row['key2'];
+		if($uniq[$key] != $row['id']) {
+			$checked = ' checked';
+		} else {
+			$checked = '';
+		}
+		echo ' <input type="checkbox" name="delete[]" value="'.$row['id'].'"'.$checked.'>';
 	}
 	if(!is_null($row['created'])) {
 		$row['created'] = $row['created']->i18nFormat('yyyy-MM-dd HH:mm:ss');
