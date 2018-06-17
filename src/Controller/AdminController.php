@@ -7,7 +7,7 @@ use App\Utility\AuthState;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Datasource\ConnectionManager;
-use Cake\Network\Exception\NotFoundException;
+use Cake\Http\Exception\NotFoundException;
 use Migrations\Migrations;
 
 class AdminController
@@ -64,7 +64,9 @@ class AdminController
 			return;
 		}
 
-		$this->request->data('id', (string)$this->request->data('id'));
+		$id = (string)$this->request->getData('id');
+		$this->request = $this->request->withData('id', $id);
+
 		$user = $this->Auth->identify();
 		if(!$user) {
 			$this->Flash->error('Invalid username or password');
@@ -91,8 +93,8 @@ class AdminController
 			return;
 		}
 
-		$plin = $this->request->data('plin');
-		$pass = $this->request->data('password');
+		$plin = $this->request->getData('plin');
+		$pass = $this->request->getData('password');
 
 		AuthState::setAuth($this->Auth, $plin);
 		if(!AuthState::hasRole('user') && !AuthState::hasRole('Super')) {
@@ -110,7 +112,7 @@ class AdminController
 		$this->Players->patchEntity($player, ['password' => $pass]);
 		$this->Players->save($player);
 
-		$errors = $player->errors('password');
+		$errors = $player->getErrors('password');
 		if(!empty($errors)) {
 			$this->Flash->error(reset($errors));
 		} else {
@@ -126,8 +128,8 @@ class AdminController
 			return;
 		}
 
-		$plin = $this->request->data('plin');
-		$role = $this->request->data('role');
+		$plin = $this->request->getData('plin');
+		$role = $this->request->getData('role');
 
 		AuthState::setAuth($this->Auth, $plin);
 		$this->loadModel('Players');
@@ -173,8 +175,8 @@ class AdminController
 				throw new NotFoundException();
 			}
 		} else {
-			$plin = $this->request->data('plin');
-			$since = $this->request->data('since');
+			$plin = $this->request->getData('plin');
+			$since = $this->request->getData('since');
 			if(empty($since)) {
 				$date = new \DateTime();
 				$date->sub(new \DateInterval('P3M'));
@@ -200,7 +202,7 @@ class AdminController
 		$lammies = $this->loadModel('lammies');
 
 		if($this->request->is('post') && AuthState::hasRole('Infobalie')) {
-			$ids = $this->request->data('delete');
+			$ids = $this->request->getData('delete');
 			if(!empty($ids)) {
 				$nr = $lammies->deleteAll(['id IN' => $ids]);
 				$this->Flash->success("Removed $nr lammies from queue");
@@ -219,7 +221,7 @@ class AdminController
 					   , 'lammies.key1 = characters.id'])
 			->where(['lammies.modified >' => $since->format('Y-m-d')])
 			->orderDesc('lammies.id')
-			->hydrate(false);
+			->enableHydration(false);
 		$this->set('printing', $query->all());
 	}
 
@@ -227,15 +229,14 @@ class AdminController
 	{
 		if($this->request->is('post')
 		&& AuthState::hasRole('Infobalie')
-		&& isset($this->request->data['action'])
-		&& is_array($this->request->data['action'])
+		&& is_array($this->request->getData('action'))
 		) {
 			$done = [];
 			$done['insert'] = [];
 			$done['update'] = [];
 			$done['delete'] = [];
 
-			foreach($this->request->data['action'] as $plin => $action) {
+			foreach($this->request->getData('action') as $plin => $action) {
 				$ret = false;
 				switch($action) {
 				case 'insert': $ret = $this->voidValeaImport($plin); break;

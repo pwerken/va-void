@@ -3,8 +3,8 @@ namespace App\Error;
 
 use Cake\Core\Configure;
 use Cake\Error\Debugger;
-use Cake\Network\Exception\HttpException;
-use Cake\Network\Exception\InternalErrorException;
+use Cake\Http\Exception\HttpException;
+use Cake\Http\Exception\InternalErrorException;
 use Crud\Error\ExceptionRenderer;
 use Exception;
 
@@ -20,13 +20,14 @@ class ApiExceptionRenderer extends ExceptionRenderer
 
 	protected function _outputMessage($template)
 	{
+		$response = $this->controller->response;
 		$error = $this->controller->viewVars['error'];
 		$status = $code = $error->getCode();
 		try {
-			$this->controller->response->statusCode($status);
+			$response = $response->withStatus($status);
 		} catch(Exception $e) {
 			$status = 500;
-			$this->controller->response->statusCode($status);
+			$response = $response->withStatus($status);
 		}
 
 		$errors = [];
@@ -37,7 +38,7 @@ class ApiExceptionRenderer extends ExceptionRenderer
 		$data = [];
 		$data['class'] = 'Error';
 		$data['code'] = $code;
-		$data['url'] = $this->controller->request->here();
+		$data['url'] = $this->controller->request->getRequestTarget();
 		$data['message'] = $error->getMessage();
 		$data['errors'] = $errors;
 
@@ -45,8 +46,9 @@ class ApiExceptionRenderer extends ExceptionRenderer
 		if(Configure::read('debug'))
 			$jsonOptions = $jsonOptions | JSON_PRETTY_PRINT;
 
-		$this->controller->response->type('json');
-		$this->controller->response->body(json_encode($data, $jsonOptions));
-		return $this->controller->response;
+		$response = $response->withType('json');
+		$response->getBody()->write(json_encode($data, $jsonOptions));
+		$this->controller->response = $response;
+		return $response;
 	}
 }

@@ -135,7 +135,7 @@ class BackupShell extends AppShell
 
 			$model = $this->loadModel($table);
 			$model->query()->delete()->execute();
-			$model->connection()->execute(sprintf($sql, $model->table()));
+			$model->getConnection()->execute(sprintf($sql, $model->getTable()));
 		}
 
 		$this->out("Importing database content from file:");
@@ -250,7 +250,7 @@ class BackupShell extends AppShell
 		}
 
 		$connection = ConnectionManager::get('default');
-		$tables = $connection->schemaCollection()->listTables();
+		$tables = $connection->getSchemaCollection()->listTables();
 		$count = 0;
 		foreach($tables as $name) {
 			$table = $this->loadModel($name);

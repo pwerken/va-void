@@ -19,9 +19,9 @@ class CharactersSkillsController
 		$this->mapMethod('skillsIndex',      [ 'read-only'         ], true);
 	}
 
-	public function charactersAdd($character_id)
+	public function charactersAdd($char_id)
 	{
-		$this->request->data('character_id', $character_id);
+		$this->request = $this->request->withData('character_id', $char_id);
 		$this->Crud->execute();
 	}
 

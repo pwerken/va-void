@@ -53,7 +53,7 @@ class ConditionsController
 		if(!$this->hasAuth('read-only')) {
 			$this->Crud->on('beforeFind', function ($event) {
 				$cond = ['Characters.player_id' => $this->Auth->user('id')];
-				$event->subject()->query->contain(
+				$event->getSubject()->query->contain(
 					['CharactersConditions' => function ($query) use ($cond)
 						{
 							return $query->where($cond);
@@ -77,10 +77,10 @@ class ConditionsController
 			return $plin;
 		}
 
-		$coin = $this->request->param('coin');
+		$coin = $this->request->getParam('coin');
 		$this->loadModel('CharactersConditions');
 		$data = $this->CharactersConditions->find()
-					->hydrate(false)
+					->enableHydration(false)
 					->select(['player_id' => 'Characters.player_id'])
 					->where(['CharactersConditions.condition_id' => $coin])
 					->contain('Characters')

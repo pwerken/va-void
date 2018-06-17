@@ -8,8 +8,8 @@ if(isset($user)) {
 	echo "<h3>Login</h3>";
 	echo $this->Form->create();
 	echo "<fieldset>\n";
-	echo $this->Form->input('id', ['label' => 'Plin', 'type' => 'text']);
-	echo $this->Form->input('password', ['type'=>'password']);
+	echo $this->Form->control('id', ['label' => 'Plin', 'type' => 'text']);
+	echo $this->Form->control('password', ['type'=>'password']);
 	echo $this->Form->button(__('Login'));
 	echo "</fieldset>\n";
 	echo $this->Form->end();

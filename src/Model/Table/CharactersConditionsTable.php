@@ -13,7 +13,7 @@ class CharactersConditionsTable
 	{
 		parent::initialize($config);
 
-		$this->primaryKey(['character_id', 'condition_id']);
+		$this->setPrimaryKey(['character_id', 'condition_id']);
 
 		$this->belongsTo('Characters');
 		$this->belongsTo('Conditions');

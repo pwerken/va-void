@@ -14,11 +14,11 @@ class History
 		if(is_null($entity))
 			return NULL;
 
-		$table = TableRegistry::get($entity->source());
+		$table = TableRegistry::get($entity->getSource());
 		$columns = $table->getSchema()->columns();
 		$data = $entity->extractOriginal($columns);
 
-		$primary = $table->primaryKey();
+		$primary = $table->getPrimaryKey();
 		if(!is_array($primary))
 			$primary = [$primary];
 

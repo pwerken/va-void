@@ -36,7 +36,7 @@ class Lammy
 			$table = TableRegistry::get($name);
 
 			$keys = [$this->key1, $this->key2];
-			$primary = $table->primaryKey();
+			$primary = $table->getPrimaryKey();
 			if(!is_array($primary))
 				$primary = [$primary];
 
@@ -62,7 +62,7 @@ class Lammy
 			$class = substr($class, $pos + 1);
 		$this->entity = $class;
 
-		$primary = $table->primaryKey();
+		$primary = $table->getPrimaryKey();
 		if(!is_array($primary))
 			$primary = [$primary];
 

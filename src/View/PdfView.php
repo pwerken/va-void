@@ -21,11 +21,11 @@ class PdfView
 
 	public function render($view = null, $layout = null)
 	{
-		$this->layout('pdf');
+		$this->setLayout('pdf');
 
 		$data = $this->get($this->get('viewVar'));
 
-		$this->response->type('pdf');
+		$this->response = $this->response->withType('pdf');
 #		$this->response->header('Content-Disposition', 'inline; filename="lammies.pdf"');
 		return $this->createPdf($data, $this->get('double'));
 	}

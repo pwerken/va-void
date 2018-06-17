@@ -33,22 +33,18 @@ class ItemsController
 
 	public function add()
 	{
-		if(array_key_exists('plin', $this->request->data)
-		|| array_key_exists('chin', $this->request->data))
-		{
-			$plin = $this->request->data('plin');
-			$chin = $this->request->data('chin');
+		$plin = $this->request->getData('plin');
+		$chin = $this->request->getData('chin');
+		$this->request = $this->request->withData('plin', NULL);
+		$this->request = $this->request->withData('chin', NULL);
 
-			if($plin || $chin) {
-				$this->loadModel('Characters');
-				$char = $this->Characters->findByPlayerIdAndChin($plin, $chin)->first();
-				$this->request->data('character_id', $char ? $char->id : -1);
-			} else {
-				$this->request->data('character_id', null);
-			}
+		$char_id = NULL;
+		if($plin || $chin) {
+			$this->loadModel('Characters');
+			$char = $this->Characters->findByPlayerIdAndChin($plin, $chin)->first();
+			$char_id = $char ? $char->id : -1;
 		}
-		unset($this->request->data['plin']);
-		unset($this->request->data['chin']);
+		$this->request = $this->request->withData('character_id', $char_id);
 
 		return $this->Crud->execute();
 	}
@@ -80,7 +76,6 @@ class ItemsController
 			$query->where(["Characters.player_id = $plin"]);
 		}
 
-
 		$content = [];
 		foreach($this->doRawQuery($query) as $row) {
 			$char = NULL;
@@ -105,7 +100,7 @@ class ItemsController
 		}
 		$this->set('_serialize',
 			[ 'class' => 'List'
-			, 'url' => '/' . rtrim($this->request->url, '/')
+			, 'url' => rtrim($this->request->getPath(), '/')
 			, 'list' => $content
 			]);
 	}
@@ -117,9 +112,9 @@ class ItemsController
 
 	protected function wantAuthUser()
 	{
-		$itin = $this->request->param('itin');
+		$itin = $this->request->getParam('itin');
 		$data = $this->Items->find()
-					->hydrate(false)
+					->enableHydration(false)
 					->select(['player_id' => 'Characters.player_id'])
 					->where(['Items.id' => $itin])
 					->contain('Characters')

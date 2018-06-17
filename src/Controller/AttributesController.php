@@ -40,7 +40,7 @@ class AttributesController
 		}
 		$this->set('_serialize',
 			[ 'class' => 'List'
-			, 'url' => '/' . rtrim($this->request->url, '/')
+			, 'url' => rtrim($this->request->getPath(), '/')
 			, 'list' => $content
 			]);
 	}

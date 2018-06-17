@@ -13,7 +13,7 @@ class CharactersSpellsTable
 	{
 		parent::initialize($config);
 
-		$this->primaryKey(['character_id', 'spell_id']);
+		$this->setPrimaryKey(['character_id', 'spell_id']);
 
 		$this->belongsTo('Characters');
 		$this->belongsTo('Spells');

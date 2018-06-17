@@ -53,7 +53,7 @@ class PowersController
 		if(!$this->hasAuth('read-only')) {
 			$this->Crud->on('beforeFind', function ($event) {
 				$cond = ['Characters.player_id' => $this->Auth->user('id')];
-				$event->subject()->query->contain(
+				$event->getSubject()->query->contain(
 					['CharactersPowers' => function ($query) use ($cond)
 						{
 							return $query->where($cond);
@@ -77,10 +77,10 @@ class PowersController
 			return $plin;
 		}
 
-		$poin = $this->request->param('poin');
+		$poin = $this->request->getParam('poin');
 		$this->loadModel('CharactersPowers');
 		$data = $this->CharactersPowers->find()
-					->hydrate(false)
+					->enableHydration(false)
 					->select(['player_id' => 'Characters.player_id'])
 					->where(['CharactersPowers.power_id' => $poin])
 					->contain('Characters')

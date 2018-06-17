@@ -27,25 +27,21 @@ class TeachingsController
 		$action = 'charactersEdit';
 		if(!$this->Teachings->exists(['student_id = ' => $student_id])) {
 			$action = 'charactersAdd';
-			$this->request->data('student_id', $student_id);
+			$this->request = $this->request->withData('student_id', $student_id);
 		}
 
-		if(array_key_exists('plin', $this->request->data)
-		|| array_key_exists('chin', $this->request->data))
-		{
-			$plin = $this->request->data('plin');
-			$chin = $this->request->data('chin');
+		$plin = $this->request->getData('plin');
+		$chin = $this->request->getData('chin');
+		$this->request = $this->request->withData('plin', NULL);
+		$this->request = $this->request->withData('chin', NULL);
 
-			if($plin || $chin) {
-				$chars = $this->loadModel('Characters');
-				$char = $chars->findByPlayerIdAndChin($plin, $chin)->first();
-				$this->request->data('teacher_id', $char ? $char->id : -1);
-			} else {
-				$this->request->data('teacher_id', null);
-			}
+		$char_id = NULL;
+		if($plin || $chin) {
+			$chars = $this->loadModel('Characters');
+			$char = $chars->findByPlayerIdAndChin($plin, $chin)->first();
+			$char_id = $char ? $char->id : -1;
 		}
-		unset($this->request->data['plin']);
-		unset($this->request->data['chin']);
+		$this->request->withData('teacher_id', $char_id);
 
 		$this->dataNameToId('events', 'updated');
 		$this->dataNameToId('events', 'started');

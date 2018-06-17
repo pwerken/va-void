@@ -7,7 +7,7 @@ use Cake\Core\Configure;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\ErrorHandler;
 use Cake\Event\Event;
-use Cake\Network\Exception\BadRequestException;
+use Cake\Http\Exception\BadRequestException;
 use Cake\Utility\Inflector;
 use Crud\Error\Exception\ValidationException;
 use Crud\Controller\ControllerTrait;
@@ -44,7 +44,7 @@ class AppController
 					, 'fields' => [ 'username' => 'id' ]
 					, 'parameter' => 'token'
 					, 'queryDatasource' => true
-					, 'unauthenticatedException' => '\Cake\Network\Exception\ForbiddenException'
+					, 'unauthenticatedException' => '\Cake\Http\Exception\ForbiddenException'
 				]	]
 			, 'authorize' => ['Controller']
 			, 'unauthorizedRedirect' => false
@@ -54,7 +54,7 @@ class AppController
 			]);
 
 		if(static::$jsonResponse) {
-			$this->viewBuilder()->className('Api');
+			$this->viewBuilder()->setClassName('Api');
 
 			$arr = ['exceptionRenderer' => 'App\Error\ApiExceptionRenderer']
 				+ Configure::read('Error');
@@ -64,7 +64,7 @@ class AppController
 		}
 
 		if(!$this->request->is('POST')) {
-			$this->request->data = $this->request->input(function($input) {
+			$data = $this->request->input(function($input) {
 				if(empty($input))
 					return [];
 				$json = json_decode($input, true);
@@ -76,6 +76,9 @@ class AppController
 				}
 				return $json;
 			});
+			foreach($data as $key => $val) {
+				$this->request = $this->request->withData($key, $val);
+			}
 		}
 	}
 
@@ -93,7 +96,7 @@ class AppController
 	{
 		AuthState::setAuth($this->Auth, $this->wantAuthUser());
 
-		$auths = $this->Crud->action()->config('auth') ?: ['super'];
+		$auths = $this->Crud->action()->getConfig('auth') ?: ['super'];
 		foreach($auths as $role) {
 			if($this->hasAuth($role))
 				return true;
@@ -108,12 +111,12 @@ class AppController
 
 	protected function wantAuthUser()
 	{
-		return $this->request->param('plin');
+		return $this->request->getParam('plin');
 	}
 
 	public function paginate($query = null, array $settings = [])
 	{
-		$action = $this->request->action;
+		$action = $this->request->getParam('action');
 		$nested = strcmp(substr($action, -5, 5), 'Index') === 0;
 		if($nested && isset($this->viewVars['parent'])) {
 			$key = Inflector::singularize(substr($action, 0, -5)).'_id';
@@ -124,52 +127,54 @@ class AppController
 
 	public function CrudBeforeHandle(Event $event)
 	{
-		$action = $this->request->action;
+		$action = $this->request->getParam('action');
 
 		if(strcmp(substr($action, -3, 3), 'add') == 0
 		|| strcmp(substr($action, -4, 4), 'edit') == 0) {
 			# remove stuff that's not in the db
-			foreach($this->request->data as $key => $value) {
+			foreach($this->request->getData() as $key => $value) {
 				if(!$this->loadModel()->hasField($key))
-					unset($this->request->data[$key]);
+					$this->request = $this->request->withData($key, NULL);
 			}
 			# these can never be set through the rest-api
-			unset($this->request->data['created']);
-			unset($this->request->data['creator_id']);
-			unset($this->request->data['modified']);
-			unset($this->request->data['modifier_id']);
+			$this->request = $this->request->withData('created', NULL);
+			$this->request = $this->request->withData('creator_id', NULL);
+			$this->request = $this->request->withData('modified', NULL);
+			$this->request = $this->request->withData('modifier_id', NULL);
 		}
 		if(strcmp(substr($action, -5, 5), 'Index') == 0) {
 			$model = ucfirst(substr($action, 0, -5));
-			$parent = $this->loadModel($model)->get($event->subject->args[0]);
+			$parent = $this->loadModel($model)->get($event->getSubject()->args[0]);
 			$this->set('parent', $parent);
 		}
 	}
 	public function CrudAfterSave(Event $event)
 	{
-		if(!$event->subject->success)
-			throw new ValidationException($event->subject->entity);
+		$subject = $event->getSubject();
+		if(!$subject->success)
+			throw new ValidationException($subject->entity);
 
-		if(!$event->subject->created) {
+		if(!$subject->created) {
 			$action = 'view';
-			$oldAction = $this->request->params['action'];
+			$oldAction = $this->request->getParam('action');
 			if(strcmp(substr($oldAction, -4, 4), 'Edit') == 0) {
 				$action = substr($oldAction, 0, -4) . 'View';
 			}
 			return $this->Crud->execute($action);
 		}
 
-		$this->response->statusCode(201);
-		$this->response->location($event->subject->entity->refresh()->getUrl());
+		$location = $subject->entity->refresh()->getUrl();
+		$this->response = $this->response->withStatus(201);
+		$this->response = $this->response->withLocation($location);
 		return $this->response;
 	}
 	public function CrudAfterDelete(Event $event)
 	{
-		if(!$event->subject->success) {
-			throw new ValidationException($event->subject->entity);
-		}
+		$subject = $event->getSubject();
+		if(!$subject->success)
+			throw new ValidationException($subject->entity);
 
-		$this->response->statusCode(204);
+		$this->response = $this->response->withStatus(204);
 		return $this->response;
 	}
 	public function CrudBeforeRedirect(Event $event)
@@ -212,9 +217,9 @@ class AppController
 	{
 		$this->Crud->on('beforeRender', function ($event) {
 			$table = $this->loadModel('lammies');
-			$entity = $event->subject()->entity;
+			$entity = $event->getSubject()->entity;
 			$table->save($table->newEntity()->set('target', $entity));
-			$event->subject()->entity = 1;
+			$event->getSubject()->entity = 1;
 		});
 
 		$this->Crud->execute();
@@ -256,30 +261,30 @@ class AppController
 
 		$this->set('_serialize',
 			[ 'class' => 'List'
-			, 'url' => '/' . rtrim($this->request->url, '/')
+			, 'url' => rtrim($this->request->getPath(), '/')
 			, 'list' => $content
 			]);
 	}
 
 	protected function dataNameToId($table, $field)
 	{
-		if(!array_key_exists($field, $this->request->data)) {
+		$name = $this->request->getData($field);
+		if(is_null($name)) {
 			return null;
 		}
 
-		$name = $this->request->data($field);
-		unset($this->request->data[$field]);
+		$this->request = $this->request->withData($field, NULL);
 		if(empty($name)) {
 			$name = "-";
 		}
 
 		$model = $this->loadModel($table);
 		$ids = $model->findByName($name)->select('id', true)
-					->hydrate(false)->all();
+					->enableHydration(false)->all();
 		if($ids->count() == 0) {
-			$this->request->data($field.'_id', -1);
+			$this->request = $this->request->withData($field.'_id', -1);
 		} else {
-			$this->request->data($field.'_id', $ids->first()['id']);
+			$this->request = $this->request->withData($field.'_id', $ids->first()['id']);
 		}
 		return $name;
 	}
@@ -287,13 +292,13 @@ class AppController
 	protected function dataNameToIdAndAddIfMissing($table, $field)
 	{
 		$name = $this->dataNameToId($table, $field);
-		$id = $this->request->data($field.'_id');
+		$id = $this->request->getData($field.'_id');
 		if($id < 0) {
 			$model = $this->loadModel($table);
 			$obj = $model->newEntity();
 			$obj->name = $name;
 			$model->save($obj);
-			$this->request->data($field.'_id', $obj->id);
+			$this->request = $this->request->withData($field.'_id', $obj->id);
 		}
 		return $name;
 	}

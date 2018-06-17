@@ -55,14 +55,15 @@ class PlayersController
 		}
 		$this->set('_serialize',
 			[ 'class' => 'List'
-			, 'url' => '/' . rtrim($this->request->url, '/')
+			, 'url' => rtrim($this->request->getPath(), '/')
 			, 'list' => $content
 			]);
 	}
 
 	public function add()
 	{
-		$this->request->data('id', $this->request->data('plin'));
+		$plin = $this->request->getData('plin');
+		$this->request = $this->request->withData('id', $plin);
 		$this->Crud->execute();
 	}
 

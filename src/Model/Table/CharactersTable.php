@@ -35,7 +35,7 @@ class CharactersTable
 
 	public function afterSave(Event $event, EntityInterface $entity, $options)
 	{
-		if($entity->dirty('status') && $entity->status == 'active') {
+		if($entity->isDirty('status') && $entity->status == 'active') {
 			$chars = $this->findByPlayerId($entity->player_id);
 			foreach($chars as $char) {
 				if($char->id == $entity->id || $char->status != 'active') {

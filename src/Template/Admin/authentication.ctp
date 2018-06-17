@@ -2,9 +2,9 @@
 <?php
 
 echo $this->Form->create();
-echo $this->Form->input('plin'
+echo $this->Form->control('plin'
 		, ['label' => 'Plin', 'type' => 'text']);
-echo $this->Form->input('password'
+echo $this->Form->control('password'
 		, ['label' => 'Password', 'type' => 'password']);
 echo $this->Form->button(__('Set password'));
 

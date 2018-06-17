@@ -13,7 +13,7 @@ class AttributesItemsTable
 	{
 		parent::initialize($config);
 
-		$this->primaryKey(['attribute_id', 'item_id']);
+		$this->setPrimaryKey(['attribute_id', 'item_id']);
 
 		$this->belongsTo('Attributes');
 		$this->belongsTo('Items');

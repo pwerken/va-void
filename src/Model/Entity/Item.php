@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Entity;
 
+use Cake\Database\Expression\QueryExpression;
 use Cake\ORM\TableRegistry;
 
 class Item
@@ -49,14 +50,14 @@ class Item
 		$key++;
 
 		$table = TableRegistry::get('Attributes');
-		$max = $table->find()->hydrate(false)
+		$max = $table->find()->enableHydration(false)
 					->select(['max' => 'COUNT(*)'])
 					->where(['category LIKE' => 'random'])
 					->order(['id' => 'ASC'])
 					->toArray()[0]['max'];
 
 		for( ; $key < 12; $key++) {
-			$code = $table->find()->hydrate(false)
+			$code = $table->find()->enableHydration(false)
 					->select(['code'])
 					->where(['category LIKE' => 'random'])
 					->order(['id' => 'ASC'])

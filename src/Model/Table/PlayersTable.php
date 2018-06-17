@@ -44,7 +44,7 @@ class PlayersTable
 
 	public function ruleRoleChange($entity, $options)
 	{
-		if(!$entity->dirty('role') || AuthState::hasRole('super'))
+		if(!$entity->isDirty('role') || AuthState::hasRole('super'))
 			return true;
 
 		$msg = true;

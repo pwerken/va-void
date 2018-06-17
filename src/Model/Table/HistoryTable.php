@@ -3,8 +3,9 @@ namespace App\Model\Table;
 
 use App\Model\Entity\History;
 
-use Cake\Datasource\EntityInterface;
+use Cake\Database\Expression\QueryExpression;
 use Cake\Database\Type\DateTimeType;
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
@@ -17,20 +18,20 @@ class HistoryTable
 		parent::initialize($config);
 
 		$this->belongsTo('Characters')->setForeignKey('key1')
-			->conditions(['history.entity LIKE' => 'Characters%']);
+			->setConditions(['history.entity LIKE' => 'Characters%']);
 		$this->belongsTo('Conditions')->setForeignKey('key2')
-			->conditions(['history.entity' => 'CharactersCondition']);
+			->setConditions(['history.entity' => 'CharactersCondition']);
 		$this->belongsTo('Powers')->setForeignKey('key2')
-			->conditions(['history.entity' => 'CharactersPower']);
+			->setConditions(['history.entity' => 'CharactersPower']);
 		$this->belongsTo('Skills')->setForeignKey('key2')
-			->conditions(['history.entity' => 'CharactersSkill']);
+			->setConditions(['history.entity' => 'CharactersSkill']);
 		$this->belongsTo('Spells')->setForeignKey('key2')
-			->conditions(['history.entity' => 'CharactersSpell']);
+			->setConditions(['history.entity' => 'CharactersSpell']);
 
 		$this->belongsTo('Attributes')->setForeignKey('key1')
-			->conditions(['history.entity' => 'AttributesItem']);
+			->setConditions(['history.entity' => 'AttributesItem']);
 		$this->belongsTo('Items')->setForeignKey('key2')
-			->conditions(['history.entity LIKE' => '%sItem']);
+			->setConditions(['history.entity LIKE' => '%sItem']);
 	}
 
 	public function validationDefault(Validator $validator)
@@ -116,7 +117,7 @@ class HistoryTable
 		foreach($tbls as $tbl => $select) {
 			$result = TableRegistry::get($tbl.'s')->find()
 				->select($select)->where($where)
-				->order(['modified' => 'DESC'])->hydrate(false)->all();
+				->order(['modified' => 'DESC'])->enableHydration(false)->all();
 			foreach($result as $row) {
 				$row['entity'] = $tbl;
 				$row['modified'] = $dateParser->marshal($row['modified'])->jsonSerialize();
@@ -202,8 +203,11 @@ class HistoryTable
 			return [];
 
 		$list = $this->find()
-			->where(['entity' => 'Condition', 'key1' => $coin])
-			->orWhere(['AND' => ['entity' => 'CharactersCondition', 'key2' => $coin]])
+			->where(function(QueryExpression $exp) use ($coin) {
+				$a = $exp->and_(['entity' => 'Condition', 'key1' => $coin]);
+				$b = $exp->and_(['entity' => 'CharactersCondition', 'key2' => $coin]);
+				return $exp->or_([$a, $b]);
+			})
 			->contain(['Characters'])
 			->all()->toList();
 
@@ -226,8 +230,11 @@ class HistoryTable
 			return [];
 
 		$list = $this->find()
-			->where(['entity' => 'Power', 'key1' => $poin])
-			->orWhere(['AND' => ['entity' => 'CharactersPower', 'key2' => $poin]])
+			->where(function(QueryExpression $exp) use ($poin) {
+				$a = $exp->and_(['entity' => 'Power', 'key1' => $poin]);
+				$b = $exp->and_(['entity' => 'CharactersPower', 'key2' => $poin]);
+				return $exp->or_([$a, $b]);
+			})
 			->contain(['Characters'])
 			->all()->toList();
 
@@ -250,8 +257,11 @@ class HistoryTable
 			return [];
 
 		$list = $this->find()
-			->where(['entity' => 'Item', 'key1' => $itin])
-			->orWhere(['AND' => ['entity' => 'AttributesItem', 'key2' => $itin]])
+			->where(function(QueryExpression $exp) use ($itin) {
+				$a = $exp->and_(['entity' => 'Item', 'key1' => $itin]);
+				$b = $exp->and_(['entity' => 'AttributesItem', 'key2' => $itin]);
+				return $exp->or_([$a, $b]);
+			})
 			->contain(['Attributes'])
 			->all()->toList();
 

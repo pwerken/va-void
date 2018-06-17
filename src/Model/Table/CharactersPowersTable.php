@@ -13,7 +13,7 @@ class CharactersPowersTable
 	{
 		parent::initialize($config);
 
-		$this->primaryKey(['character_id', 'power_id']);
+		$this->setPrimaryKey(['character_id', 'power_id']);
 
 		$this->belongsTo('Characters');
 		$this->belongsTo('Powers');

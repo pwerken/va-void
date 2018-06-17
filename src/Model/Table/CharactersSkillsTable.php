@@ -14,7 +14,7 @@ class CharactersSkillsTable
 	{
 		parent::initialize($config);
 
-		$this->primaryKey(['character_id', 'skill_id']);
+		$this->setPrimaryKey(['character_id', 'skill_id']);
 
 		$this->belongsTo('Characters');
 		$this->belongsTo('Skills');

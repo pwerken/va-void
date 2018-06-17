@@ -24,13 +24,13 @@ class CharactersPowersController
 			]);
 	}
 
-	public function charactersAdd($character_id)
+	public function charactersAdd($char_id)
 	{
-		$this->request->data('character_id', $character_id);
+		$this->request = $this->request->withData('character_id', $char_id);
 		$this->Crud->execute();
 	}
 
-	public function charactersQueue($character_id, $poin)
+	public function charactersQueue($char_id, $poin)
 	{
 		$this->queueLammy();
 	}
@@ -40,7 +40,7 @@ class CharactersPowersController
 		if(!$this->hasAuth('read-only')) {
 			$this->Crud->on('beforePaginate', function ($event) {
 				$cond = ['Characters.player_id' => $this->Auth->user('id')];
-				$event->subject()->query->where($cond);
+				$event->getSubject()->query->where($cond);
 			});
 		}
 
@@ -54,9 +54,9 @@ class CharactersPowersController
 			return $plin;
 		}
 
-		$poin = $this->request->param('poin');
+		$poin = $this->request->getParam('poin');
 		$data = $this->CharactersPowers->find()
-					->hydrate(false)
+					->enableHydration(false)
 					->select(['player_id' => 'Characters.player_id'])
 					->where(['CharactersPowers.power_id' => $poin])
 					->contain('Characters')

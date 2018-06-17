@@ -282,12 +282,4 @@ $rest = function($routes, $name, $subs = [], $nest = [], $rels = []) {
 		$defaults['action'] = $action;
 		$routes->connect($url, $defaults, []);
 	}
-
-	if(strcmp(substr($_SERVER['SERVER_SOFTWARE'],0,8), "lighttpd") == 0) {
-		$defaults = [];
-		$defaults['_method'] = 'GET';
-		$defaults['controller'] = 'Pages';
-		$defaults['action'] = 'lighttpd';
-		$routes->connect('/va-void/', $defaults);
-	}
 });

@@ -12,7 +12,7 @@ class TeachingsTable
 	{
 		parent::initialize($config);
 
-		$this->primaryKey('student_id');
+		$this->setPrimaryKey('student_id');
 
 		$this->belongsTo('Teacher', ['className' => 'Characters'])
 			->setForeignKey('teacher_id')->setProperty('teacher');
@@ -68,7 +68,7 @@ class TeachingsTable
 		$query->select(['Teachings.student_id']);
 		$query->where(['Student.player_id =' => $plin, 'Student.chin = ' => $chin]);
 		$query->limit(1);
-		$query->hydrate(false);
+		$query->enableHydration(false);
 		return $query->first();
 	}
 

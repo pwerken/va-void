@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 
-use Cake\Network\Exception\UnauthorizedException;
+use Cake\Http\Exception\UnauthorizedException;
 use Cake\Utility\Security;
 use Firebase\JWT\JWT;
 
@@ -20,7 +20,8 @@ class AuthController
 	{
 		$user = $this->Auth->identify();
 		if (!$user) {
-			$this->request->data('id', (string)$this->request->data('id'));
+			$id = (string)$this->request->getData('id');
+			$this->request = $this->request->withData('id', $id);
 			if($this->request->is('put') || $this->request->is('post'))
 				$user = $this->Auth->identify();
 		}
@@ -35,7 +36,7 @@ class AuthController
 					, 'exp' =>  time() + 60*60*24*7
 					, 'name' => $user['full_name']
 					, 'role' => $user['role']
-					], Security::salt())
+					], Security::getSalt())
 				, 'player' => '/players/'.$user['id']
 				]
 			]);

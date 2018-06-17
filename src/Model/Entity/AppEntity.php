@@ -32,10 +32,10 @@ abstract class AppEntity
 			if(!is_array($access))
 				$access = [$access];
 
-			$this->accessible($p, false);
+			$this->setAccess($p, false);
 			foreach($access as $auth) {
 				if(AuthState::hasRole($auth)) {
-					$this->accessible($p, true);
+					$this->setAccess($p, true);
 					break;
 				}
 			}
@@ -93,7 +93,7 @@ abstract class AppEntity
 		$table = TableRegistry::get(Inflector::pluralize($this->getClass()));
 		$query = $table->find('withContain');
 
-		$keys = $table->primaryKey();
+		$keys = $table->getPrimaryKey();
 		if(is_array($keys)) {
 			foreach($keys as $i => $key) {
 				$field = current($query->aliasField($key));

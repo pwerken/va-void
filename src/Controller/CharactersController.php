@@ -37,17 +37,18 @@ class CharactersController
 
 	public function add($plin)
 	{
-		$plin = $plin ?: $this->request->data('plin');
-		$this->request->data('player_id', $plin);
-		unset($this->request->data['plin']);
+		$plin = $plin ?: $this->request->getData('plin');
+		$this->request = $this->request->withData('player_id', $plin);
+		$this->request = $this->request->withData('plin', NULL);
 
 		$next = $this->Characters->find()
 					->select(['nextChin' => 'MAX(chin)'])
 					->where(['player_id' => $plin])
-					->hydrate(false)
+					->enableHydration(false)
 					->first();
 		$next = $next ? $next['nextChin'] + 1: 1;
-		$this->request->data('chin', $this->request->data('chin') ?: $next);
+		$chin = $this->request->getData('chin') ?: $next;
+		$this->request = $this->request->withData('chin', $chin);
 
 		$this->edit(NULL);
 	}
@@ -93,7 +94,7 @@ class CharactersController
 		}
 		$this->set('_serialize',
 			[ 'class' => 'List'
-			, 'url' => '/' . rtrim($this->request->url, '/')
+			, 'url' => rtrim($this->request->getPath(), '/')
 			, 'list' => $content
 			]);
 	}
@@ -103,26 +104,26 @@ class CharactersController
 		$this->Crud->on('beforeRender', function ($event) {
 			$table = $this->loadModel('lammies');
 
-			$character = $event->subject()->entity;
+			$character = $event->getSubject()->entity;
 			$table->save($table->newEntity()->set('target', $character));
 			$count = 1;
 
-			if(isset($this->request->data['all'])) {
-				foreach($character->powers as $power) {
-					$table->save($table->newEntity()->set('target', $power));
+			if($this->request->getData('all')) {
+				foreach($character->powers as $p) {
+					$table->save($table->newEntity()->set('target', $p));
 					$count++;
 				}
-				foreach($character->conditions as $condition) {
-					$table->save($table->newEntity()->set('target', $condition));
+				foreach($character->conditions as $c) {
+					$table->save($table->newEntity()->set('target', $c));
 					$count++;
 				}
-				foreach($character->items as $item) {
-					$table->save($table->newEntity()->set('target', $item));
+				foreach($character->items as $i) {
+					$table->save($table->newEntity()->set('target', $i));
 					$count++;
 				}
 			}
 
-			$event->subject()->entity = $count;
+			$event->getSubject()->entity = $count;
 		});
 
 		$this->Crud->execute();

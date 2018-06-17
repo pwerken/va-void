@@ -12,7 +12,7 @@ class CheckConfig
 	{
 		$status = [];
 
-		if(Security::salt() === '__SALT__') {
+		if(Security::getSalt() === '__SALT__') {
 			$msg = sprintf('Please change the value of %s in %s to a salt value specific to your application.', 'Security.salt', 'ROOT/config/app.php');
 			$status[$msg] = false;
 		}

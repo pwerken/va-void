@@ -38,7 +38,7 @@ abstract class AppTable
 		if($entity->isNew())
 			return;
 
-		if($entity->dirty('modified') && $entity->dirty('modifier_id')
+		if($entity->isDirty('modified') && $entity->isDirty('modifier_id')
 		&& $entity->get('modifier_id') == $entity->getOriginal('modifier_id')
 		&& count($entity->getDirty()) == 2)
 			return;
@@ -56,16 +56,16 @@ abstract class AppTable
 			$query->order([$this->aliasField($field) => $ord]);
 		}
 
-		if(!is_array($this->primaryKey()))
+		if(!is_array($this->getPrimaryKey()))
 			return $query;
 
 		$query->sql();	// force evaluation of internal state/objects
 		foreach($query->clause('join') as $join) {
-			if(!$this->association($join['table']))
+			if(!$this->hasAssociation($join['table']))
 				continue;
 
 			$table = TableRegistry::get($join['table']);
-			$table->alias($join['alias']);
+			$table->setAlias($join['alias']);
 
 			foreach($table->orderBy() as $field => $ord) {
 				$query->order([$table->aliasField($field) => $ord]);

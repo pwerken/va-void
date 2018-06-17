@@ -24,7 +24,7 @@ class CorsMiddleware
 
 	public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
 	{
-		$response->cors($request)
+		$response = $response->cors($request)
 			->allowOrigin($this->config['allowOrigin'])
 			->allowCredentials($this->config['allowCredentials'])
 			->allowMethods($this->config['allowMethods'])

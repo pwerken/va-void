@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\ORM\Query;
@@ -15,8 +16,11 @@ class LammiesTable
 	public function findQueued(Query $query, array $options = [])
 	{
 		$query = $this->findWithContain($query, $options);
-		$query->where(["status LIKE" => "Queued"]);
-		$query->orWhere(["status LIKE" => "Printing"]);
+
+		$query->where(function(QueryExpression $exp) {
+			return $exp->or(["status LIKE" => "Queued"])
+						->eq("status", "Printing");
+		});
 		return $query;
 	}
 

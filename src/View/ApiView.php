@@ -27,7 +27,7 @@ class ApiView
 			$data = $this->get('_serialize', $this->viewVars);
 		} elseif(is_array($data) || $data instanceof ResultSet) {
 			$data = $this->_jsonList($data, $this->get('parent'));
-			$data['url'] = '/' . rtrim($this->request->url, '/');
+			$data['url'] = rtrim($this->request->getPath(), '/');
 		} else {
 			$data = $this->_jsonData($data);
 		}
@@ -36,7 +36,7 @@ class ApiView
 		if(Configure::read('debug'))
 			$jsonOptions = $jsonOptions | JSON_PRETTY_PRINT;
 
-		$this->response->type('json');
+		$this->response = $this->response->withType('json');
 		return json_encode($data, $jsonOptions);
 	}
 

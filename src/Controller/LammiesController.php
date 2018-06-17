@@ -64,7 +64,7 @@ class LammiesController
 		}
 		$this->set('_serialize',
 			[ 'class' => 'List'
-			, 'url' => '/' . rtrim($this->request->url, '/')
+			, 'url' => rtrim($this->request->getPath(), '/')
 			, 'list' => $content
 			]);
 	}
@@ -72,26 +72,27 @@ class LammiesController
 	public function queue()
 	{
 		$this->Crud->on('beforeRender', function ($event) {
-			if($event->subject()->entities->count() == 0) {
+			$subject = $event->getSubject();
+			if($subject->entities->count() == 0) {
 				$id = 0;
 			} else {
-				$id = $event->subject()->entities->first()->id;
+				$id = $subject->entities->first()->id;
 			}
-			$event->subject()->entities = $id;
+			$subject->entities = $id;
 		});
 		$this->Crud->execute();
 	}
 
 	public function pdfSingle()
 	{
-		$this->uptoId(key($this->request->data));
+		$this->uptoId(key($this->request->getData()));
 		$this->pdfOutput(false);
 		$this->Crud->execute();
 	}
 
 	public function pdfDouble()
 	{
-		$this->uptoId(key($this->request->data));
+		$this->uptoId(key($this->request->getData()));
 		$this->pdfOutput(true);
 		$this->Crud->execute();
 	}
@@ -101,10 +102,10 @@ class LammiesController
 		$this->uptoId(key($this->request->data));
 
 		$this->Crud->on('beforeRender', function ($event) {
+			$subject = $event->getSubject();
 			$table = $this->loadModel();
-			$table->setStatuses($event->subject()->entities, 'Printed');
-
-			$event->subject()->entities = $event->subject()->entities->count();
+			$table->setStatuses($subject->entities, 'Printed');
+			$subject->entities = $subject->entities->count();
 		});
 
 		$this->Crud->execute();
@@ -113,7 +114,7 @@ class LammiesController
 	private function uptoId($id)
 	{
 		$this->Crud->on('beforePaginate', function ($event) use ($id) {
-			$event->subject()->query->where(["id <=" => $id]);
+			$event->getSubject()->query->where(["id <=" => $id]);
 		});
 	}
 
@@ -121,8 +122,8 @@ class LammiesController
 	{
 		$this->Crud->on('beforeRender', function ($event) use ($double) {
 			$table = $this->loadModel();
-			$table->setStatuses($event->subject()->entities, 'Printing');
-			$this->viewBuilder()->className('Pdf');
+			$table->setStatuses($event->getSubject()->entities, 'Printing');
+			$this->viewBuilder()->setClassName('Pdf');
 			$this->set('double', $double);
 		});
 	}
