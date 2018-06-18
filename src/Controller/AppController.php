@@ -201,8 +201,9 @@ class AppController
 		$model = $this->modelClass;
 		$query = $this->$model->find();
 		$query->select(['last' => $query->func()->max("$model.modified")]);
-		$modified = $this->doRawQuery($query);
-		$this->response = $this->response->withModified($modified[0][0]);
+		$modified = $this->doRawQuery($query)[0][0];
+		$modified = ($modified ?: new \DateTime('2000-01-01'));
+		$this->response = $this->response->withModified($modified);
 
 		return $this->response->checkNotModified($this->request);
 	}
