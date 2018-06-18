@@ -75,6 +75,9 @@ class CharactersController
 		if(!$this->hasAuth('read-only')) {
 			$plin = $this->Auth->user('id');
 			$query->where(["Characters.player_id = $plin"]);
+		} else {
+			if($this->setResponseModified())
+				return $this->response;
 		}
 
 		$content = [];
