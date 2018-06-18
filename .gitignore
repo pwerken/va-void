@@ -7,8 +7,9 @@
 
 # CakePHP specific files #
 ##########################
-/config/app.php
+/composer.lock
 /config/.env # josegonzalez/php-dotenv
+/config/app.php
 /logs/*
 /tmp/*
 /vendor/*
