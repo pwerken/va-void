@@ -79,21 +79,22 @@ Router::scope('/', function (RouteBuilder $routes) {
 	$defaults['action'] = 'logout';
 	$routes->connect('/auth/logout', $defaults);
 
-function getKeys($controller) {
-	switch($controller) {
-	case 'Players':     return [ 'plin' ];
-	case 'Characters':  return [ 'plin', 'chin' ];
-	case 'Items':       return [ 'itin' ];
-	case 'Conditions':  return [ 'coin' ];
-	case 'Powers':      return [ 'poin' ];
-	default:            return [ 'id' ];
-	}
-}
-function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
+$rest = function($routes, $name, $subs = [], $nest = [], $rels = []) {
+	$getKeys = function($controller) {
+		switch($controller) {
+		case 'Players':     return [ 'plin' ];
+		case 'Characters':  return [ 'plin', 'chin' ];
+		case 'Items':       return [ 'itin' ];
+		case 'Conditions':  return [ 'coin' ];
+		case 'Powers':      return [ 'poin' ];
+		default:            return [ 'id' ];
+		}
+	};
+
 	$lcName = strtolower($name);
 
 	$routeOptions = [];
-	foreach(getKeys($name) as $key) {
+	foreach($getKeys($name) as $key) {
 		$routeOptions['pass'][] = $key;
 		$routeOptions[$key] = '[0-9]+';
 	}
@@ -166,7 +167,7 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 	foreach($rels as $rel) {
 		$routeOptions2 = $routeOptions;
 		$path = [];
-		foreach(getKeys($rel) as $key) {
+		foreach($getKeys($rel) as $key) {
 			$routeOptions2['pass'][] = $key;
 			$routeOptions2[$key] = '[0-9]+';
 			$path[] = $key;
@@ -241,30 +242,30 @@ function rest($routes, $name, $subs = [], $nest = [], $rels = []) {
 		$defaults['action'] = 'charactersQueue';
 		$routes->connect($urlNest.'/print', $defaults, $routeOptions);
 	}
-}
+};
 
-	rest($routes, 'Players',  [ 'Characters' ]);
-	rest($routes, 'Characters'
+	$rest($routes, 'Players',  [ 'Characters' ]);
+	$rest($routes, 'Characters'
 					, [ 'Items' ]
 					, [ ]
 					, [ 'Conditions', 'Powers', 'Skills', 'Spells' ]
 					);
 
-	rest($routes, 'Conditions', [], [ 'Characters' ]);
-	rest($routes, 'Powers',     [], [ 'Characters' ]);
-	rest($routes, 'Skills',     [], [ 'Characters' ]);
-	rest($routes, 'Spells',     [], [ 'Characters' ]);
+	$rest($routes, 'Conditions', [], [ 'Characters' ]);
+	$rest($routes, 'Powers',     [], [ 'Characters' ]);
+	$rest($routes, 'Skills',     [], [ 'Characters' ]);
+	$rest($routes, 'Spells',     [], [ 'Characters' ]);
 
-	rest($routes, 'Items',      [], [              ], ['Attributes']);
-	rest($routes, 'Attributes', [], [ 'Items'      ]);
+	$rest($routes, 'Items',      [], [              ], ['Attributes']);
+	$rest($routes, 'Attributes', [], [ 'Items'      ]);
 
-	rest($routes, 'Believes', [ 'Characters' ]);
-	rest($routes, 'Factions', [ 'Characters' ]);
-	rest($routes, 'Groups',   [ 'Characters' ]);
-	rest($routes, 'Worlds',   [ 'Characters' ]);
+	$rest($routes, 'Believes', [ 'Characters' ]);
+	$rest($routes, 'Factions', [ 'Characters' ]);
+	$rest($routes, 'Groups',   [ 'Characters' ]);
+	$rest($routes, 'Worlds',   [ 'Characters' ]);
 
-	rest($routes, 'Lammies');
-	rest($routes, 'Events');
+	$rest($routes, 'Lammies');
+	$rest($routes, 'Events');
 
 	$defaults = [];
 	$defaults['controller'] = 'Lammies';
