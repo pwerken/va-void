@@ -96,6 +96,16 @@ class ItemLammy
 		$this->text(57.5, 5, 10, 'R', $this->entity->id);
 		$this->font(6);
 		$this->textblock( 3, 15, 69, 'L', $this->entity->player_text);
+
+		if(!is_null($this->entity->character)) {
+			$char_id = $this->entity->character->player_id
+						. ' - ' . $this->entity->character->chin;
+		} else {
+			$char_id = '';
+		}
+		$this->pdf->SetTextColor(191);
+		$this->font(5);
+		$this->text(3, self::$HEIGHT - 1.3, self::$WIDTH, 'L', $char_id);
 	}
 
 }
