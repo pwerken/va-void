@@ -203,9 +203,17 @@ class AdminController
 		}
 
 		$since = (new \DateTime())->sub(new \DateInterval('P3M'));
-		$query = $lammies->find()
-			->where(['modified >' => $since->format('Y-m-d')])
-			->order(['id' => 'DESC'])
+		$query = $lammies->find();
+		$query
+			->select($lammies)
+			->select(['character' => $query->func()->concat(
+				[ 'characters.player_id' => 'identifier', '/'
+				, 'characters.chin' => 'identifier'])])
+			->leftJoin(['characters']
+			         , [ 'lammies.entity LIKE' => 'Character%'
+					   , 'lammies.key1 = characters.id'])
+			->where(['lammies.modified >' => $since->format('Y-m-d')])
+			->order(['lammies.id' => 'DESC'])
 			->hydrate(false);
 		$this->set('printing', $query->all());
 	}

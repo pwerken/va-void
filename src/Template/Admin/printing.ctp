@@ -66,11 +66,34 @@ foreach($printing as $row) {
 	if(!is_null($row['modified'])) {
 		$row['modified'] = $row['modified']->i18nFormat('yyyy-MM-dd HH:mm:ss');
 	}
+
+	$key1 = $row['character'] ?: $row['key1'];
+	$key2 = $row['key2'];
+	$link = null;
+
+	if(substr($row['entity'], 0, 9) == 'Character') {
+		$key1 = $this->Html->link($key1, '/admin/history/character/'.$key1);
+	} elseif($row['entity'] == 'Item') {
+		$link = 'item';
+	}
+	if(substr($row['entity'], -5, 5) == 'Power') {
+		$link = 'power';
+	} elseif(substr($row['entity'], -9, 9) == 'Condition') {
+		$link = 'condition';
+	}
+	if($link) {
+		if(is_null($key2)) {
+			$key1 = $this->Html->link($key1, '/admin/history/'.$link.'/'.$key1);
+		} else {
+			$key2 = $this->Html->link($key2, '/admin/history/'.$link.'/'.$key2);
+		}
+	}
+
 	echo "</td>\n"
 		."<td>" . $row['status'] . "</td>\n"
 		."<td>" . $row['entity'] . "</td>\n"
-		."<td>" . $row['key1'] . "</td>\n"
-		."<td>" . $row['key2'] . "</td>\n"
+		."<td>" . $key1 . "</td>\n"
+		."<td>" . $key2 . "</td>\n"
 		."<td>" . $row['created'] . "</td>\n"
 		."<td>" . $row['creator_id'] . "</td>\n"
 		."<td>" . $row['modified'] . "</td>\n"
