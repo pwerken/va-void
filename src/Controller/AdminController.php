@@ -213,7 +213,7 @@ class AdminController
 			         , [ 'lammies.entity LIKE' => 'Character%'
 					   , 'lammies.key1 = characters.id'])
 			->where(['lammies.modified >' => $since->format('Y-m-d')])
-			->order(['lammies.id' => 'DESC'])
+			->orderDesc('lammies.id')
 			->hydrate(false);
 		$this->set('printing', $query->all());
 	}
