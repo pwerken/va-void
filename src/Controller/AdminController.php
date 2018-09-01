@@ -73,6 +73,11 @@ class AdminController
 
 		$this->Auth->setUser($user);
 		$this->set('user', $user);
+
+		$target = $this->Auth->redirectUrl();
+		if($target != "/") {
+			$this->redirect($target);
+		}
 	}
 
 	public function logout()

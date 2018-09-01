@@ -7,8 +7,6 @@ $nav = [];
 
 switch($role) {
 case 'Super':
-	$nav['/admin/checks'] = 'Check Configuration';
-	$nav['/admin/routes'] = 'Configured Routes';
 	$nav['/admin/migrations'] = 'Database Migrations';
 	$nav['/admin/backups'] = 'Database Backups';
 case 'Infobalie':
@@ -21,6 +19,8 @@ case 'Read-only':
 case 'Player':
 	$nav['/admin/authentication'] = 'Authentication';
 default:
+	$nav['/admin/checks'] = 'Check Configuration';
+	$nav['/admin/routes'] = 'Configured Routes';
 	asort($nav);
 }
 
