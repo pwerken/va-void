@@ -272,7 +272,7 @@ class AdminController
 		$q2 = 'SELECT `plin`, `voornaam`, `tussenvoegsels`,'
 			. ' `achternaam`, `geboortedatum`, `mv`'
 			. ' FROM `deelnemers`'
-			. ' ORDER BY `plin`, `id`';
+			. ' ORDER BY - `plin` DESC, `id`';
 		$valea = ConnectionManager::get('valea')->query($q2);
 
 		$blank = [NULL,NULL,NULL,NULL,NULL,NULL];
