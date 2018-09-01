@@ -224,7 +224,7 @@ class AppController
 	{
 		$orWhere = [];
 		$params = [];
-		foreach(explode(' ', $this->request->query('q')) as $q) {
+		foreach(explode(' ', $this->request->getQuery('q')) as $q) {
 			foreach($this->searchFields as $field) {
 				$orWhere[] = "$field LIKE ?";
 				$params[] = "%$q%";
