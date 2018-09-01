@@ -222,10 +222,10 @@ class AppController
 
 	protected function doRawQuery($query)
 	{
-		$orWhere = [];
 		$params = [];
-		foreach(explode(' ', $this->request->getQuery('q')) as $q) {
-			foreach($this->searchFields as $field) {
+		foreach($this->searchFields as $field) {
+			$orWhere = [];
+			foreach(explode(' ', $this->request->getQuery('q')) as $q) {
 				$orWhere[] = "$field LIKE ?";
 				$params[] = "%$q%";
 			}
