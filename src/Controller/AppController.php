@@ -222,12 +222,17 @@ class AppController
 
 	protected function doRawQuery($query)
 	{
+		$q = trim($this->request->getQuery('q'));
 		$params = [];
+		$values = explode(' ', $q);
 		foreach($this->searchFields as $field) {
+			if(strlen($q) == 0)
+				break;
+
 			$orWhere = [];
-			foreach(explode(' ', $this->request->getQuery('q')) as $q) {
+			foreach($values as $val) {
 				$orWhere[] = "$field LIKE ?";
-				$params[] = "%$q%";
+				$params[] = "%$val%";
 			}
 			$query->andWhere(function($exp) use ($orWhere) {
 				return $exp->or_($orWhere);
