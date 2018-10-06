@@ -1,12 +1,12 @@
 [![License](https://img.shields.io/:license-ISC-blue.svg)](https://tldrlegal.com/license/-isc-license)
-[![CakePHP](https://img.shields.io/badge/powered%20by-CakePHP-red.svg)](http://cakephp.org)
+[![CakePHP](https://img.shields.io/badge/powered%20by-CakePHP-red.svg)](https://cakephp.org)
 # VA - VOID
 
 [Vortex Adventues](http://www.the-vortex.nl) - **V**ortex **O**nline **I**ncharacter **D**atabase
 
 ## Install
 
-Download [Composer](http://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
+Download [Composer](https://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
 
 1. Clone the repository
 2. Run `composer install`  
