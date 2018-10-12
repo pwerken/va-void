@@ -4,6 +4,7 @@
 !/backups/empty
 /printing/log
 /printing/pdfs
+/webroot/coverage
 
 # CakePHP specific files #
 ##########################

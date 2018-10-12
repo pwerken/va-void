@@ -42,10 +42,12 @@ class ApplicationTest extends IntegrationTestCase
         $app->bootstrap();
         $plugins = $app->getPlugins();
 
-        $this->assertCount(3, $plugins);
+        $this->assertCount(5, $plugins);
         $this->assertSame('Bake', $plugins->get('Bake')->getName());
         $this->assertSame('Migrations', $plugins->get('Migrations')->getName());
-        $this->assertSame('DebugKit', $plugins->get('DebugKit')->getName());
+        $this->assertSame('Crud', $plugins->get('Crud')->getName());
+        $this->assertSame('CreatorModifier', $plugins->get('CreatorModifier')->getName());
+        $this->assertSame('ADmad/JwtAuth', $plugins->get('ADmad/JwtAuth')->getName());
     }
 
     /**
@@ -76,15 +78,13 @@ class ApplicationTest extends IntegrationTestCase
     public function testMiddleware()
     {
         $app = new Application(dirname(dirname(__DIR__)) . '/config');
-        $middleware = new MiddlewareQueue();
+        $middleware = $app->middleware(new MiddlewareQueue());
 
-        $middleware = $app->middleware($middleware);
-
+        $this->assertCount(5, $middleware);
         $this->assertInstanceOf(ErrorHandlerMiddleware::class, $middleware->get(0));
         $this->assertInstanceOf(AssetMiddleware::class, $middleware->get(1));
         $this->assertInstanceOf(CorsMiddleware::class, $middleware->get(2));
         $this->assertInstanceOf(RoutingMiddleware::class, $middleware->get(3));
-        $this->assertInstanceOf(CsrfProtectionMiddleware::class, $middleware->get(4));
-        $this->assertInstanceOf(PlinChinMiddleware::class, $middleware->get(5));
+        $this->assertInstanceOf(PlinChinMiddleware::class, $middleware->get(4));
     }
 }
