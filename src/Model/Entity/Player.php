@@ -54,9 +54,8 @@ class Player
 
 	protected function _getFullName()
 	{
-		return $this->first_name
-				. (empty($this->insertion) ? '' : ' ' . $this->insertion)
-				. ' ' . $this->last_name;
+		$name = [$this->first_name, $this->insertion, $this->last_name];
+		return implode(' ', array_filter($name));
 	}
 
 }

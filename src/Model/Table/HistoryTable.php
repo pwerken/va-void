@@ -96,7 +96,7 @@ class HistoryTable
 		$tbls =
 			[ 'Player' =>
 				[ "key1" => "id", "key2" => "NULL"
-				, "name" => "CONCAT_WS(' ',first_name,insertion,last_name)"
+				, "name" => "NULL", "first_name", "insertion", "last_name"
 				, "modified", "modifier_id"]
 			, 'Character' =>
 				[ "key1" => "player_id", "key2" => "chin"
@@ -119,6 +119,10 @@ class HistoryTable
 				->select($select)->where($where)
 				->order(['modified' => 'DESC'])->enableHydration(false)->all();
 			foreach($result as $row) {
+				if(is_null($row['name']) && $tbl == 'Player') {
+					$name = [$row['first_name'], $row['insertion'], $row['last_name']];
+					$row['name'] = implode(' ', array_filter($name));
+				}
 				$row['entity'] = $tbl;
 				$row['modified'] = $dateParser->marshal($row['modified'])->jsonSerialize();
 				$list[] = $row;
