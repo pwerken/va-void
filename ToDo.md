@@ -7,20 +7,37 @@ ToDo-list:
    - [ ] new user registration / password recovery
  - Business logic
    - [ ] more validator rules
-   - [ ] rename 'Spells' to 'Casting'
-   - [ ] store spell-lists / add all the individual spells
-   - [ ] Characters: player text field (for background)
-   - [ ] Characters: CS notes field
-   - [ ] Skills: add base/extra/deprecated
-   - [ ] Skills: add class (fighter/healing/mage,...)
-   - [ ] Skills: prereq check
-   - [ ] Attributes: clean up & make consistent
+   - [ ] Skills: prereq/dependancy checks
+   - [ ] Characters add field: player text (for background)
+   - [ ] Characters add field: CS text
+   - [ ] Items add field: comment text
+   - [ ] Skills add field: type (base/extra/deprecated)
+   - [ ] Skills add field: class (fighter/healing/mage,...)
    - [ ] templating for common conditions/powers/items
    - [ ] use 'Labels' (?) for factions/worlds/groups/etc...
+ - Test cases (unit / application)
+   - [ ] support different auth levels in tests
+   - [ ] all the GET request API routes
+   - [ ] editing of Player (happy flow)
+   - [ ] editing of Character (happy flow)
+   - [ ] editing of Condition/Power (happy flow)
+   - [ ] adding & removing Character relations
+   - [ ] printing API routes
+   - [ ] expand tests cases with validation errors
+   - [ ] expand tests cases to verify logging to history table
+ - Reference sheets
+   - [ ] store spell-lists / add all the individual spells
+   - [ ] store loresheets (or links to pdf's ? auth >= RO)
+ - Auditing
+   - [ ] void-api/admin: add heuristic to compact history
+   - [ ] void-api/admin: human-readible shorthand log of changes
+   - [ ] add .../history routes: with shorthand log of changes
  - Optimizations
    - [ ] headers: add Last-Modified / ETag
  - Technical dept
+   - [ ] rename 'Spells' to 'Casting'
    - [ ] rename db tables to conform to cakephp conventions
    - [ ] stop using deprecated methods/classes
  - Upstream changes
    - [ ] Crud cake3: support multiple primary keys
+   - [ ] CreatorModifier: fix deprecated warnings
