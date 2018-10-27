@@ -1,0 +1,43 @@
+<?php
+namespace App\Test\TestCase\Controller;
+
+use App\Test\TestSuite\AuthIntegrationTestCase;
+
+class AuthControllerTest
+	extends AuthIntegrationTestCase
+{
+
+	public function testAllWithAuthLogins()
+    {
+		$this->assertEquals(1, $this->withAuthPlayer());
+		$this->assertEquals(2, $this->withAuthReadonly());
+		$this->assertEquals(3, $this->withAuthReferee());
+		$this->assertEquals(4, $this->withAuthInfobalie());
+		$this->assertEquals(5, $this->withAuthSuper());
+	}
+
+	public function testNotLoggedIn()
+	{
+		$this->withoutAuth();
+
+		$this->assertGet('/auth/login', 401);
+		$this->assertPost('/auth/login', [], 404);
+		$this->assertPut('/auth/login', [], 401);
+		$this->assertGet('/auth/logout', 302);
+		$this->assertRedirectContains('/');
+	}
+
+	public function testLoggedIn()
+	{
+		$this->withAuthPlayer();
+		$this->assertGet('/auth/login');
+		$this->assertEquals('Auth', $this->jsonBody('class'));
+	}
+
+	public function testLoggingOut()
+	{
+		$this->withAuthPlayer();
+		$this->assertGet('/auth/logout', 302);
+		$this->assertRedirectContains('/');
+	}
+}

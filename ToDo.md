@@ -16,7 +16,7 @@ ToDo-list:
    - [ ] templating for common conditions/powers/items
    - [ ] use 'Labels' (?) for factions/worlds/groups/etc...
  - Test cases (unit / application)
-   - [ ] support different auth levels in tests
+   - [x] support different auth levels in tests
    - [ ] all the GET request API routes
    - [ ] editing of Player (happy flow)
    - [ ] editing of Character (happy flow)

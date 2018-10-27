@@ -36,6 +36,7 @@
         </whitelist>
     </filter>
 
+    <!-- write code coverage report in webroot -->
     <logging>
         <log type="coverage-html" target="webroot/coverage"/>
     </logging>

@@ -6,6 +6,11 @@
 /printing/pdfs
 /webroot/coverage
 
+# Test related files #
+######################
+va-test
+/webroot/coverage
+
 # CakePHP specific files #
 ##########################
 /composer.lock
