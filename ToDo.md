@@ -30,7 +30,7 @@ ToDo-list:
    - [ ] store loresheets (or links to pdf's ? auth >= RO)
  - Auditing
    - [ ] void-api/admin: add heuristic to compact history
-   - [ ] void-api/admin: human-readible shorthand log of changes
+   - [x] void-api/admin: human-readible shorthand log of changes
    - [ ] add .../history routes: with shorthand log of changes
  - Optimizations
    - [ ] headers: add Last-Modified / ETag

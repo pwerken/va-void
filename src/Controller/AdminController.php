@@ -169,7 +169,11 @@ class AdminController
 	{
 		$table = $this->loadModel('history');
 		if(!is_null($e)) {
-			$this->viewBuilder()->setTemplate('historyEntity');
+			if(array_key_exists('verbose', $this->request->getQueryParams())) {
+				$this->viewBuilder()->setTemplate('historyEntity');
+			} else {
+				$this->viewBuilder()->setTemplate('historyCompact');
+			}
 			$list = $table->getEntityHistory($e, $k1, $k2);
 			if(empty($list)) {
 				throw new NotFoundException();
