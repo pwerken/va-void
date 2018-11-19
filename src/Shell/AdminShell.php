@@ -57,7 +57,7 @@ class AdminShell extends AppShell
 		if(isset($role)) {
 			$this->Players->patchEntity($player, ['role' => $role]);
 			$this->Players->save($player);
-			$errors = $player->errors('role');
+			$errors = $player->getErrors('role');
 			if(!empty($errors)) {
 				foreach($errors as $error) {
 					$this->err($error);
@@ -86,7 +86,7 @@ class AdminShell extends AppShell
 		}
 
 		$this->Players->save($player);
-		$errors = $player->errors('password');
+		$errors = $player->getErrors('password');
 		if(!empty($errors)) {
 			foreach($errors as $error) {
 				$this->err($error);
