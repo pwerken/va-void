@@ -30,6 +30,16 @@ class AuthState
 		return self::roleToInt($role) <= self::$_role;
 	}
 
+	public static function hasAuth($roles)
+	{
+		foreach($roles as $role) {
+			if(self::hasRole($role)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public static function setAuth($auth, $plin)
 	{
 		self::$_auth = $auth;

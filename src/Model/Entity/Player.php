@@ -11,18 +11,19 @@ class Player
 			[ 'role'        => 'Player'
 			];
 
-	protected $_editAuth =
-			[ 'password'    => ['user', 'super']
-			, 'role'        => 'infobalie'
-			];
-
-	protected $_showAuth =
-			[ 'password'    => ['user', 'infobalie']
-			];
-
 	protected $_compact = [ 'id', 'full_name' ];
 
 	protected $_virtual = [ 'full_name' ];
+
+	public function __construct($properties = [], $options = [])
+	{
+		parent::__construct($properties, $options);
+
+		$this->editFieldAuth('password', ['user', 'super']);
+		$this->editFieldAuth('role', ['infobalie']);
+
+		$this->showFieldAuth('password', ['user', 'infobalie']);
+	}
 
 	public function _setPassword($password)
 	{

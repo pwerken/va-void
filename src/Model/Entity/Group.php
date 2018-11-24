@@ -5,8 +5,12 @@ class Group
 	extends AppEntity
 {
 
-	protected $_showAuth = [ 'characters' => 'read-only' ];
-
 	protected $_compact = [ 'id', 'name' ];
 
+	public function __construct($properties = [], $options = [])
+	{
+		parent::__construct($properties, $options);
+
+		$this->showFieldAuth('characters', ['read-only']);
+	}
 }

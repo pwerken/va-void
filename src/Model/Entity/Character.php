@@ -14,18 +14,6 @@ class Character
 			, 'world_id'    =>  1
 			];
 
-	protected $_editAuth =
-			[ 'player_id'   => 'infobalie'
-			, 'chin'        => 'infobalie'
-			, 'xp'          => 'referee'
-			, 'status'      => 'referee'
-			, 'comments'    => 'referee'
-			];
-
-	protected $_showAuth =
-			[ 'comments'    => 'read-only'
-			];
-
 	protected $_hidden =
 			[ 'id'
 			, 'belief_id', 'belief_object'
@@ -37,6 +25,19 @@ class Character
 	protected $_compact = [ 'player_id', 'chin', 'name', 'status' ];
 
 	protected $_virtual = [ 'teacher', 'belief', 'faction', 'group', 'world' ];
+
+	public function __construct($properties = [], $options = [])
+	{
+		parent::__construct($properties, $options);
+
+		$this->editFieldAuth('player_id', ['infobalie']);
+		$this->editFieldAuth('chin', ['infobalie']);
+		$this->editFieldAuth('xp', ['referee']);
+		$this->editFieldAuth('status', ['referee']);
+		$this->editFieldAuth('comments', ['referee']);
+
+		$this->showFieldAuth('comments', ['read-only']);
+	}
 
 	public static function soulpathValues()
 	{

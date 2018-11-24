@@ -11,8 +11,6 @@ abstract class AppEntity
 {
 
 	protected $_defaults = [ ];
-	protected $_editAuth = [ ];
-	protected $_showAuth = [ ];
 	protected $_compact  = [ ];
 
 	public function __construct($properties = [], $options = [])
@@ -21,39 +19,6 @@ abstract class AppEntity
 
 		if($this->isNew()) {
 			$this->set($this->_defaults, ['guard' => false]);
-		}
-
-		foreach($this->_editAuth as $p => $access) {
-			if(is_bool($access)) {
-				$this->accessible($p, $access);
-				continue;
-			}
-
-			if(!is_array($access))
-				$access = [$access];
-
-			$this->setAccess($p, false);
-			foreach($access as $auth) {
-				if(AuthState::hasRole($auth)) {
-					$this->setAccess($p, true);
-					break;
-				}
-			}
-		}
-
-		foreach($this->_showAuth as $p => $access) {
-			if(!is_array($access))
-				$access = [$access];
-
-			$show = false;
-			foreach($access as $auth) {
-				if(AuthState::hasRole($auth)) {
-					$show = true;
-					break;
-				}
-			}
-			if(!$show)
-				$this->_hidden[] = $p;
 		}
 	}
 
@@ -104,5 +69,17 @@ abstract class AppEntity
 			$query->where([$field => $this->$keys]);
 		}
 		return $query->first();
+	}
+
+	protected function editFieldAuth($field, $access)
+	{
+		$this->setAccess($field, AuthState::hasAuth($access));
+	}
+
+	protected function showFieldAuth($field, $access)
+	{
+		if(!AuthState::hasAuth($access)) {
+			$this->setHidden([$field], true);
+		}
 	}
 }

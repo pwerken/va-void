@@ -8,16 +8,19 @@ class Item
 	extends AppEntity
 {
 
-	protected $_showAuth =
-			[ 'cs_text'         => 'read-only'
-			, 'attributes'      => 'read-only'
-			];
-
 	protected $_compact = [ 'id', 'name', 'expiry', 'character' ];
 
 	protected $_hidden = [ 'character_id' ];
 
 	protected $_virtual = [ 'plin', 'chin' ];
+
+	public function __construct($properties = [], $options = [])
+	{
+		parent::__construct($properties, $options);
+
+		$this->showFieldAuth('attributes', ['read-only']);
+		$this->showFieldAuth('cs_text', ['read-only']);
+	}
 
 	protected function _getPlin()
 	{
