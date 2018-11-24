@@ -59,8 +59,8 @@ class Lammy
 		if(is_null($target))
 			return;
 
-		$table = TableRegistry::get($target->source());
-		$class = $table->entityClass();
+		$table = TableRegistry::get($target->getSource());
+		$class = $table->getEntityClass();
 		if($pos = strrpos($class, '\\'))
 			$class = substr($class, $pos + 1);
 		$this->entity = $class;
