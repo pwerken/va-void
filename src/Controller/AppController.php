@@ -87,14 +87,10 @@ class AppController
 
 	public function isAuthorized($user)
 	{
-		AuthState::setAuth($this->Auth, $this->wantAuthUser());
+		AuthState::initialize($this->Auth, $this->wantAuthUser());
 
 		$auths = $this->Crud->action()->getConfig('auth') ?: ['super'];
-		foreach($auths as $role) {
-			if($this->hasAuth($role))
-				return true;
-		}
-		return false;
+		return AuthState::hasAuth($auths);
 	}
 
 	protected function hasAuth($role)

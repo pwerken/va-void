@@ -9,7 +9,7 @@ class AppShell extends Shell
 
 	public function initialize()
 	{
-		AuthState::setAuth($this, -2);
+		AuthState::initialize($this, -2);
 	}
 
 	public function user($field)

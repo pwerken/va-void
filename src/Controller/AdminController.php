@@ -32,22 +32,19 @@ class AdminController
 			, 'loginAction' => '/admin'
 			]);
 
-		$user = $this->Auth->user();
-		AuthState::setAuth($this->Auth, $user['id']);
-
 		$this->Auth->allow(['index', 'logout', 'checks', 'routes']);
 
-		$this->set('user', $user);
+		$this->set('user', $this->Auth->user());
 	}
 
 	public function isAuthorized($user)
 	{
-		AuthState::setAuth($this->Auth, $user['id']);
+		AuthState::initialize($this->Auth, $user['id']);
 
 		if(AuthState::hasRole('Super'))
 			return true;
 
-		switch($this->request->action) {
+		switch($this->request->getParam('action')) {
 		case 'authorisation':
 		case 'history':
 		case 'printing':
@@ -96,8 +93,9 @@ class AdminController
 		$plin = $this->request->getData('plin');
 		$pass = $this->request->getData('password');
 
-		AuthState::setAuth($this->Auth, $plin);
-		if(!AuthState::hasRole('user') && !AuthState::hasRole('Super')) {
+		AuthState::initialize($this->Auth, $plin);
+
+		if(!AuthState::hasAuth(['user', 'super'])) {
 			$this->Flash->error("Not authorized to change password for Player#$plin");
 			return;
 		}
@@ -131,7 +129,8 @@ class AdminController
 		$plin = $this->request->getData('plin');
 		$role = $this->request->getData('role');
 
-		AuthState::setAuth($this->Auth, $plin);
+		AuthState::initialize($this->Auth, $plin);
+
 		$this->loadModel('Players');
 		$player = $this->Players->findById($plin)->first();
 		if(is_null($player)) {

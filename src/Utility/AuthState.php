@@ -9,6 +9,13 @@ class AuthState
 	private static $_user = NULL;
 	private static $_role = 0;
 
+	public static function initialize($auth, $plin)
+	{
+		self::$_auth = $auth;
+		self::$_user = $auth->user('id') == $plin;
+		self::$_role = self::roleToInt($auth->user('role'));
+	}
+
 	public static function getId()
 	{
 		return self::$_auth->user('id');
@@ -38,13 +45,6 @@ class AuthState
 			}
 		}
 		return false;
-	}
-
-	public static function setAuth($auth, $plin)
-	{
-		self::$_auth = $auth;
-		self::$_user = $auth->user('id') == $plin;
-		self::$_role = self::roleToInt($auth->user('role'));
 	}
 
 	private static function roleToInt($role)
