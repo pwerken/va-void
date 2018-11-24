@@ -22,9 +22,6 @@ class AppController
 
 	protected $searchFields = [ ];
 
-	// Can be overriden to disable json output.
-	public static $jsonResponse = true;
-
 	public function initialize()
 	{
 		parent::initialize();
@@ -53,15 +50,13 @@ class AppController
 			, 'logoutRedirect' => '/'
 			]);
 
-		if(static::$jsonResponse) {
-			$this->viewBuilder()->setClassName('Api');
+		$this->viewBuilder()->setClassName('Api');
 
-			$arr = ['exceptionRenderer' => 'App\Error\ApiExceptionRenderer']
-				+ Configure::read('Error');
-			(new ErrorHandler($arr))->register();
+		$arr = ['exceptionRenderer' => 'App\Error\ApiExceptionRenderer']
+			+ Configure::read('Error');
+		(new ErrorHandler($arr))->register();
 
-			$this->response->compress();
-		}
+		$this->response->compress();
 
 		if(!$this->request->is('POST')) {
 			$data = $this->request->input(function($input) {
