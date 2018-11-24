@@ -11,13 +11,13 @@ class Player
 			[ 'role'        => 'Player'
 			];
 
-	protected $_compact = [ 'id', 'full_name' ];
-
 	protected $_virtual = [ 'full_name' ];
 
 	public function __construct($properties = [], $options = [])
 	{
 		parent::__construct($properties, $options);
+
+		$this->setCompact(['id', 'full_name']);
 
 		$this->editFieldAuth('password', ['user', 'super']);
 		$this->editFieldAuth('role', ['infobalie']);

@@ -11,7 +11,7 @@ abstract class AppEntity
 {
 
 	protected $_defaults = [ ];
-	protected $_compact  = [ ];
+	protected $_compact  = [ 'id', 'name' ];
 
 	public function __construct($properties = [], $options = [])
 	{
@@ -28,16 +28,6 @@ abstract class AppEntity
 	{
 		$class = get_class($this);
 		return substr($class, strrpos($class, '\\') + 1);
-	}
-
-	public function compactProperties()
-	{
-		$props = [];
-		foreach($this->visibleProperties() as $key) {
-			if(in_array($key, $this->_compact))
-				$props[] = $key;
-		}
-		return $props;
 	}
 
 	protected function getBaseUrl()
@@ -71,6 +61,25 @@ abstract class AppEntity
 			$query->where([$field => $this->$keys]);
 		}
 		return $query->first();
+	}
+
+	public function setCompact($properties, $merge = false)
+	{
+		if($merge === false) {
+			$this->_compact = $properties;
+
+			return $this;
+		}
+
+		$properties = array_merge($this->_compact, $properties);
+		$this->_compact = array_unique($properties);
+
+		return $this;
+	}
+
+	public function getCompact()
+	{
+		return $this->_compact;
 	}
 
 	protected function editFieldAuth($field, $access)

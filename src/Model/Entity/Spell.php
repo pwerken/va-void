@@ -5,6 +5,10 @@ class Spell
 	extends AppEntity
 {
 
-	protected $_compact = [ 'id', 'name', 'short' ];
+	public function __construct($properties = [], $options = [])
+	{
+		parent::__construct($properties, $options);
 
+		$this->setCompact(['short'], true);
+	}
 }

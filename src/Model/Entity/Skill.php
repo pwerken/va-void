@@ -5,6 +5,10 @@ class Skill
 	extends AppEntity
 {
 
-	protected $_compact = [ 'id', 'name', 'cost', 'mana_amount', 'manatype' ];
+	public function __construct($properties = [], $options = [])
+	{
+		parent::__construct($properties, $options);
 
+		$this->setCompact(['cost', 'mana_amount', 'manatype'], true);
+	}
 }

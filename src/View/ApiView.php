@@ -100,10 +100,7 @@ class ApiView
 			return $obj;
 
 		$class = $obj->getClass();
-
-		$properties = $obj->compactProperties();
-		if(empty($properties))
-			return [ 'name' => $obj->get('name') ];
+		$properties = $obj->getCompact();
 
 		$result = [];
 		$result['class'] = $class;

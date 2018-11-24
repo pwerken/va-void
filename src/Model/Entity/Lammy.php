@@ -19,7 +19,12 @@ class Lammy
 
 	protected $_virtual = [ 'target', 'lammy' ];
 
-	protected $_compact = [ 'entity', 'key1', 'key2', 'status', 'modified'];
+	public function __construct($properties = [], $options = [])
+	{
+		parent::__construct($properties, $options);
+
+		$this->setCompact(['entity', 'key1', 'key2', 'status', 'modified']);
+	}
 
 	public static function statusValues()
 	{

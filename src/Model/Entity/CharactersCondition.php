@@ -6,11 +6,16 @@ class CharactersCondition
 {
 
 	protected $_hidden = [ 'character_id', 'condition_id' ];
-	protected $_compact = [ 'expiry', 'character', 'condition' ];
+
+	public function __construct($properties = [], $options = [])
+	{
+		parent::__construct($properties, $options);
+
+		$this->setCompact(['expiry', 'character', 'condition']);
+	}
 
 	public function getUrl($parent = null)
 	{
 		return $this->getRelationUrl('character', 'condition', $parent);
 	}
-
 }

@@ -8,8 +8,6 @@ class Item
 	extends AppEntity
 {
 
-	protected $_compact = [ 'id', 'name', 'expiry', 'character' ];
-
 	protected $_hidden = [ 'character_id' ];
 
 	protected $_virtual = [ 'plin', 'chin' ];
@@ -17,6 +15,8 @@ class Item
 	public function __construct($properties = [], $options = [])
 	{
 		parent::__construct($properties, $options);
+
+		$this->setCompact(['expiry', 'character'], true);
 
 		$this->showFieldAuth('attributes', ['read-only']);
 		$this->showFieldAuth('cs_text', ['read-only']);

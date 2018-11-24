@@ -7,11 +7,15 @@ class AttributesItem
 
 	protected $_hidden = [ 'attribute_id', 'item_id' ];
 
-	protected $_compact = [ 'attribute', 'item' ];
+	public function __construct($properties = [], $options = [])
+	{
+		parent::__construct($properties, $options);
+
+		$this->setCompact(['attribute', 'item']);
+	}
 
 	public function getUrl($parent = null)
 	{
 		return $this->getRelationUrl('item', 'attribute', $parent);
 	}
-
 }

@@ -7,7 +7,12 @@ class CharactersSkill
 
 	protected $_hidden = [ 'character_id', 'skill_id' ];
 
-	protected $_compact = [ 'character', 'skill' ];
+	public function __construct($properties = [], $options = [])
+	{
+		parent::__construct($properties, $options);
+
+		$this->setCompact(['character', 'skill']);
+	}
 
 	public function getUrl($parent = null)
 	{

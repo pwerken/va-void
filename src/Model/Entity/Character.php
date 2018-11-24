@@ -22,13 +22,13 @@ class Character
 			, 'world_id', 'world_object'
 			];
 
-	protected $_compact = [ 'player_id', 'chin', 'name', 'status' ];
-
 	protected $_virtual = [ 'teacher', 'belief', 'faction', 'group', 'world' ];
 
 	public function __construct($properties = [], $options = [])
 	{
 		parent::__construct($properties, $options);
+
+		$this->setCompact(['player_id', 'chin', 'name', 'status']);
 
 		$this->editFieldAuth('player_id', ['infobalie']);
 		$this->editFieldAuth('chin', ['infobalie']);
