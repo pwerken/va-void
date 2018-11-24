@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller;
 
+use App\Utility\AuthState;
+
 class PlayersController
 	extends AppController
 {
@@ -34,7 +36,7 @@ class PlayersController
 					->select('Players.insertion')
 					->select('Players.last_name');
 
-		if(!$this->hasAuth('read-only')) {
+		if(!AuthState::hasRole('read-only')) {
 			$plin = $this->Auth->user('id');
 			$query->where(["Players.id = $plin"]);
 		}

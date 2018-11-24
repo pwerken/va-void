@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller;
 
+use App\Utility\AuthState;
+
 class CharactersConditionsController
 	extends AppController
 {
@@ -37,7 +39,7 @@ class CharactersConditionsController
 
 	public function conditionsIndex()
 	{
-		if(!$this->hasAuth('read-only')) {
+		if(!AuthState::hasRole('read-only')) {
 			$this->Crud->on('beforePaginate', function ($event) {
 				$cond = ['Characters.player_id' => $this->Auth->user('id')];
 				$event->getSubject()->query->where($cond);

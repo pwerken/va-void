@@ -93,11 +93,6 @@ class AppController
 		return AuthState::hasAuth($auths);
 	}
 
-	protected function hasAuth($role)
-	{
-		return AuthState::hasRole($role);
-	}
-
 	protected function wantAuthUser()
 	{
 		return $this->request->getParam('plin');

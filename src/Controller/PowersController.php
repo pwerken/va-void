@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller;
 
+use App\Utility\AuthState;
+
 class PowersController
 	extends AppController
 {
@@ -36,7 +38,7 @@ class PowersController
 		$query = $this->Powers->find()
 					->select(['Powers.id', 'Powers.name'], true);
 
-		if(!$this->hasAuth('read-only')) {
+		if(!AuthState::hasRole('read-only')) {
 			$plin = $this->Auth->user('id');
 			$query->where(["Characters.player_id = $plin"])
 					->leftJoin(['CharactersPowers' => 'characters_powers'],
@@ -50,7 +52,7 @@ class PowersController
 
 	public function view($poin)
 	{
-		if(!$this->hasAuth('read-only')) {
+		if(!AuthState::hasRole('read-only')) {
 			$this->Crud->on('beforeFind', function ($event) {
 				$cond = ['Characters.player_id' => $this->Auth->user('id')];
 				$event->getSubject()->query->contain(

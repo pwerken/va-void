@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Model\Entity\Lammy;
+use App\Utility\AuthState;
 use Cake\Event\Event;
 
 class CharactersController
@@ -73,7 +74,7 @@ class CharactersController
 					->select('Characters.name')
 					->select('Characters.status');
 
-		if(!$this->hasAuth('read-only')) {
+		if(!AuthState::hasRole('read-only')) {
 			$plin = $this->Auth->user('id');
 			$query->where(["Characters.player_id = $plin"]);
 		} else {
