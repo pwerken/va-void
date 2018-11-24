@@ -7,6 +7,7 @@ ToDo-list:
    - [ ] new user registration / password recovery
  - Business logic
    - [ ] more validator rules
+   - [ ] Search: only search field you're allowed to view
    - [ ] Skills: prereq/dependancy checks
    - [ ] Characters add field: player text (for background)
    - [ ] Characters add field: CS text

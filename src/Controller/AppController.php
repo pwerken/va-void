@@ -212,17 +212,24 @@ class AppController
 	protected function doRawQuery($query)
 	{
 		$q = trim($this->request->getQuery('q'));
+
+		$orWhere = [];
 		$params = [];
 		$values = explode(' ', $q);
 		foreach($this->searchFields as $field) {
 			if(strlen($q) == 0)
 				break;
 
-			$orWhere = [];
+			$andWhere = [];
 			foreach($values as $val) {
-				$orWhere[] = "$field LIKE ?";
+				$andWhere[] = "$field LIKE ?";
 				$params[] = "%$val%";
 			}
+			$orWhere[] = function($exp) use ($andWhere) {
+				return $exp->and_($andWhere);
+			};
+		}
+		if(!empty($orWhere)) {
 			$query->andWhere(function($exp) use ($orWhere) {
 				return $exp->or_($orWhere);
 			});
