@@ -11,7 +11,8 @@ class ItemsController
 		[ 'Items.name'
 		, 'Items.description'
 		, 'Items.player_text'
-		, 'Items.cs_text'
+		, 'Items.referee_notes'
+		, 'Items.notes'
 		];
 
 	public function initialize()

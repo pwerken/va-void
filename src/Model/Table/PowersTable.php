@@ -20,7 +20,8 @@ class PowersTable
 		$validator->allowEmpty('id', 'create');
 		$validator->notEmpty('name');
 		$validator->notEmpty('player_text');
-		$validator->allowEmpty('cs_text');
+		$validator->allowEmpty('referee_notes');
+		$validator->allowEmpty('notes');
 
 		$validator->add('id', 'valid', ['rule' => 'numeric']);
 

@@ -22,7 +22,8 @@ class ItemsTable
 		$validator->notEmpty('name');
 		$validator->allowEmpty('description');
 		$validator->allowEmpty('player_text');
-		$validator->allowEmpty('cs_text');
+		$validator->allowEmpty('referee_notes');
+		$validator->allowEmpty('notes');
 		$validator->allowEmpty('character_id');
 		$validator->allowEmpty('expiry');
 

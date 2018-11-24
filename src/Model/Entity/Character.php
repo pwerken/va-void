@@ -32,9 +32,11 @@ class Character
 		$this->editFieldAuth('chin', ['infobalie']);
 		$this->editFieldAuth('xp', ['referee']);
 		$this->editFieldAuth('status', ['referee']);
-		$this->editFieldAuth('comments', ['referee']);
+		$this->editFieldAuth('referee_notes', ['referee']);
+		$this->editFieldAuth('notes', ['referee']);
 
-		$this->showFieldAuth('comments', ['read-only']);
+		$this->showFieldAuth('referee_notes', ['read-only']);
+		$this->showFieldAuth('notes', ['read-only']);
 	}
 
 	public static function soulpathValues()

@@ -17,7 +17,8 @@ class Item
 		$this->addHidden(['character_id']);
 
 		$this->showFieldAuth('attributes', ['read-only']);
-		$this->showFieldAuth('cs_text', ['read-only']);
+		$this->showFieldAuth('referee_notes', ['read-only']);
+		$this->showFieldAuth('notes', ['read-only']);
 	}
 
 	protected function _getPlin()

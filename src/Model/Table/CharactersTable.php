@@ -60,7 +60,8 @@ class CharactersTable
 		$validator->notEmpty('world_id');
 		$validator->allowEmpty('soulpath');
 		$validator->notEmpty('status');
-		$validator->allowEmpty('comments');
+		$validator->allowEmpty('referee_notes');
+		$validator->allowEmpty('notes');
 
 		$validator->add('id', 'valid', ['rule' => 'numeric']);
 		$validator->add('player_id', 'valid', ['rule' => 'numeric']);

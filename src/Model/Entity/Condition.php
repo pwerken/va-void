@@ -9,6 +9,7 @@ class Condition
 	{
 		parent::__construct($properties, $options);
 
-		$this->showFieldAuth('cs_text', ['read-only']);
+		$this->showFieldAuth('referee_notes', ['read-only']);
+		$this->showFieldAuth('notes', ['read-only']);
 	}
 }

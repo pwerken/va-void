@@ -10,8 +10,6 @@ ToDo-list:
    - [ ] Search: only search field you're allowed to view
    - [ ] Skills: prereq/dependancy checks
    - [ ] Characters add field: player text (for background)
-   - [ ] Characters add field: CS text
-   - [ ] Items add field: comment text
    - [ ] Skills add field: type (base/extra/deprecated)
    - [ ] Skills add field: class (fighter/healing/mage,...)
    - [ ] templating for common conditions/powers/items
@@ -37,7 +35,6 @@ ToDo-list:
    - [ ] headers: add Last-Modified / ETag
  - Technical dept
    - [ ] rename 'Spells' to 'Casting'
-   - [ ] rename db tables to conform to cakephp conventions
    - [ ] stop using deprecated methods/classes
  - Upstream changes
    - [ ] Crud cake3: support multiple primary keys

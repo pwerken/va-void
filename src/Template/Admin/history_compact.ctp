@@ -53,7 +53,7 @@ foreach($list as $cur)
 	case 'modified':
 		$prev = json_decode($cur->get('prev'), true);
 		foreach($data as $k => $v) {
-			if($v == $prev[$k])
+			if($v == @$prev[$k])
 				continue;
 
 			if(is_null($v))

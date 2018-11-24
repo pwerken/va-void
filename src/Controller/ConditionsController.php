@@ -10,7 +10,8 @@ class ConditionsController
 	protected $searchFields =
 		[ 'Conditions.name'
 		, 'Conditions.player_text'
-		, 'Conditions.cs_text'
+		, 'Conditions.referee_notes'
+		, 'Conditions.notes'
 		];
 
 	public function initialize()

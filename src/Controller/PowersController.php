@@ -10,7 +10,8 @@ class PowersController
 	protected $searchFields =
 		[ 'Powers.name'
 		, 'Powers.player_text'
-		, 'Powers.cs_text'
+		, 'Powers.referee_notes'
+		, 'Powers.notes'
 		];
 
 	public function initialize()
