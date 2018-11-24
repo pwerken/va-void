@@ -57,18 +57,7 @@ class AppController
 		$this->response->compress();
 
 		if(!$this->request->is('POST')) {
-			$data = $this->request->input(function($input) {
-				if(empty($input))
-					return [];
-				$json = json_decode($input, true);
-				$error = json_last_error();
-				if($error != JSON_ERROR_NONE) {
-					$msg = sprintf("Failed to parse json, error: %s '%s'"
-									, $error, json_last_error_msg());
-					throw new BadRequestException($msg);
-				}
-				return $json;
-			});
+			$data = $this->request->input([$this, 'parseRequestInput']);
 			foreach($data as $key => $val) {
 				$this->request = $this->request->withData($key, $val);
 			}
@@ -109,6 +98,23 @@ class AppController
 		return $query->all();
 	}
 
+	public function parseRequestInput($input)
+	{
+		if(empty($input)) {
+			return [];
+		}
+
+		$json = json_decode($input, true);
+
+		$error = json_last_error();
+		if($error != JSON_ERROR_NONE) {
+			$msg = sprintf("Failed to parse json, error: %s '%s'"
+							, $error, json_last_error_msg());
+			throw new BadRequestException($msg);
+		}
+		return $json;
+	}
+
 	public function CrudBeforeHandle(Event $event)
 	{
 		$action = $this->request->getParam('action');
@@ -118,13 +124,13 @@ class AppController
 			# remove stuff that's not in the db
 			foreach($this->request->getData() as $key => $value) {
 				if(!$this->loadModel()->hasField($key))
-					$this->request = $this->request->withData($key, NULL);
+					$this->request = $this->request->withoutData($key);
 			}
 			# these can never be set through the rest-api
-			$this->request = $this->request->withData('created', NULL);
-			$this->request = $this->request->withData('creator_id', NULL);
-			$this->request = $this->request->withData('modified', NULL);
-			$this->request = $this->request->withData('modifier_id', NULL);
+			$this->request = $this->request->withoutData('created');
+			$this->request = $this->request->withoutData('creator_id');
+			$this->request = $this->request->withoutData('modified');
+			$this->request = $this->request->withoutData('modifier_id');
 		}
 		if(strcmp(substr($action, -5, 5), 'Index') == 0) {
 			$model = ucfirst(substr($action, 0, -5));
@@ -252,7 +258,7 @@ class AppController
 			return null;
 		}
 
-		$this->request = $this->request->withData($field, NULL);
+		$this->request = $this->request->withoutData($field);
 		if(empty($name)) {
 			$name = "-";
 		}

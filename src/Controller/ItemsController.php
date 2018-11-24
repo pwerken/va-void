@@ -39,16 +39,17 @@ class ItemsController
 	{
 		$plin = $this->request->getData('plin');
 		$chin = $this->request->getData('chin');
-		$this->request = $this->request->withData('plin', NULL);
-		$this->request = $this->request->withData('chin', NULL);
+		$this->request = $this->request->withoutData('plin');
+		$this->request = $this->request->withoutData('chin');
 
-		$char_id = NULL;
 		if($plin || $chin) {
 			$this->loadModel('Characters');
 			$char = $this->Characters->findByPlayerIdAndChin($plin, $chin)->first();
 			$char_id = $char ? $char->id : -1;
+			$this->request = $this->request->withData('character_id', $char_id);
+		} else {
+			$this->request = $this->request->withoutData('character_id');
 		}
-		$this->request = $this->request->withData('character_id', $char_id);
 
 		return $this->Crud->execute();
 	}

@@ -40,7 +40,7 @@ class CharactersController
 	{
 		$plin = $plin ?: $this->request->getData('plin');
 		$this->request = $this->request->withData('player_id', $plin);
-		$this->request = $this->request->withData('plin', NULL);
+		$this->request = $this->request->withoutData('plin');
 
 		$next = $this->Characters->find()
 					->select(['nextChin' => 'MAX(chin)'])

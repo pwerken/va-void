@@ -66,6 +66,7 @@ class PlayersController
 	{
 		$plin = $this->request->getData('plin');
 		$this->request = $this->request->withData('id', $plin);
+		$this->request = $this->request->withoutData('plin');
 		$this->Crud->execute();
 	}
 

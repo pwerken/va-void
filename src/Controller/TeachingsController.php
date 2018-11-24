@@ -34,16 +34,17 @@ class TeachingsController
 
 		$plin = $this->request->getData('plin');
 		$chin = $this->request->getData('chin');
-		$this->request = $this->request->withData('plin', NULL);
-		$this->request = $this->request->withData('chin', NULL);
+		$this->request = $this->request->withoutData('plin');
+		$this->request = $this->request->withoutData('chin');
 
-		$char_id = NULL;
 		if($plin || $chin) {
 			$chars = $this->loadModel('Characters');
 			$char = $chars->findByPlayerIdAndChin($plin, $chin)->first();
 			$char_id = $char ? $char->id : -1;
+			$this->request->withData('teacher_id', $char_id);
+		} else {
+			$this->request->withoutData('teacher_id');
 		}
-		$this->request->withData('teacher_id', $char_id);
 
 		$this->dataNameToId('events', 'updated');
 		$this->dataNameToId('events', 'started');
