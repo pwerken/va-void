@@ -15,15 +15,13 @@ class Lammy
 			[ 'status' => 'Queued'
 			];
 
-	protected $_hidden = [ 'lammy' ];
-
-	protected $_virtual = [ 'target', 'lammy' ];
-
 	public function __construct($properties = [], $options = [])
 	{
 		parent::__construct($properties, $options);
 
 		$this->setCompact(['entity', 'key1', 'key2', 'status', 'modified']);
+		$this->setVirtual(['target', 'lammy']);
+		$this->addHidden(['lammy']);
 	}
 
 	public static function statusValues()

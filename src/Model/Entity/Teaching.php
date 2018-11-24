@@ -5,16 +5,15 @@ class Teaching
 	extends AppEntity
 {
 
-	protected $_hidden = [ 'student_id', 'teacher_id', 'skill_id'
-		, 'started_id', 'started_object', 'updated_id', 'updated_object' ];
-
-	protected $_virtual = [ 'student', 'teacher', 'started', 'updated' ];
-
 	public function __construct($properties = [], $options = [])
 	{
 		parent::__construct($properties, $options);
 
 		$this->setCompact(['student', 'teacher', 'skill', 'xp', 'started', 'updated']);
+		$this->setVirtual(['student', 'teacher', 'started', 'updated']);
+		$this->addHidden(['student_id', 'teacher_id', 'skill_id']);
+		$this->addHidden(['started_id', 'started_object']);
+		$this->addHidden(['updated_id', 'updated_object']);
 	}
 
 	protected function _getStarted()

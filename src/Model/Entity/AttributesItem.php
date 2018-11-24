@@ -5,13 +5,12 @@ class AttributesItem
 	extends AppEntity
 {
 
-	protected $_hidden = [ 'attribute_id', 'item_id' ];
-
 	public function __construct($properties = [], $options = [])
 	{
 		parent::__construct($properties, $options);
 
 		$this->setCompact(['attribute', 'item']);
+		$this->addHidden(['attribute_id', 'item_id']);
 	}
 
 	public function getUrl($parent = null)

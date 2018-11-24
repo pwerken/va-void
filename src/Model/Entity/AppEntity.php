@@ -82,6 +82,11 @@ abstract class AppEntity
 		return $this->_compact;
 	}
 
+	public function addHidden($properties)
+	{
+		return parent::setHidden($properties, true);
+	}
+
 	protected function editFieldAuth($field, $access)
 	{
 		$this->setAccess($field, AuthState::hasAuth($access));
@@ -90,7 +95,7 @@ abstract class AppEntity
 	protected function showFieldAuth($field, $access)
 	{
 		if(!AuthState::hasAuth($access)) {
-			$this->setHidden([$field], true);
+			$this->addHidden([$field]);
 		}
 	}
 }

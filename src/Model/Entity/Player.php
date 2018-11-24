@@ -18,6 +18,7 @@ class Player
 		parent::__construct($properties, $options);
 
 		$this->setCompact(['id', 'full_name']);
+		$this->setVirtual(['full_name']);
 
 		$this->editFieldAuth('password', ['user', 'super']);
 		$this->editFieldAuth('role', ['infobalie']);
