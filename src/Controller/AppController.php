@@ -18,8 +18,6 @@ class AppController
 {
 	use ControllerTrait;
 
-	public $helpers = [ 'Date' ];
-
 	protected $searchFields = [ ];
 
 	public function initialize()
