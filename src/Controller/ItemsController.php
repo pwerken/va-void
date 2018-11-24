@@ -18,6 +18,8 @@ class ItemsController
 	{
 		parent::initialize();
 
+		$this->loadComponent('QueueLammy');
+
 		$this->mapMethod('add',              [ 'referee'           ]);
 		$this->mapMethod('delete',           [ 'super'             ]);
 		$this->mapMethod('edit',             [ 'referee'           ]);
@@ -109,7 +111,7 @@ class ItemsController
 
 	public function queue($itin)
 	{
-		$this->queueLammy();
+		$this->QueueLammy->execute();
 	}
 
 	protected function wantAuthUser()

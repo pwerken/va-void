@@ -17,6 +17,8 @@ class PowersController
 	{
 		parent::initialize();
 
+		$this->loadComponent('QueueLammy');
+
 		$this->mapMethod('add',    [ 'referee'           ]);
 		$this->mapMethod('delete', [ 'super'             ]);
 		$this->mapMethod('edit',   [ 'referee'           ]);
@@ -69,7 +71,7 @@ class PowersController
 
 	public function queue($poin)
 	{
-		$this->queueLammy();
+		$this->QueueLammy->execute();
 	}
 
 	protected function wantAuthUser()

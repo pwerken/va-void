@@ -102,32 +102,33 @@ class CharactersController
 
 	public function queue($id)
 	{
-		$this->Crud->on('beforeRender', function ($event) {
-			$table = $this->loadModel('lammies');
-
-			$character = $event->getSubject()->entity;
-			$table->save($table->newEntity()->set('target', $character));
-			$count = 1;
-
-			if($this->request->getData('all')) {
-				foreach($character->powers as $p) {
-					$table->save($table->newEntity()->set('target', $p));
-					$count++;
-				}
-				foreach($character->conditions as $c) {
-					$table->save($table->newEntity()->set('target', $c));
-					$count++;
-				}
-				foreach($character->items as $i) {
-					$table->save($table->newEntity()->set('target', $i));
-					$count++;
-				}
-			}
-
-			$event->getSubject()->entity = $count;
-		});
-
+		$this->Crud->on('beforeRender', [$this, 'queueBeforeRender']);
 		$this->Crud->execute();
 	}
 
+	public function queueBeforeRender(Event $event)
+	{
+		$table = $this->loadModel('lammies');
+
+		$character = $event->getSubject()->entity;
+		$table->save($table->newEntity()->set('target', $character));
+		$count = 1;
+
+		if(!is_null($this->request->getData('all'))) {
+			foreach($character->powers as $p) {
+				$table->save($table->newEntity()->set('target', $p));
+				$count++;
+			}
+			foreach($character->conditions as $c) {
+				$table->save($table->newEntity()->set('target', $c));
+				$count++;
+			}
+			foreach($character->items as $i) {
+				$table->save($table->newEntity()->set('target', $i));
+				$count++;
+			}
+		}
+
+		$event->getSubject()->entity = $count;
+	}
 }

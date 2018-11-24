@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Utility\AuthState;
+
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Datasource\ConnectionManager;
@@ -11,7 +12,6 @@ use Cake\Http\Exception\BadRequestException;
 use Cake\Utility\Inflector;
 use Crud\Error\Exception\ValidationException;
 use Crud\Controller\ControllerTrait;
-use PDOException;
 
 class AppController
 	extends Controller
@@ -195,18 +195,6 @@ class AppController
 		$this->response = $this->response->withModified($modified);
 
 		return $this->response->checkNotModified($this->request);
-	}
-
-	protected function queueLammy()
-	{
-		$this->Crud->on('beforeRender', function ($event) {
-			$table = $this->loadModel('lammies');
-			$entity = $event->getSubject()->entity;
-			$table->save($table->newEntity()->set('target', $entity));
-			$event->getSubject()->entity = 1;
-		});
-
-		$this->Crud->execute();
 	}
 
 	protected function doRawQuery($query)

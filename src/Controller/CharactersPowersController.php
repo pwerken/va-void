@@ -11,6 +11,8 @@ class CharactersPowersController
 	{
 		parent::initialize();
 
+		$this->loadComponent('QueueLammy');
+
 		$this->mapMethod('charactersAdd',    [ 'referee'           ]);
 		$this->mapMethod('charactersDelete', [ 'referee'           ]);
 		$this->mapMethod('charactersEdit',   [ 'referee'           ]);
@@ -34,7 +36,7 @@ class CharactersPowersController
 
 	public function charactersQueue($char_id, $poin)
 	{
-		$this->queueLammy();
+		$this->QueueLammy->execute();
 	}
 
 	public function powersIndex()

@@ -11,6 +11,8 @@ class CharactersConditionsController
 	{
 		parent::initialize();
 
+		$this->loadComponent('QueueLammy');
+
 		$this->mapMethod('charactersAdd',    [ 'referee'           ]);
 		$this->mapMethod('charactersDelete', [ 'referee'           ]);
 		$this->mapMethod('charactersEdit',   [ 'referee'           ]);
@@ -34,7 +36,7 @@ class CharactersConditionsController
 
 	public function charactersQueue($char_id, $coin)
 	{
-		$this->queueLammy();
+		$this->QueueLammy->execute();
 	}
 
 	public function conditionsIndex()

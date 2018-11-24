@@ -9,6 +9,8 @@ class TeachingsController
 	{
 		parent::initialize();
 
+		$this->loadComponent('QueueLammy');
+
 		$this->mapMethod('charactersIndex',  [ 'read-only', 'user' ], true);
 		$this->mapMethod('charactersAdd',    [ 'infobalie'         ]);
 		$this->mapMethod('charactersDelete', [ 'infobalie'         ]);
@@ -51,7 +53,7 @@ class TeachingsController
 
 	public function charactersQueue($student_id)
 	{
-		$this->queueLammy();
+		$this->QueueLammy->execute();
 	}
 
 	public function paginate($query = null, array $settings = [])
