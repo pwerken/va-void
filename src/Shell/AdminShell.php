@@ -77,21 +77,30 @@ class AdminShell extends AppShell
 			$this->abort(sprintf('No player found with plin `%s`.', $plin));
 		}
 
+		$new_password = false;
 		if($this->params['remove']) {
-			$player->password = NULL;
+			$new_password = NULL;
 			$msg = 'Password removed';
 		} else {
-			$player->set('password', $this->prompt_silent());
+			$new_password = $this->prompt_silent();
 			$msg = 'Password set';
+			if(empty($new_password)) {
+				$new_password = false;
+			}
 		}
 
-		$this->Players->save($player);
-		$errors = $player->getErrors('password');
-		if(!empty($errors)) {
-			foreach($errors as $error) {
-				$this->err($error);
+		if($new_password === false) {
+			$msg = 'Password unchanged';
+		} else {
+			$player->password = $new_password;
+			$this->Players->save($player);
+			$errors = $player->getErrors('password');
+			if(!empty($errors)) {
+				foreach($errors as $error) {
+					$this->err($error);
+				}
+				return 1;
 			}
-			return 1;
 		}
 
 		$this->out(sprintf('<info>%4d</info> %s: <warning>%s</warning>', $player->id, $player->fullName, $msg));
