@@ -20,6 +20,8 @@ abstract class AppEntity
 		if($this->isNew()) {
 			$this->set($this->_defaults, ['guard' => false]);
 		}
+
+		$this->showFieldAuth('modifier_id', ['read-only']);
 	}
 
 	public function getClass()
