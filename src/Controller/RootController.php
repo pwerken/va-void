@@ -1,21 +1,19 @@
 <?php
 namespace App\Controller;
 
-class RootController
-	extends AppController
-{
-	public static $jsonResponse = false;
+use Cake\Controller\Controller;
 
+class RootController
+	extends Controller
+{
 	public function initialize()
 	{
 		parent::initialize();
-
-		$this->Auth->allow(['root']);
 	}
 
 	public function root()
 	{
-		$this->set('nomenu', true);
+		return $this->redirect('/admin');
 	}
 
 	public function cors()

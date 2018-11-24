@@ -34,7 +34,8 @@ class GettersTest
 	public function testRoot()
 	{
 		$this->withoutAuth();
-		$this->assertGet('/');
+		$this->get('/');
+		$this->assertRedirectContains("/admin");
 	}
 
 	public function testPlayers()
