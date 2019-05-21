@@ -43,7 +43,7 @@ class TeachingsController
 			$char_id = $char ? $char->id : -1;
 			$this->request->withData('teacher_id', $char_id);
 		} else {
-			$this->request->withoutData('teacher_id');
+			$this->request->withData('teacher_id', null);
 		}
 
 		$this->dataNameToId('events', 'updated');

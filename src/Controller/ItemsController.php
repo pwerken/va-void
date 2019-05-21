@@ -49,7 +49,7 @@ class ItemsController
 			$char_id = $char ? $char->id : -1;
 			$this->request = $this->request->withData('character_id', $char_id);
 		} else {
-			$this->request = $this->request->withoutData('character_id');
+			$this->request = $this->request->withData('character_id', null);
 		}
 
 		return $this->Crud->execute();
