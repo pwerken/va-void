@@ -71,7 +71,7 @@ class ItemsTable
 	{
 		$holes = [ 1980, 2201, 2300, 8001, 8888, 9000, 9999, -1 ];
 		foreach($holes as $max) {
-			$query = $this->find()->setHydration(false)->select(['id' => 'MAX(id)']);
+			$query = $this->find()->enableHydration(false)->select(['id' => 'MAX(id)']);
 			if($max > 0)
 				$query->where(['id <' => $max]);
 
