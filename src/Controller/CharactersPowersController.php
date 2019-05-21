@@ -23,7 +23,7 @@ class CharactersPowersController
 
 		$this->Crud->mapAction('charactersQueue',
 			[ 'className' => 'Crud.View'
-			, 'auth' => [ 'infobalie' ]
+			, 'auth' => [ 'referee' ]
 			, 'findMethod' => 'withContain'
 			]);
 	}
