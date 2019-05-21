@@ -306,14 +306,14 @@ class AdminController
 
 				$diff[] = [1, $cmp];
 				$playerVoid = $void->fetch();
-				continue;
+				break;
 			case -1:
 				for($i = 0; $i < 6; $i++)
 					$cmp[] = [true, NULL, $playerValea[$i]];
 
 				$diff[] = [-1, $cmp];
 				$playerValea = $valea->fetch();
-				continue;
+				break;
 			default:
 				$same = true;
 				for($i = 0; $i < 6; $i++) {
