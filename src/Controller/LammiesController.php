@@ -23,12 +23,12 @@ class LammiesController
 		$this->mapMethod('view',   [ 'read-only' ]);
 
 		$config = [];
-		$config['auth']       = [ 'infobalie' ];
+		$config['auth']       = [ 'referee' ];
 		$config['className']  = 'Crud.Index';
 		$config['findMethod'] = 'lastInQueue';
 		$this->Crud->mapAction('queue', $config);
 
-		$config['auth']       = [ 'super' ];
+		$config['auth']       = [ 'infobalie' ]
 		$config['findMethod'] = 'printing';
 		$this->Crud->mapAction('printed', $config);
 
