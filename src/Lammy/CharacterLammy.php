@@ -87,19 +87,6 @@ class CharacterLammy
 		// skills
 		$this->textblock(8, 7, 64, 'L', implode(', ', $data['skills']));
 
-		// elements/spheres
-		if(!empty($data['spells'][0])) {
-			$str = 'Elements: ' . implode(', ', $data['spells'][0]) ."\n";
-		} else {
-			$str = "\n";
-		}
-		if(empty($data['spells'][1])) {
-			$str = "\n".$str;
-		} else {
-			$str .= 'Spheres: ' . implode(', ', $data['spells'][1]);
-		}
-		$this->textblock(8, 31.2, 64, 'L', $str);
-
 		// xp
 		$this->text(56, 37.7, 16, 'C', 'Experience');
 		$this->text(56, 40.7, 16, 'C', $data['xp'].' / '.$this->entity->xp);
@@ -120,12 +107,12 @@ class CharacterLammy
 		$this->text(24, 40.7, 13, 'R', 'Spir.Rit.:');
 		$this->text(36, 40.7,  5, 'C', @$data['mana']['Spiritual Ritual'] ?: 0);
 
-		$this->pdf->SetTextColor(@$data['mana']['Healing'] ? 0 : $g);
-		$this->text(39, 37.7, 13, 'R', 'Healing:');
-		$this->text(51, 37.7,  5, 'C', @$data['mana']['Healing'] ?: 0);
-		$this->pdf->SetTextColor(@$data['mana']['Special'] ? 0 : $g);
-		$this->text(39, 40.7, 13, 'R', 'Special:');
-		$this->text(51, 40.7,  5, 'C', @$data['mana']['Special'] ?: 0);
+		$this->pdf->SetTextColor(@$data['mana']['Inspiration'] ? 0 : $g);
+		$this->text(39, 37.7, 13, 'R', 'Inspiration:');
+		$this->text(51, 37.7,  5, 'C', @$data['mana']['Inspiration'] ?: 0);
+		$this->pdf->SetTextColor(@$data['mana']['Willpower'] ? 0 : $g);
+		$this->text(39, 40.7, 13, 'R', 'Willpower:');
+		$this->text(51, 40.7,  5, 'C', @$data['mana']['Willpower'] ?: 0);
 	}
 
 }
