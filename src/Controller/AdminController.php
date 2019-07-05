@@ -200,9 +200,22 @@ class AdminController
 		$this->set('migrations', array_reverse($migrations->status()));
 	}
 
-	public function printing()
+	public function printing($sides = NULL)
 	{
 		$lammies = $this->loadModel('lammies');
+
+		if(!is_null($sides)) {
+			$queued = $lammies->find('Queued')->all();
+
+			$this->set('double', ($sides == 'double'));
+			$this->viewBuilder()->setClassName('Pdf');
+			$this->set('lammies', $queued);
+			$this->set('viewVar', 'lammies');
+
+			$lammies->setStatuses($queued, 'Printed');
+			return;
+		}
+
 
 		if($this->request->is('post') && AuthState::hasRole('Infobalie')) {
 			$ids = $this->request->getData('delete');
@@ -414,4 +427,5 @@ class AdminController
 
 		return 0;
 	}
+
 }

@@ -15,6 +15,11 @@ foreach($printing as $row) {
 	$uniq[$key] = $row['id'];
 }
 
+if($queued > 0)
+	echo "&nbsp;Queue size : $queued";
+if($duplicates > 0)
+	echo " ($duplicates duplicates)";
+
 echo $this->Form->create();
 
 $role = (!isset($user) ? '' : $user['role']);
@@ -22,14 +27,17 @@ switch($role) {
 case 'Super':
 case 'Infobalie':
 	echo $this->Form->button(__('Delete selected'));
+	echo '<span style="padding-left:100px;"></span>';
+	echo $this->Html->link('Single-sided pdf', '/admin/printing/single'
+		, ['class' => 'button']);
+	echo "&nbsp;";
+	echo $this->Html->link('Double-sided pdf', '/admin/printing/double'
+		, ['class' => 'button']);
+	echo "LET OP: klikken = status naar 'Printed' voor hele queue";
+
 	break;
 default:
 }
-
-if($queued > 0)
-	echo "&nbsp;Queued : $queued";
-if($duplicates > 0)
-	echo " ($duplicates duplicates)";
 
 ?>
 <table>
