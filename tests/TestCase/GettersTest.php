@@ -507,7 +507,7 @@ class GettersTest
 		$this->assertGet('/lammies');
 		$this->assertGet('/lammies/1');
 		$this->assertGet('/lammies/99', 404);
-		$this->assertGet('/lammies/queue', 403);
+		$this->assertGet('/lammies/queue');
 
 		$this->withAuthInfobalie();
 		$this->assertGet('/lammies');

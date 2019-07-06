@@ -28,7 +28,7 @@ class LammiesController
 		$config['findMethod'] = 'lastInQueue';
 		$this->Crud->mapAction('queue', $config);
 
-		$config['auth']       = [ 'infobalie' ]
+		$config['auth']       = [ 'infobalie' ];
 		$config['findMethod'] = 'printing';
 		$this->Crud->mapAction('printed', $config);
 
