@@ -16,6 +16,7 @@ case 'Read-only':
 	$nav['/admin/authorisation'] = 'Authorisation';
 	$nav['/admin/history'] = 'Entity History';
 	$nav['/admin/printing'] = 'Printing Queue';
+	$nav['/admin/skills'] = 'Skill Overview';
 case 'Player':
 	$nav['/admin/authentication'] = 'Authentication';
 default:

@@ -241,6 +241,58 @@ class AdminController
 		$this->set('printing', $query->all());
 	}
 
+	public function skills()
+	{
+		$skills = $this->loadModel('skills');
+
+		$this->set('characters', []);
+
+		if($this->request->is('post')
+		&& AuthState::hasRole('Referee')
+		) {
+			$ids = $this->request->getData('skills');
+			if(!is_array($ids))
+				$ids = [$ids];
+
+			$query = $this->loadModel('characters')->find();
+			$query->enableHydration(false);
+			$query->innerJoinWith('CharactersSkills', function ($q) use ($ids) {
+					return $q->where(['CharactersSkills.skill_id IN' => $ids]);
+				});
+
+			$characters = [];
+			foreach($query->all() as $c) {
+				$id = $c['id'];
+				$skill_id = $c['_matchingData']['CharactersSkills']['skill_id'];
+				if(isset($characters[$id])) {
+					$characters[$id]['_matchingData'][$skill_id] = true;
+					continue;
+				}
+				$c['_matchingData'] = [$skill_id => true];
+				$characters[$id] = $c;
+			}
+
+#			$query = $this->loadModel('characters')->query();
+#			$query->select(['player_id', 'chin', 'name', 'status', 'modified'], true);
+#
+#			$query->join(['s1' =>
+#							[ 'table' => 'characters_skills'
+#							, 'type' => 'LEFT'
+#							, 'conditions' =>
+#								[ 'character_id = characters.id'
+#								, 'skill_id IN' => $ids
+#								]
+#							]
+#						]);
+#			$query->where(['s1.character_id IS NOT' => NULL]);
+#			$query->where(['status IS NOT' => 'dead']);
+
+			$this->set('characters', $characters);
+		};
+
+		$this->set('skills', $skills->find('list')->all()->toArray());
+	}
+
 	public function valea()
 	{
 		if($this->request->is('post')
