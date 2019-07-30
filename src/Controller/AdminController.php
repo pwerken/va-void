@@ -272,21 +272,6 @@ class AdminController
 				$characters[$id] = $c;
 			}
 
-#			$query = $this->loadModel('characters')->query();
-#			$query->select(['player_id', 'chin', 'name', 'status', 'modified'], true);
-#
-#			$query->join(['s1' =>
-#							[ 'table' => 'characters_skills'
-#							, 'type' => 'LEFT'
-#							, 'conditions' =>
-#								[ 'character_id = characters.id'
-#								, 'skill_id IN' => $ids
-#								]
-#							]
-#						]);
-#			$query->where(['s1.character_id IS NOT' => NULL]);
-#			$query->where(['status IS NOT' => 'dead']);
-
 			$this->set('characters', $characters);
 		};
 
