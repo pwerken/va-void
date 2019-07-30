@@ -1,4 +1,4 @@
-<h3>Skills overview</h3>
+<h3>Lookup Players with Skill</h3>
 <?php
 
 echo $this->Form->create();
@@ -6,6 +6,7 @@ echo "Select one or more skills:";
 echo $this->Form->select('skills', $skills, ['multiple' => true]);
 echo $this->Form->button('Select characters');
 echo "&nbsp;<strong>Found ".count($characters)."</strong>";
+echo $this->Form->end();
 
 if(count($characters) == 0) {
 	return;
