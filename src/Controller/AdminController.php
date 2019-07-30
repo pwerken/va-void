@@ -48,6 +48,7 @@ class AdminController
 		case 'authorisation':
 		case 'history':
 		case 'printing':
+		case 'valea_paid':
 			return AuthState::hasRole('Read-only');
 		case 'valea_void':
 			return AuthState::hasRole('Infobalie');
@@ -278,11 +279,36 @@ class AdminController
 		$this->set('skills', $skills->find('list')->all()->toArray());
 	}
 
+	public function valea_paid()
+	{
+		$this->set('players', []);
+
+		if($this->request->is('post')
+		&& AuthState::hasRole('Read-only')
+		) {
+			$e = $this->request->getData('event');
+			$y = $this->request->getData('year');
+
+			$q = 'SELECT `plin`, `voornaam`, `tussenvoegsels`,'
+				. ' `achternaam`,'
+				. ' `events`.`crew`, `events`.`monster`,'
+				. ' `events`.`ehbo`, `events`.`bestuur`,'
+				. ' `events`.`evenementlidmaatschap_betaald`,'
+				. ' `events`.`toegang_betaald`,'
+				. ' `events`.`k12`, `events`.`k16`,'
+				. ' `events`.`speciaal_bedrag`'
+				. ' FROM `events`'
+				. ' JOIN `deelnemers`'
+				  . ' ON `events`.`deelnemer_id` = `deelnemers`.`id`'
+				. ' WHERE `naam` = ? AND `jaar` = ?'
+				. ' ORDER BY `deelnemers`.`plin` ASC';
+			$valea = ConnectionManager::get('valea')->execute($q, [$e, $y]);
+			$this->set('players', $valea->fetchAll('assoc'));
+		}
+	}
+
 	public function valea_void()
 	{
-		$this->set('diff', []);
-		return;
-
 		if($this->request->is('post')
 		&& AuthState::hasRole('Infobalie')
 		&& is_array($this->request->getData('action'))

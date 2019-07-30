@@ -17,6 +17,7 @@ case 'Read-only':
 	$nav['/admin/history'] = 'Entity History';
 	$nav['/admin/printing'] = 'Printing Queue';
 	$nav['/admin/skills'] = 'Skill~Player Lookup';
+	$nav['/admin/valea_paid'] = 'VALEA Pre-registration';
 case 'Player':
 	$nav['/admin/authentication'] = 'Authentication';
 default:
