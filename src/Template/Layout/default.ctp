@@ -10,7 +10,7 @@ case 'Super':
 	$nav['/admin/migrations'] = 'Database Migrations';
 	$nav['/admin/backups'] = 'Database Backups';
 case 'Infobalie':
-	$nav['/admin/valea'] = 'VALEA';
+	$nav['/admin/valea_void'] = 'VALEA~VOID Sync';
 case 'Referee':
 case 'Read-only':
 	$nav['/admin/authorisation'] = 'Authorisation';

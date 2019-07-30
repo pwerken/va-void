@@ -1,4 +1,4 @@
-<h3>VA Leden Administratie</h3>
+<h3>VA Leden Administratie ~ VOID player-data synchronisation</h3>
 
 <?php
 echo $this->Form->create();

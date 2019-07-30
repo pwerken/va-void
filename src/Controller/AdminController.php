@@ -49,7 +49,7 @@ class AdminController
 		case 'history':
 		case 'printing':
 			return AuthState::hasRole('Read-only');
-		case 'valea':
+		case 'valea_void':
 			return AuthState::hasRole('Infobalie');
 		}
 		return AuthState::hasRole('Player');
@@ -293,8 +293,11 @@ class AdminController
 		$this->set('skills', $skills->find('list')->all()->toArray());
 	}
 
-	public function valea()
+	public function valea_void()
 	{
+		$this->set('diff', []);
+		return;
+
 		if($this->request->is('post')
 		&& AuthState::hasRole('Infobalie')
 		&& is_array($this->request->getData('action'))
