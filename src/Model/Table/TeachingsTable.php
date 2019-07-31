@@ -35,9 +35,12 @@ class TeachingsTable
 		$validator->notEmpty('started_id');
 		$validator->notEmpty('updated_id');
 
+		// regex for xp validation
+		$xp_regex = '/^[0-9]*(?:[.,](?:[05][0]?|[27]5))$/'
+
 		$validator->add('student_id', 'valid', ['rule' => 'numeric']);
 		$validator->add('teacher_id', 'valid', ['rule' => 'numeric']);
-		$validator->add('xp', 'valid', ['rule' => ['custom', '/^[0-9]*([\.][05])?$/']]);
+		$validator->add('xp', 'valid', ['rule' => ['custom', $xp_regex]]);
 		$validator->add('skill_id', 'valid', ['rule' => 'numeric']);
 		$validator->add('started_id', 'valid', ['rule' => 'numeric']);
 		$validator->add('updated_id', 'valid', ['rule' => 'numeric']);

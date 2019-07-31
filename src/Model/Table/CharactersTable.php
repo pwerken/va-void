@@ -63,10 +63,13 @@ class CharactersTable
 		$validator->allowEmpty('referee_notes');
 		$validator->allowEmpty('notes');
 
+		// regex for xp validation
+		$xp_regex = '/^[0-9]*(?:[.,](?:[05][0]?|[27]5))$/'
+
 		$validator->add('id', 'valid', ['rule' => 'numeric']);
 		$validator->add('player_id', 'valid', ['rule' => 'numeric']);
 		$validator->add('chin', 'valid', ['rule' => 'naturalNumber']);
-		$validator->add('xp', 'valid', ['rule' => ['custom', '/^[0-9]*([.,][05])?$/']]);
+		$validator->add('xp', 'valid', ['rule' => ['custom', $xp_regex]]);
 		$validator->add('faction_id', 'valid', ['rule' => 'numeric']);
 		$validator->add('belief_id', 'valid', ['rule' => 'numeric']);
 		$validator->add('group_id', 'valid', ['rule' => 'numeric']);
