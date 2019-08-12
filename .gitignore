@@ -16,6 +16,7 @@ va-test
 /composer.lock
 /config/.env # josegonzalez/php-dotenv
 /config/app.php
+/config/Migrations/schema-dump-default.lock
 /logs/*
 /tmp/*
 /vendor/*

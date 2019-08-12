@@ -36,7 +36,7 @@ class TeachingsTable
 		$validator->notEmpty('updated_id');
 
 		// regex for xp validation
-		$xp_regex = '/^[0-9]*(?:[.,](?:[05][0]?|[27]5))$/';
+		$xp_regex = '/^[0-9]*(?:[.,](?:[05][0]?|[27]5))?$/';
 
 		$validator->add('student_id', 'valid', ['rule' => 'numeric']);
 		$validator->add('teacher_id', 'valid', ['rule' => 'numeric']);

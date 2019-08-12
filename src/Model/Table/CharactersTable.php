@@ -64,7 +64,7 @@ class CharactersTable
 		$validator->allowEmpty('notes');
 
 		// regex for xp validation
-		$xp_regex = '/^[0-9]*(?:[.,](?:[05][0]?|[27]5))$/';
+		$xp_regex = '/^[0-9]*(?:[.,](?:[05][0]?|[27]5))?$/';
 
 		$validator->add('id', 'valid', ['rule' => 'numeric']);
 		$validator->add('player_id', 'valid', ['rule' => 'numeric']);
