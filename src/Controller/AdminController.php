@@ -48,6 +48,7 @@ class AdminController
 		case 'authorisation':
 		case 'history':
 		case 'printing':
+		case 'skills':
 		case 'valea_paid':
 			return AuthState::hasRole('Read-only');
 		case 'valea_void':
@@ -96,15 +97,17 @@ class AdminController
 
 		AuthState::initialize($this->Auth, $plin);
 
-		if(!AuthState::hasAuth(['user', 'super'])) {
-			$this->Flash->error("Not authorized to change password for Player#$plin");
+		$this->loadModel('Players');
+		$player = $this->Players->findById($plin)->first();
+
+		if(is_null($player)) {
+			$this->Flash->error("Player#$plin not found");
 			return;
 		}
 
-		$this->loadModel('Players');
-		$player = $this->Players->findById($plin)->first();
-		if(is_null($player)) {
-			$this->Flash->error("Player#$plin not found");
+		if(!AuthState::hasAuth(['user', 'infobalie'])
+		|| !AuthState::hasRole($player->get('role'))) {
+			$this->Flash->error("Not authorized to change password for Player#$plin");
 			return;
 		}
 
