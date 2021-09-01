@@ -259,6 +259,7 @@ class AdminController
 				$ids = [$ids];
 
 			$query = $this->loadModel('characters')->find();
+			$query->orderDesc('characters.modified');
 			$query->enableHydration(false);
 			$query->innerJoinWith('CharactersSkills', function ($q) use ($ids) {
 					return $q->where(['CharactersSkills.skill_id IN' => $ids]);
