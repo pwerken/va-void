@@ -40,14 +40,9 @@ foreach(array_reverse($roles) as $role)
 	$query = $players->find();
 	$query->where(['role' => $role]);
 
-	$url = [];
-	$url['controller'] = 'Players';
-	$url['action'] = 'view';
-	$url['_method'] = 'GET';
-
 	echo "<p>\n  <ul>\n";
 	foreach($query as $player) {
-		$url[0] = $player->id;
+		$url = '/admin/history/player/'.$player->id;
 		$descr = $player->id . ': '.$player->full_name;
 		echo "    <li>" . $this->Html->link($descr, $url)."\n";
 	}
