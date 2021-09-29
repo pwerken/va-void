@@ -5,7 +5,7 @@ class PowerLammy
 	extends CharactersConditionLammy
 {
 
-	public function draw($side)
+	public function draw($side, $data = NULL)
 	{
 		$data = [];
 		$data['type'] = 'Power';
