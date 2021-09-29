@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 
-use Cake\Http\Exception\UnauthorizedException;
+use App\Error\LoginFailedException;
 use Cake\Utility\Security;
 use Firebase\JWT\JWT;
 
@@ -26,7 +26,7 @@ class AuthController
 				$user = $this->Auth->identify();
 		}
 		if (!$user)
-			throw new UnauthorizedException('Invalid username or password');
+			throw new LoginFailedException('Invalid username or password');
 
 		$this->set(
 			[ '_serialize' =>

@@ -192,7 +192,7 @@ return [
     'Error' => [
         'errorLevel' => E_ALL,
         'exceptionRenderer' => 'App\Error\ApiExceptionRenderer',
-        'skipLog' => [],
+        'skipLog' => ['App\Error\LoginFailedException'],
         'log' => true,
         'trace' => true,
     ],
