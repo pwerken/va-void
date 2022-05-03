@@ -207,7 +207,11 @@ class AppController
 
 	protected function doRawQuery($query)
 	{
-		$q = trim($this->request->getQuery('q'));
+		$q = $this->request->getQuery('q');
+		if(is_null($q))
+			$q = '';
+		else
+			$q = trim();
 
 		$orWhere = [];
 		$params = [];

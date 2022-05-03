@@ -78,11 +78,13 @@ class ConditionsController
 	protected function wantAuthUser()
 	{
 		$plin = parent::wantAuthUser();
-		if($plin !== false) {
+		if($plin !== false)
 			return $plin;
-		}
 
 		$coin = $this->request->getParam('coin');
+		if($coin === false)
+			return NULL;
+
 		$this->loadModel('CharactersConditions');
 		$data = $this->CharactersConditions->find()
 					->enableHydration(false)

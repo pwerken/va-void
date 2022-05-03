@@ -119,6 +119,9 @@ class ItemsController
 	protected function wantAuthUser()
 	{
 		$itin = $this->request->getParam('itin');
+		if (is_bool($itin))
+			return parent::wantAuthUser();
+
 		$data = $this->Items->find()
 					->enableHydration(false)
 					->select(['player_id' => 'Characters.player_id'])
@@ -126,11 +129,9 @@ class ItemsController
 					->contain('Characters')
 					->first();
 
-		if(!is_null($data)) {
-			return $data['player_id'];
-		}
-
-		return parent::wantAuthUser();
+		if (is_null($data))
+			return parent::wantAuthUser();
+		return $data['player_id'];
 	}
 
 }

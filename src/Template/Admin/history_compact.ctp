@@ -28,7 +28,9 @@ foreach($list as $cur)
 	default:			$color = '';
 	}
 
-	$data = json_decode($cur->get('data'), true);
+	$data = $cur->get('data');
+	if (!is_null($data))
+		$data = json_decode($data, true);
 
 	$related = $cur->relation();
 	if(is_null($related) && isset($data['name']))
@@ -53,8 +55,12 @@ foreach($list as $cur)
 	case 'modified':
 		$prev = json_decode($cur->get('prev'), true);
 		foreach($data as $k => $v) {
-			if($v == @$prev[$k])
+			if (array_key_exists($k, $prev)) {
+				if($v == $prev[$k])
+					continue;
+			} elseif (is_null($v)) {
 				continue;
+			}
 
 			if(is_null($v))
 				$v = '<em>NULL</em>';

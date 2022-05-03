@@ -78,11 +78,13 @@ class PowersController
 	protected function wantAuthUser()
 	{
 		$plin = parent::wantAuthUser();
-		if($plin !== false) {
+		if($plin !== false)
 			return $plin;
-		}
 
 		$poin = $this->request->getParam('poin');
+		if($poin === false)
+			return NULL;
+
 		$this->loadModel('CharactersPowers');
 		$data = $this->CharactersPowers->find()
 					->enableHydration(false)

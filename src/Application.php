@@ -40,14 +40,12 @@ class Application extends BaseApplication
         parent::bootstrap();
 
         if (PHP_SAPI === 'cli') {
-            try {
-                $this->addPlugin('Bake');
-            } catch (MissingPluginException $e) {
-                // Do not halt if the plugin is missing
-            }
-
-            $this->addPlugin('Migrations');
+            $this->bootstrapCli();
         }
+
+        $this->addPlugin('Crud');
+        $this->addPlugin('CreatorModifier');
+        $this->addPlugin('ADmad/JwtAuth');
     }
 
     /**
@@ -81,5 +79,19 @@ class Application extends BaseApplication
             ->add(PlinChinMiddleware::class);
 
         return $middlewareQueue;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function bootstrapCli()
+    {
+        try {
+            $this->addPlugin('Bake');
+        } catch (MissingPluginException $e) {
+            // Do not halt if the plugin is missing
+        }
+
+        $this->addPlugin('Migrations');
     }
 }

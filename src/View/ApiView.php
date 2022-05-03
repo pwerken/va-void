@@ -50,7 +50,7 @@ class ApiView
 		$result['class'] = $class;
 		$result['url']   = $obj->getUrl();
 
-		foreach($obj->visibleProperties() as $key) {
+		foreach($obj->getVisible() as $key) {
 			$value = $obj->get($key);
 
 			$label = Inflector::camelize("label_".$key);

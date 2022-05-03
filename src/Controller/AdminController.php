@@ -369,13 +369,18 @@ class AdminController
 		while($playerVoid !== False || $playerValea !== False)
 		{
 			if($playerVoid !== False) {
+				if(is_null($playerVoid[4]))
+					$playerVoid[4] = '';
 				if(strtoupper($playerVoid[4]) == '1980-01-01')
 					$playerVoid[4] = '';
 			}
 			if($playerValea !== False) {
+				if(is_null($playerValea[4]))
+					$playerValea[4] = '';
 				if(strtoupper($playerValea[4]) == '0000-00-00')
 					$playerValea[4] = '';
-				if($playerValea[5] == '0')
+
+				if(is_null($playerValea[5]) || $playerValea[5] == '0')
 					$playerValea[5] = '';
 				if(strtoupper($playerValea[5]) == 'V')
 					$playerValea[5] = 'F';
