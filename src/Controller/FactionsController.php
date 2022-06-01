@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 class FactionsController
@@ -7,7 +9,7 @@ class FactionsController
 
 	protected $searchFields = [ 'Factions.name' ];
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -27,5 +29,4 @@ class FactionsController
 					->select(['Factions.id', 'Factions.name'], true);
 		$this->doRawIndex($query, 'Faction', '/factions/');
 	}
-
 }

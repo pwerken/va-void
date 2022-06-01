@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 class SkillsController
@@ -7,7 +9,7 @@ class SkillsController
 
 	protected $searchFields = [ 'Skills.name' ];
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -17,5 +19,4 @@ class SkillsController
 		$this->mapMethod('index',  [ 'player' ], true);
 		$this->mapMethod('view',   [ 'player' ], true);
 	}
-
 }

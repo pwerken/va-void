@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
 use Cake\ORM\RulesChecker;
@@ -8,7 +10,7 @@ class ItemsTable
 	extends AppTable
 {
 
-	public function initialize(array $config)
+	public function initialize(array $config): void
 	{
 		parent::initialize($config);
 
@@ -16,7 +18,7 @@ class ItemsTable
 		$this->hasMany('AttributesItems')->setProperty('attributes');
 	}
 
-	public function validationDefault(Validator $validator)
+	public function validationDefault(Validator $validator): Validator
 	{
 		$validator->allowEmpty('id', 'create');
 		$validator->notEmpty('name');
@@ -36,9 +38,9 @@ class ItemsTable
 		return $validator;
 	}
 
-	public function buildRules(RulesChecker $rules)
+	public function buildRules(RulesChecker $rules): RulesChecker
 	{
-		$rules->add($rules->existsIn('character_id', 'characters'));
+		$rules->add($rules->existsIn('character_id', 'Characters'));
 		$rules->addDelete([$this, 'ruleNoCharacter']);
 		$rules->addDelete([$this, 'ruleNoAttributes']);
 		return $rules;
@@ -82,12 +84,12 @@ class ItemsTable
 		return NULL;
 	}
 
-	protected function contain()
+	protected function contain(): array
 	{
 		return [ 'Characters', 'AttributesItems.Attributes' ];
 	}
 
-	protected function orderBy()
+	protected function orderBy(): array
 	{
 		return	[ 'id' => 'ASC' ];
 	}

@@ -62,21 +62,29 @@ class Character
 
 	protected function _getBelief()
 	{
+		if (is_null($this->belief_object))
+			return null;
 		return $this->belief_object->name;
 	}
 
 	protected function _getFaction()
 	{
+		if (is_null($this->faction_object))
+			return null;
 		return $this->faction_object->name;
 	}
 
 	protected function _getGroup()
 	{
+		if (is_null($this->group_object))
+			return null;
 		return $this->group_object->name;
 	}
 
 	protected function _getWorld()
 	{
+		if (is_null($this->world_object))
+			return null;
 		return $this->world_object->name;
 	}
 

@@ -1,17 +1,21 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use App\Model\Entity\Character;
+use ArrayObject;
 use Cake\Datasource\EntityInterface;
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
+
+use App\Model\Entity\Character;
 
 class CharactersTable
 	extends AppTable
 {
 
-	public function initialize(array $config)
+	public function initialize(array $config): void
 	{
 		parent::initialize($config);
 
@@ -33,7 +37,7 @@ class CharactersTable
 				->setForeignKey('student_id')->setProperty('teacher');
 	}
 
-	public function afterSave(Event $event, EntityInterface $entity, $options)
+	public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
 	{
 		if($entity->isDirty('status') && $entity->status == 'active') {
 			$chars = $this->findByPlayerId($entity->player_id);
@@ -47,7 +51,7 @@ class CharactersTable
 		}
 	}
 
-	public function validationDefault(Validator $validator)
+	public function validationDefault(Validator $validator): Validator
 	{
 		$validator->allowEmpty('id', 'create');
 		$validator->notEmpty('player_id');
@@ -89,16 +93,16 @@ class CharactersTable
 		return $this->findByPlayerIdAndChin($plin, $chin)->firstOrFail();
 	}
 
-	public function buildRules(RulesChecker $rules)
+	public function buildRules(RulesChecker $rules): RulesChecker
 	{
 
 		$rules->add($rules->isUnique(['player_id', 'chin'],
 			'This plin & chin combination is already in use.'));
 
-		$rules->add($rules->existsIn('faction_id', 'factions'));
-		$rules->add($rules->existsIn('group_id', 'groups'));
-		$rules->add($rules->existsIn('belief_id', 'believes'));
-		$rules->add($rules->existsIn('world_id', 'worlds'));
+		$rules->add($rules->existsIn('faction_id', 'Factions'));
+		$rules->add($rules->existsIn('group_id', 'Groups'));
+		$rules->add($rules->existsIn('belief_id', 'Believes'));
+		$rules->add($rules->existsIn('world_id', 'Worlds'));
 
 		$rules->addDelete([$this, 'ruleNoConditions']);
 		$rules->addDelete([$this, 'ruleNoItems']);
@@ -170,7 +174,7 @@ class CharactersTable
 		return true;
 	}
 
-	protected function contain()
+	protected function contain(): array
 	{
 		return
 			[ 'Believes', 'Factions', 'Groups', 'Players', 'Worlds', 'Items'
@@ -185,7 +189,7 @@ class CharactersTable
 			];
 	}
 
-	protected function orderBy()
+	protected function orderBy(): array
 	{
 		return [ 'player_id' => 'ASC', 'chin' => 'DESC' ];
 	}

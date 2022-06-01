@@ -1,11 +1,13 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 class CharactersSkillsController
 	extends AppController
 {
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -24,5 +26,4 @@ class CharactersSkillsController
 		$this->request = $this->request->withData('character_id', $char_id);
 		$this->Crud->execute();
 	}
-
 }

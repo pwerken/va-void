@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 class GroupsController
@@ -7,7 +9,7 @@ class GroupsController
 
 	protected $searchFields = [ 'Groups.name' ];
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -27,5 +29,4 @@ class GroupsController
 					->select(['Groups.id', 'Groups.name'], true);
 		$this->doRawIndex($query, 'Group', '/groups/');
 	}
-
 }

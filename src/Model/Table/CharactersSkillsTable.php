@@ -1,8 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
+use ArrayObject;
 use Cake\Datasource\EntityInterface;
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 
@@ -10,7 +13,7 @@ class CharactersSkillsTable
 	extends AppTable
 {
 
-	public function initialize(array $config)
+	public function initialize(array $config): void
 	{
 		parent::initialize($config);
 
@@ -20,17 +23,17 @@ class CharactersSkillsTable
 		$this->belongsTo('Skills');
 	}
 
-	public function afterDelete(Event $event, EntityInterface $entity, $options)
+	public function afterDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
 	{
 		$this->touchEntity('Characters', $entity->character_id);
 	}
 
-	public function afterSave(Event $event, EntityInterface $entity, $options)
+	public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
 	{
 		$this->touchEntity('Characters', $entity->character_id);
 	}
 
-	public function validationDefault(Validator $validator)
+	public function validationDefault(Validator $validator): Validator
 	{
 		$validator->notEmpty('character_id');
 		$validator->notEmpty('skill_id');
@@ -44,10 +47,10 @@ class CharactersSkillsTable
 		return $validator;
 	}
 
-	public function buildRules(RulesChecker $rules)
+	public function buildRules(RulesChecker $rules): RulesChecker
 	{
-		$rules->add($rules->existsIn('character_id', 'characters'));
-		$rules->add($rules->existsIn('skill_id', 'skills'));
+		$rules->add($rules->existsIn('character_id', 'Characters'));
+		$rules->add($rules->existsIn('skill_id', 'Skills'));
 
 		$rules->addCreate([$this, 'disallowDeprecated']);
 #		$rules->addCreate([$this, 'hasXPAvailable']);
@@ -87,7 +90,7 @@ class CharactersSkillsTable
 		return true;
 	}
 
-	protected function contain()
+	protected function contain(): array
 	{
 		return [ 'Characters', 'Skills.Manatypes' ];
 	}

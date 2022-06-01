@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Utility\AuthState;
@@ -19,8 +21,9 @@ class AppController
 	use ControllerTrait;
 
 	protected $searchFields = [ ];
+	protected $parent = null;
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -55,16 +58,9 @@ class AppController
 		(new ErrorHandler($arr))->register();
 
 		$this->response->compress();
-
-		if(!$this->request->is('POST')) {
-			$data = $this->request->input([$this, 'parseRequestInput']);
-			foreach($data as $key => $val) {
-				$this->request = $this->request->withData($key, $val);
-			}
-		}
 	}
 
-	public function implementedEvents()
+	public function implementedEvents(): array
 	{
 		$events = parent::implementedEvents();
 		$events['Crud.beforeHandle']   = 'CrudBeforeHandle';
@@ -74,7 +70,7 @@ class AppController
 		return $events;
 	}
 
-	public function isAuthorized($user)
+	public function isAuthorized($user): bool
 	{
 		AuthState::initialize($this->Auth, $this->wantAuthUser());
 
@@ -82,18 +78,23 @@ class AppController
 		return AuthState::hasAuth($auths);
 	}
 
-	protected function wantAuthUser()
+	protected function wantAuthUser(): ?int
 	{
-		return $this->request->getParam('plin');
+		$plin = $this->request->getParam('plin');
+		if (is_null($plin))
+			return null;
+
+		return (int)$plin;
 	}
 
 	public function paginate($query = null, array $settings = [])
 	{
-		$action = $this->request->getParam('action');
-		$nested = strcmp(substr($action, -5, 5), 'Index') === 0;
-		if($nested && isset($this->viewVars['parent'])) {
-			$key = Inflector::singularize(substr($action, 0, -5)).'_id';
-			$query->where([$key => $this->viewVars['parent']->id]);
+		if(isset($this->parent)) {
+			# this nested index listing, limit query to the parent object
+			$classname = get_class($this->parent);
+			$pos = strrpos($classname, '\\');
+			$key = strtolower(substr($classname, $pos + 1)).'_id';
+			$query->where([$key => $this->parent->id]);
 		}
 		return $query->all();
 	}
@@ -133,9 +134,10 @@ class AppController
 			$this->request = $this->request->withoutData('modifier_id');
 		}
 		if(strcmp(substr($action, -5, 5), 'Index') == 0) {
+			# this nested index listing, find the parent object
 			$model = ucfirst(substr($action, 0, -5));
 			$parent = $this->loadModel($model)->get($event->getSubject()->args[0]);
-			$this->set('parent', $parent);
+			$this->parent = $parent;
 		}
 	}
 	public function CrudAfterSave(Event $event)

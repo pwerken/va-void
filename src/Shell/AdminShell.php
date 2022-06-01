@@ -1,11 +1,15 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Shell;
+
+use Cake\Console\ConsoleOptionParser;
+use Cake\Controller\Component\AuthComponent;
 
 use App\Model\Entity\Player;
 use App\Utility\CheckConfig;
-use Cake\Controller\Component\AuthComponent;
 
-class AdminShell extends AppShell
+class AdminShell extends App
 {
 
 	public function checks()
@@ -50,7 +54,7 @@ class AdminShell extends AppShell
 	{
 		$this->loadModel('Players');
 		$player = $this->Players->findById($plin)->first();
-		if(is_null($player) || strcmp($player->id, $plin)) {
+		if(is_null($player) || $player->id != $plin) {
 			$this->abort(sprintf('No player found with plin `%s`.', $plin));
 		}
 
@@ -106,7 +110,7 @@ class AdminShell extends AppShell
 		$this->out(sprintf('<info>%4d</info> %s: <warning>%s</warning>', $player->id, $player->fullName, $msg));
 	}
 
-	public function getOptionParser()
+	public function getOptionParser(): ConsoleOptionParser
 	{
 		$parser = parent::getOptionParser();
 		$parser->setDescription(['Admin operations'])
@@ -151,7 +155,6 @@ class AdminShell extends AppShell
 
 		return $parser;
 	}
-
 
 	/**
 	 * Interactively prompts for input without echoing to the terminal.

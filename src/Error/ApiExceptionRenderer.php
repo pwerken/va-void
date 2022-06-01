@@ -1,14 +1,15 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Error;
 
 use Cake\Core\Configure;
-use Cake\Error\Debugger;
-use Cake\Http\Exception\HttpException;
-use Cake\Http\Exception\InternalErrorException;
+use Cake\Http\Response;
 use Crud\Error\ExceptionRenderer;
 use Exception;
 
-class ApiExceptionRenderer extends ExceptionRenderer
+class ApiExceptionRenderer
+	extends ExceptionRenderer
 {
 	public function configuration($error)
 	{
@@ -18,27 +19,33 @@ class ApiExceptionRenderer extends ExceptionRenderer
 		return $this->_outputMessage('error400');
 	}
 
-	protected function _outputMessage($template)
+	protected function _outputMessage($template): Response
 	{
-		$response = $this->controller->response;
-		$error = $this->controller->viewVars['error'];
-		$status = $code = $error->getCode();
-		try {
-			$response = $response->withStatus($status);
-		} catch(Exception $e) {
-			$status = 500;
-			$response = $response->withStatus($status);
+		$error = $this->error;
+		$code = $error->getCode();
+
+		$response = $this->controller->getResponse();
+
+        if ($code < Response::STATUS_CODE_MIN || $code > Response::STATUS_CODE_MAX) {
+			$response = $response->withStatus(500);
+		} else {
+			$response = $response->withStatus($code);
 		}
 
+		$data = [];
+		$data['file'] = $error->getFile();
+		$data['line'] = $error->getLine();
+
 		$errors = [];
-		if(isset($this->controller->viewVars['errors'])) {
-			$errors = $this->controller->viewVars['errors'];
+		$errors[] = $this->traceLine($data);
+		foreach($error->getTrace() as $trace) {
+			$errors[] = $this->traceLine($trace);
 		}
 
 		$data = [];
 		$data['class'] = 'Error';
 		$data['code'] = $code;
-		$data['url'] = $this->controller->request->getRequestTarget();
+		$data['url'] = $this->controller->getRequest()->getRequestTarget();
 		$data['message'] = $error->getMessage();
 		$data['errors'] = $errors;
 
@@ -48,7 +55,22 @@ class ApiExceptionRenderer extends ExceptionRenderer
 
 		$response = $response->withType('json');
 		$response->getBody()->write(json_encode($data, $jsonOptions));
-		$this->controller->response = $response;
+		$this->controller->setResponse($response);
 		return $response;
+	}
+
+	private function traceLine(array $data)
+	{
+		if (!isset($data['file'])) {
+			$str = '[internal function]: ';
+		} else {
+			$str = $data['file'].'('.$data['line'].'): ';
+		}
+		if (isset($data['class']))
+			$str .= $data['class'].$data['type'];
+		if (isset($data['function']))
+			$str .= $data['function'].'()';
+
+		return $str;
 	}
 }

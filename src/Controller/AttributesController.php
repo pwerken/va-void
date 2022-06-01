@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 class AttributesController
@@ -10,7 +12,7 @@ class AttributesController
 		, 'Attributes.code'
 		];
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -44,5 +46,4 @@ class AttributesController
 			, 'list' => $content
 			]);
 	}
-
 }

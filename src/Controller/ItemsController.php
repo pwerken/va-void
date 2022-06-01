@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Utility\AuthState;
@@ -15,7 +17,7 @@ class ItemsController
 		, 'Items.notes'
 		];
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -116,10 +118,10 @@ class ItemsController
 		$this->QueueLammy->execute();
 	}
 
-	protected function wantAuthUser()
+	protected function wantAuthUser(): ?int
 	{
 		$itin = $this->request->getParam('itin');
-		if (is_bool($itin))
+		if (is_null($itin))
 			return parent::wantAuthUser();
 
 		$data = $this->Items->find()
@@ -131,7 +133,7 @@ class ItemsController
 
 		if (is_null($data))
 			return parent::wantAuthUser();
+
 		return $data['player_id'];
 	}
-
 }

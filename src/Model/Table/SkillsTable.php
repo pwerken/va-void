@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
 use Cake\ORM\RulesChecker;
@@ -8,7 +10,7 @@ class SkillsTable
 	extends AppTable
 {
 
-	public function initialize(array $config)
+	public function initialize(array $config): void
 	{
 		parent::initialize($config);
 
@@ -16,7 +18,7 @@ class SkillsTable
 		$this->hasMany('CharactersSkills')->setProperty('characters');
 	}
 
-	public function validationDefault(Validator $validator)
+	public function validationDefault(Validator $validator): Validator
 	{
 		$validator->allowEmpty('id', 'create');
 		$validator->notEmpty('name');
@@ -37,7 +39,7 @@ class SkillsTable
 		return $validator;
 	}
 
-	public function buildRules(RulesChecker $rules)
+	public function buildRules(RulesChecker $rules): RulesChecker
 	{
 		$rules->addDelete([$this, 'ruleNoCharacters']);
 		return $rules;
@@ -56,12 +58,12 @@ class SkillsTable
 		return true;
 	}
 
-	protected function contain()
+	protected function contain(): array
 	{
 		return [ 'Manatypes' ];
 	}
 
-	protected function orderBy()
+	protected function orderBy(): array
 	{
 		return	[ 'sort_order' => 'ASC', 'name' => 'ASC' ];
 	}

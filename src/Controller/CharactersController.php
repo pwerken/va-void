@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Model\Entity\Lammy;
@@ -13,7 +15,7 @@ class CharactersController
 		[ 'Characters.name'
 		];
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -57,10 +59,10 @@ class CharactersController
 	public function edit($id)
 	{
 		// make the virtual fields assignable
-		$this->dataNameToId('factions', 'faction');
-		$this->dataNameToIdAndAddIfMissing('believes', 'belief');
-		$this->dataNameToIdAndAddIfMissing('groups', 'group');
-		$this->dataNameToIdAndAddIfMissing('worlds', 'world');
+		$this->dataNameToId('Factions', 'faction');
+		$this->dataNameToIdAndAddIfMissing('Believes', 'belief');
+		$this->dataNameToIdAndAddIfMissing('Groups', 'group');
+		$this->dataNameToIdAndAddIfMissing('Worlds', 'world');
 
 		$this->Crud->execute();
 	}
@@ -75,6 +77,8 @@ class CharactersController
 					->select('Characters.status');
 
 		if(!AuthState::hasRole('read-only')) {
+			# authorisation < read-only
+			# limit to own characters
 			$plin = $this->Auth->user('id');
 			$query->where(["Characters.player_id = $plin"]);
 		} else {
@@ -108,7 +112,7 @@ class CharactersController
 
 	public function queueBeforeRender(Event $event)
 	{
-		$table = $this->loadModel('lammies');
+		$table = $this->loadModel('Lammies');
 
 		$character = $event->getSubject()->entity;
 		$table->save($table->newEntity()->set('target', $character));

@@ -1,11 +1,13 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 class TeachingsController
 	extends AppController
 {
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -46,8 +48,8 @@ class TeachingsController
 			$this->request->withData('teacher_id', null);
 		}
 
-		$this->dataNameToId('events', 'updated');
-		$this->dataNameToId('events', 'started');
+		$this->dataNameToId('Events', 'updated');
+		$this->dataNameToId('Events', 'started');
 
 		return $this->Crud->execute($action);
 	}
@@ -64,5 +66,4 @@ class TeachingsController
 		}
 		return $query->all();
 	}
-
 }

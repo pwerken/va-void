@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Utility\AuthState;
@@ -14,7 +16,7 @@ class PowersController
 		, 'Powers.notes'
 		];
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -75,14 +77,14 @@ class PowersController
 		$this->QueueLammy->execute();
 	}
 
-	protected function wantAuthUser()
+	protected function wantAuthUser(): ?int
 	{
 		$plin = parent::wantAuthUser();
-		if($plin !== false)
+		if (!is_null($plin))
 			return $plin;
 
 		$poin = $this->request->getParam('poin');
-		if($poin === false)
+		if (is_null($poin))
 			return NULL;
 
 		$this->loadModel('CharactersPowers');

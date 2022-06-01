@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\View;
 
 use App\Model\Entity\AppEntity;
@@ -20,9 +22,9 @@ class ApiView
 	, 'Power'               =>	[ 'id' => 'poin' ]
 	];
 
-	public function render($view = null, $layout = null)
+	public function render(?string $view = null, $layout = null): string
 	{
-		$data = $this->get($this->get('viewVar'));
+		$data = $this->get($this->get('viewVar', ''));
 		if(is_null($data)) {
 			$data = $this->get('_serialize', $this->viewVars);
 		} elseif(is_array($data) || $data instanceof ResultSet) {

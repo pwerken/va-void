@@ -2,10 +2,13 @@
 namespace App\Routing\Middleware;
 
 use Cake\Core\Configure;
+use Cake\Http\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class CorsMiddleware
+class CorsMiddleware implements MiddlewareInterface
 {
 	protected $config;
 
@@ -15,26 +18,27 @@ class CorsMiddleware
 			[ 'allowOrigin' => [ '*' ]
 			, 'allowCredentials' => true
 			, 'allowMethods' => [ 'GET', 'PUT', 'DELETE', 'POST', 'OPTIONS' ]
-			, 'allowHeaders' => [ 'x-requested-with', 'Content-type', 'origin'
-								, 'authorization', 'accept' ]
+			, 'allowHeaders' => [ 'X-Requested-With', 'Content-Type', 'Origin'
+								, 'Authorization', 'Accept' ]
 			, 'exposeHeaders' => [ 'Location' ]
 			];
-		$this->config = array_merge($default, Configure::read('Cors'), $config);
+
+		$data = Configure::read('Cors', []);
+		$this->config = array_merge($default, $data, $config);
 	}
 
-	public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
+	public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
 	{
-		$response = $response->cors($request)
+		$cors = $handler->handle($request)->cors($request);
+		if($request->is('options')) {
+			$cors = $cors
+				->allowMethods($this->config['allowMethods'])
+				->allowHeaders($this->config['allowHeaders'])
+				->exposeHeaders($this->config['exposeHeaders']);
+		}
+		return $cors
 			->allowOrigin($this->config['allowOrigin'])
 			->allowCredentials($this->config['allowCredentials'])
-			->allowMethods($this->config['allowMethods'])
-			->allowHeaders($this->config['allowHeaders'])
-			->exposeHeaders($this->config['exposeHeaders'])
 			->build();
-
-		if($request->is('options')) {
-			return $response;
-		}
-		return $next($request, $response);
 	}
 }

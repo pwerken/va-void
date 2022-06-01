@@ -20,7 +20,6 @@
 
 use Cake\Core\Plugin;
 use Cake\Routing\RouteBuilder;
-use Cake\Routing\Router;
 use Cake\Utility\Inflector;
 
 /**
@@ -46,7 +45,7 @@ use Cake\Utility\Inflector;
  */
 #Router::defaultRouteClass(DashedRoute::class);
 
-Router::scope('/', function (RouteBuilder $routes) {
+return static function (RouteBuilder $routes) {
 
     $routes->connect('/', ['controller' => 'Root', 'action' => 'root']);
 
@@ -65,7 +64,7 @@ Router::scope('/', function (RouteBuilder $routes) {
 	$defaults['action'] = 'index';
 	$routes->connect('/admin', $defaults);
 	unset($defaults['action']);
-	$routes->connect('/admin/:action/*', $defaults);
+	$routes->connect('/admin/{action}/*', $defaults);
 
 	/**
 	 *	Authentication related URIs
@@ -101,7 +100,7 @@ $rest = function($routes, $name, $subs = [], $nest = [], $rels = []) {
 		$routeOptions['pass'][] = $key;
 		$routeOptions[$key] = '[0-9]+';
 	}
-	$path = ':'.implode('/:', $routeOptions['pass']);
+	$path = '{'.implode('}/{', $routeOptions['pass']).'}';
 	$url = '/'.$lcName.'/'.$path;
 
 	$map =  [ 'index'   => [ '_method' => 'GET',    'path' => 0 ]
@@ -128,7 +127,7 @@ $rest = function($routes, $name, $subs = [], $nest = [], $rels = []) {
 		// hacky special case #2
 		if($name == 'Characters' && $method == 'index') {
 			$defaults['action'] = 'playersIndex';
-			$routes->connect('/characters/:plin', $defaults
+			$routes->connect('/characters/{plin}', $defaults
 							, ['pass' => ['plin'], 'plin' => '[0-9]+']);
 		}
 	}
@@ -175,7 +174,7 @@ $rest = function($routes, $name, $subs = [], $nest = [], $rels = []) {
 			$routeOptions2[$key] = '[0-9]+';
 			$path[] = $key;
 		}
-		$path = ':'.implode('/:', $path);
+		$path = '{'.implode('}/{', $path).'}';
 
 		$map =  [ 'index'   => [ '_method' => 'GET',    'path' => 0 ]
 				, 'add'     => [ '_method' => 'PUT',    'path' => 0 ]
@@ -219,7 +218,7 @@ $rest = function($routes, $name, $subs = [], $nest = [], $rels = []) {
 		$defaults['controller'] = 'Characters';
 		$defaults['action'] = 'add';
 		$routeOptions = [ 'pass' => ['plin'], 'plin' => '[0-9]+' ];
-		$routes->connect('/players/:plin/characters', $defaults, $routeOptions);
+		$routes->connect('/players/{plin}/characters', $defaults, $routeOptions);
 	}
 	if($name == 'Characters') {
 		$map =  [ 'View'    => [ '_method' => 'GET',    'path' => 1 ]
@@ -282,4 +281,4 @@ $rest = function($routes, $name, $subs = [], $nest = [], $rels = []) {
 		$defaults['action'] = $action;
 		$routes->connect($url, $defaults, []);
 	}
-});
+};

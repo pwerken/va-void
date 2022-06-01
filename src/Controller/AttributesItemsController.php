@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use Cake\Event\Event;
@@ -7,7 +9,7 @@ class AttributesItemsController
 	extends AppController
 {
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -42,5 +44,4 @@ class AttributesItemsController
 
 		parent::CrudBeforeHandle($event);
 	}
-
 }

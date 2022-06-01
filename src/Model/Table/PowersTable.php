@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
 use Cake\ORM\RulesChecker;
@@ -8,14 +10,14 @@ class PowersTable
 	extends AppTable
 {
 
-	public function initialize(array $config)
+	public function initialize(array $config): void
 	{
 		parent::initialize($config);
 
 		$this->hasMany('CharactersPowers')->setProperty('characters');
 	}
 
-	public function validationDefault(Validator $validator)
+	public function validationDefault(Validator $validator): Validator
 	{
 		$validator->allowEmpty('id', 'create');
 		$validator->notEmpty('name');
@@ -31,7 +33,7 @@ class PowersTable
 		return $validator;
 	}
 
-	public function buildRules(RulesChecker $rules)
+	public function buildRules(RulesChecker $rules): RulesChecker
 	{
 		$rules->addDelete([$this, 'ruleNoCharacters']);
 		return $rules;
@@ -50,12 +52,12 @@ class PowersTable
 		return true;
 	}
 
-	protected function contain()
+	protected function contain(): array
 	{
 		return [ 'CharactersPowers.Characters' ];
 	}
 
-	protected function orderBy()
+	protected function orderBy(): array
 	{
 		return	[ 'id' => 'ASC' ];
 	}

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Error\LoginFailedException;
@@ -9,7 +11,7 @@ class AuthController
 	extends AppController
 {
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -46,5 +48,4 @@ class AuthController
 	{
 		return $this->redirect($this->Auth->logout());
 	}
-
 }

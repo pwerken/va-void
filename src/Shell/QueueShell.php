@@ -1,19 +1,23 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Shell;
 
-use App\View\PdfView;
 use Cake\Console\ConsoleIo;
+use Cake\Console\ConsoleOptionParser;
 use Cake\Filesystem\File;
 
-class QueueShell extends AppShell
+use App\View\PdfView;
+
+class QueueShell extends App
 {
 
-	public function startup()
+	public function startup(): void
 	{
 		$this->loadModel('Lammies');
 	}
 
-	public function main()
+	public function main(): void
 	{
 		$result = $this->Lammies->find('lastInQueue')->all();
 		if($result->count() == 0)
@@ -67,7 +71,7 @@ class QueueShell extends AppShell
 		$this->out($lammies->count());
 	}
 
-	public function getOptionParser()
+	public function getOptionParser(): ConsoleOptionParser
 	{
 		$parser = parent::getOptionParser();
 		$parser->setDescription(

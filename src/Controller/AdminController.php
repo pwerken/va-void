@@ -1,9 +1,12 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Model\Entity\Player;
 use App\Shell\BackupShell;
 use App\Utility\AuthState;
+
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Datasource\ConnectionManager;
@@ -14,7 +17,7 @@ class AdminController
 	extends Controller
 {
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -37,7 +40,7 @@ class AdminController
 		$this->set('user', $this->Auth->user());
 	}
 
-	public function isAuthorized($user)
+	public function isAuthorized($user): bool
 	{
 		AuthState::initialize($this->Auth, $user['id']);
 
@@ -170,7 +173,7 @@ class AdminController
 
 	public function history($e = NULL, $k1 = NULL, $k2 = NULL)
 	{
-		$table = $this->loadModel('history');
+		$table = $this->loadModel('History');
 		if(!is_null($e)) {
 			if(array_key_exists('verbose', $this->request->getQueryParams())) {
 				$this->viewBuilder()->setTemplate('historyEntity');
@@ -206,7 +209,7 @@ class AdminController
 
 	public function printing($sides = NULL)
 	{
-		$lammies = $this->loadModel('lammies');
+		$lammies = $this->loadModel('Lammies');
 
 		if(!is_null($sides)) {
 			$queued = $lammies->find('Queued')->all();
@@ -233,21 +236,22 @@ class AdminController
 		$query = $lammies->find();
 		$query
 			->select($lammies)
-			->select(['character' => $query->func()->concat(
+			->select(['character_str' => $query->func()->concat(
 				[ 'characters.player_id' => 'identifier', '/'
 				, 'characters.chin' => 'identifier'])])
 			->leftJoin(['characters']
-			         , [ 'lammies.entity LIKE' => 'Character%'
-					   , 'lammies.key1 = characters.id'])
-			->where(['lammies.modified >' => $since->format('Y-m-d')])
-			->orderDesc('lammies.id')
+			         , [ 'Lammies.entity LIKE' => 'Character%'
+					   , 'Lammies.key1 = characters.id'])
+			->where(['Lammies.modified >' => $since->format('Y-m-d')])
+			->orderDesc('Lammies.id')
 			->enableHydration(false);
+
 		$this->set('printing', $query->all());
 	}
 
 	public function skills()
 	{
-		$skills = $this->loadModel('skills');
+		$skills = $this->loadModel('Skills');
 
 		$this->set('characters', []);
 
@@ -258,8 +262,8 @@ class AdminController
 			if(!is_array($ids))
 				$ids = [$ids];
 
-			$query = $this->loadModel('characters')->find();
-			$query->orderDesc('characters.modified');
+			$query = $this->loadModel('Characters')->find();
+			$query->orderDesc('Characters.modified');
 			$query->enableHydration(false);
 			$query->innerJoinWith('CharactersSkills', function ($q) use ($ids) {
 					return $q->where(['CharactersSkills.skill_id IN' => $ids]);
@@ -443,7 +447,7 @@ class AdminController
 		default:	$data['gender'] = ''; break;
 		}
 
-		return $this->loadModel('players')->save(new Player($data));
+		return $this->loadModel('Players')->save(new Player($data));
 	}
 	private function voidValeaUpdate($plin)
 	{
@@ -468,7 +472,7 @@ class AdminController
 		default:	$data['gender'] = ''; break;
 		}
 
-		$players = $this->loadModel('players');
+		$players = $this->loadModel('Players');
 		$player = $players->get($plin);
 		$player = $players->patchEntity($player, $data);
 

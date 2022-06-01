@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 class WorldsController
@@ -7,7 +9,7 @@ class WorldsController
 
 	protected $searchFields = [ 'Worlds.name' ];
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -27,5 +29,4 @@ class WorldsController
 					->select(['Worlds.id', 'Worlds.name'], true);
 		$this->doRawIndex($query, 'World', '/worlds/');
 	}
-
 }

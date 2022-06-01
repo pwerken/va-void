@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
 use Cake\ORM\RulesChecker;
@@ -8,7 +10,7 @@ class TeachingsTable
 	extends AppTable
 {
 
-	public function initialize(array $config)
+	public function initialize(array $config): void
 	{
 		parent::initialize($config);
 
@@ -25,7 +27,7 @@ class TeachingsTable
 			->setForeignKey('updated_id')->setProperty('updated_object');
 	}
 
-	public function validationDefault(Validator $validator)
+	public function validationDefault(Validator $validator): Validator
 	{
 		$validator->allowEmpty('id', 'create');
 		$validator->notEmpty('student_id');
@@ -54,7 +56,7 @@ class TeachingsTable
 		return $validator;
 	}
 
-	public function buildRules(RulesChecker $rules)
+	public function buildRules(RulesChecker $rules): RulesChecker
 	{
 		$rules->add($rules->existsIn('student_id', 'Student'));
 		$rules->add($rules->existsIn('teacher_id', 'Teacher'));
@@ -75,12 +77,12 @@ class TeachingsTable
 		return $query->first();
 	}
 
-	protected function contain()
+	protected function contain(): array
 	{
 		return [ 'Student', 'Teacher', 'Skills', 'Started', 'Updated' ];
 	}
 
-	protected function orderBy()
+	protected function orderBy(): array
 	{
 		return	[ 'student_id' => 'ASC' ];
 	}

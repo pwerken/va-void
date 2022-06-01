@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 class SpellsController
@@ -7,7 +9,7 @@ class SpellsController
 
 	protected $searchFields = [ 'Spells.name', 'Spells.short' ];
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -17,5 +19,4 @@ class SpellsController
 		$this->mapMethod('index',  [ 'player' ]);
 		$this->mapMethod('view',   [ 'player' ]);
 	}
-
 }

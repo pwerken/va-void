@@ -1,15 +1,16 @@
 <?php
 namespace App\Routing\Middleware;
 
-use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class PlinChinMiddleware
+class PlinChinMiddleware implements MiddlewareInterface
 {
 
-	public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
+	public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
 	{
 		$controller = $request->getParam('controller');
 		$action = $request->getParam('action');
@@ -29,7 +30,6 @@ class PlinChinMiddleware
 			$request = $request->withParam('pass', $pass);
 		}
 
-		return $next($request, $response);
+		return $handler->handle($request);
 	}
-
 }

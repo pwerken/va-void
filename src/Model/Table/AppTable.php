@@ -1,8 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
+use ArrayObject;
 use Cake\Datasource\EntityInterface;
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
@@ -11,12 +14,12 @@ abstract class AppTable
 	extends Table
 {
 
-	public function initialize(array $config)
+	public function initialize(array $config): void
 	{
 		parent::initialize($config);
 
 		$this->addBehavior('Timestamp');
-		$this->addBehavior('CreatorModifier');
+#		$this->addBehavior('CreatorModifier');
 	}
 
 	public function findWithContain(Query $query, array $options = [])
@@ -28,12 +31,12 @@ abstract class AppTable
 		return $query;
 	}
 
-	public function beforeDelete(Event $event, EntityInterface $entity, $options)
+	public function beforeDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
 	{
-		TableRegistry::get('history')->logDeletion($entity);
+		TableRegistry::get('History')->logDeletion($entity);
 	}
 
-	public function beforeSave(Event $event, EntityInterface $entity, $options)
+	public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
 	{
 		if($entity->isNew())
 			return;
@@ -43,10 +46,10 @@ abstract class AppTable
 		&& count($entity->getDirty()) == 2)
 			return;
 
-		TableRegistry::get('history')->logChange($entity);
+		TableRegistry::get('History')->logChange($entity);
 	}
 
-	public function beforeFind(Event $event, Query $query, $options, $primary)
+	public function beforeFind(EventInterface $event, Query $query, ArrayObject $options, bool $primary): Query
 	{
 		if($query->clause('limit') == 1)
 			return $query;
@@ -75,16 +78,17 @@ abstract class AppTable
 		return $query;
 	}
 
-	protected function contain()
+	protected function contain(): array
 	{
 		return [ ];
 	}
 
-	protected function orderBy() {
+	protected function orderBy(): array
+	{
 		return [ ];
 	}
 
-	protected function touchEntity($model, $id)
+	protected function touchEntity($model, $id): void
 	{
 		$table = TableRegistry::get($model);
 		$entity = $table->get($id);

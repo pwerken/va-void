@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\View;
 
 use App\Lammy\LammyCard;
@@ -19,7 +21,7 @@ class PdfView
 
 	static private $LAMMIES_Y = 6;  // nr's of lammies that fit on one page
 
-	public function render($view = null, $layout = null)
+	public function render(?string $view = null, $layout = null): string
 	{
 		$this->setLayout('pdf');
 

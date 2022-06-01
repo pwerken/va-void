@@ -1,15 +1,18 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
+use ArrayObject;
 use Cake\Datasource\EntityInterface;
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\Validation\Validator;
 
 class CharactersSpellsTable
 	extends AppTable
 {
 
-	public function initialize(array $config)
+	public function initialize(array $config): void
 	{
 		parent::initialize($config);
 
@@ -19,17 +22,17 @@ class CharactersSpellsTable
 		$this->belongsTo('Spells');
 	}
 
-	public function afterDelete(Event $event, EntityInterface $entity, $options)
+	public function afterDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
 	{
 		$this->touchEntity('Characters', $entity->character_id);
 	}
 
-	public function afterSave(Event $event, EntityInterface $entity, $options)
+	public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
 	{
 		$this->touchEntity('Characters', $entity->character_id);
 	}
 
-	public function validationDefault(Validator $validator)
+	public function validationDefault(Validator $validator): Validator
 	{
 		$validator->notEmpty('character_id');
 		$validator->notEmpty('spell_id');
@@ -46,12 +49,12 @@ class CharactersSpellsTable
 		return $validator;
 	}
 
-	protected function contain()
+	protected function contain(): array
 	{
 		return [ 'Characters', 'Spells' ];
 	}
 
-	protected function orderBy()
+	protected function orderBy(): array
 	{
 		return [ 'level' => 'DESC' ];
 	}

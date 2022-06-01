@@ -1,9 +1,12 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
+use ArrayObject;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\ORM\Query;
 use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
@@ -39,20 +42,15 @@ class LammiesTable
 		return $query;
 	}
 
-	public function beforeDelete(Event $event, EntityInterface $entity, $options)
+	public function beforeDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
 	{
 	}
 
-	public function beforeSave(Event $event, EntityInterface $entity, $options)
+	public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
 	{
 	}
 
-	protected function orderBy()
-	{
-		return [ 'id' => 'ASC' ];
-	}
-
-	public function validationDefault(Validator $validator)
+	public function validationDefault(Validator $validator): Validator
 	{
 		$validator->allowEmpty('id', 'create');
 		$validator->notEmpty('entity');
@@ -74,6 +72,11 @@ class LammiesTable
 		return $validator;
 	}
 
+	protected function orderBy(): array
+	{
+		return [ 'id' => 'ASC' ];
+	}
+
 	public function setStatuses(ResultSet $set, $status)
 	{
 		foreach($set as $lammy) {
@@ -81,5 +84,4 @@ class LammiesTable
 			$this->save($lammy);
 		}
 	}
-
 }

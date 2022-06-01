@@ -1,11 +1,13 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 class CharactersSpellsController
 	extends AppController
 {
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 

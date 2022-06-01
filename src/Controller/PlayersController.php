@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Utility\AuthState;
@@ -13,7 +15,7 @@ class PlayersController
 		, 'Players.last_name'
 		];
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -69,5 +71,4 @@ class PlayersController
 		$this->request = $this->request->withoutData('plin');
 		$this->Crud->execute();
 	}
-
 }

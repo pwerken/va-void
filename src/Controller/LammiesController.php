@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\View\PdfView;
@@ -12,7 +14,7 @@ class LammiesController
 		[ 'Lammies.status'
 		];
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -127,5 +129,4 @@ class LammiesController
 			$this->set('double', $double);
 		});
 	}
-
 }

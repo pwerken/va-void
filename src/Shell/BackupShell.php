@@ -1,17 +1,19 @@
 <?php
 namespace App\Shell;
 
-use App\Model\Table\AppTable;
+use Cake\Console\ConsoleOptionParser;
 use Cake\Core\Configure;
 use Cake\Datasource\ConnectionManager;
 use Cake\Filesystem\Folder;
 use Cake\Utility\Hash;
 
-class BackupShell extends AppShell
+use App\Model\Table\AppTable;
+
+class BackupShell extends App
 {
 	protected $config;
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -153,7 +155,7 @@ class BackupShell extends AppShell
 		$this->out('Done');
 	}
 
-	public function getOptionParser()
+	public function getOptionParser(): ConsoleOptionParser
 	{
 		$parser = parent::getOptionParser();
 		$parser->setDescription('Shell to handle database backups.');

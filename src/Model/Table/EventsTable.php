@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
 use Cake\ORM\RulesChecker;
@@ -8,12 +10,7 @@ class EventsTable
 	extends AppTable
 {
 
-	protected function orderBy()
-	{
-		return	[ 'id' => 'ASC' ];
-	}
-
-	public function validationDefault(Validator $validator)
+	public function validationDefault(Validator $validator): Validator
 	{
 		$validator->allowEmpty('id', 'create');
 		$validator->notEmpty('name');
@@ -25,9 +22,14 @@ class EventsTable
 		return $validator;
 	}
 
-	public function buildRules(RulesChecker $rules)
+	public function buildRules(RulesChecker $rules): RulesChecker
 	{
 		$rules->add($rules->isUnique(['name'], 'This name is already in use.'));
 		return $rules;
+	}
+
+	protected function orderBy(): array
+	{
+		return	[ 'id' => 'ASC' ];
 	}
 }

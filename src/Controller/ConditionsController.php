@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Utility\AuthState;
@@ -14,7 +16,7 @@ class ConditionsController
 		, 'Conditions.notes'
 		];
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -75,14 +77,14 @@ class ConditionsController
 		$this->QueueLammy->execute();
 	}
 
-	protected function wantAuthUser()
+	protected function wantAuthUser(): ?int
 	{
 		$plin = parent::wantAuthUser();
-		if($plin !== false)
+		if (!is_null($plin))
 			return $plin;
 
 		$coin = $this->request->getParam('coin');
-		if($coin === false)
+		if (is_null($coin))
 			return NULL;
 
 		$this->loadModel('CharactersConditions');

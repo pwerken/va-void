@@ -1,7 +1,7 @@
 <?php
-namespace App\Model\Table;
+declare(strict_types=1);
 
-use App\Model\Entity\History;
+namespace App\Model\Table;
 
 use Cake\Database\Expression\QueryExpression;
 use Cake\Database\Type\DateTimeType;
@@ -9,32 +9,34 @@ use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
+use App\Model\Entity\History;
+
 class HistoryTable
 	extends AppTable
 {
 
-	public function initialize(array $config)
+	public function initialize(array $config): void
 	{
 		parent::initialize($config);
 
 		$this->belongsTo('Characters')->setForeignKey('key1')
-			->setConditions(['history.entity LIKE' => 'Characters%']);
+			->setConditions(['History.entity LIKE' => 'Characters%']);
 		$this->belongsTo('Conditions')->setForeignKey('key2')
-			->setConditions(['history.entity' => 'CharactersCondition']);
+			->setConditions(['History.entity' => 'CharactersCondition']);
 		$this->belongsTo('Powers')->setForeignKey('key2')
-			->setConditions(['history.entity' => 'CharactersPower']);
+			->setConditions(['History.entity' => 'CharactersPower']);
 		$this->belongsTo('Skills')->setForeignKey('key2')
-			->setConditions(['history.entity' => 'CharactersSkill']);
+			->setConditions(['History.entity' => 'CharactersSkill']);
 		$this->belongsTo('Spells')->setForeignKey('key2')
-			->setConditions(['history.entity' => 'CharactersSpell']);
+			->setConditions(['History.entity' => 'CharactersSpell']);
 
 		$this->belongsTo('Attributes')->setForeignKey('key1')
-			->setConditions(['history.entity' => 'AttributesItem']);
+			->setConditions(['History.entity' => 'AttributesItem']);
 		$this->belongsTo('Items')->setForeignKey('key2')
-			->setConditions(['history.entity LIKE' => '%sItem']);
+			->setConditions(['History.entity LIKE' => '%sItem']);
 	}
 
-	public function validationDefault(Validator $validator)
+	public function validationDefault(Validator $validator): Validator
 	{
 		$validator->allowEmpty('id', 'create');
 		$validator->notEmpty('entity');
@@ -55,7 +57,7 @@ class HistoryTable
 		return $validator;
 	}
 
-	protected function orderBy()
+	protected function orderBy(): array
 	{
 		return [ 'modified' => 'DESC', 'id' => 'DESC' ];
 	}
@@ -64,7 +66,7 @@ class HistoryTable
 	{
 		$lastChange = $this->logChange($entity);
 
-		$history = $this->newEntity();
+		$history = $this->newEntity([]);
 		$history->set('entity', $lastChange->get('entity'));
 		$history->set('key1', $lastChange->get('key1'));
 		$history->set('key2', $lastChange->get('key2'));
@@ -146,7 +148,7 @@ class HistoryTable
 
 	private function getPlayerHistory($plin)
 	{
-		$entity = TableRegistry::get('players')->find()
+		$entity = TableRegistry::get('Players')->find()
 			->where(['id' => $plin])
 			->first();
 
@@ -165,9 +167,9 @@ class HistoryTable
 
 	private function getCharacterHistory($plin, $chin)
 	{
-		$entity = TableRegistry::get('characters')->find('withContain')
-			->where(['characters.player_id' => $plin])
-			->where(['characters.chin' => $chin])
+		$entity = TableRegistry::get('Characters')->find('withContain')
+			->where(['Characters.player_id' => $plin])
+			->where(['Characters.chin' => $chin])
 			->first();
 
 		if(is_null($entity))
@@ -199,8 +201,8 @@ class HistoryTable
 
 	private function getConditionHistory($coin)
 	{
-		$entity = TableRegistry::get('conditions')->find('withContain')
-			->where(['conditions.id' => $coin])
+		$entity = TableRegistry::get('Conditions')->find('withContain')
+			->where(['Conditions.id' => $coin])
 			->first();
 
 		if(is_null($entity))
@@ -208,9 +210,9 @@ class HistoryTable
 
 		$list = $this->find()
 			->where(function(QueryExpression $exp) use ($coin) {
-				$a = $exp->and_(['entity' => 'Condition', 'key1' => $coin]);
-				$b = $exp->and_(['entity' => 'CharactersCondition', 'key2' => $coin]);
-				return $exp->or_([$a, $b]);
+				$a = $exp->and(['entity' => 'Condition', 'key1' => $coin]);
+				$b = $exp->and(['entity' => 'CharactersCondition', 'key2' => $coin]);
+				return $exp->or([$a, $b]);
 			})
 			->contain(['Characters'])
 			->all()->toList();
@@ -226,8 +228,8 @@ class HistoryTable
 
 	private function getPowerHistory($poin)
 	{
-		$entity = TableRegistry::get('powers')->find('withContain')
-			->where(['powers.id' => $poin])
+		$entity = TableRegistry::get('Powers')->find('withContain')
+			->where(['Powers.id' => $poin])
 			->first();
 
 		if(is_null($entity))
@@ -235,9 +237,9 @@ class HistoryTable
 
 		$list = $this->find()
 			->where(function(QueryExpression $exp) use ($poin) {
-				$a = $exp->and_(['entity' => 'Power', 'key1' => $poin]);
-				$b = $exp->and_(['entity' => 'CharactersPower', 'key2' => $poin]);
-				return $exp->or_([$a, $b]);
+				$a = $exp->and(['entity' => 'Power', 'key1' => $poin]);
+				$b = $exp->and(['entity' => 'CharactersPower', 'key2' => $poin]);
+				return $exp->or([$a, $b]);
 			})
 			->contain(['Characters'])
 			->all()->toList();
@@ -253,8 +255,8 @@ class HistoryTable
 
 	private function getItemHistory($itin)
 	{
-		$entity = TableRegistry::get('items')->find('withContain')
-			->where(['items.id' => $itin])
+		$entity = TableRegistry::get('Items')->find('withContain')
+			->where(['Items.id' => $itin])
 			->first();
 
 		if(is_null($entity))
@@ -262,9 +264,9 @@ class HistoryTable
 
 		$list = $this->find()
 			->where(function(QueryExpression $exp) use ($itin) {
-				$a = $exp->and_(['entity' => 'Item', 'key1' => $itin]);
-				$b = $exp->and_(['entity' => 'AttributesItem', 'key2' => $itin]);
-				return $exp->or_([$a, $b]);
+				$a = $exp->and(['entity' => 'Item', 'key1' => $itin]);
+				$b = $exp->and(['entity' => 'AttributesItem', 'key2' => $itin]);
+				return $exp->or([$a, $b]);
 			})
 			->contain(['Attributes'])
 			->all()->toList();

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Utility\AuthState;
@@ -7,7 +9,7 @@ class CharactersPowersController
 	extends AppController
 {
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -51,12 +53,11 @@ class CharactersPowersController
 		$this->Crud->execute();
 	}
 
-	protected function wantAuthUser()
+	protected function wantAuthUser(): ?int
 	{
 		$plin = parent::wantAuthUser();
-		if($plin !== false) {
+		if (!is_null($plin))
 			return $plin;
-		}
 
 		$poin = $this->request->getParam('poin');
 		$data = $this->CharactersPowers->find()

@@ -1,23 +1,26 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
+
+use Cake\ORM\RulesChecker;
+use Cake\Validation\Validator;
 
 use App\Utility\AuthState;
 use App\Model\Entity\Player;
-use Cake\ORM\RulesChecker;
-use Cake\Validation\Validator;
 
 class PlayersTable
 	extends AppTable
 {
 
-	public function initialize(array $config)
+	public function initialize(array $config): void
 	{
 		parent::initialize($config);
 
 		$this->hasMany('Characters');
 	}
 
-	public function validationDefault(Validator $validator)
+	public function validationDefault(Validator $validator): Validator
 	{
 		$validator->notEmpty('id');
 		$validator->allowEmpty('password');
@@ -35,7 +38,7 @@ class PlayersTable
 		return $validator;
 	}
 
-	public function buildRules(RulesChecker $rules)
+	public function buildRules(RulesChecker $rules): RulesChecker
 	{
 		$rules->add([$this, 'ruleRoleChange']);
 		$rules->addDelete([$this, 'ruleNoCharacters']);
@@ -78,12 +81,12 @@ class PlayersTable
 		return true;
 	}
 
-	protected function contain()
+	protected function contain(): array
 	{
 		return [ 'Characters' ];
 	}
 
-	protected function orderBy()
+	protected function orderBy(): array
 	{
 		return	[ 'id' => 'ASC' ];
 	}

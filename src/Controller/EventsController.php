@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 class EventsController
@@ -7,7 +9,7 @@ class EventsController
 
 	protected $searchFields = [ 'Events.name' ];
 
-	public function initialize()
+	public function initialize(): void
 	{
 		parent::initialize();
 
@@ -27,5 +29,4 @@ class EventsController
 					->select(['Events.id', 'Events.name'], true);
 		$this->doRawIndex($query, 'Event', '/events/');
 	}
-
 }
