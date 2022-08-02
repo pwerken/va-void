@@ -36,7 +36,7 @@ class TeachingsFixture
 			]
 		];
 
-	public function init()
+	public function init(): void
 	{
 		$this->records =
 			[	[ 'student_id' => 1

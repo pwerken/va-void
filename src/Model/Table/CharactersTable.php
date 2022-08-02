@@ -12,185 +12,185 @@ use Cake\Validation\Validator;
 use App\Model\Entity\Character;
 
 class CharactersTable
-	extends AppTable
+    extends AppTable
 {
 
-	public function initialize(array $config): void
-	{
-		parent::initialize($config);
+    public function initialize(array $config): void
+    {
+        parent::initialize($config);
 
-		$this->belongsTo('Players');
-		$this->belongsTo('Factions')->setProperty('faction_object');
-		$this->belongsTo('Believes')->setProperty('belief_object');
-		$this->belongsTo('Groups')->setProperty('group_object');
-		$this->belongsTo('Worlds')->setProperty('world_object');
+        $this->belongsTo('Players');
+        $this->belongsTo('Factions')->setProperty('faction_object');
+        $this->belongsTo('Believes')->setProperty('belief_object');
+        $this->belongsTo('Groups')->setProperty('group_object');
+        $this->belongsTo('Worlds')->setProperty('world_object');
 
-		$this->hasMany('Items');
-		$this->hasMany('CharactersConditions')->setProperty('conditions');
-		$this->hasMany('CharactersPowers')->setProperty('powers');
-		$this->hasMany('CharactersSkills')->setProperty('skills');
-		$this->hasMany('CharactersSpells')->setProperty('spells');
+        $this->hasMany('Items');
+        $this->hasMany('CharactersConditions')->setProperty('conditions');
+        $this->hasMany('CharactersPowers')->setProperty('powers');
+        $this->hasMany('CharactersSkills')->setProperty('skills');
+        $this->hasMany('CharactersSpells')->setProperty('spells');
 
-		$this->hasMany('MyStudents', ['className' => 'Teachings'])
-				->setForeignKey('teacher_id')->setProperty('students');
-		$this->hasOne('MyTeacher', ['className' => 'Teachings'])
-				->setForeignKey('student_id')->setProperty('teacher');
-	}
+        $this->hasMany('MyStudents', ['className' => 'Teachings'])
+                ->setForeignKey('teacher_id')->setProperty('students');
+        $this->hasOne('MyTeacher', ['className' => 'Teachings'])
+                ->setForeignKey('student_id')->setProperty('teacher');
+    }
 
-	public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
-	{
-		if($entity->isDirty('status') && $entity->status == 'active') {
-			$chars = $this->findByPlayerId($entity->player_id);
-			foreach($chars as $char) {
-				if($char->id == $entity->id || $char->status != 'active') {
-					continue;
-				}
-				$char->status = 'inactive';
-				$this->save($char);
-			}
-		}
-	}
+    public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    {
+        if($entity->isDirty('status') && $entity->status == 'active') {
+            $chars = $this->findByPlayerId($entity->player_id);
+            foreach($chars as $char) {
+                if($char->id == $entity->id || $char->status != 'active') {
+                    continue;
+                }
+                $char->status = 'inactive';
+                $this->save($char);
+            }
+        }
+    }
 
-	public function validationDefault(Validator $validator): Validator
-	{
-		$validator->allowEmpty('id', 'create');
-		$validator->notEmpty('player_id');
-		$validator->notEmpty('chin');
-		$validator->notEmpty('name');
-		$validator->notEmpty('xp');
-		$validator->notEmpty('faction_id');
-		$validator->notEmpty('belief_id');
-		$validator->notEmpty('group_id');
-		$validator->notEmpty('world_id');
-		$validator->allowEmpty('soulpath');
-		$validator->notEmpty('status');
-		$validator->allowEmpty('referee_notes');
-		$validator->allowEmpty('notes');
+    public function validationDefault(Validator $validator): Validator
+    {
+        $validator->allowEmpty('id', 'create');
+        $validator->notEmpty('player_id');
+        $validator->notEmpty('chin');
+        $validator->notEmpty('name');
+        $validator->notEmpty('xp');
+        $validator->notEmpty('faction_id');
+        $validator->notEmpty('belief_id');
+        $validator->notEmpty('group_id');
+        $validator->notEmpty('world_id');
+        $validator->allowEmpty('soulpath');
+        $validator->notEmpty('status');
+        $validator->allowEmpty('referee_notes');
+        $validator->allowEmpty('notes');
 
-		// regex for xp validation
-		$xp_regex = '/^[0-9]*(?:[.,](?:[05][0]?|[27]5))?$/';
+        // regex for xp validation
+        $xp_regex = '/^[0-9]*(?:[.,](?:[05][0]?|[27]5))?$/';
 
-		$validator->add('id', 'valid', ['rule' => 'numeric']);
-		$validator->add('player_id', 'valid', ['rule' => 'numeric']);
-		$validator->add('chin', 'valid', ['rule' => 'naturalNumber']);
-		$validator->add('xp', 'valid', ['rule' => ['custom', $xp_regex]]);
-		$validator->add('faction_id', 'valid', ['rule' => 'numeric']);
-		$validator->add('belief_id', 'valid', ['rule' => 'numeric']);
-		$validator->add('group_id', 'valid', ['rule' => 'numeric']);
-		$validator->add('world_id', 'valid', ['rule' => 'numeric']);
-		$validator->add('soulpath', 'valid', ['rule' => ['inList', Character::soulpathValues()]]);
-		$validator->add('status', 'valid', ['rule' => ['inList', Character::statusValues()]]);
+        $validator->add('id', 'valid', ['rule' => 'numeric']);
+        $validator->add('player_id', 'valid', ['rule' => 'numeric']);
+        $validator->add('chin', 'valid', ['rule' => 'naturalNumber']);
+        $validator->add('xp', 'valid', ['rule' => ['custom', $xp_regex]]);
+        $validator->add('faction_id', 'valid', ['rule' => 'numeric']);
+        $validator->add('belief_id', 'valid', ['rule' => 'numeric']);
+        $validator->add('group_id', 'valid', ['rule' => 'numeric']);
+        $validator->add('world_id', 'valid', ['rule' => 'numeric']);
+        $validator->add('soulpath', 'valid', ['rule' => ['inList', Character::soulpathValues()]]);
+        $validator->add('status', 'valid', ['rule' => ['inList', Character::statusValues()]]);
 
-		$validator->requirePresence('player_id', 'create');
-		$validator->requirePresence('chin', 'create');
-		$validator->requirePresence('name', 'create');
+        $validator->requirePresence('player_id', 'create');
+        $validator->requirePresence('chin', 'create');
+        $validator->requirePresence('name', 'create');
 
-		return $validator;
-	}
+        return $validator;
+    }
 
-	public function plinChin($plin, $chin)
-	{
-		return $this->findByPlayerIdAndChin($plin, $chin)->firstOrFail();
-	}
+    public function plinChin($plin, $chin)
+    {
+        return $this->findByPlayerIdAndChin($plin, $chin)->firstOrFail();
+    }
 
-	public function buildRules(RulesChecker $rules): RulesChecker
-	{
+    public function buildRules(RulesChecker $rules): RulesChecker
+    {
 
-		$rules->add($rules->isUnique(['player_id', 'chin'],
-			'This plin & chin combination is already in use.'));
+        $rules->add($rules->isUnique(['player_id', 'chin'],
+            'This plin & chin combination is already in use.'));
 
-		$rules->add($rules->existsIn('faction_id', 'Factions'));
-		$rules->add($rules->existsIn('group_id', 'Groups'));
-		$rules->add($rules->existsIn('belief_id', 'Believes'));
-		$rules->add($rules->existsIn('world_id', 'Worlds'));
+        $rules->add($rules->existsIn('faction_id', 'Factions'));
+        $rules->add($rules->existsIn('group_id', 'Groups'));
+        $rules->add($rules->existsIn('belief_id', 'Believes'));
+        $rules->add($rules->existsIn('world_id', 'Worlds'));
 
-		$rules->addDelete([$this, 'ruleNoConditions']);
-		$rules->addDelete([$this, 'ruleNoItems']);
-		$rules->addDelete([$this, 'ruleNoPowers']);
-		$rules->addDelete([$this, 'ruleNoSkills']);
-		$rules->addDelete([$this, 'ruleNoSpells']);
+        $rules->addDelete([$this, 'ruleNoConditions']);
+        $rules->addDelete([$this, 'ruleNoItems']);
+        $rules->addDelete([$this, 'ruleNoPowers']);
+        $rules->addDelete([$this, 'ruleNoSkills']);
+        $rules->addDelete([$this, 'ruleNoSpells']);
 
-		return $rules;
-	}
+        return $rules;
+    }
 
-	public function ruleNoConditions($entity, $options)
-	{
-		$query = $this->CharactersConditions->find();
-		$query->where(['character_id' => $entity->id]);
+    public function ruleNoConditions($entity, $options)
+    {
+        $query = $this->CharactersConditions->find();
+        $query->where(['character_id' => $entity->id]);
 
-		if($query->count() > 0) {
-			$entity->errors('conditions', 'reference(s) present');
-			return false;
-		}
+        if($query->count() > 0) {
+            $entity->errors('conditions', 'reference(s) present');
+            return false;
+        }
 
-		return true;
-	}
-	public function ruleNoItems($entity, $options)
-	{
-		$query = $this->Items->find();
-		$query->where(['character_id' => $entity->id]);
+        return true;
+    }
+    public function ruleNoItems($entity, $options)
+    {
+        $query = $this->Items->find();
+        $query->where(['character_id' => $entity->id]);
 
-		if($query->count() > 0) {
-			$entity->errors('items', 'reference(s) present');
-			return false;
-		}
+        if($query->count() > 0) {
+            $entity->errors('items', 'reference(s) present');
+            return false;
+        }
 
-		return true;
-	}
-	public function ruleNoPowers($entity, $options)
-	{
-		$query = $this->CharactersPowers->find();
-		$query->where(['character_id' => $entity->id]);
+        return true;
+    }
+    public function ruleNoPowers($entity, $options)
+    {
+        $query = $this->CharactersPowers->find();
+        $query->where(['character_id' => $entity->id]);
 
-		if($query->count() > 0) {
-			$entity->errors('powers', 'reference(s) present');
-			return false;
-		}
+        if($query->count() > 0) {
+            $entity->errors('powers', 'reference(s) present');
+            return false;
+        }
 
-		return true;
-	}
-	public function ruleNoSkills($entity, $options)
-	{
-		$query = $this->CharactersSkills->find();
-		$query->where(['character_id' => $entity->id]);
+        return true;
+    }
+    public function ruleNoSkills($entity, $options)
+    {
+        $query = $this->CharactersSkills->find();
+        $query->where(['character_id' => $entity->id]);
 
-		if($query->count() > 0) {
-			$entity->errors('skills', 'reference(s) present');
-			return false;
-		}
+        if($query->count() > 0) {
+            $entity->errors('skills', 'reference(s) present');
+            return false;
+        }
 
-		return true;
-	}
-	public function ruleNoSpells($entity, $options)
-	{
-		$query = $this->CharactersSpells->find();
-		$query->where(['character_id' => $entity->id]);
+        return true;
+    }
+    public function ruleNoSpells($entity, $options)
+    {
+        $query = $this->CharactersSpells->find();
+        $query->where(['character_id' => $entity->id]);
 
-		if($query->count() > 0) {
-			$entity->errors('spells', 'reference(s) present');
-			return false;
-		}
+        if($query->count() > 0) {
+            $entity->errors('spells', 'reference(s) present');
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	protected function contain(): array
-	{
-		return
-			[ 'Believes', 'Factions', 'Groups', 'Players', 'Worlds', 'Items'
-			, 'CharactersConditions.Conditions'
-			, 'CharactersPowers.Powers'
-			, 'CharactersSkills.Skills.Manatypes'
-			, 'CharactersSpells.Spells'
-			, 'MyTeacher'  =>	[ 'Teacher', 'Student', 'Skills.Manatypes'
-								, 'Started', 'Updated' ]
-			, 'MyStudents' =>	[ 'Teacher', 'Student', 'Skills.Manatypes'
-								, 'Started', 'Updated' ]
-			];
-	}
+    protected function contain(): array
+    {
+        return
+            [ 'Believes', 'Factions', 'Groups', 'Players', 'Worlds', 'Items'
+            , 'CharactersConditions.Conditions'
+            , 'CharactersPowers.Powers'
+            , 'CharactersSkills.Skills.Manatypes'
+            , 'CharactersSpells.Spells'
+            , 'MyTeacher'  =>   [ 'Teacher', 'Student', 'Skills.Manatypes'
+                                , 'Started', 'Updated' ]
+            , 'MyStudents' =>   [ 'Teacher', 'Student', 'Skills.Manatypes'
+                                , 'Started', 'Updated' ]
+            ];
+    }
 
-	protected function orderBy(): array
-	{
-		return [ 'player_id' => 'ASC', 'chin' => 'DESC' ];
-	}
+    protected function orderBy(): array
+    {
+        return [ 'player_id' => 'ASC', 'chin' => 'DESC' ];
+    }
 }

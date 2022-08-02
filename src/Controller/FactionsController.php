@@ -4,29 +4,22 @@ declare(strict_types=1);
 namespace App\Controller;
 
 class FactionsController
-	extends AppController
+    extends AppController
 {
 
-	protected $searchFields = [ 'Factions.name' ];
+    public function index()
+    {
+        $query = $this->Factions->find();
+#       $this->Authorization->applyScope($query);
 
-	public function initialize(): void
-	{
-		parent::initialize();
+        $this->doRawIndex($query, 'Factions', '/factions/', 'id');
+    }
 
-		$this->mapMethod('add',    [ 'super'  ]);
-		$this->mapMethod('delete', [ 'super'  ]);
-		$this->mapMethod('edit',   [ 'super'  ]);
-		$this->mapMethod('index',  [ 'player' ]);
-		$this->mapMethod('view',   [ 'player' ], true);
-	}
+    public function view($id)
+    {
+        $belief = $this->Factions->findWithContainById($id)->first();
+#        $this->Authorization->authorize($belief);
 
-	public function index()
-	{
-		if($this->setResponseModified())
-			return $this->response;
-
-		$query = $this->Factions->find()
-					->select(['Factions.id', 'Factions.name'], true);
-		$this->doRawIndex($query, 'Faction', '/factions/');
-	}
+        $this->set('_serialize', $belief);
+    }
 }

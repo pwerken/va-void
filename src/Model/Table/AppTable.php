@@ -11,88 +11,91 @@ use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 
 abstract class AppTable
-	extends Table
+    extends Table
 {
 
-	public function initialize(array $config): void
-	{
-		parent::initialize($config);
+    public function initialize(array $config): void
+    {
+        parent::initialize($config);
 
-		$this->addBehavior('Timestamp');
-#		$this->addBehavior('CreatorModifier');
-	}
+        $this->addBehavior('Timestamp');
+#       $this->addBehavior('CreatorModifier');
+    }
 
-	public function findWithContain(Query $query, array $options = [])
-	{
-		$contain = $this->contain();
-		if(!empty($contain))
-			$query->contain($contain);
+    public function findWithContain(Query $query = null, array $options = [])
+    {
+        if(is_null($query))
+            $query = $this->find('all', $options);
 
-		return $query;
-	}
+        $contain = $this->contain();
+        if(!empty($contain))
+            $query->contain($contain);
 
-	public function beforeDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
-	{
-		TableRegistry::get('History')->logDeletion($entity);
-	}
+        return $query;
+    }
 
-	public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
-	{
-		if($entity->isNew())
-			return;
+    public function beforeDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    {
+        TableRegistry::get('History')->logDeletion($entity);
+    }
 
-		if($entity->isDirty('modified') && $entity->isDirty('modifier_id')
-		&& $entity->get('modifier_id') == $entity->getOriginal('modifier_id')
-		&& count($entity->getDirty()) == 2)
-			return;
+    public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    {
+        if($entity->isNew())
+            return;
 
-		TableRegistry::get('History')->logChange($entity);
-	}
+        if($entity->isDirty('modified') && $entity->isDirty('modifier_id')
+        && $entity->get('modifier_id') == $entity->getOriginal('modifier_id')
+        && count($entity->getDirty()) == 2)
+            return;
 
-	public function beforeFind(EventInterface $event, Query $query, ArrayObject $options, bool $primary): Query
-	{
-		if($query->clause('limit') == 1)
-			return $query;
+        TableRegistry::get('History')->logChange($entity);
+    }
 
-		foreach($this->orderBy() as $field => $ord) {
-			$f = $this->aliasField($field);
-			$query->order([$this->aliasField($field) => $ord]);
-		}
+    public function beforeFind(EventInterface $event, Query $query, ArrayObject $options, bool $primary): Query
+    {
+        if($query->clause('limit') == 1)
+            return $query;
 
-		if(!is_array($this->getPrimaryKey()))
-			return $query;
+        foreach($this->orderBy() as $field => $ord) {
+            $f = $this->aliasField($field);
+            $query->order([$this->aliasField($field) => $ord]);
+        }
 
-		$query->sql();	// force evaluation of internal state/objects
-		foreach($query->clause('join') as $join) {
-			if(!$this->hasAssociation($join['table']))
-				continue;
+        if(!is_array($this->getPrimaryKey()))
+            return $query;
 
-			$table = TableRegistry::get($join['table']);
-			$table->setAlias($join['alias']);
+        $query->sql();  // force evaluation of internal state/objects
+        foreach($query->clause('join') as $join) {
+            if(!$this->hasAssociation($join['table']))
+                continue;
 
-			foreach($table->orderBy() as $field => $ord) {
-				$query->order([$table->aliasField($field) => $ord]);
-			}
-		}
+            $table = TableRegistry::get($join['table']);
+            $table->setAlias($join['alias']);
 
-		return $query;
-	}
+            foreach($table->orderBy() as $field => $ord) {
+                $query->order([$table->aliasField($field) => $ord]);
+            }
+        }
 
-	protected function contain(): array
-	{
-		return [ ];
-	}
+        return $query;
+    }
 
-	protected function orderBy(): array
-	{
-		return [ ];
-	}
+    protected function contain(): array
+    {
+        return [ ];
+    }
 
-	protected function touchEntity($model, $id): void
-	{
-		$table = TableRegistry::get($model);
-		$entity = $table->get($id);
-		$table->touch($entity);
-		$table->save($entity);
-	}
+    protected function orderBy(): array
+    {
+        return [ ];
+    }
+
+    protected function touchEntity($model, $id): void
+    {
+        $table = TableRegistry::get($model);
+        $entity = $table->get($id);
+        $table->touch($entity);
+        $table->save($entity);
+    }
 }

@@ -3,70 +3,53 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Utility\AuthState;
-
 class CharactersPowersController
-	extends AppController
+    extends AppController
 {
 
-	public function initialize(): void
-	{
-		parent::initialize();
+    public function charactersIndex($char_id)
+    {
+        $this->parent = $this->loadModel('Characters')->get($char_id);
+        if (is_null($this->parent)) {
+            throw new NotFoundException();
+#        $this->Authorization->authorize($this->parent, 'view');
+        }
 
-		$this->loadComponent('QueueLammy');
+        $query = $this->CharactersPowers->findWithContain();
+        $query->andWhere(['CharactersPowers.character_id' => $char_id]);
+#       $this->Authorization->applyScope($query);
 
-		$this->mapMethod('charactersAdd',    [ 'referee'           ]);
-		$this->mapMethod('charactersDelete', [ 'referee'           ]);
-		$this->mapMethod('charactersEdit',   [ 'referee'           ]);
-		$this->mapMethod('charactersIndex',  [ 'players'           ], true);
-		$this->mapMethod('charactersView',   [ 'read-only', 'user' ], true);
+        $this->set('parent', $this->parent);
+        $this->set('_serialize', $query->all());
+    }
 
-		$this->mapMethod('powersIndex',      [ 'read-only', 'user' ], true);
+    public function charactersView($char_id, $poin)
+    {
+        $query = $this->CharactersPowers->findWithContain();
+        $query->andWhere(['CharactersPowers.character_id' => $char_id]);
+        $query->andWhere(['CharactersPowers.power_id' => $poin]);
+        $obj = $query->first();
+        if (is_null($obj)) {
+            throw new NotFoundException();
+        }
 
-		$this->Crud->mapAction('charactersQueue',
-			[ 'className' => 'Crud.View'
-			, 'auth' => [ 'referee' ]
-			, 'findMethod' => 'withContain'
-			]);
-	}
+#        $this->Authorization->authorize($obj);
+        $this->set('_serialize', $obj);
+    }
 
-	public function charactersAdd($char_id)
-	{
-		$this->request = $this->request->withData('character_id', $char_id);
-		$this->Crud->execute();
-	}
+    public function powersIndex($poin)
+    {
+        $this->parent = $this->loadModel('Powers')->get($poin);
+        if (is_null($this->parent)) {
+            throw new NotFoundException();
+        }
+#        $this->Authorization->authorize($this->parent, 'view');
 
-	public function charactersQueue($char_id, $poin)
-	{
-		$this->QueueLammy->execute();
-	}
+        $query = $this->CharactersPowers->findWithContain();
+        $query->andWhere(['CharactersPowers.power_id' => $poin]);
+#       $this->Authorization->applyScope($query);
 
-	public function powersIndex()
-	{
-		if(!AuthState::hasRole('read-only')) {
-			$this->Crud->on('beforePaginate', function ($event) {
-				$cond = ['Characters.player_id' => $this->Auth->user('id')];
-				$event->getSubject()->query->where($cond);
-			});
-		}
-
-		$this->Crud->execute();
-	}
-
-	protected function wantAuthUser(): ?int
-	{
-		$plin = parent::wantAuthUser();
-		if (!is_null($plin))
-			return $plin;
-
-		$poin = $this->request->getParam('poin');
-		$data = $this->CharactersPowers->find()
-					->enableHydration(false)
-					->select(['player_id' => 'Characters.player_id'])
-					->where(['CharactersPowers.power_id' => $poin])
-					->contain('Characters')
-					->first();
-
-		return isset($data['player_id']) ? $data['player_id'] : NULL;
-	}
+        $this->set('parent', $this->parent);
+        $this->set('_serialize', $query->all());
+    }
 }

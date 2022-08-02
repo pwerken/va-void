@@ -1,0 +1,13 @@
+<?php
+declare(strict_types=1);
+
+namespace App\Policy\Controller;
+
+class RootControllerPolicy
+    extends AppControllerPolicy
+{
+    public function root()
+    {
+        return true;
+    }
+}

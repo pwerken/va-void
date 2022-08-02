@@ -4,29 +4,22 @@ declare(strict_types=1);
 namespace App\Controller;
 
 class BelievesController
-	extends AppController
+    extends AppController
 {
 
-	protected $searchFields = [ 'Believes.name' ];
+    public function index()
+    {
+        $query = $this->Believes->find();
+#        $this->Authorization->applyScope($query);
 
-	public function initialize(): void
-	{
-		parent::initialize();
+        $this->doRawIndex($query, 'Believes', '/believes/', 'id');
+    }
 
-		$this->mapMethod('add',    [ 'referee'   ]);
-		$this->mapMethod('delete', [ 'super'     ]);
-		$this->mapMethod('edit',   [ 'infobalie' ]);
-		$this->mapMethod('index',  [ 'player'    ]);
-		$this->mapMethod('view',   [ 'player'    ]);
-	}
+    public function view($id)
+    {
+        $belief = $this->Believes->findWithContainById($id)->first();
+#        $this->Authorization->authorize($belief);
 
-	public function index()
-	{
-		if($this->setResponseModified())
-			return $this->response;
-
-		$query = $this->Believes->find()
-					->select(['Believes.id', 'Believes.name'], true);
-		$this->doRawIndex($query, 'Belief', '/believes/');
-	}
+        $this->set('_serialize', $belief);
+    }
 }

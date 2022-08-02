@@ -24,7 +24,7 @@ class WorldsFixture
 			]
 		];
 
-	public function init()
+	public function init(): void
 	{
 		$this->records =
 			[	[ 'id' => 1

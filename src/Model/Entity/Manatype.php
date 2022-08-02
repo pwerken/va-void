@@ -2,7 +2,7 @@
 namespace App\Model\Entity;
 
 class Manatype
-	extends AppEntity
+    extends AppEntity
 {
 
 }

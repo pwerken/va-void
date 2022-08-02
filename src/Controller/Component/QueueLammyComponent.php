@@ -1,8 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Component;
 
 use Cake\Controller\Component;
-use Cake\Event\Event;
 
 class QueueLammyComponent
 	extends Component
@@ -10,8 +11,6 @@ class QueueLammyComponent
 	public function execute()
 	{
 		$controller = $this->_registry->getController();
-		$controller->Crud->on('beforeRender', [$this, 'lammyBeforeRender']);
-		$controller->Crud->execute();
 	}
 
 	public function lammyBeforeRender(Event $event)

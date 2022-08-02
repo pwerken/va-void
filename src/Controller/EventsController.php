@@ -4,29 +4,22 @@ declare(strict_types=1);
 namespace App\Controller;
 
 class EventsController
-	extends AppController
+    extends AppController
 {
 
-	protected $searchFields = [ 'Events.name' ];
+    public function index()
+    {
+        $query = $this->Events->find();
+#       $this->Authorization->applyScope($query);
 
-	public function initialize(): void
-	{
-		parent::initialize();
+        $this->doRawIndex($query, 'Events', '/events/', 'id');
+    }
 
-		$this->mapMethod('add',    [ 'super'  ]);
-		$this->mapMethod('delete', [ 'super'  ]);
-		$this->mapMethod('edit',   [ 'super'  ]);
-		$this->mapMethod('index',  [ 'player' ]);
-		$this->mapMethod('view',   [ 'player' ], true);
-	}
+    public function view($id)
+    {
+        $belief = $this->Events->findWithContainById($id)->first();
+#        $this->Authorization->authorize($belief);
 
-	public function index()
-	{
-		if($this->setResponseModified())
-			return $this->response;
-
-		$query = $this->Events->find()
-					->select(['Events.id', 'Events.name'], true);
-		$this->doRawIndex($query, 'Event', '/events/');
-	}
+        $this->set('_serialize', $belief);
+    }
 }

@@ -2,7 +2,7 @@
 namespace App\Model\Entity;
 
 class Power
-	extends Condition
+    extends AppEntity
 {
 
 }

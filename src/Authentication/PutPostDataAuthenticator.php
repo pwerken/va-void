@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Authenticator;
+namespace App\Authentication;
 
 use Authentication\Authenticator\FormAuthenticator;
 use Psr\Http\Message\ServerRequestInterface;
@@ -31,7 +31,7 @@ class PutPostDataAuthenticator extends FormAuthenticator
                 return null;
             }
 
-			# FIXED: cast $value to string
+            # FIXED: cast $value to string
             $value = (string)$body[$field];
             if (!is_string($value) || !strlen($value)) {
                 return null;

@@ -3,70 +3,53 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Utility\AuthState;
-
 class CharactersConditionsController
-	extends AppController
+    extends AppController
 {
 
-	public function initialize(): void
-	{
-		parent::initialize();
+    public function charactersIndex($char_id)
+    {
+        $this->parent = $this->loadModel('Characters')->get($char_id);
+        if (is_null($this->parent)) {
+            throw new NotFoundException();
+        }
+#        $this->Authorization->authorize($this->parent, 'view');
 
-		$this->loadComponent('QueueLammy');
+        $query = $this->CharactersConditions->findWithContain();
+        $query->andWhere(['CharactersConditions.character_id' => $char_id]);
+#        $this->Authorization->applyScope($query);
 
-		$this->mapMethod('charactersAdd',    [ 'referee'           ]);
-		$this->mapMethod('charactersDelete', [ 'referee'           ]);
-		$this->mapMethod('charactersEdit',   [ 'referee'           ]);
-		$this->mapMethod('charactersIndex',  [ 'players'           ], true);
-		$this->mapMethod('charactersView',   [ 'read-only', 'user' ], true);
+        $this->set('parent', $this->parent);
+        $this->set('_serialize', $query->all());
+    }
 
-		$this->mapMethod('conditionsIndex',  [ 'read-only', 'user' ], true);
+    public function conditionsIndex($coin)
+    {
+        $this->parent = $this->loadModel('Conditions')->get($coin);
+        if (is_null($this->parent)) {
+            throw new NotFoundException();
+        }
+#        $this->Authorization->authorize($this->parent, 'view');
 
-		$this->Crud->mapAction('charactersQueue',
-			[ 'className' => 'Crud.View'
-			, 'auth' => [ 'referee' ]
-			, 'findMethod' => 'withContain'
-			]);
-	}
+        $query = $this->CharactersConditions->findWithContain();
+        $query->andWhere(['CharactersConditions.condition_id' => $coin]);
+#        $this->Authorization->applyScope($query);
 
-	public function charactersAdd($char_id)
-	{
-		$this->request = $this->request->withData('character_id', $char_id);
-		$this->Crud->execute();
-	}
+        $this->set('parent', $this->parent);
+        $this->set('_serialize', $query->all());
+    }
 
-	public function charactersQueue($char_id, $coin)
-	{
-		$this->QueueLammy->execute();
-	}
+    public function charactersView($char_id, $coin)
+    {
+        $query = $this->CharactersConditions->findWithContain();
+        $query->andWhere(['CharactersConditions.character_id' => $char_id]);
+        $query->andWhere(['CharactersConditions.condition_id' => $coin]);
+        $obj = $query->first();
+        if (is_null($obj)) {
+            throw new NotFoundException();
+        }
 
-	public function conditionsIndex()
-	{
-		if(!AuthState::hasRole('read-only')) {
-			$this->Crud->on('beforePaginate', function ($event) {
-				$cond = ['Characters.player_id' => $this->Auth->user('id')];
-				$event->getSubject()->query->where($cond);
-			});
-		}
-
-		$this->Crud->execute();
-	}
-
-	protected function wantAuthUser(): ?int
-	{
-		$plin = parent::wantAuthUser();
-		if (!is_null($plin))
-			return $plin;
-
-		$coin = $this->request->getParam('coin');
-		$data = $this->CharactersConditions->find()
-					->enableHydration(false)
-					->select(['player_id' => 'Characters.player_id'])
-					->where(['CharactersConditions.condition_id' => $coin])
-					->contain('Characters')
-					->first();
-
-		return isset($data['player_id']) ? $data['player_id'] : NULL;
-	}
+#        $this->Authorization->authorize($obj);
+        $this->set('_serialize', $obj);
+    }
 }

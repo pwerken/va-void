@@ -38,8 +38,8 @@ foreach($list as $cur)
 	if(!is_null($related))
 		$related = '<strong>'.$related.'</strong> ';
 
-	$prefix = "<samp>" . str_pad($cur->modifiedString(), 19, '_', STR_PAD_BOTH) . " "
-		. str_pad($cur->modifierString(), 4, '0', STR_PAD_LEFT) . "</samp> "
+	$prefix = "<samp>" . str_pad($cur->modifiedString(), 19, '_', STR_PAD_BOTH)
+        . " " . $cur->modifierString() . "</samp> "
 		. $cur->keyString() . "<span$color> " . $related;
 
 	switch($cur->get('state')) {

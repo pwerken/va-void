@@ -14,16 +14,23 @@
  */
 namespace App\Test\TestCase;
 
-use App\Application;
-use App\Routing\Middleware\CorsMiddleware;
-use App\Routing\Middleware\PlinChinMiddleware;
+use Authentication\Middleware\AuthenticationMiddleware;
+use Authorization\Middleware\AuthorizationMiddleware;
+use Authorization\Middleware\RequestAuthorizationMiddleware;
+use Cake\Core\Configure;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\MiddlewareQueue;
+use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\TestSuite\IntegrationTestCase;
 use InvalidArgumentException;
+
+use App\Application;
+use App\Routing\Middleware\CorsMiddleware;
+use App\Routing\Middleware\JsonInputMiddleware;
+use App\Routing\Middleware\PlinChinMiddleware;
 
 /**
  * ApplicationTest class
@@ -42,12 +49,12 @@ class ApplicationTest extends IntegrationTestCase
         $app->bootstrap();
         $plugins = $app->getPlugins();
 
-        $this->assertCount(5, $plugins);
-        $this->assertSame('Bake', $plugins->get('Bake')->getName());
-        $this->assertSame('Migrations', $plugins->get('Migrations')->getName());
-        $this->assertSame('Crud', $plugins->get('Crud')->getName());
-        $this->assertSame('CreatorModifier', $plugins->get('CreatorModifier')->getName());
-        $this->assertSame('ADmad/JwtAuth', $plugins->get('ADmad/JwtAuth')->getName());
+        $this->assertCount(3, $plugins);
+
+        $this->assertFalse($plugins->has('DebugKit'), 'plugins has DebugKit?');
+        $this->assertTrue($plugins->has('Authentication'), 'plugins has Authentication?');
+        $this->assertTrue($plugins->has('Authorization'), 'plugins has Authorization?');
+        $this->assertTrue($plugins->has('Migrations'), 'plugins has Migrations?');
     }
 
     /**
@@ -78,13 +85,28 @@ class ApplicationTest extends IntegrationTestCase
     public function testMiddleware()
     {
         $app = new Application(dirname(dirname(__DIR__)) . '/config');
-        $middleware = $app->middleware(new MiddlewareQueue());
+        $middleware = new MiddlewareQueue();
 
-        $this->assertCount(5, $middleware);
-        $this->assertInstanceOf(ErrorHandlerMiddleware::class, $middleware->get(0));
-        $this->assertInstanceOf(AssetMiddleware::class, $middleware->get(1));
-        $this->assertInstanceOf(CorsMiddleware::class, $middleware->get(2));
-        $this->assertInstanceOf(RoutingMiddleware::class, $middleware->get(3));
-        $this->assertInstanceOf(PlinChinMiddleware::class, $middleware->get(4));
+        $middleware = $app->middleware($middleware);
+
+        $this->assertInstanceOf(ErrorHandlerMiddleware::class, $middleware->current());
+        $middleware->seek(1);
+        $this->assertInstanceOf(AssetMiddleware::class, $middleware->current());
+        $middleware->seek(2);
+        $this->assertInstanceOf(CorsMiddleware::class, $middleware->current());
+        $middleware->seek(3);
+        $this->assertInstanceOf(RoutingMiddleware::class, $middleware->current());
+        $middleware->seek(4);
+        $this->assertInstanceOf(JsonInputMiddleware::class, $middleware->current());
+        $middleware->seek(5);
+        $this->assertInstanceOf(BodyParserMiddleware::class, $middleware->current());
+        $middleware->seek(6);
+        $this->assertInstanceOf(PlinChinMiddleware::class, $middleware->current());
+        $middleware->seek(7);
+        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->current());
+        $middleware->seek(8);
+        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->current());
+        $middleware->seek(9);
+        $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->current());
     }
 }

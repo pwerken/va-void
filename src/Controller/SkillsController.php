@@ -4,19 +4,22 @@ declare(strict_types=1);
 namespace App\Controller;
 
 class SkillsController
-	extends AppController
+    extends AppController
 {
 
-	protected $searchFields = [ 'Skills.name' ];
+    public function index()
+    {
+        $query = $this->Skills->find();
+#       $this->Authorization->applyScope($query);
 
-	public function initialize(): void
-	{
-		parent::initialize();
+        $this->doRawIndex($query, 'Skills', '/skills/', 'id');
+    }
 
-		$this->mapMethod('add',    [ 'super'  ]);
-		$this->mapMethod('delete', [ 'super'  ]);
-		$this->mapMethod('edit',   [ 'super'  ]);
-		$this->mapMethod('index',  [ 'player' ], true);
-		$this->mapMethod('view',   [ 'player' ], true);
-	}
+    public function view($skill_id)
+    {
+        $skill = $this->Skills->findWithContainById($skill_id)->first();
+#        $this->Authorization->authorize($skill);
+
+        $this->set('_serialize', $skill);
+    }
 }

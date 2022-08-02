@@ -5,83 +5,79 @@ use Cake\Database\Expression\QueryExpression;
 use Cake\ORM\TableRegistry;
 
 class Item
-	extends AppEntity
+    extends AppEntity
 {
 
-	public function __construct($properties = [], $options = [])
-	{
-		parent::__construct($properties, $options);
+    public function __construct($properties = [], $options = [])
+    {
+        parent::__construct($properties, $options);
 
-		$this->setCompact(['expiry', 'character'], true);
-		$this->setVirtual(['plin', 'chin']);
-		$this->addHidden(['character_id']);
+        $this->setCompact(['expiry', 'character'], true);
+        $this->setVirtual(['plin', 'chin']);
+        $this->setHidden(['character_id'], true);
+    }
 
-		$this->showFieldAuth('attributes', ['read-only']);
-		$this->showFieldAuth('referee_notes', ['read-only']);
-		$this->showFieldAuth('notes', ['read-only']);
-	}
+    protected function _getPlin()
+    {
+        return @$this->character->player_id;
+    }
 
-	protected function _getPlin()
-	{
-		return @$this->character->player_id;
-	}
+    protected function _getChin()
+    {
+        return @$this->character->chin;
+    }
 
-	protected function _getChin()
-	{
-		return @$this->character->chin;
-	}
+    public function codes()
+    {
+        $seed = $this->id;
+        $attr = [];
+        foreach($this->attributes as $relation) {
+            $attribute = $relation->attribute;
+            $seed *= $attribute->id;
+            $attr[] = $attribute->code;
+        }
 
-	public function codes()
-	{
-		$seed = $this->id;
-		$attr = [];
-		foreach($this->attributes as $relation) {
-			$attribute = $relation->attribute;
-			$seed *= $attribute->id;
-			$attr[] = $attribute->code;
-		}
+        mt_srand((int)$seed);
+        $order = $this->randomOrder();
 
-		mt_srand((int)$seed);
-		$order = $this->randomOrder();
+        $key = -1;
+        $output = [];
+        foreach($attr as $key => $val)
+            $output[$order[$key]] = $val;
 
-		$key = -1;
-		$output = [];
-		foreach($attr as $key => $val)
-			$output[$order[$key]] = $val;
+        $key++;
 
-		$key++;
+        $table = TableRegistry::get('Attributes');
+        $max = $table->find()->enableHydration(false)
+                    ->select(['max' => 'COUNT(*)'])
+                    ->where(['category LIKE' => 'random'])
+                    ->order(['id' => 'ASC'])
+                    ->toArray()[0]['max'];
 
-		$table = TableRegistry::get('Attributes');
-		$max = $table->find()->enableHydration(false)
-					->select(['max' => 'COUNT(*)'])
-					->where(['category LIKE' => 'random'])
-					->order(['id' => 'ASC'])
-					->toArray()[0]['max'];
+        for( ; $key < 12; $key++) {
+            $code = $table->find()->enableHydration(false)
+                    ->select(['code'])
+                    ->where(['category LIKE' => 'random'])
+                    ->order(['id' => 'ASC'])
+                    ->limit(1)->page(mt_rand(1, $max))
+                    ->toArray()[0]['code'];
+            $output[$order[$key]] = $code;
+        }
+        return $output;
+    }
 
-		for( ; $key < 12; $key++) {
-			$code = $table->find()->enableHydration(false)
-					->select(['code'])
-					->where(['category LIKE' => 'random'])
-					->order(['id' => 'ASC'])
-					->limit(1)->page(mt_rand(1, $max))
-					->toArray()[0]['code'];
-			$output[$order[$key]] = $code;
-		}
-		return $output;
-	}
+    private function randomOrder()
+    {
+        $order = $taken = [];
+        for($i = 11; $i >= 0; $i--) {
+            $x = mt_rand(0, $i);
+            while(isset($taken[$x]))
+                $x++;
 
-	private function randomOrder()
-	{
-		$order = $taken = [];
-		for($i = 11; $i >= 0; $i--) {
-			$x = mt_rand(0, $i);
-			while(isset($taken[$x]))
-				$x++;
-
-			$taken[$x] = true;
-			$order[] = $x;
-		}
-		return $order;
-	}
+            $taken[$x] = true;
+            $order[] = $x;
+        }
+        return $order;
+    }
 
 }

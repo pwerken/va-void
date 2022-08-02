@@ -5,85 +5,85 @@ use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 
 class Lammy
-	extends AppEntity
+    extends AppEntity
 {
 
-	private $target = null;
-	private $lammy  = null;
+    private $target = null;
+    private $lammy  = null;
 
-	protected $_defaults =
-			[ 'status' => 'Queued'
-			];
+    protected $_defaults =
+            [ 'status' => 'Queued'
+            ];
 
-	public function __construct($properties = [], $options = [])
-	{
-		parent::__construct($properties, $options);
+    public function __construct($properties = [], $options = [])
+    {
+        parent::__construct($properties, $options);
 
-		$this->setCompact(['entity', 'key1', 'key2', 'status', 'modified']);
-		$this->setVirtual(['target', 'lammy']);
-		$this->addHidden(['lammy']);
-	}
+        $this->setCompact(['entity', 'key1', 'key2', 'status', 'modified']);
+        $this->setVirtual(['target', 'lammy']);
+        $this->setHidden(['lammy'], true);
+    }
 
-	public static function statusValues()
-	{
-		static $data = null;
-		if(is_null($data))
-			$data = ['Queued', 'Failed', 'Printing', 'Printed'];
-		return $data;
-	}
+    public static function statusValues()
+    {
+        static $data = null;
+        if(is_null($data))
+            $data = ['Queued', 'Failed', 'Printing', 'Printed'];
+        return $data;
+    }
 
-	protected function _getTarget()
-	{
-		if(is_null($this->target)) {
-			$name = Inflector::pluralize($this->entity);
-			$table = TableRegistry::get($name);
+    protected function _getTarget()
+    {
+        if(is_null($this->target)) {
+            $name = Inflector::pluralize($this->entity);
+            $table = TableRegistry::get($name);
 
-			$keys = [$this->key1, $this->key2];
-			$primary = $table->getPrimaryKey();
-			if(!is_array($primary))
-				$primary = [$primary];
+            $keys = [$this->key1, $this->key2];
+            $primary = $table->getPrimaryKey();
+            if(!is_array($primary))
+                $primary = [$primary];
 
-			$where = [];
-			foreach($primary as $i => $id)
-				$where[$name.'.'.$id] = $keys[$i];
+            $where = [];
+            foreach($primary as $i => $id)
+                $where[$name.'.'.$id] = $keys[$i];
 
-			$q = $table->find()->where($where);
-			$this->target = $table->findWithContain($q)->first();
-		}
+            $q = $table->find()->where($where);
+            $this->target = $table->findWithContain($q)->first();
+        }
 
-		return $this->target;
-	}
+        return $this->target;
+    }
 
-	public function _setTarget($target = NULL)
-	{
-		if(is_null($target))
-			return;
+    public function _setTarget($target = NULL)
+    {
+        if(is_null($target))
+            return;
 
-		$table = TableRegistry::get($target->getSource());
-		$class = $table->getEntityClass();
-		if($pos = strrpos($class, '\\'))
-			$class = substr($class, $pos + 1);
-		$this->entity = $class;
+        $table = TableRegistry::get($target->getSource());
+        $class = $table->getEntityClass();
+        if($pos = strrpos($class, '\\'))
+            $class = substr($class, $pos + 1);
+        $this->entity = $class;
 
-		$primary = $table->getPrimaryKey();
-		if(!is_array($primary))
-			$primary = [$primary];
+        $primary = $table->getPrimaryKey();
+        if(!is_array($primary))
+            $primary = [$primary];
 
-		foreach($primary as $key => $field) {
-			$this->set("key".($key+1), $target->get($field));
-		}
-	}
+        foreach($primary as $key => $field) {
+            $this->set("key".($key+1), $target->get($field));
+        }
+    }
 
-	protected function _getLammy()
-	{
-		if(is_null($this->lammy)) {
-			$class = 'App\\Lammy\\'.$this->entity.'Lammy';
-			$target = $this->_getTarget();
-			if(!is_null($target)) {
-				$this->lammy = new $class($target);
-			}
-		}
-		return $this->lammy;
-	}
+    protected function _getLammy()
+    {
+        if(is_null($this->lammy)) {
+            $class = 'App\\Lammy\\'.$this->entity.'Lammy';
+            $target = $this->_getTarget();
+            if(!is_null($target)) {
+                $this->lammy = new $class($target);
+            }
+        }
+        return $this->lammy;
+    }
 
 }

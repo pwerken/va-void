@@ -8,11 +8,11 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class JsonInputMiddleware implements MiddlewareInterface
 {
-	public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
-	{
-		if ($request->is('put'))
-			$request = $request->withHeader('Content-Type', 'application/json');
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        if ($request->is('put'))
+            $request = $request->withHeader('Content-Type', 'application/json');
 
-		return $handler->handle($request);
-	}
+        return $handler->handle($request);
+    }
 }

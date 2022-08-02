@@ -7,56 +7,56 @@ use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 
 class AttributesTable
-	extends AppTable
+    extends AppTable
 {
 
-	public function initialize(array $config): void
-	{
-		parent::initialize($config);
+    public function initialize(array $config): void
+    {
+        parent::initialize($config);
 
-		$this->hasMany('AttributesItems')->setProperty('items');
-	}
+        $this->hasMany('AttributesItems')->setProperty('items');
+    }
 
-	public function validationDefault(Validator $validator): Validator
-	{
-		$validator->allowEmpty('id', 'create');
-		$validator->allowEmpty('name');
-		$validator->allowEmpty('category');
-		$validator->notEmpty('code');
+    public function validationDefault(Validator $validator): Validator
+    {
+        $validator->allowEmpty('id', 'create');
+        $validator->allowEmpty('name');
+        $validator->allowEmpty('category');
+        $validator->notEmpty('code');
 
-		$validator->add('id', 'valid', ['rule' => 'numeric']);
+        $validator->add('id', 'valid', ['rule' => 'numeric']);
 
-		$validator->requirePresence('code', 'create');
+        $validator->requirePresence('code', 'create');
 
-		return $validator;
-	}
+        return $validator;
+    }
 
-	public function buildRules(RulesChecker $rules): RulesChecker
-	{
-		$rules->addDelete([$this, 'ruleNoItems']);
-		return $rules;
-	}
+    public function buildRules(RulesChecker $rules): RulesChecker
+    {
+        $rules->addDelete([$this, 'ruleNoItems']);
+        return $rules;
+    }
 
-	public function ruleNoItems($entity, $options)
-	{
-		$query = $this->AttributesItems->find();
-		$query->where(['attributes_id' => $entity->id]);
+    public function ruleNoItems($entity, $options)
+    {
+        $query = $this->AttributesItems->find();
+        $query->where(['attributes_id' => $entity->id]);
 
-		if($query->count() > 0) {
-			$entity->errors('items', 'reference(s) present');
-			return false;
-		}
+        if($query->count() > 0) {
+            $entity->errors('items', 'reference(s) present');
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	protected function contain(): array
-	{
-		return [ 'AttributesItems.Items' ];
-	}
+    protected function contain(): array
+    {
+        return [ 'AttributesItems.Items' ];
+    }
 
-	protected function orderBy(): array
-	{
-		return	[ 'name' => 'ASC', 'id' => 'ASC' ];
-	}
+    protected function orderBy(): array
+    {
+        return  [ 'name' => 'ASC', 'id' => 'ASC' ];
+    }
 }

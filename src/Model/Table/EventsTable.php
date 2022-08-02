@@ -7,29 +7,29 @@ use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 
 class EventsTable
-	extends AppTable
+    extends AppTable
 {
 
-	public function validationDefault(Validator $validator): Validator
-	{
-		$validator->allowEmpty('id', 'create');
-		$validator->notEmpty('name');
+    public function validationDefault(Validator $validator): Validator
+    {
+        $validator->allowEmpty('id', 'create');
+        $validator->notEmpty('name');
 
-		$validator->add('id', 'valid', ['rule' => 'numeric']);
+        $validator->add('id', 'valid', ['rule' => 'numeric']);
 
-		$validator->requirePresence('name', 'create');
+        $validator->requirePresence('name', 'create');
 
-		return $validator;
-	}
+        return $validator;
+    }
 
-	public function buildRules(RulesChecker $rules): RulesChecker
-	{
-		$rules->add($rules->isUnique(['name'], 'This name is already in use.'));
-		return $rules;
-	}
+    public function buildRules(RulesChecker $rules): RulesChecker
+    {
+        $rules->add($rules->isUnique(['name'], 'This name is already in use.'));
+        return $rules;
+    }
 
-	protected function orderBy(): array
-	{
-		return	[ 'id' => 'ASC' ];
-	}
+    protected function orderBy(): array
+    {
+        return  [ 'id' => 'ASC' ];
+    }
 }

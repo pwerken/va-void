@@ -4,19 +4,22 @@ declare(strict_types=1);
 namespace App\Controller;
 
 class SpellsController
-	extends AppController
+    extends AppController
 {
 
-	protected $searchFields = [ 'Spells.name', 'Spells.short' ];
+    public function index()
+    {
+        $query = $this->Spells->find();
+#       $this->Authorization->applyScope($query);
 
-	public function initialize(): void
-	{
-		parent::initialize();
+        $this->doRawIndex($query, 'Spells', '/spells/', 'id');
+    }
 
-		$this->mapMethod('add',    [ 'super'  ]);
-		$this->mapMethod('delete', [ 'super'  ]);
-		$this->mapMethod('edit',   [ 'super'  ]);
-		$this->mapMethod('index',  [ 'player' ]);
-		$this->mapMethod('view',   [ 'player' ]);
-	}
+    public function view($spell_id)
+    {
+        $spell = $this->Spells->findWithContainById($spell_id)->first();
+#        $this->Authorization->authorize($spell);
+
+        $this->set('_serialize', $spell);
+    }
 }

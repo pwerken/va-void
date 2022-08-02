@@ -2,19 +2,19 @@
 namespace App\Model\Entity;
 
 class CharactersPower
-	extends AppEntity
+    extends AppEntity
 {
 
-	public function __construct($properties = [], $options = [])
-	{
-		parent::__construct($properties, $options);
+    public function __construct($properties = [], $options = [])
+    {
+        parent::__construct($properties, $options);
 
-		$this->setCompact(['expiry', 'character', 'power']);
-		$this->addHidden(['character_id', 'power_id']);
-	}
+        $this->setCompact(['expiry', 'character', 'power']);
+        $this->setHidden(['character_id', 'power_id'], true);
+    }
 
-	public function getUrl($parent = null)
-	{
-		return $this->getRelationUrl('character', 'power', $parent);
-	}
+    public function getUrl($parent = null)
+    {
+        return $this->getRelationUrl('character', 'power', $parent);
+    }
 }

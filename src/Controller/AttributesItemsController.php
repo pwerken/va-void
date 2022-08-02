@@ -3,45 +3,53 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\Event\Event;
-
 class AttributesItemsController
-	extends AppController
+    extends AppController
 {
 
-	public function initialize(): void
-	{
-		parent::initialize();
+    public function attributesIndex($id)
+    {
+        $this->parent = $this->loadModel('Attributes')->get($id);
+        if (is_null($this->parent)) {
+            throw new NotFoundException();
+        }
+#        $this->Authorization->authorize($this->parent, 'view');
 
-		$this->mapMethod('attributesIndex', [ 'read-only' ], true);
+        $query = $this->AttributesItems->findWithContain();
+        $query->andWhere(['AttributesItems.attribute_id' => $id]);
+#        $this->Authorization->applyScope($query);
 
-		$this->mapMethod('itemsAdd',        [ 'referee'   ]);
-		$this->mapMethod('itemsDelete',     [ 'referee'   ]);
-# There are no properties on this relation to edit
-#		$this->mapMethod('itemsEdit',       [ 'referee'   ]);
-		$this->mapMethod('itemsIndex',      [ 'read-only' ], true);
-		$this->mapMethod('itemsView',       [ 'read-only' ], true);
-	}
+        $this->set('parent', $this->parent);
+        $this->set('_serialize', $query->all());
+    }
 
-	public function itemsAdd($itin)
-	{
-		$this->request = $this->request->withData('item_id', $itin);
-		return $this->Crud->execute();
-	}
+    public function itemsIndex($itin)
+    {
+        $this->parent = $this->loadModel('Items')->get($itin);
+        if (is_null($this->parent)) {
+            throw new NotFoundException();
+        }
+#        $this->Authorization->authorize($this->parent, 'view');
 
-	public function CrudBeforeHandle(Event $event)
-	{
-		switch($this->request->getParam('action')) {
-		case 'itemsDelete':
-		case 'itemsView':
-			$temp = $event->getSubject()->args[0];
-			$event->getSubject()->args[0] = $event->getSubject()->args[1];
-			$event->getSubject()->args[1] = $temp;
-			break;
-		default:
-			break;
-		}
+        $query = $this->AttributesItems->findWithContain();
+        $query->andWhere(['AttributesItems.item_id' => $itin]);
+#        $this->Authorization->applyScope($query);
 
-		parent::CrudBeforeHandle($event);
-	}
+        $this->set('parent', $this->parent);
+        $this->set('_serialize', $query->all());
+    }
+
+    public function itemsView($itin, $id)
+    {
+        $query = $this->AttributesItems->findWithContain();
+        $query->andWhere(['AttributesItems.item_id' => $itin]);
+        $query->andWhere(['AttributesItems.attribute_id' => $id]);
+        $obj = $query->first();
+        if (is_null($obj)) {
+            throw new NotFoundException();
+        }
+
+#        $this->Authorization->authorize($obj);
+        $this->set('_serialize', $obj);
+    }
 }

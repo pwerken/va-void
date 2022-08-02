@@ -1,74 +1,78 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestSuite;
 
-use Cake\TestSuite\IntegrationTestCase;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 
 class AuthIntegrationTestCase
-	extends IntegrationTestCase
+	extends TestCase
 {
+	use IntegrationTestTrait;
 
-	public $fixtures = [ 'app.players' ];
+	public $fixtures = [ 'app.Players' ];
 
 	protected $token = NULL;
 
-	public function assertArrayKeyValue($key, $value, $array)
+	public function assertArrayKeyValue(string $key, $value, array $array, string $message = '')
 	{
-		$this->assertArrayHasKey($key, $array);
-		$this->assertEquals($value, $array[$key]);
+		$this->assertArrayHasKey($key, $array, $message);
+		$this->assertEquals($value, $array[$key], $message);
 	}
 
-	public function assertGet($url, $code = 200)
+	public function assertGet(string $url, int $code = 200, string $message = '')
 	{
 		$this->setConfigRequest();
 		$this->get($url);
-		$this->assertResponseCode($code);
+		$this->assertResponseCode($code, $message);
 	}
 
-	public function assertPost($url, $data = [], $code = 200)
+	public function assertPost(string $url, array $data = [], int $code = 200, string $message = '')
 	{
 		$this->setConfigRequest();
 		$this->post($url, $data);
-		$this->assertResponseCode($code);
+		$this->assertResponseCode($code, $message);
 	}
 
-	public function assertPatch($url, $data = [], $code = 200)
+	public function assertPatch(string $url, array $data = [], int $code = 200, string $message = '')
 	{
 		$this->setConfigRequest();
-		$this->patch($url, $data);
-		$this->assertResponseCode($code);
+		$this->patch($url, json_encode($data));
+		$this->assertResponseCode($code, $message);
 	}
 
-	public function assertPut($url, $data = [], $code = 200)
+	public function assertPut(string $url, array $data = [], int $code = 200, string $message = '')
 	{
 		$this->setConfigRequest();
-		$this->put($url, $data);
-		$this->assertResponseCode($code);
+		$this->put($url, json_encode($data));
+		$this->assertResponseCode($code, $message);
 	}
 
-	public function assertDelete($url, $code = 200)
+	public function assertDelete(string $url, int $code = 200, string $message = '')
 	{
 		$this->setConfigRequest();
 		$this->delete($url);
-		$this->assertResponseCode($code);
+		$this->assertResponseCode($code, $message);
 	}
 
-	public function assertHead($url, $code = 200)
+	public function assertHead(string $url, int $code = 200, string $message = '')
 	{
 		$this->setConfigRequest();
 		$this->head($url);
-		$this->assertResponseCode($code);
+		$this->assertResponseCode($code, $message);
 	}
 
-	public function assertOptions($url, $code = 200)
+	public function assertOptions(string $url, int $code = 200, string $message = '')
 	{
 		$this->setConfigRequest();
 		$this->options($url);
-		$this->assertResponseCode($code);
+		$this->assertResponseCode($code, $message);
 	}
 
-	protected function jsonBody($field = NULL)
+	protected function jsonBody(?string $field = null)
 	{
-		$data = json_decode($this->_response->getBody(), true);
+		$data = json_decode((string)$this->_response->getBody(), true);
 		if(is_null($field))
 			return $data;
 
@@ -106,14 +110,15 @@ class AuthIntegrationTestCase
 		return $this->loginAs(5);
 	}
 
-	private function loginAs($id)
+	private function loginAs(int $id)
 	{
 		$this->withoutAuth();
 
-		$this->put('/auth/login', ['id' => $id, 'password' => 'password']);
-		$this->assertResponseCode(200); # oke
+		$this->assertPut('/auth/login', ['id' => $id, 'password' => 'password']
+			, 200, 'authentication succesful?');
 
 		$this->token = $this->jsonBody('token');
+		$this->assertNotNull($this->token, 'JWT Token set?');
 
 		return $id;
 	}
@@ -123,12 +128,15 @@ class AuthIntegrationTestCase
 		$this->configRequest(
 			[ 'headers' =>
 				[ 'Accept' => 'application/json'
+				, 'Content-Type' => 'application/json'
 			]	]);
 
-		if(!is_null($this->token)) {
+		if($this->token !== null) {
 			$this->configRequest(
 				[ 'headers' =>
-					[ 'Authorization' => 'Bearer ' . $this->token
+					[ 'Accept' => 'application/json'
+					, 'Content-Type' => 'application/json'
+					, 'Authorization' => 'Bearer ' . $this->token
 				]	]);
 		}
 	}

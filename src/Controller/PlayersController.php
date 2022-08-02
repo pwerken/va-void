@@ -3,72 +3,52 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Utility\AuthState;
+use Cake\Http\Exception\NotFoundException;
 
 class PlayersController
-	extends AppController
+    extends AppController
 {
 
-	protected $searchFields =
-		[ 'Players.first_name'
-		, 'Players.insertion'
-		, 'Players.last_name'
-		];
+    public function index()
+    {
+        $query = $this->Players->find()
+                    ->select([], true)
+                    ->select('Players.id')
+                    ->select('Players.first_name')
+                    ->select('Players.insertion')
+                    ->select('Players.last_name');
 
-	public function initialize(): void
-	{
-		parent::initialize();
+        $this->Authorization->applyScope($query);
 
-		$this->mapMethod('add',    [ 'super'             ]);
-		$this->mapMethod('edit',   [ 'infobalie', 'user' ]);
-		$this->mapMethod('delete', [ 'super'             ]);
-		$this->mapMethod('index',  [ 'players'           ]);
-		$this->mapMethod('view',   [ 'read-only', 'user' ], true);
-	}
+        $content = [];
+        foreach($this->doRawQuery($query) as $row) {
+            $name = $row[1];
+            if(!empty($row[2]))
+                $name .= ' '.$row[2];
+            $name .= ' '.$row[3];
 
-	public function index()
-	{
-		if($this->setResponseModified())
-			return $this->response;
+            $content[] =
+                [ 'class' => 'Player'
+                , 'url' => '/players/'.$row[0]
+                , 'plin' => (int)$row[0]
+                , 'full_name' => $name
+                ];
+        }
+        $this->set('_serialize',
+            [ 'class' => 'List'
+            , 'url' => rtrim($this->request->getPath(), '/')
+            , 'list' => $content
+            ]);
+    }
 
-		$query = $this->Players->find()
-					->select([], true)
-					->select('Players.id')
-					->select('Players.first_name')
-					->select('Players.insertion')
-					->select('Players.last_name');
+    public function view(int $plin)
+    {
+        $player = $this->Players->findWithContainById($plin)->first();
+        if (is_null($player)) {
+            throw new NotFoundException();
+        }
+        $this->Authorization->authorize($player);
 
-		if(!AuthState::hasRole('read-only')) {
-			$plin = $this->Auth->user('id');
-			$query->where(["Players.id = $plin"]);
-		}
-
-		$content = [];
-		foreach($this->doRawQuery($query) as $row) {
-			$name = $row[1];
-			if(!empty($row[2]))
-				$name .= ' '.$row[2];
-			$name .= ' '.$row[3];
-
-			$content[] =
-				[ 'class' => 'Player'
-				, 'url' => '/players/'.$row[0]
-				, 'plin' => (int)$row[0]
-				, 'full_name' => $name
-				];
-		}
-		$this->set('_serialize',
-			[ 'class' => 'List'
-			, 'url' => rtrim($this->request->getPath(), '/')
-			, 'list' => $content
-			]);
-	}
-
-	public function add()
-	{
-		$plin = $this->request->getData('plin');
-		$this->request = $this->request->withData('id', $plin);
-		$this->request = $this->request->withoutData('plin');
-		$this->Crud->execute();
-	}
+        $this->set('_serialize', $player);
+    }
 }

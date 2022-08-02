@@ -9,45 +9,45 @@ use Cake\Event\EventInterface;
 use Cake\Validation\Validator;
 
 class AttributesItemsTable
-	extends AppTable
+    extends AppTable
 {
 
-	public function initialize(array $config): void
-	{
-		parent::initialize($config);
+    public function initialize(array $config): void
+    {
+        parent::initialize($config);
 
-		$this->setPrimaryKey(['attribute_id', 'item_id']);
+        $this->setPrimaryKey(['attribute_id', 'item_id']);
 
-		$this->belongsTo('Attributes');
-		$this->belongsTo('Items');
-	}
+        $this->belongsTo('Attributes');
+        $this->belongsTo('Items');
+    }
 
-	public function afterDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
-	{
-		$this->touchEntity('Items', $entity->item_id);
-	}
+    public function afterDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    {
+        $this->touchEntity('Items', $entity->item_id);
+    }
 
-	public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
-	{
-		$this->touchEntity('Items', $entity->item_id);
-	}
+    public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    {
+        $this->touchEntity('Items', $entity->item_id);
+    }
 
-	public function validationDefault(Validator $validator): Validator
-	{
-		$validator->notEmpty('attribute_id');
-		$validator->notEmpty('item_id');
+    public function validationDefault(Validator $validator): Validator
+    {
+        $validator->notEmpty('attribute_id');
+        $validator->notEmpty('item_id');
 
-		$validator->add('attribute_id', 'valid', ['rule' => 'numeric']);
-		$validator->add('item_id', 'valid', ['rule' => 'numeric']);
+        $validator->add('attribute_id', 'valid', ['rule' => 'numeric']);
+        $validator->add('item_id', 'valid', ['rule' => 'numeric']);
 
-		$validator->requirePresence('attribute_id', 'create');
-		$validator->requirePresence('item_id', 'create');
+        $validator->requirePresence('attribute_id', 'create');
+        $validator->requirePresence('item_id', 'create');
 
-		return $validator;
-	}
+        return $validator;
+    }
 
-	protected function contain(): array
-	{
-		return [ 'Attributes', 'Items.Characters' ];
-	}
+    protected function contain(): array
+    {
+        return [ 'Attributes', 'Items.Characters' ];
+    }
 }

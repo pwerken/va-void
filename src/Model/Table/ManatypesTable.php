@@ -7,54 +7,54 @@ use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 
 class ManatypesTable
-	extends AppTable
+    extends AppTable
 {
 
-	public function initialize(array $config): void
-	{
-		parent::initialize($config);
+    public function initialize(array $config): void
+    {
+        parent::initialize($config);
 
-		$this->hasMany('Skills');
-	}
+        $this->hasMany('Skills');
+    }
 
-	public function validationDefault(Validator $validator): Validator
-	{
-		$validator->allowEmpty('id', 'create');
-		$validator->notEmpty('name');
+    public function validationDefault(Validator $validator): Validator
+    {
+        $validator->allowEmpty('id', 'create');
+        $validator->notEmpty('name');
 
-		$validator->add('id', 'valid', ['rule' => 'numeric']);
+        $validator->add('id', 'valid', ['rule' => 'numeric']);
 
-		$validator->requirePresence('name', 'create');
+        $validator->requirePresence('name', 'create');
 
-		return $validator;
-	}
+        return $validator;
+    }
 
-	public function buildRules(RulesChecker $rules): RulesChecker
-	{
-		$rules->addDelete([$this, 'ruleNoSkills']);
-		return $rules;
-	}
+    public function buildRules(RulesChecker $rules): RulesChecker
+    {
+        $rules->addDelete([$this, 'ruleNoSkills']);
+        return $rules;
+    }
 
-	public function ruleNoSkills($entity, $options)
-	{
-		$query = $this->Skills->find();
-		$query->where(['manatype_id' => $entity->id]);
+    public function ruleNoSkills($entity, $options)
+    {
+        $query = $this->Skills->find();
+        $query->where(['manatype_id' => $entity->id]);
 
-		if($query->count() > 0) {
-			$entity->errors('skills', 'reference(s) present');
-			return false;
-		}
+        if($query->count() > 0) {
+            $entity->errors('skills', 'reference(s) present');
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	protected function contain(): array
-	{
-		return [ 'Skills' ];
-	}
+    protected function contain(): array
+    {
+        return [ 'Skills' ];
+    }
 
-	protected function orderBy(): array
-	{
-		return	[ 'name' => 'ASC' ];
-	}
+    protected function orderBy(): array
+    {
+        return  [ 'name' => 'ASC' ];
+    }
 }

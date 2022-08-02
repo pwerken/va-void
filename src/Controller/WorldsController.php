@@ -4,29 +4,22 @@ declare(strict_types=1);
 namespace App\Controller;
 
 class WorldsController
-	extends AppController
+    extends AppController
 {
 
-	protected $searchFields = [ 'Worlds.name' ];
+    public function index()
+    {
+        $query = $this->Worlds->find();
+#       $this->Authorization->applyScope($query);
 
-	public function initialize(): void
-	{
-		parent::initialize();
+        $this->doRawIndex($query, 'Worlds', '/worlds/', 'id');
+    }
 
-		$this->mapMethod('add',    [ 'referee'   ]);
-		$this->mapMethod('delete', [ 'super'     ]);
-		$this->mapMethod('edit',   [ 'infobalie' ]);
-		$this->mapMethod('index',  [ 'player'    ]);
-		$this->mapMethod('view',   [ 'player'    ], true);
-	}
+    public function view($id)
+    {
+        $belief = $this->Worlds->findWithContainById($id)->first();
+#        $this->Authorization->authorize($belief);
 
-	public function index()
-	{
-		if($this->setResponseModified())
-			return $this->response;
-
-		$query = $this->Worlds->find()
-					->select(['Worlds.id', 'Worlds.name'], true);
-		$this->doRawIndex($query, 'World', '/worlds/');
-	}
+        $this->set('_serialize', $belief);
+    }
 }

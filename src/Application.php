@@ -18,6 +18,7 @@ namespace App;
 
 use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\Middleware\AuthorizationMiddleware;
+use Authorization\Middleware\RequestAuthorizationMiddleware;
 use Cake\Core\Configure;
 use Cake\Core\ContainerInterface;
 use Cake\Datasource\FactoryLocator;
@@ -30,8 +31,8 @@ use Cake\ORM\Locator\TableLocator;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 
-use App\Authenticator\AppAuthenticationService;
-use App\Authenticator\AppAuthorizationService;
+use App\Authentication\AppAuthenticationService;
+use App\Authorization\AppAuthorizationService;
 use App\Routing\Middleware\CorsMiddleware;
 use App\Routing\Middleware\JsonInputMiddleware;
 use App\Routing\Middleware\PlinChinMiddleware;
@@ -62,8 +63,7 @@ class Application extends BaseApplication
         }
 
         $this->addPlugin('Authentication');
-        $this->addPlugin('Crud');
-#        $this->addPlugin('CreatorModifier');
+        $this->addPlugin('Authorization');
     }
 
     /**
@@ -111,14 +111,15 @@ class Application extends BaseApplication
 #                'httponly' => true,
 #            ]))
 
-			// Add the AuthenticationMiddleware.
-			// It should be after routing and body parser.
-			->add(new AuthenticationMiddleware(new AppAuthenticationService()))
+            // Add the AuthenticationMiddleware.
+            // It should be after routing and body parser.
+            ->add(new AuthenticationMiddleware(new AppAuthenticationService()))
 
-			// Add the AuthenticationMiddleware.
-			// It should be after routing and body parser.
-			->add(new AuthorizationMiddleware(new AppAuthorizationService()))
-			;
+            // Add the AuthenticationMiddleware.
+            // It should be after routing and body parser.
+            ->add(new AuthorizationMiddleware(new AppAuthorizationService()))
+            ->add(new RequestAuthorizationMiddleware())
+            ;
 
         return $middlewareQueue;
     }

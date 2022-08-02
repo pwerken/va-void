@@ -2,6 +2,8 @@
 
 $cakeDescription = 'VOID-API';
 
+#$user = $this->Authorize->getIdentity();
+
 $role = (!isset($user) ? '' : $user['role']);
 $nav = [];
 
@@ -13,7 +15,7 @@ case 'Infobalie':
 	$nav['/admin/valea_void'] = 'VALEA~VOID Sync';
 case 'Referee':
 case 'Read-only':
-	$nav['/admin/authorisation'] = 'Authorisation';
+	$nav['/admin/authorization'] = 'Authorization';
 	$nav['/admin/history'] = 'Entity History';
 	$nav['/admin/printing'] = 'Printing Queue';
 	$nav['/admin/skills'] = 'Skill~Player Lookup';

@@ -2,19 +2,19 @@
 namespace App\Model\Entity;
 
 class CharactersSpell
-	extends AppEntity
+    extends AppEntity
 {
 
-	public function __construct($properties = [], $options = [])
-	{
-		parent::__construct($properties, $options);
+    public function __construct($properties = [], $options = [])
+    {
+        parent::__construct($properties, $options);
 
-		$this->setCompact(['level', 'character', 'spell']);
-		$this->addHidden(['character_id', 'spell_id']);
-	}
+        $this->setCompact(['level', 'character', 'spell']);
+        $this->setHidden(['character_id', 'spell_id'], true);
+    }
 
-	public function getUrl($parent = null)
-	{
-		return $this->getRelationUrl('character', 'spell', $parent);
-	}
+    public function getUrl($parent = null)
+    {
+        return $this->getRelationUrl('character', 'spell', $parent);
+    }
 }

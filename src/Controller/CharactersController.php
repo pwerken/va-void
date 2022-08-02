@@ -3,136 +3,103 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Model\Entity\Lammy;
-use App\Utility\AuthState;
-use Cake\Event\Event;
+use Cake\Http\Exception\NotFoundException;
+use Cake\Utility\Inflector;
 
 class CharactersController
-	extends AppController
+    extends AppController
 {
 
-	protected $searchFields =
-		[ 'Characters.name'
-		];
+    public function index()
+    {
+        $query = $this->Characters->find()
+                    ->select([], true)
+                    ->select('Characters.player_id')
+                    ->select('Characters.chin')
+                    ->select('Characters.name')
+                    ->select('Characters.status');
 
-	public function initialize(): void
-	{
-		parent::initialize();
+#       $this->Authorization->applyScope($query);
 
-		$this->mapMethod('add',           [ 'referee'           ]);
-		$this->mapMethod('delete',        [ 'super'             ]);
-		$this->mapMethod('edit',          [ 'referee'           ]);
-		$this->mapMethod('index',         [ 'players'           ], false);
-		$this->mapMethod('view',          [ 'read-only', 'user' ], true);
+        if(isset($this->parent)) {
+            $a = Inflector::camelize($this->parent->getSource());
+            $key = $this->Characters->getAssociation($a)->getForeignKey();
+            $value = $this->parent->id;
 
-		$this->Crud->mapAction('queue',
-			[ 'className' => 'Crud.View'
-			, 'auth' => [ 'referee' ]
-			, 'findMethod' => 'withContain'
-			]);
+            $query = $query->andWhere(["Characters.$key" => $value]);
+            $this->set('parent', $this->parent);
+        }
 
-		$this->mapMethod('believesIndex', [ 'read-only'         ]);
-		$this->mapMethod('factionsIndex', [ 'read-only'         ]);
-		$this->mapMethod('groupsIndex',   [ 'read-only'         ]);
-		$this->mapMethod('playersIndex',  [ 'read-only', 'user' ]);
-		$this->mapMethod('worldsIndex',   [ 'read-only'         ]);
-	}
+        $content = [];
+        foreach($this->doRawQuery($query) as $row) {
+            $content[] =
+                [ 'class' => 'Character'
+                , 'url' => '/characters/'.$row[0].'/'.$row[1]
+                , 'plin' => (int)$row[0]
+                , 'chin' => (int)$row[1]
+                , 'name' => $row[2]
+                , 'status' => $row[3]
+                ];
+        }
+        $this->set('_serialize',
+            [ 'class' => 'List'
+            , 'url' => rtrim($this->request->getPath(), '/')
+            , 'list' => $content
+            ]);
+    }
 
-	public function add($plin)
-	{
-		$plin = $plin ?: $this->request->getData('plin');
-		$this->request = $this->request->withData('player_id', $plin);
-		$this->request = $this->request->withoutData('plin');
+    public function view(int $id)
+    {
+        $character = $this->Characters->findWithContainById($id)->first();
 
-		$next = $this->Characters->find()
-					->select(['nextChin' => 'MAX(chin)'])
-					->where(['player_id' => $plin])
-					->enableHydration(false)
-					->first();
-		$next = $next ? $next['nextChin'] + 1: 1;
-		$chin = $this->request->getData('chin') ?: $next;
-		$this->request = $this->request->withData('chin', $chin);
+        $this->Authorization->authorize($character);
+        $this->set('_serialize', $character);
+    }
 
-		$this->edit(NULL);
-	}
+    public function believesIndex(int $belief_id)
+    {
+        $this->parent = $this->loadModel('Believes')->get($belief_id);
+        if (is_null($this->parent)) {
+            throw new NotFoundException();
+        }
+#        $this->Authorization->authorize($this->parent, 'view');
+        return $this->index();
+    }
 
-	public function edit($id)
-	{
-		// make the virtual fields assignable
-		$this->dataNameToId('Factions', 'faction');
-		$this->dataNameToIdAndAddIfMissing('Believes', 'belief');
-		$this->dataNameToIdAndAddIfMissing('Groups', 'group');
-		$this->dataNameToIdAndAddIfMissing('Worlds', 'world');
+    public function factionsIndex(int $faction_id)
+    {
+        $this->parent = $this->loadModel('Factions')->get($faction_id);
+        if (is_null($this->parent)) {
+            throw new NotFoundException();
+        }
+#        $this->Authorization->authorize($this->parent , 'view');
+        return $this->index();
+    }
 
-		$this->Crud->execute();
-	}
+    public function groupsIndex(int $group_id)
+    {
+        $this->parent = $this->loadModel('Groups')->get($group_id);
+        if (is_null($this->parent)) {
+            throw new NotFoundException();
+        }
+#        $this->Authorization->authorize($this->parent, 'view');
+        return $this->index();
+    }
 
-	public function index()
-	{
-		$query = $this->Characters->find()
-					->select([], true)
-					->select('Characters.player_id')
-					->select('Characters.chin')
-					->select('Characters.name')
-					->select('Characters.status');
+    public function playersIndex(int $plin)
+    {
+        $this->parent = $this->loadModel('Players')->get($plin);
+        $this->Authorization->authorize($this->parent, 'view');
+        return $this->index();
+    }
 
-		if(!AuthState::hasRole('read-only')) {
-			# authorisation < read-only
-			# limit to own characters
-			$plin = $this->Auth->user('id');
-			$query->where(["Characters.player_id = $plin"]);
-		} else {
-			if($this->setResponseModified())
-				return $this->response;
-		}
-
-		$content = [];
-		foreach($this->doRawQuery($query) as $row) {
-			$content[] =
-				[ 'class' => 'Character'
-				, 'url' => '/characters/'.$row[0].'/'.$row[1]
-				, 'plin' => (int)$row[0]
-				, 'chin' => (int)$row[1]
-				, 'name' => $row[2]
-				, 'status' => $row[3]
-				];
-		}
-		$this->set('_serialize',
-			[ 'class' => 'List'
-			, 'url' => rtrim($this->request->getPath(), '/')
-			, 'list' => $content
-			]);
-	}
-
-	public function queue($id)
-	{
-		$this->Crud->on('beforeRender', [$this, 'queueBeforeRender']);
-		$this->Crud->execute();
-	}
-
-	public function queueBeforeRender(Event $event)
-	{
-		$table = $this->loadModel('Lammies');
-
-		$character = $event->getSubject()->entity;
-		$table->save($table->newEntity()->set('target', $character));
-		$count = 1;
-
-		if(!is_null($this->request->getData('all'))) {
-			foreach($character->powers as $p) {
-				$table->save($table->newEntity()->set('target', $p));
-				$count++;
-			}
-			foreach($character->conditions as $c) {
-				$table->save($table->newEntity()->set('target', $c));
-				$count++;
-			}
-			foreach($character->items as $i) {
-				$table->save($table->newEntity()->set('target', $i));
-				$count++;
-			}
-		}
-
-		$event->getSubject()->entity = $count;
-	}
+    public function worldsIndex(int $world_id)
+    {
+        $this->parent = $this->loadModel('Worlds')->get($world_id);
+        if (is_null($this->parent)) {
+            throw new NotFoundException();
+        }
+#        $this->Authorization->authorize($this->parent, 'view');
+        return $this->index();
+    }
 }

@@ -4,26 +4,52 @@ declare(strict_types=1);
 namespace App\Controller;
 
 class CharactersSkillsController
-	extends AppController
+    extends AppController
 {
 
-	public function initialize(): void
-	{
-		parent::initialize();
+    public function charactersIndex($char_id)
+    {
+        $this->parent = $this->loadModel('Characters')->get($char_id);
+        if (is_null($this->parent)) {
+            throw new NotFoundException();
+#        $this->Authorization->authorize($this->parent, 'view');
+        }
 
-		$this->mapMethod('charactersAdd',    [ 'referee'           ]);
-		$this->mapMethod('charactersDelete', [ 'referee'           ]);
-# There are no properties on this relation to edit
-#		$this->mapMethod('charactersEdit',   [ 'infobalie'         ]);
-		$this->mapMethod('charactersIndex',  [ 'read-only', 'user' ], true);
-		$this->mapMethod('charactersView',   [ 'read-only', 'user' ], true);
+        $query = $this->CharactersSkills->findWithContain();
+        $query->andWhere(['CharactersSkills.character_id' => $char_id]);
+#        $this->Authorization->applyScope($query);
 
-		$this->mapMethod('skillsIndex',      [ 'read-only'         ], true);
-	}
+        $this->set('parent', $this->parent);
+        $this->set('_serialize', $query->all());
+    }
 
-	public function charactersAdd($char_id)
-	{
-		$this->request = $this->request->withData('character_id', $char_id);
-		$this->Crud->execute();
-	}
+    public function charactersView($char_id, $skill_id)
+    {
+        $query = $this->CharactersSkills->findWithContain();
+        $query->andWhere(['CharactersSkills.character_id' => $char_id]);
+        $query->andWhere(['CharactersSkills.skill_id' => $skill_id]);
+        $obj = $query->first();
+        if (is_null($obj)) {
+            throw new NotFoundException();
+        }
+
+#        $this->Authorization->authorize($obj);
+        $this->set('_serialize', $obj);
+    }
+
+    public function skillsIndex($skill_id)
+    {
+        $this->parent = $this->loadModel('Skills')->get($skill_id);
+        if (is_null($this->parent)) {
+            throw new NotFoundException();
+        }
+#        $this->Authorization->authorize($this->parent, 'view');
+
+        $query = $this->CharactersSkills->findWithContain();
+        $query->andWhere(['CharactersSkills.skill_id' => $skill_id]);
+#        $this->Authorization->applyScope($query);
+
+        $this->set('parent', $this->parent);
+        $this->set('_serialize', $query->all());
+    }
 }
