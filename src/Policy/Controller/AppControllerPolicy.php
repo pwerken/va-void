@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Policy\Controller;
 
-use Authorization\IdentityInterface;
+use Authorization\IdentityInterface as User;
 use Cake\Http\ServerRequest;
 
 use App\Policy\AppPolicy;
@@ -11,11 +11,10 @@ use App\Policy\AppPolicy;
 class AppControllerPolicy
     extends AppPolicy
 {
-
-    public function canAccess(?IdentityInterface $identity, ServerRequest $request)
+    public function canAccess(?User $identity, ServerRequest $request): bool
     {
-        $this->identity = $identity;
+        $this->setIdentity($identity);
         $action = $request->getParam('action');
-        return $this->$action();
+        return $this->{$action}();
     }
 }

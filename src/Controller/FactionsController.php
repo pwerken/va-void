@@ -14,12 +14,4 @@ class FactionsController
 
         $this->doRawIndex($query, 'Factions', '/factions/', 'id');
     }
-
-    public function view($id)
-    {
-        $belief = $this->Factions->findWithContainById($id)->first();
-#        $this->Authorization->authorize($belief);
-
-        $this->set('_serialize', $belief);
-    }
 }

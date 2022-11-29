@@ -22,8 +22,8 @@ class ControllerPolicyResolver
         }
 
         $name = $resource->getParam('controller').'Controller';
-        $policyClass = App::className($name, 'Policy/Controller', 'Policy');
 
+        $policyClass = App::className($name, 'Policy/Controller', 'Policy');
         if ($policyClass === null) {
             throw new MissingPolicyException($name);
         }

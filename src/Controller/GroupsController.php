@@ -14,12 +14,4 @@ class GroupsController
 
         $this->doRawIndex($query, 'Groups', '/groups/', 'id');
     }
-
-    public function view($id)
-    {
-        $belief = $this->Groups->findWithContainById($id)->first();
-#        $this->Authorization->authorize($belief);
-
-        $this->set('_serialize', $belief);
-    }
 }

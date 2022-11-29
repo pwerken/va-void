@@ -1,0 +1,73 @@
+<?php
+declare(strict_types=1);
+
+namespace App\Policy\Entity;
+
+use Authorization\IdentityInterface as User;
+use Authorization\Policy\BeforePolicyInterface;
+
+use App\Model\Entity\AppEntity;
+use App\Policy\AppPolicy;
+
+abstract class AppEntityPolicy
+    extends AppPolicy
+    implements BeforePolicyInterface
+{
+    private array $showFieldAuth = [];
+    private array $editFieldAuth = [];
+
+    public function __construct()
+    {
+        $this->showFieldAuth('modifier_id', 'read-only');
+    }
+
+    /**
+     * This method is called just prior to the 'can{$action}' check.
+     */
+    public function before(?User $identity, $resource, $action): void
+    {
+        $this->setIdentity($identity);
+    }
+
+    public function scopeAccesible(User $identity, AppEntity $object): void
+    {
+        $this->setIdentity($identity);
+
+        $audit_fields = ['created', 'created_id', 'modified', 'modified_id'];
+        $object->setAccess($audit_fields, false);
+
+        foreach($this->editFieldAuth as $field => $access)
+        {
+            $object->setAccess($field, $this->hasAuth($access, $object));
+        }
+    }
+
+    public function scopeVisible(User $identity, AppEntity $object): void
+    {
+        $this->setIdentity($identity);
+
+        foreach($this->showFieldAuth as $field => $access)
+        {
+            if ($this->hasAuth($access, $object)) {
+                continue;
+            }
+            $object->setHidden([$field], true);
+        }
+    }
+
+    protected function editFieldAuth(string $field, string|array $auth): void
+    {
+        if (is_string($auth)) {
+            $auth = [ $auth ];
+        }
+        $this->editFieldAuth[$field] = $auth;
+    }
+
+    protected function showFieldAuth(string $field, string|array $auth): void
+    {
+        if (is_string($auth)) {
+            $auth = [ $auth ];
+        }
+        $this->showFieldAuth[$field] = $auth;
+    }
+}

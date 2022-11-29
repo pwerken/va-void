@@ -1,5 +1,5 @@
 <?php
-namespace App\Test\TestCase\Controller;
+namespace App\Test\TestCase\Integration;
 
 use App\Test\TestSuite\AuthIntegrationTestCase;
 

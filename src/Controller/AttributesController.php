@@ -14,12 +14,4 @@ class AttributesController
 
         $this->doRawIndex($query, 'Attributes', '/attributes/', 'id');
     }
-
-    public function view($id)
-    {
-        $attribute = $this->Attributes->findWithContainById($id)->first();
-#        $this->Authorization->authorize($attribute);
-
-        $this->set('_serialize', $attribute);
-    }
 }

@@ -64,7 +64,7 @@ class ApiView
         $result['class'] = $class;
         $result['url']   = $obj->getUrl();
 
-#        $this->authorize->applyScope('visible', $obj);
+        $this->authorize->applyScope('visible', $obj);
         foreach($obj->getVisible() as $key) {
             $value = $obj->get($key);
 

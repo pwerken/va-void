@@ -14,12 +14,4 @@ class WorldsController
 
         $this->doRawIndex($query, 'Worlds', '/worlds/', 'id');
     }
-
-    public function view($id)
-    {
-        $belief = $this->Worlds->findWithContainById($id)->first();
-#        $this->Authorization->authorize($belief);
-
-        $this->set('_serialize', $belief);
-    }
 }

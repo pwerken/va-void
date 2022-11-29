@@ -10,29 +10,10 @@ class CharactersConditionsController
     public function charactersIndex($char_id)
     {
         $this->parent = $this->loadModel('Characters')->get($char_id);
-        if (is_null($this->parent)) {
-            throw new NotFoundException();
-        }
-#        $this->Authorization->authorize($this->parent, 'view');
+        $this->Authorization->authorize($this->parent, 'view');
 
         $query = $this->CharactersConditions->findWithContain();
         $query->andWhere(['CharactersConditions.character_id' => $char_id]);
-#        $this->Authorization->applyScope($query);
-
-        $this->set('parent', $this->parent);
-        $this->set('_serialize', $query->all());
-    }
-
-    public function conditionsIndex($coin)
-    {
-        $this->parent = $this->loadModel('Conditions')->get($coin);
-        if (is_null($this->parent)) {
-            throw new NotFoundException();
-        }
-#        $this->Authorization->authorize($this->parent, 'view');
-
-        $query = $this->CharactersConditions->findWithContain();
-        $query->andWhere(['CharactersConditions.condition_id' => $coin]);
 #        $this->Authorization->applyScope($query);
 
         $this->set('parent', $this->parent);
@@ -41,15 +22,27 @@ class CharactersConditionsController
 
     public function charactersView($char_id, $coin)
     {
+        $parent = $this->loadModel('Characters')->get($char_id);
+        $this->Authorization->authorize($parent, 'view');
+
         $query = $this->CharactersConditions->findWithContain();
         $query->andWhere(['CharactersConditions.character_id' => $char_id]);
         $query->andWhere(['CharactersConditions.condition_id' => $coin]);
-        $obj = $query->first();
-        if (is_null($obj)) {
-            throw new NotFoundException();
-        }
+        $obj = $query->firstOrFail();
 
-#        $this->Authorization->authorize($obj);
         $this->set('_serialize', $obj);
+    }
+
+    public function conditionsIndex($coin)
+    {
+        $this->parent = $this->loadModel('Conditions')->get($coin);
+        $this->Authorization->authorize($this->parent, 'view');
+
+        $query = $this->CharactersConditions->findWithContain();
+        $query->andWhere(['CharactersConditions.condition_id' => $coin]);
+#        $this->Authorization->applyScope($query);
+
+        $this->set('parent', $this->parent);
+        $this->set('_serialize', $query->all());
     }
 }

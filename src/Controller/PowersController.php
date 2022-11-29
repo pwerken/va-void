@@ -11,16 +11,8 @@ class PowersController
     {
         $query = $this->Powers->find()
                     ->select(['Powers.id', 'Powers.name'], true);
-#       $this->Authorization->applyScope($query);
+        $this->Authorization->applyScope($query);
 
         $this->doRawIndex($query, 'Powers', '/powers/', 'poin');
-    }
-
-    public function view($poin)
-    {
-        $power = $this->Powers->findWithContainById($poin)->first();
-#        $this->Authorization->authorize($power);
-
-        $this->set('_serialize', $power);
     }
 }

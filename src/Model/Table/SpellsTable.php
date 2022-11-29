@@ -53,11 +53,6 @@ class SpellsTable
         return true;
     }
 
-    protected function contain(): array
-    {
-        return [ 'CharactersSpells.Characters' ];
-    }
-
     protected function orderBy(): array
     {
         return  [ 'name' => 'ASC' ];

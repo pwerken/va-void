@@ -6,12 +6,12 @@ namespace App\Policy\Controller;
 class AuthControllerPolicy
     extends AppControllerPolicy
 {
-    public function login()
+    public function login(): bool
     {
         return true;
     }
 
-    public function logout()
+    public function logout(): bool
     {
         return true;
     }

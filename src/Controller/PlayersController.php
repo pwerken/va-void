@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\Http\Exception\NotFoundException;
-
 class PlayersController
     extends AppController
 {
@@ -17,7 +15,6 @@ class PlayersController
                     ->select('Players.first_name')
                     ->select('Players.insertion')
                     ->select('Players.last_name');
-
         $this->Authorization->applyScope($query);
 
         $content = [];
@@ -39,16 +36,5 @@ class PlayersController
             , 'url' => rtrim($this->request->getPath(), '/')
             , 'list' => $content
             ]);
-    }
-
-    public function view(int $plin)
-    {
-        $player = $this->Players->findWithContainById($plin)->first();
-        if (is_null($player)) {
-            throw new NotFoundException();
-        }
-        $this->Authorization->authorize($player);
-
-        $this->set('_serialize', $player);
     }
 }

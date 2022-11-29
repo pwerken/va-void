@@ -43,7 +43,8 @@ use App\Routing\Middleware\PlinChinMiddleware;
  * This defines the bootstrapping logic and middleware layers you
  * want to use in your application.
  */
-class Application extends BaseApplication
+class Application
+    extends BaseApplication
 {
     /**
      * {@inheritDoc}

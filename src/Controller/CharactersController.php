@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\Http\Exception\NotFoundException;
 use Cake\Utility\Inflector;
 
 class CharactersController
@@ -18,10 +17,11 @@ class CharactersController
                     ->select('Characters.chin')
                     ->select('Characters.name')
                     ->select('Characters.status');
-
-#       $this->Authorization->applyScope($query);
+        $this->Authorization->applyScope($query);
 
         if(isset($this->parent)) {
+            $this->Authorization->authorize($this->parent, 'charactersIndex');
+
             $a = Inflector::camelize($this->parent->getSource());
             $key = $this->Characters->getAssociation($a)->getForeignKey();
             $value = $this->parent->id;
@@ -48,58 +48,45 @@ class CharactersController
             ]);
     }
 
-    public function view(int $id)
-    {
-        $character = $this->Characters->findWithContainById($id)->first();
-
-        $this->Authorization->authorize($character);
-        $this->set('_serialize', $character);
-    }
-
     public function believesIndex(int $belief_id)
     {
         $this->parent = $this->loadModel('Believes')->get($belief_id);
-        if (is_null($this->parent)) {
-            throw new NotFoundException();
-        }
-#        $this->Authorization->authorize($this->parent, 'view');
         return $this->index();
     }
 
     public function factionsIndex(int $faction_id)
     {
         $this->parent = $this->loadModel('Factions')->get($faction_id);
-        if (is_null($this->parent)) {
-            throw new NotFoundException();
-        }
-#        $this->Authorization->authorize($this->parent , 'view');
         return $this->index();
     }
 
     public function groupsIndex(int $group_id)
     {
         $this->parent = $this->loadModel('Groups')->get($group_id);
-        if (is_null($this->parent)) {
-            throw new NotFoundException();
-        }
-#        $this->Authorization->authorize($this->parent, 'view');
         return $this->index();
     }
 
     public function playersIndex(int $plin)
     {
         $this->parent = $this->loadModel('Players')->get($plin);
-        $this->Authorization->authorize($this->parent, 'view');
+        return $this->index();
+    }
+
+    public function skillsIndex(int $skill_id)
+    {
+        $this->parent = $this->loadModel('Skills')->get($skill_id);
+        return $this->index();
+    }
+
+    public function spellsIndex(int $spell_id)
+    {
+        $this->parent = $this->loadModel('Spells')->get($spell_id);
         return $this->index();
     }
 
     public function worldsIndex(int $world_id)
     {
         $this->parent = $this->loadModel('Worlds')->get($world_id);
-        if (is_null($this->parent)) {
-            throw new NotFoundException();
-        }
-#        $this->Authorization->authorize($this->parent, 'view');
         return $this->index();
     }
 }

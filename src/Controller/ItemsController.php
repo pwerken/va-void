@@ -66,14 +66,6 @@ class ItemsController
             ]);
     }
 
-    public function view(int $id)
-    {
-        $item = $this->Items->findWithContainById($id)->first();
-
-        $this->Authorization->authorize($item);
-        $this->set('_serialize', $item);
-    }
-
     public function charactersIndex(int $id)
     {
         $this->parent = $this->loadModel('characters')->get($id);

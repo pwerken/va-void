@@ -14,12 +14,4 @@ class SpellsController
 
         $this->doRawIndex($query, 'Spells', '/spells/', 'id');
     }
-
-    public function view($spell_id)
-    {
-        $spell = $this->Spells->findWithContainById($spell_id)->first();
-#        $this->Authorization->authorize($spell);
-
-        $this->set('_serialize', $spell);
-    }
 }

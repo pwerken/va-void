@@ -3,18 +3,21 @@ declare(strict_types=1);
 
 namespace App\Policy;
 
+use Authorization\IdentityInterface as User;
+
+use App\Model\Entity\AppEntity;
 use App\Model\Entity\Player;
 
-class AppPolicy
+abstract class AppPolicy
 {
-    protected $identity;
+    private $identity;
 
-    protected function getOwner($object)
+    protected function setIdentity(?User $identity): void
     {
-        return -2;
+        $this->identity = $identity;
     }
 
-    protected function hasAuth($roles, $object = NULL)
+    protected function hasAuth(string|array $roles, ?AppEntity $obj = NULL): bool
     {
         if (is_null($this->identity))
             return false;
@@ -23,17 +26,26 @@ class AppPolicy
             $roles = [ $roles ];
 
         foreach($roles as $role) {
-            if ($this->hasRole($role, $object)) {
+            if ($this->hasRole($role, $obj)) {
                 return true;
             }
         }
         return false;
     }
 
-    private function hasRole($role, $object)
+    protected function hasRoleUser(int $plin, AppEntity $obj): bool
+    {
+        return false;
+    }
+
+    private function hasRole(string $role, ?AppEntity $obj): bool
     {
         if (strcasecmp($role, 'user') == 0) {
-            return $this->identity->getIdentifier() == $this->getOwner($object);
+            if (is_null($obj)) {
+                return false;
+            }
+            $plin = (int)$this->identity->getIdentifier();
+            return $this->hasRoleUser($plin, $obj);
         }
 
         $need = self::roleToInt($role);
@@ -41,7 +53,7 @@ class AppPolicy
         return $need <= $have;
     }
 
-    private function roleToInt($role)
+    private function roleToInt(string $role): int
     {
         foreach(Player::roleValues() as $key => $value) {
             if(strcasecmp($role, $value) == 0)

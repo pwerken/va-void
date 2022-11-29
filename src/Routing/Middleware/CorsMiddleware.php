@@ -1,14 +1,16 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Routing\Middleware;
 
 use Cake\Core\Configure;
-use Cake\Http\Response;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
-class CorsMiddleware implements MiddlewareInterface
+class CorsMiddleware
+    implements MiddlewareInterface
 {
     protected $config;
 
@@ -27,7 +29,7 @@ class CorsMiddleware implements MiddlewareInterface
         $this->config = array_merge($default, $data, $config);
     }
 
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function process(Request $request, RequestHandler $handler): Response
     {
         $cors = $handler->handle($request)->cors($request);
         if($request->is('options')) {

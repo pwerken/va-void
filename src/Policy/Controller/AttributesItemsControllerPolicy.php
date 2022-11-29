@@ -6,32 +6,32 @@ namespace App\Policy\Controller;
 class AttributesItemsControllerPolicy
     extends AppControllerPolicy
 {
-    public function attributesIndex()
+    public function attributesIndex(): bool
     {
         return $this->hasAuth('read-only');
     }
 
-    public function itemsAdd()
+    public function itemsAdd(): bool
     {
         return $this->hasAuth('referee');
     }
 
-    public function itemsDelete()
+    public function itemsDelete(): bool
     {
         return $this->hasAuth('referee');
     }
 
-    public function itemsEdit()
+    public function itemsEdit(): bool
     {
         return false;
     }
 
-    public function itemsIndex()
+    public function itemsIndex(): bool
     {
         return $this->hasAuth('read-only');
     }
 
-    public function itemsView()
+    public function itemsView(): bool
     {
         return $this->itemsIndex();
     }

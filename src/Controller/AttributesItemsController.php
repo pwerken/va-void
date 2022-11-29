@@ -10,9 +10,6 @@ class AttributesItemsController
     public function attributesIndex($id)
     {
         $this->parent = $this->loadModel('Attributes')->get($id);
-        if (is_null($this->parent)) {
-            throw new NotFoundException();
-        }
 #        $this->Authorization->authorize($this->parent, 'view');
 
         $query = $this->AttributesItems->findWithContain();
@@ -26,9 +23,6 @@ class AttributesItemsController
     public function itemsIndex($itin)
     {
         $this->parent = $this->loadModel('Items')->get($itin);
-        if (is_null($this->parent)) {
-            throw new NotFoundException();
-        }
 #        $this->Authorization->authorize($this->parent, 'view');
 
         $query = $this->AttributesItems->findWithContain();
@@ -44,10 +38,7 @@ class AttributesItemsController
         $query = $this->AttributesItems->findWithContain();
         $query->andWhere(['AttributesItems.item_id' => $itin]);
         $query->andWhere(['AttributesItems.attribute_id' => $id]);
-        $obj = $query->first();
-        if (is_null($obj)) {
-            throw new NotFoundException();
-        }
+        $obj = $query->firstOrFail();
 
 #        $this->Authorization->authorize($obj);
         $this->set('_serialize', $obj);

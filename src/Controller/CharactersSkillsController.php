@@ -10,10 +10,7 @@ class CharactersSkillsController
     public function charactersIndex($char_id)
     {
         $this->parent = $this->loadModel('Characters')->get($char_id);
-        if (is_null($this->parent)) {
-            throw new NotFoundException();
-#        $this->Authorization->authorize($this->parent, 'view');
-        }
+        $this->Authorization->authorize($this->parent, 'view');
 
         $query = $this->CharactersSkills->findWithContain();
         $query->andWhere(['CharactersSkills.character_id' => $char_id]);
@@ -25,25 +22,21 @@ class CharactersSkillsController
 
     public function charactersView($char_id, $skill_id)
     {
+        $parent = $this->loadModel('Characters')->get($char_id);
+        $this->Authorization->authorize($parent, 'view');
+
         $query = $this->CharactersSkills->findWithContain();
         $query->andWhere(['CharactersSkills.character_id' => $char_id]);
         $query->andWhere(['CharactersSkills.skill_id' => $skill_id]);
-        $obj = $query->first();
-        if (is_null($obj)) {
-            throw new NotFoundException();
-        }
+        $obj = $query->firstOrFail();
 
-#        $this->Authorization->authorize($obj);
         $this->set('_serialize', $obj);
     }
 
     public function skillsIndex($skill_id)
     {
         $this->parent = $this->loadModel('Skills')->get($skill_id);
-        if (is_null($this->parent)) {
-            throw new NotFoundException();
-        }
-#        $this->Authorization->authorize($this->parent, 'view');
+        $this->Authorization->authorize($this->parent, 'view');
 
         $query = $this->CharactersSkills->findWithContain();
         $query->andWhere(['CharactersSkills.skill_id' => $skill_id]);

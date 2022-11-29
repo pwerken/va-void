@@ -10,10 +10,7 @@ class CharactersPowersController
     public function charactersIndex($char_id)
     {
         $this->parent = $this->loadModel('Characters')->get($char_id);
-        if (is_null($this->parent)) {
-            throw new NotFoundException();
-#        $this->Authorization->authorize($this->parent, 'view');
-        }
+        $this->Authorization->authorize($this->parent, 'view');
 
         $query = $this->CharactersPowers->findWithContain();
         $query->andWhere(['CharactersPowers.character_id' => $char_id]);
@@ -25,25 +22,21 @@ class CharactersPowersController
 
     public function charactersView($char_id, $poin)
     {
+        $parent = $this->loadModel('Characters')->get($char_id);
+        $this->Authorization->authorize($parent, 'view');
+
         $query = $this->CharactersPowers->findWithContain();
         $query->andWhere(['CharactersPowers.character_id' => $char_id]);
         $query->andWhere(['CharactersPowers.power_id' => $poin]);
-        $obj = $query->first();
-        if (is_null($obj)) {
-            throw new NotFoundException();
-        }
+        $obj = $query->firstOrFail();
 
-#        $this->Authorization->authorize($obj);
         $this->set('_serialize', $obj);
     }
 
     public function powersIndex($poin)
     {
         $this->parent = $this->loadModel('Powers')->get($poin);
-        if (is_null($this->parent)) {
-            throw new NotFoundException();
-        }
-#        $this->Authorization->authorize($this->parent, 'view');
+        $this->Authorization->authorize($this->parent, 'view');
 
         $query = $this->CharactersPowers->findWithContain();
         $query->andWhere(['CharactersPowers.power_id' => $poin]);

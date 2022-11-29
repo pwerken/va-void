@@ -14,12 +14,4 @@ class SkillsController
 
         $this->doRawIndex($query, 'Skills', '/skills/', 'id');
     }
-
-    public function view($skill_id)
-    {
-        $skill = $this->Skills->findWithContainById($skill_id)->first();
-#        $this->Authorization->authorize($skill);
-
-        $this->set('_serialize', $skill);
-    }
 }

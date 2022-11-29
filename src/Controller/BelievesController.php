@@ -14,12 +14,4 @@ class BelievesController
 
         $this->doRawIndex($query, 'Believes', '/believes/', 'id');
     }
-
-    public function view($id)
-    {
-        $belief = $this->Believes->findWithContainById($id)->first();
-#        $this->Authorization->authorize($belief);
-
-        $this->set('_serialize', $belief);
-    }
 }

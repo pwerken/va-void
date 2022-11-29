@@ -14,12 +14,4 @@ class EventsController
 
         $this->doRawIndex($query, 'Events', '/events/', 'id');
     }
-
-    public function view($id)
-    {
-        $belief = $this->Events->findWithContainById($id)->first();
-#        $this->Authorization->authorize($belief);
-
-        $this->set('_serialize', $belief);
-    }
 }

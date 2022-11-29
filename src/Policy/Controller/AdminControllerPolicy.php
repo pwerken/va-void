@@ -6,67 +6,67 @@ namespace App\Policy\Controller;
 class AdminControllerPolicy
     extends AppControllerPolicy
 {
-    public function index()
+    public function index(): bool
     {
         return true;
     }
 
-    public function logout()
+    public function logout(): bool
     {
         return true;
     }
 
-    public function authentication()
+    public function authentication(): bool
     {
         return $this->hasAuth('player');
     }
 
-    public function authorization()
+    public function authorization(): bool
     {
         return $this->hasAuth('read-only');
     }
 
-    public function checks()
+    public function checks(): bool
     {
         return true;
     }
 
-    public function routes()
+    public function routes(): bool
     {
         return true;
     }
 
-    public function backups()
+    public function backups(): bool
     {
         return $this->hasAuth('super');
     }
 
-    public function migrations()
+    public function migrations(): bool
     {
         return $this->hasAuth('super');
     }
 
-    public function history()
+    public function history(): bool
     {
         return $this->hasAuth('read-only');
     }
 
-    public function printing()
+    public function printing(): bool
     {
         return $this->hasAuth('read-only');
     }
 
-    public function skills()
+    public function skills(): bool
     {
         return $this->hasAuth('read-only');
     }
 
-    public function valea_paid()
+    public function valea_paid(): bool
     {
         return $this->hasAuth('read-only');
     }
 
-    public function valea_void()
+    public function valea_void(): bool
     {
         return $this->hasAuth('infobalie');
     }

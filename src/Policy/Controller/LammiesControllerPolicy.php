@@ -6,47 +6,47 @@ namespace App\Policy\Controller;
 class LammiesControllerPolicy
     extends AppControllerPolicy
 {
-    public function add()
+    public function add(): bool
     {
         return $this->hasAuth('super');
     }
 
-    public function delete()
+    public function delete(): bool
     {
         return $this->hasAuth('super');
     }
 
-    public function edit()
+    public function edit(): bool
     {
         return $this->add();
     }
 
-    public function index()
+    public function index(): bool
     {
         return $this->hasAuth('read-only');
     }
 
-    public function view()
+    public function view(): bool
     {
         $this->index();
     }
 
-    public function queue()
+    public function queue(): bool
     {
         return $this->hasAuth('referee');
     }
 
-    public function printed()
+    public function printed(): bool
     {
         return $this->hasAuth('infobalie');
     }
 
-    public function pdfSingle()
+    public function pdfSingle(): bool
     {
         return $this->printed();
     }
 
-    public function pdfDouble()
+    public function pdfDouble(): bool
     {
         return $this->printed();
     }

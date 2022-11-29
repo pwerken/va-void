@@ -6,37 +6,37 @@ namespace App\Policy\Controller;
 class CharactersPowersControllerPolicy
     extends AppControllerPolicy
 {
-    public function charactersAdd()
+    public function charactersAdd(): bool
     {
         return $this->hasAuth('referee');
     }
 
-    public function charactersDelete()
+    public function charactersDelete(): bool
     {
         return $this->charactersAdd();
     }
 
-    public function charactersEdit()
+    public function charactersEdit(): bool
     {
         return $this->charactersAdd();
     }
 
-    public function charactersIndex()
+    public function charactersIndex(): bool
     {
         return $this->hasAuth('player');
     }
 
-    public function charactersView()
+    public function charactersView(): bool
     {
         return $this->charactersIndex();
     }
 
-    public function powersIndex()
+    public function powersIndex(): bool
     {
-        return $this->hasAuth('player');
+        return $this->hasAuth('read-only');
     }
 
-    public function charactersQueue()
+    public function charactersQueue(): bool
     {
         return $this->hasAuth('referee');
     }

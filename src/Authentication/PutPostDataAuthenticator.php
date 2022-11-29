@@ -4,14 +4,15 @@ declare(strict_types=1);
 namespace App\Authentication;
 
 use Authentication\Authenticator\FormAuthenticator;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  * PutPostData Authenticator
  *
  * Authenticates an identity based on the PUT or POST data of the request.
  */
-class PutPostDataAuthenticator extends FormAuthenticator
+class PutPostDataAuthenticator
+    extends FormAuthenticator
 {
     /**
      * Checks the fields to ensure they are supplied.
@@ -19,7 +20,7 @@ class PutPostDataAuthenticator extends FormAuthenticator
      * @param \Psr\Http\Message\ServerRequestInterface $request The request that contains login information.
      * @return array|null Username and password retrieved from a request body.
      */
-    protected function _getData(ServerRequestInterface $request): ?array
+    protected function _getData(Request $request): ?array
     {
         $fields = $this->_config['fields'];
         /** @var array $body */

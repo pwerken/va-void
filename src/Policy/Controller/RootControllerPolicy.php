@@ -6,7 +6,7 @@ namespace App\Policy\Controller;
 class RootControllerPolicy
     extends AppControllerPolicy
 {
-    public function root()
+    public function root(): bool
     {
         return true;
     }

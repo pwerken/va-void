@@ -4,7 +4,6 @@ namespace App\Model\Entity;
 class AttributesItem
     extends AppEntity
 {
-
     public function __construct($properties = [], $options = [])
     {
         parent::__construct($properties, $options);

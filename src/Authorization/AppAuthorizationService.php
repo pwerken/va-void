@@ -20,7 +20,8 @@ class AppAuthorizationService
     {
         $collection = new ResolverCollection();
         $collection->add(new ControllerPolicyResolver());
-        $collection->add(new OrmResolver());
+        $collection->add(new EntityPolicyResolver());
+        $collection->add(new TablePolicyResolver());
 
         parent::__construct($collection);
     }
