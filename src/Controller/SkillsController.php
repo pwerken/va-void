@@ -6,6 +6,7 @@ namespace App\Controller;
 class SkillsController
     extends AppController
 {
+    use \App\Controller\Trait\View;
 
     public function index()
     {

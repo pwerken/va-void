@@ -8,6 +8,7 @@ use Cake\Utility\Inflector;
 class CharactersController
     extends AppController
 {
+    use \App\Controller\Trait\View;
 
     public function index()
     {

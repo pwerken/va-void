@@ -19,6 +19,11 @@ class AppController
         $this->loadComponent('Authentication.Authentication');
         $this->loadComponent('Authorization.Authorization');
 
+#        $this->loadComponent('Create');
+        $this->loadComponent('Read');
+#        $this->loadComponent('Update');
+#        $this->loadComponent('Delete');
+
         $this->viewBuilder()->setClassName('Api');
 
         $arr = ['exceptionRenderer' => 'App\Error\ApiExceptionRenderer']
@@ -26,14 +31,6 @@ class AppController
         (new ErrorHandler($arr))->register();
 
         $this->response->compress();
-    }
-
-    public function view(int $id)
-    {
-        $obj = $this->loadModel()->findWithContainById($id)->firstOrFail();
-        $this->Authorization->authorize($obj);
-
-        $this->set('_serialize', $obj);
     }
 
     protected function setResponseModified()

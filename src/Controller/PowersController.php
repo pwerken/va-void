@@ -6,6 +6,7 @@ namespace App\Controller;
 class PowersController
     extends AppController
 {
+    use \App\Controller\Trait\View;
 
     public function index()
     {

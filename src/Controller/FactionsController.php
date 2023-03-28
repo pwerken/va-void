@@ -6,6 +6,7 @@ namespace App\Controller;
 class FactionsController
     extends AppController
 {
+    use \App\Controller\Trait\View;
 
     public function index()
     {

@@ -6,6 +6,8 @@ namespace App\Controller;
 class WorldsController
     extends AppController
 {
+    use \App\Controller\Trait\View;
+    use \App\Controller\Trait\Edit;
 
     public function index()
     {

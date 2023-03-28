@@ -6,6 +6,7 @@ namespace App\Controller;
 class EventsController
     extends AppController
 {
+    use \App\Controller\Trait\View;
 
     public function index()
     {

@@ -6,6 +6,7 @@ namespace App\Controller;
 class LammiesController
     extends AppController
 {
+    use \App\Controller\Trait\View;
 
     public function index()
     {
