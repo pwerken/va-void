@@ -7,6 +7,7 @@ use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 use App\Model\Entity\Character;
@@ -14,7 +15,6 @@ use App\Model\Entity\Character;
 class CharactersTable
     extends AppTable
 {
-
     public function initialize(array $config): void
     {
         parent::initialize($config);
@@ -37,67 +37,55 @@ class CharactersTable
                 ->setForeignKey('student_id')->setProperty('teacher');
     }
 
-    public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
-    {
-        if($entity->isDirty('status') && $entity->status == 'active') {
-            $chars = $this->findByPlayerId($entity->player_id);
-            foreach($chars as $char) {
-                if($char->id == $entity->id || $char->status != 'active') {
-                    continue;
-                }
-                $char->status = 'inactive';
-                $this->save($char);
-            }
-        }
-    }
-
-    public function validationDefault(Validator $validator): Validator
-    {
-        $validator->allowEmpty('id', 'create');
-        $validator->notEmpty('player_id');
-        $validator->notEmpty('chin');
-        $validator->notEmpty('name');
-        $validator->notEmpty('xp');
-        $validator->notEmpty('faction_id');
-        $validator->notEmpty('belief_id');
-        $validator->notEmpty('group_id');
-        $validator->notEmpty('world_id');
-        $validator->allowEmpty('soulpath');
-        $validator->notEmpty('status');
-        $validator->allowEmpty('referee_notes');
-        $validator->allowEmpty('notes');
-
-        // regex for xp validation
-        $xp_regex = '/^[0-9]*(?:[.,](?:[05][0]?|[27]5))?$/';
-
-        $validator->add('id', 'valid', ['rule' => 'numeric']);
-        $validator->add('player_id', 'valid', ['rule' => 'numeric']);
-        $validator->add('chin', 'valid', ['rule' => 'naturalNumber']);
-        $validator->add('xp', 'valid', ['rule' => ['custom', $xp_regex]]);
-        $validator->add('faction_id', 'valid', ['rule' => 'numeric']);
-        $validator->add('belief_id', 'valid', ['rule' => 'numeric']);
-        $validator->add('group_id', 'valid', ['rule' => 'numeric']);
-        $validator->add('world_id', 'valid', ['rule' => 'numeric']);
-        $validator->add('soulpath', 'valid', ['rule' => ['inList', Character::soulpathValues()]]);
-        $validator->add('status', 'valid', ['rule' => ['inList', Character::statusValues()]]);
-
-        $validator->requirePresence('player_id', 'create');
-        $validator->requirePresence('chin', 'create');
-        $validator->requirePresence('name', 'create');
-
-        return $validator;
-    }
-
     public function plinChin($plin, $chin)
     {
         return $this->findByPlayerIdAndChin($plin, $chin)->firstOrFail();
     }
 
+    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
+    {
+        parent::beforeMarshal($event, $data, $options);
+
+        if (isset($data['plin'])) {
+            $plin = $data['player_id'] = $data['plin'];
+            unset($data['plin']);
+
+            if (!isset($data['chin'])) {
+                $chin = $this->find()
+                            ->select(['maxChin' => 'MAX(chin)'])
+                            ->where(['player_id' => $plin])
+                            ->enableHydration(false)
+                            ->first();
+                $chin = $chin ? $chin['maxChin'] + 1 : 1;
+                $data['chin'] = $chin;
+            }
+        }
+
+        $data['faction_id'] = $this->nameToId('Factions', @$data['faction']);
+        $data['belief_id']  = $this->nameToIdOrAdd('Believes', @$data['belief']);
+        $data['group_id']   = $this->nameToIdOrAdd('Groups',   @$data['group']);
+        $data['world_id']   = $this->nameToIdOrAdd('Worlds',   @$data['world']);
+    }
+
+    public function afterMarshal(EventInterface $event, EntityInterface $entity, ArrayObject $data, ArrayObject $options): void
+    {
+        parent::afterMarshal($event, $entity, $data, $options);
+
+        if(!$entity->isNew())
+        {
+            if($entity->isDirty('player_id')) {
+                $entity->setError('player_id', ['key' => 'Cannot change primary key field']);
+            }
+            if($entity->isDirty('chin')) {
+                $entity->setError('chin', ['key' => 'Cannot change primary key field']);
+            }
+        }
+    }
+
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-
-        $rules->add($rules->isUnique(['player_id', 'chin'],
-            'This plin & chin combination is already in use.'));
+        $rules->addCreate($rules->isUnique(['chin', 'player_id']));
+        $rules->addCreate($rules->isUnique(['name', 'player_id']));
 
         $rules->add($rules->existsIn('faction_id', 'Factions'));
         $rules->add($rules->existsIn('group_id', 'Groups'));
@@ -111,6 +99,20 @@ class CharactersTable
         $rules->addDelete([$this, 'ruleNoSpells']);
 
         return $rules;
+    }
+
+    public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    {
+        if($entity->isDirty('status') && $entity->status == 'active') {
+            $chars = $this->findByPlayerId($entity->player_id);
+            foreach($chars as $char) {
+                if($char->id == $entity->id || $char->status != 'active') {
+                    continue;
+                }
+                $char->status = 'inactive';
+                $this->save($char);
+            }
+        }
     }
 
     public function ruleNoConditions($entity, $options)
@@ -192,5 +194,33 @@ class CharactersTable
     protected function orderBy(): array
     {
         return [ 'player_id' => 'ASC', 'chin' => 'DESC' ];
+    }
+
+    protected function nameToId($model, $name)
+    {
+        if(empty($name)) {
+            $name = "-";
+        }
+
+        $result = $this->$model->findByName($name)
+                    ->select('id', true)
+                    ->enableHydration(false)
+                    ->first();
+        if(is_null($result)) {
+            return 0;
+        }
+        return $result['id'];
+    }
+
+    protected function nameToIdOrAdd($model, $name)
+    {
+        $id = $this->nameToId($model, $name);
+        if($id == 0) {
+            $obj = $this->$model->newEmptyEntity();
+            $obj->name = $name;
+            $this->$model->save($obj);
+            $id = $obj->id;
+        }
+        return $id;
     }
 }

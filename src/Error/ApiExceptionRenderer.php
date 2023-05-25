@@ -9,6 +9,8 @@ use Cake\Http\Response;
 use Cake\Error\ExceptionRenderer;
 use Exception;
 
+use App\Error\Exception\ValidationException;
+
 class ApiExceptionRenderer
     extends ExceptionRenderer
 {
@@ -41,10 +43,15 @@ class ApiExceptionRenderer
         $data['file'] = $error->getFile();
         $data['line'] = $error->getLine();
 
+        $trace = [];
+        $trace[] = $this->traceLine($data);
+        foreach($error->getTrace() as $line) {
+            $trace[] = $this->traceLine($line);
+        }
+
         $errors = [];
-        $errors[] = $this->traceLine($data);
-        foreach($error->getTrace() as $trace) {
-            $errors[] = $this->traceLine($trace);
+        if ($error instanceof ValidationException) {
+            $errors = $error->getValidationErrors();
         }
 
         $data = [];
@@ -53,6 +60,7 @@ class ApiExceptionRenderer
         $data['url'] = $this->controller->getRequest()->getRequestTarget();
         $data['message'] = $error->getMessage();
         $data['errors'] = $errors;
+        $data['trace'] = $trace;
 
         $jsonOptions = JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT;
         if(Configure::read('debug'))

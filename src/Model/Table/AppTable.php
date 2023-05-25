@@ -13,13 +13,16 @@ use Cake\ORM\TableRegistry;
 abstract class AppTable
     extends Table
 {
-
     public function initialize(array $config): void
     {
         parent::initialize($config);
 
         $this->addBehavior('Timestamp');
 #       $this->addBehavior('CreatorModifier');
+
+        $entityName = $this->getEntityClass();
+        $entityName = substr($entityName, strrpos($entityName, '\\') + 1);
+        $this->_validatorClass = "App\\Model\\Validation\\{$entityName}Validator";
     }
 
     public function findWithContain(Query $query = null, array $options = [])
@@ -32,6 +35,44 @@ abstract class AppTable
             $query->contain($contain);
 
         return $query;
+    }
+
+    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
+    {
+        /* never marshal related/sub entities */
+        foreach($this->associations() as $sub) {
+            $field = $sub->getProperty();
+            if(isset($data[$field])) {
+                unset($data[$field]);
+            }
+        }
+    }
+
+    public function afterMarshal(EventInterface $event, EntityInterface $entity, ArrayObject $data, ArrayObject $options): void
+    {
+        /* disallow modification of primary key field(s) */
+        if(!$entity->isNew()) {
+            $keys = $this->getPrimaryKey();
+            if(is_string($keys)) {
+                $keys = [$keys];
+            }
+            foreach($keys as $key)
+            {
+                if($entity->isDirty($key)) {
+                    $entity->setError($key, ['key' => 'Cannot change primary key field']);
+                }
+            }
+        }
+
+        /* change "" to null for nullable fields */
+        $schema = $this->getSchema();
+        foreach($schema->columns() as $field)
+        {
+            if($schema->isNullable($field) and empty($entity->$field))
+            {
+                $entity->$field = NULL;
+            }
+        }
     }
 
     public function beforeDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void

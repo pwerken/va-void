@@ -3,16 +3,13 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use ArrayObject;
+use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
-use Cake\Validation\Validator;
-
-use App\Utility\AuthState;
-use App\Model\Entity\Player;
 
 class PlayersTable
     extends AppTable
 {
-
     public function initialize(array $config): void
     {
         parent::initialize($config);
@@ -20,49 +17,28 @@ class PlayersTable
         $this->hasMany('Characters');
     }
 
-    public function validationDefault(Validator $validator): Validator
+    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
-        $validator->notEmpty('id');
-        $validator->allowEmpty('password');
-        $validator->notEmpty('first_name');
-        $validator->allowEmpty('insertion');
-        $validator->notEmpty('last_name');
-        $validator->allowEmpty('gender');
-        $validator->allowEmpty('date_of_birth');
+        parent::beforeMarshal($event, $data, $options);
 
-        $validator->add('id', 'valid', ['rule' => 'numeric']);
-        $validator->add('role', 'valid', ['rule' => ['inList', Player::roleValues()]] );
-        $validator->add('gender', 'valid', ['rule' => ['inList', Player::genderValues()]]);
-        $validator->add('date_of_birth', 'valid', ['rule' => 'date']);
-
-        return $validator;
+        if(isset($data['plin'])) {
+            $data['id'] = $data['plin'];
+        }
     }
 
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add([$this, 'ruleRoleChange']);
-        $rules->addDelete([$this, 'ruleNoCharacters']);
+        $rules->addCreate([$this, 'rulePlinInUse'],
+            'unique', [ 'errorField' => 'plin' ]);
+        $rules->addDelete([$this, 'ruleNoCharacters'],
+            'consistency', [ 'errorField' => 'characters' ]);
         return $rules;
     }
 
-    public function ruleRoleChange($entity, $options)
+    public function rulePlinInUse($entity, $options)
     {
-        if(!$entity->isDirty('role') || AuthState::hasRole('super'))
-            return true;
-
-        $msg = true;
-
-        // don't demote someone who is above your auth level
-        if(!AuthState::hasRole($entity->getOriginal('role')))
-            $msg =  "Cannot demote user that has more permissions than you.";
-
-        // don't promote someone to above your auth level
-        if(!AuthState::hasRole($entity->get('role')))
-            $msg = "Cannot promote user to more permissions than you have.";
-
-        if($msg !== true) {
-            $entity->errors('role', $msg);
-            return false;
+        if($this->exists(['id' => $entity->plin])) {
+            return 'PLIN already in use';
         }
 
         return true;
@@ -74,8 +50,7 @@ class PlayersTable
         $query->where(['player_id' => $entity->id]);
 
         if($query->count() > 0) {
-            $entity->errors('characters', 'reference(s) present');
-            return false;
+            return 'Character reference(s) present';
         }
 
         return true;

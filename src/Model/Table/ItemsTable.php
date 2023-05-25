@@ -4,38 +4,16 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use Cake\ORM\RulesChecker;
-use Cake\Validation\Validator;
 
 class ItemsTable
     extends AppTable
 {
-
     public function initialize(array $config): void
     {
         parent::initialize($config);
 
         $this->belongsTo('Characters');
         $this->hasMany('AttributesItems')->setProperty('attributes');
-    }
-
-    public function validationDefault(Validator $validator): Validator
-    {
-        $validator->allowEmpty('id', 'create');
-        $validator->notEmpty('name');
-        $validator->allowEmpty('description');
-        $validator->allowEmpty('player_text');
-        $validator->allowEmpty('referee_notes');
-        $validator->allowEmpty('notes');
-        $validator->allowEmpty('character_id');
-        $validator->allowEmpty('expiry');
-
-        $validator->add('id', 'valid', ['rule' => 'numeric']);
-        $validator->add('character_id', 'valid', ['rule' => 'numeric']);
-        $validator->add('expiry', 'valid', ['rule' => 'date']);
-
-        $validator->requirePresence('name', 'create');
-
-        return $validator;
     }
 
     public function buildRules(RulesChecker $rules): RulesChecker

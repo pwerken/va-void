@@ -75,40 +75,4 @@ class AppController
             ]);
     }
 
-    protected function dataNameToId($table, $field)
-    {
-        $name = $this->request->getData($field);
-        if(is_null($name)) {
-            return null;
-        }
-
-        $this->request = $this->request->withoutData($field);
-        if(empty($name)) {
-            $name = "-";
-        }
-
-        $model = $this->loadModel($table);
-        $ids = $model->findByName($name)->select('id', true)
-                    ->enableHydration(false)->all();
-        if($ids->count() == 0) {
-            $this->request = $this->request->withData($field.'_id', -1);
-        } else {
-            $this->request = $this->request->withData($field.'_id', $ids->first()['id']);
-        }
-        return $name;
-    }
-
-    protected function dataNameToIdAndAddIfMissing($table, $field)
-    {
-        $name = $this->dataNameToId($table, $field);
-        $id = $this->request->getData($field.'_id');
-        if($id < 0) {
-            $model = $this->loadModel($table);
-            $obj = $model->newEntity();
-            $obj->name = $name;
-            $model->save($obj);
-            $this->request = $this->request->withData($field.'_id', $obj->id);
-        }
-        return $name;
-    }
 }

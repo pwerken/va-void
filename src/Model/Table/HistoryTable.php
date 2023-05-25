@@ -7,14 +7,12 @@ use Cake\Database\Expression\QueryExpression;
 use Cake\Database\Type\DateTimeType;
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;
-use Cake\Validation\Validator;
 
 use App\Model\Entity\History;
 
 class HistoryTable
     extends AppTable
 {
-
     public function initialize(array $config): void
     {
         parent::initialize($config);
@@ -34,27 +32,6 @@ class HistoryTable
             ->setConditions(['History.entity' => 'AttributesItem']);
         $this->belongsTo('Items')->setForeignKey('key2')
             ->setConditions(['History.entity LIKE' => '%sItem']);
-    }
-
-    public function validationDefault(Validator $validator): Validator
-    {
-        $validator->allowEmpty('id', 'create');
-        $validator->notEmpty('entity');
-        $validator->notEmpty('key1');
-        $validator->allowEmpty('key2');
-        $validator->allowEmpty('data');
-        $validator->allowEmpty('modified');
-        $validator->allowEmpty('modifier_id');
-
-        $validator->add('id',          'valid', ['rule' => 'numeric']);
-        $validator->add('key1',        'valid', ['rule' => 'numeric']);
-        $validator->add('key2',        'valid', ['rule' => 'numeric']);
-        $validator->add('modifier_id', 'valid', ['rule' => 'numeric']);
-
-        $validator->requirePresence('entity', 'create');
-        $validator->requirePresence('key1',   'create');
-
-        return $validator;
     }
 
     protected function orderBy(): array

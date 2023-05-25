@@ -9,7 +9,6 @@ use Cake\Validation\Validator;
 class TeachingsTable
     extends AppTable
 {
-
     public function initialize(array $config): void
     {
         parent::initialize($config);
