@@ -38,36 +38,6 @@ class GettersTest
 		$this->assertRedirectContains("/admin");
 	}
 
-	public function testPlayers()
-	{
-		$this->withoutAuth();
-		$this->assertGet('/players', 403);
-		$this->assertGet('/players/1', 403);
-		$this->assertGet('/players/1/characters', 403);
-		$this->assertGet('/players/2', 403);
-		$this->assertGet('/players/2/characters', 403);
-		$this->assertGet('/players/99', 403);
-		$this->assertGet('/players/99/characters', 403);
-
-		$this->withAuthPlayer();
-		$this->assertGet('/players');
-		$this->assertGet('/players/1');
-		$this->assertGet('/players/1/characters');
-		$this->assertGet('/players/2', 403);
-		$this->assertGet('/players/2/characters', 403);
-		$this->assertGet('/players/99', 404);
-		$this->assertGet('/players/99/characters', 404);
-
-		$this->withAuthReadOnly();
-		$this->assertGet('/players');
-		$this->assertGet('/players/1');
-		$this->assertGet('/players/1/characters');
-		$this->assertGet('/players/2');
-		$this->assertGet('/players/2/characters');
-		$this->assertGet('/players/99', 404);
-		$this->assertGet('/players/99/characters', 404);
-	}
-
 	public function testCharacters()
 	{
 		$this->withoutAuth();

@@ -26,6 +26,7 @@ class AuthIntegrationTestCase
 		$this->setConfigRequest();
 		$this->get($url);
 		$this->assertResponseCode($code, $message);
+		return $this->jsonBody();
 	}
 
 	public function assertPost(string $url, array $data = [], int $code = 200, string $message = '')
