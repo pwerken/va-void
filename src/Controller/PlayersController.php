@@ -6,7 +6,9 @@ namespace App\Controller;
 class PlayersController
     extends AppController
 {
+    use \App\Controller\Trait\Add;
     use \App\Controller\Trait\View;
+    use \App\Controller\Trait\Edit;
 
     public function index()
     {

@@ -19,9 +19,9 @@ class AppController
         $this->loadComponent('Authentication.Authentication');
         $this->loadComponent('Authorization.Authorization');
 
-#        $this->loadComponent('Create');
+        $this->loadComponent('Create');
         $this->loadComponent('Read');
-#        $this->loadComponent('Update');
+        $this->loadComponent('Update');
 #        $this->loadComponent('Delete');
 
         $this->viewBuilder()->setClassName('Api');
