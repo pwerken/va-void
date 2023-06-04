@@ -42,6 +42,37 @@ class CharactersTable
         return $this->findByPlayerIdAndChin($plin, $chin)->firstOrFail();
     }
 
+    public function afterMarshal(EventInterface $event, EntityInterface $entity, ArrayObject $data, ArrayObject $options): void
+    {
+        parent::afterMarshal($event, $entity, $data, $options);
+
+        if(!$entity->isNew())
+        {
+            if($entity->isDirty('player_id')) {
+                $entity->setError('player_id',
+                    ['key' => 'Cannot change primary key field']);
+            }
+            if($entity->isDirty('chin')) {
+                $entity->setError('chin',
+                    ['key' => 'Cannot change primary key field']);
+            }
+        }
+    }
+
+    public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    {
+        if($entity->isDirty('status') && $entity->status == 'active') {
+            $chars = $this->findByPlayerId($entity->player_id);
+            foreach($chars as $char) {
+                if($char->id == $entity->id || $char->status != 'active') {
+                    continue;
+                }
+                $char->status = 'inactive';
+                $this->save($char);
+            }
+        }
+    }
+
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
         parent::beforeMarshal($event, $data, $options);
@@ -67,21 +98,6 @@ class CharactersTable
         $data['world_id']   = $this->nameToIdOrAdd('Worlds',   @$data['world']);
     }
 
-    public function afterMarshal(EventInterface $event, EntityInterface $entity, ArrayObject $data, ArrayObject $options): void
-    {
-        parent::afterMarshal($event, $entity, $data, $options);
-
-        if(!$entity->isNew())
-        {
-            if($entity->isDirty('player_id')) {
-                $entity->setError('player_id', ['key' => 'Cannot change primary key field']);
-            }
-            if($entity->isDirty('chin')) {
-                $entity->setError('chin', ['key' => 'Cannot change primary key field']);
-            }
-        }
-    }
-
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->addCreate($rules->isUnique(['chin', 'player_id']));
@@ -101,75 +117,65 @@ class CharactersTable
         return $rules;
     }
 
-    public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
-    {
-        if($entity->isDirty('status') && $entity->status == 'active') {
-            $chars = $this->findByPlayerId($entity->player_id);
-            foreach($chars as $char) {
-                if($char->id == $entity->id || $char->status != 'active') {
-                    continue;
-                }
-                $char->status = 'inactive';
-                $this->save($char);
-            }
-        }
-    }
-
     public function ruleNoConditions($entity, $options)
     {
         $query = $this->CharactersConditions->find();
         $query->where(['character_id' => $entity->id]);
 
         if($query->count() > 0) {
-            $entity->errors('conditions', 'reference(s) present');
+            $entity->setError('conditions', $this->consistencyError);
             return false;
         }
 
         return true;
     }
+
     public function ruleNoItems($entity, $options)
     {
         $query = $this->Items->find();
         $query->where(['character_id' => $entity->id]);
 
         if($query->count() > 0) {
-            $entity->errors('items', 'reference(s) present');
+            $entity->setError('items', $this->consistencyError);
             return false;
         }
 
         return true;
     }
+
     public function ruleNoPowers($entity, $options)
     {
         $query = $this->CharactersPowers->find();
         $query->where(['character_id' => $entity->id]);
 
         if($query->count() > 0) {
-            $entity->errors('powers', 'reference(s) present');
+            $entity->setError('powers', $this->consistencyError);
             return false;
         }
 
         return true;
     }
+
     public function ruleNoSkills($entity, $options)
     {
         $query = $this->CharactersSkills->find();
         $query->where(['character_id' => $entity->id]);
 
         if($query->count() > 0) {
-            $entity->errors('skills', 'reference(s) present');
+            $entity->setError('skills', $this->consistencyError);
             return false;
         }
 
         return true;
     }
+
     public function ruleNoSpells($entity, $options)
     {
         $query = $this->CharactersSpells->find();
         $query->where(['character_id' => $entity->id]);
 
         if($query->count() > 0) {
-            $entity->errors('spells', 'reference(s) present');
+            $entity->setError('spells', 'reference(s) present');
             return false;
         }
 
@@ -193,7 +199,7 @@ class CharactersTable
 
     protected function orderBy(): array
     {
-        return [ 'player_id' => 'ASC', 'chin' => 'DESC' ];
+        return ['player_id' => 'ASC', 'chin' => 'DESC'];
     }
 
     protected function nameToId($model, $name)

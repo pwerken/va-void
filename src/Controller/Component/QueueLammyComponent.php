@@ -8,13 +8,13 @@ use Cake\Controller\Component;
 class QueueLammyComponent
 	extends Component
 {
-	public function execute()
+	public function execute(): void
 	{
 		$controller = $this->_registry->getController();
 	}
 
-	public function lammyBeforeRender(Event $event)
-	{
+	public function lammyBeforeRender(Event $event): void
+    {
 		$controller = $this->_registry->getController();
 		$table = $controller->loadModel('lammies');
 		$entity = $event->getSubject()->entity;

@@ -27,7 +27,7 @@ class ConditionsTable
         $query->where(['condition_id' => $entity->id]);
 
         if($query->count() > 0) {
-            $entity->errors('characters', 'reference(s) present');
+            $entity->setError('characters', $this->consistencyError);
             return false;
         }
 
@@ -36,11 +36,11 @@ class ConditionsTable
 
     protected function contain(): array
     {
-        return [ 'CharactersConditions.Characters' ];
+        return ['CharactersConditions.Characters'];
     }
 
     protected function orderBy(): array
     {
-        return  [ 'id' => 'ASC' ];
+        return ['id' => 'ASC'];
     }
 }

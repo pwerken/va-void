@@ -6,28 +6,33 @@ namespace App\Policy\Controller;
 class PlayersControllerPolicy
     extends AppControllerPolicy
 {
-    public function add(): bool
-    {
-        return $this->hasAuth('infobalie');
-    }
-
-    public function delete(): bool
-    {
-        return $this->hasAuth('super');
-    }
-
-    public function edit(): bool
-    {
-        return $this->hasAuth('player');
-    }
-
+    // GET /players
     public function index(): bool
     {
         return $this->hasAuth('player');
     }
 
+    // PUT /players
+    public function add(): bool
+    {
+        return $this->hasAuth('infobalie');
+    }
+
+    // GET /players/:plin
     public function view(): bool
     {
         return $this->index();
+    }
+
+    // PUT /players/:plin
+    public function edit(): bool
+    {
+        return $this->hasAuth('player');
+    }
+
+    // DELETE /players/:plin
+    public function delete(): bool
+    {
+        return $this->add();
     }
 }

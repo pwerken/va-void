@@ -17,14 +17,16 @@ class RootController
         $this->loadComponent('Authorization.Authorization');
     }
 
-    public function root()
+    // GET /
+    public function root(): Response
     {
         $this->Authorization->skipAuthorization();
 
         return $this->redirect('/admin');
     }
 
-    public function cors()
+    // OPTIONS /*
+    public function cors(): Response
     {
         $this->Authorization->skipAuthorization();
 

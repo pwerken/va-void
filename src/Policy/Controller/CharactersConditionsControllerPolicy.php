@@ -6,38 +6,45 @@ namespace App\Policy\Controller;
 class CharactersConditionsControllerPolicy
     extends AppControllerPolicy
 {
-    public function charactersAdd(): bool
-    {
-        return $this->hasAuth('referee');
-    }
-
-    public function charactersDelete(): bool
-    {
-        return $this->charactersAdd();
-    }
-
-    public function charactersEdit(): bool
-    {
-        return $this->charactersAdd();
-    }
-
+    // GET /characters/:plin/:chin/conditions
     public function charactersIndex(): bool
     {
         return $this->hasAuth('player');
     }
 
+    // PUT /characters/:plin/:chin/conditions
+    public function charactersAdd(): bool
+    {
+        return $this->hasAuth('referee');
+    }
+
+    // GET /characters/:plin/:chin/conditions/:coin
     public function charactersView(): bool
     {
         return $this->charactersIndex();
     }
 
-    public function conditionsIndex(): bool
+    // PUT /characters/:plin/:chin/conditions/:coin
+    public function charactersEdit(): bool
     {
-        return $this->hasAuth('read-only');
+        return $this->charactersAdd();
     }
 
+    // DELETE /characters/:plin/:chin/conditions/:coin
+    public function charactersDelete(): bool
+    {
+        return $this->charactersAdd();
+    }
+
+    // POST /characters/:plin/:chin/conditions/:coin/print
     public function charactersQueue(): bool
     {
         return $this->hasAuth('referee');
+    }
+
+    // GET /condition/:coin/characters
+    public function conditionsIndex(): bool
+    {
+        return $this->hasAuth('read-only');
     }
 }

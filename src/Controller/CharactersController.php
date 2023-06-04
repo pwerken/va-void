@@ -8,9 +8,11 @@ use Cake\Utility\Inflector;
 class CharactersController
     extends AppController
 {
-    use \App\Controller\Trait\View;
+    use \App\Controller\Trait\View; // GET /characters/{plin}/{chin}
+    use \App\Controller\Trait\Edit; // PUT /characters/{plin}/{chin}
 
-    public function index()
+    // GET /characters
+    public function index(): void
     {
         $query = $this->Characters->find()
                     ->select([], true)
@@ -49,45 +51,62 @@ class CharactersController
             ]);
     }
 
-    public function believesIndex(int $belief_id)
+    // PUT /players/{plin}/characters
+    public function add(int $plin): void
+    {
+        $request = $this->getRequest();
+        $request = $request->withData('plin', $plin);
+        $this->setRequest($request);
+
+        $this->Add->action();
+    }
+
+    // GET /believes/{id}/characters
+    public function believesIndex(int $belief_id): void
     {
         $this->parent = $this->loadModel('Believes')->get($belief_id);
-        return $this->index();
+        $this->index();
     }
 
-    public function factionsIndex(int $faction_id)
+    // GET /factions/{id}/characters
+    public function factionsIndex(int $faction_id): void
     {
         $this->parent = $this->loadModel('Factions')->get($faction_id);
-        return $this->index();
+        $this->index();
     }
 
-    public function groupsIndex(int $group_id)
+    // GET /groups/{id}/characters
+    public function groupsIndex(int $group_id): void
     {
         $this->parent = $this->loadModel('Groups')->get($group_id);
-        return $this->index();
+        $this->index();
     }
 
-    public function playersIndex(int $plin)
+    // GET /players/{plin}/characters
+    public function playersIndex(int $plin): void
     {
         $this->parent = $this->loadModel('Players')->get($plin);
-        return $this->index();
+        $this->index();
     }
 
-    public function skillsIndex(int $skill_id)
+    // GET /skills/{id}/characters
+    public function skillsIndex(int $skill_id): void
     {
         $this->parent = $this->loadModel('Skills')->get($skill_id);
-        return $this->index();
+        $this->index();
     }
 
-    public function spellsIndex(int $spell_id)
+    // GET /spells/{id}/characters
+    public function spellsIndex(int $spell_id): void
     {
         $this->parent = $this->loadModel('Spells')->get($spell_id);
-        return $this->index();
+        $this->index();
     }
 
-    public function worldsIndex(int $world_id)
+    // GET /worlds/{id}/characters
+    public function worldsIndex(int $world_id): void
     {
         $this->parent = $this->loadModel('Worlds')->get($world_id);
-        return $this->index();
+        $this->index();
     }
 }

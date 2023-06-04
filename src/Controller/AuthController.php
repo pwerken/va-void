@@ -22,7 +22,9 @@ class AuthController
         ]);
     }
 
-    public function login()
+    // GET /auth/login
+    // PUT /auth/login
+    public function login(): void
     {
         $result = $this->Authentication->getResult();
         if (!$result->isValid()) {
@@ -44,8 +46,9 @@ class AuthController
             ]);
     }
 
-    public function logout()
+    // GET /auth/logout
+    public function logout(): void
     {
-        return $this->redirect($this->Auth->logout());
+        $this->redirect($this->Auth->logout());
     }
 }

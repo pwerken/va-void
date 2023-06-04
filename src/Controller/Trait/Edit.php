@@ -7,6 +7,6 @@ trait Edit
 {
     public function edit(int $id)
     {
-        $this->Update->action($id);
+        $this->Edit->action($id);
     }
 }

@@ -7,25 +7,26 @@ use Cake\Controller\Component;
 
 use App\Error\Exception\ValidationException;
 
-class UpdateComponent
+class EditComponent
     extends Component
 {
-    protected $components = ['Authorization', 'Read'];
+    protected $components = ['Authorization', 'View'];
 
-    public function action(int $id)
+    public function action(int|array $id): void
     {
         $model = $this->getController()->loadModel();
 
-        $obj = $model->findById($id)->firstOrFail();
-        $this->Authorization->authorize($obj);
+        $obj = $model->get($id);
+        $this->Authorization->authorize($obj, 'edit');
         $this->Authorization->applyScope($obj, 'accesible');
 
         $data = $this->getController()->getRequest()->getData();
         $obj = $model->patchEntity($obj, $data);
 
-        if (!$model->save($obj))
-            throw new ValidationException($obj);
+        if (!$model->save($obj)) {
+            throw new validationexception($obj);
+        }
 
-        return $this->Read->action($id);
+        $this->View->action($id, false);
     }
 }

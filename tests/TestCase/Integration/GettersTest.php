@@ -316,7 +316,6 @@ class GettersTest
 		$this->assertGet('/items/2/attributes/1', 404);
 		$this->assertGet('/items/2/attributes/2');
 		$this->assertGet('/items/99', 404);
-		$this->assertGet('/items/99/attrbutes', 404);
 		$this->assertGet('/items/99/attributes', 404);
 		$this->assertGet('/items/99/attributes/1', 404);
 		$this->assertGet('/items/99/attributes/2', 404);

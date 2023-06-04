@@ -19,21 +19,19 @@ class AppController
         $this->loadComponent('Authentication.Authentication');
         $this->loadComponent('Authorization.Authorization');
 
-        $this->loadComponent('Create');
-        $this->loadComponent('Read');
-        $this->loadComponent('Update');
-#        $this->loadComponent('Delete');
+        $this->loadComponent('Add');
+        $this->loadComponent('View');
+        $this->loadComponent('Edit');
+        $this->loadComponent('Delete');
 
         $this->viewBuilder()->setClassName('Api');
 
         $arr = ['exceptionRenderer' => 'App\Error\ApiExceptionRenderer']
             + Configure::read('Error');
         (new ErrorHandler($arr))->register();
-
-        $this->response->compress();
     }
 
-    protected function setResponseModified()
+    protected function setResponseModified(): bool
     {
         $model = $this->modelClass;
         $query = $this->$model->find();

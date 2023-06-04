@@ -24,9 +24,24 @@ class PowerPolicy
         $this->showFieldAuth('characters', ['read-only']);
     }
 
-    public function canView(User $identity, Power $power): bool
+    public function canAdd(User $identity, Power $obj): bool
     {
-        return $this->hasAuth(['read-only', 'user'], $power);
+        return $this->hasAuth(['referee'], $obj);
+    }
+
+    public function canView(User $identity, Power $obj): bool
+    {
+        return $this->hasAuth(['read-only', 'user'], $obj);
+    }
+
+    public function canEdit(User $identity, Power $obj): bool
+    {
+        return $this->canAdd($identity, $obj);
+    }
+
+    public function canDelete(User $identity, Power $obj): bool
+    {
+        return $this->canAdd($identity, $obj);
     }
 
     protected function hasRoleUser(int $plin, AppEntity $obj): bool

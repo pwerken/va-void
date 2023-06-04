@@ -6,9 +6,13 @@ namespace App\Controller;
 class GroupsController
     extends AppController
 {
-    use \App\Controller\Trait\View;
+    use \App\Controller\Trait\Add;      // PUT /groups
+    use \App\Controller\Trait\View;     // GET /groups/{id}
+    use \App\Controller\Trait\Edit;     // PUT /groups/{id}
+    use \App\Controller\Trait\Delete;   // DELETE /groups/{id}
 
-    public function index()
+    // GET /groups
+    public function index(): void
     {
         $query = $this->Groups->find();
 #       $this->Authorization->applyScope($query);

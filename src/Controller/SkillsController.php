@@ -6,13 +6,12 @@ namespace App\Controller;
 class SkillsController
     extends AppController
 {
-    use \App\Controller\Trait\View;
+    use \App\Controller\Trait\View;     // GET /skills/{id}
 
-    public function index()
+    // GET /skills
+    public function index(): void
     {
         $query = $this->Skills->find();
-#       $this->Authorization->applyScope($query);
-
         $this->doRawIndex($query, 'Skills', '/skills/', 'id');
     }
 }

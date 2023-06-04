@@ -5,8 +5,8 @@ namespace App\Controller\Trait;
 
 trait View
 {
-    public function view(int $id)
+    public function view(int $id): void
     {
-        $this->Read->action($id);
+        $this->View->action($id);
     }
 }

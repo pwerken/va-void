@@ -23,9 +23,24 @@ class ItemPolicy
         $this->showFieldAuth('referee_notes', ['read-only']);
     }
 
-    public function canView(User $identity, Item $item)
+    public function canAdd(User $identity, Item $obj): bool
     {
-        return $this->hasAuth(['read-only', 'user'], $item);
+        return $this->hasAuth(['referee'], $obj);
+    }
+
+    public function canView(User $identity, Item $obj)
+    {
+        return $this->hasAuth(['read-only', 'user'], $obj);
+    }
+
+    public function canEdit(User $identity, Item $obj): bool
+    {
+        return $this->canAdd($identity, $obj);
+    }
+
+    public function canDelete(User $identity, Item $obj): bool
+    {
+        return $this->canAdd($identity, $obj);
     }
 
     protected function hasRoleUser(int $plin, AppEntity $obj): bool

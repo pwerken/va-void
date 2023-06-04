@@ -24,9 +24,24 @@ class ConditionPolicy
         $this->showFieldAuth('characters', ['read-only']);
     }
 
-    public function canView(User $identity, Condition $condition): bool
+    public function canAdd(User $identity, Condition $obj): bool
     {
-        return $this->hasAuth(['read-only', 'user'], $condition);
+        return $this->hasAuth(['referee'], $obj);
+    }
+
+    public function canView(User $identity, Condition $obj): bool
+    {
+        return $this->hasAuth(['read-only', 'user'], $obj);
+    }
+
+    public function canEdit(User $identity, Condition $obj): bool
+    {
+        return $this->canAdd($identity, $obj);
+    }
+
+    public function canDelete(User $identity, Condition $obj): bool
+    {
+        return $this->canAdd($identity, $obj);
     }
 
     protected function hasRoleUser(int $plin, AppEntity $obj): bool

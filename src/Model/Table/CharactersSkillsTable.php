@@ -45,9 +45,9 @@ class CharactersSkillsTable
 
     public function disallowDeprecated($entity, $options)
     {
-        $skill = $this->Skills->findWithContainById($entity->skill_id)->first();
+        $skill = $this->Skills->get($entity->skill_id);
         if($skill->deprecated) {
-            $entity->errors('skill_id', 'deprecated skill');
+            $entity->setError('skill_id', ['deprecated' => 'Skill is deprecated']);
             return false;
         }
 
@@ -56,6 +56,6 @@ class CharactersSkillsTable
 
     protected function contain(): array
     {
-        return [ 'Characters', 'Skills.Manatypes' ];
+        return ['Characters', 'Skills.Manatypes'];
     }
 }

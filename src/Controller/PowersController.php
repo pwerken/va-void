@@ -6,9 +6,12 @@ namespace App\Controller;
 class PowersController
     extends AppController
 {
-    use \App\Controller\Trait\View;
+    use \App\Controller\Trait\Add;      // PUT /powers
+    use \App\Controller\Trait\View;     // GET /powers/{poin}
+    use \App\Controller\Trait\Edit;     // PUT /powers/{poin}
 
-    public function index()
+    // GET /powers
+    public function index(): void
     {
         $query = $this->Powers->find()
                     ->select(['Powers.id', 'Powers.name'], true);

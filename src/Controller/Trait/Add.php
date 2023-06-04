@@ -7,6 +7,6 @@ trait Add
 {
     public function add()
     {
-        $this->Create->action();
+        $this->Add->action();
     }
 }

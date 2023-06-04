@@ -32,6 +32,6 @@ class AttributesItemsTable
 
     protected function contain(): array
     {
-        return [ 'Attributes', 'Items.Characters' ];
+        return ['Attributes', 'Items.Characters'];
     }
 }

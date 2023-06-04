@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
+use Cake\ORM\RulesChecker;
 
 class CharactersConditionsTable
     extends AppTable
@@ -29,8 +31,18 @@ class CharactersConditionsTable
         $this->touchEntity('Characters', $entity->character_id);
     }
 
+    public function buildRules(RulesChecker $rules): RulesChecker
+    {
+        $rules->addCreate($rules->isUnique(['condition_id', 'character_id']));
+
+        $rules->add($rules->existsIn('character_id', 'Characters'));
+        $rules->add($rules->existsIn('condition_id', 'Conditions'));
+
+        return $rules;
+    }
+
     protected function contain(): array
     {
-        return [ 'Characters', 'Conditions' ];
+        return ['Characters', 'Conditions'];
     }
 }

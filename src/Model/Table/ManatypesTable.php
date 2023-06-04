@@ -18,6 +18,7 @@ class ManatypesTable
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->addDelete([$this, 'ruleNoSkills']);
+
         return $rules;
     }
 
@@ -27,7 +28,7 @@ class ManatypesTable
         $query->where(['manatype_id' => $entity->id]);
 
         if($query->count() > 0) {
-            $entity->errors('skills', 'reference(s) present');
+            $entity->setError('skills', $this->consistencyError);
             return false;
         }
 
@@ -36,11 +37,11 @@ class ManatypesTable
 
     protected function contain(): array
     {
-        return [ 'Skills' ];
+        return ['Skills'];
     }
 
     protected function orderBy(): array
     {
-        return  [ 'name' => 'ASC' ];
+        return ['name' => 'ASC'];
     }
 }

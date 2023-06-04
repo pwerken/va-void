@@ -6,13 +6,12 @@ namespace App\Controller;
 class FactionsController
     extends AppController
 {
-    use \App\Controller\Trait\View;
+    use \App\Controller\Trait\View;     // GET /factions/{id}
 
-    public function index()
+    // GET /factions
+    public function index(): void
     {
         $query = $this->Factions->find();
-#       $this->Authorization->applyScope($query);
-
         $this->doRawIndex($query, 'Factions', '/factions/', 'id');
     }
 }

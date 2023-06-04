@@ -8,9 +8,13 @@ use Cake\Utility\Inflector;
 class ItemsController
     extends AppController
 {
-    use \App\Controller\Trait\View;
+    use \App\Controller\Trait\Add;      // PUT /items
+    use \App\Controller\Trait\View;     // GET /items/{itin}
+    use \App\Controller\Trait\Edit;     // PUT /items/{itin}
+    use \App\Controller\Trait\Delete;   // DELETE /items/{itin}
 
-    public function index()
+    // GET /items
+    public function index(): void
     {
         $query = $this->Items->find()
                     ->select([], true)
@@ -67,10 +71,12 @@ class ItemsController
             ]);
     }
 
-    public function charactersIndex(int $id)
+    // GET /characters/{plin}/{chin}/items
+    public function charactersIndex(int $char_id): void
     {
-        $this->parent = $this->loadModel('characters')->get($id);
+        $this->parent = $this->loadModel('characters')->get($char_id);
         $this->Authorization->authorize($this->parent, 'view');
-        return $this->index();
+
+        $this->index();
     }
 }

@@ -6,11 +6,13 @@ namespace App\Controller;
 class PlayersController
     extends AppController
 {
-    use \App\Controller\Trait\Add;
-    use \App\Controller\Trait\View;
-    use \App\Controller\Trait\Edit;
+    use \App\Controller\Trait\Add;      // PUT /players
+    use \App\Controller\Trait\View;     // GET /players/{plin}
+    use \App\Controller\Trait\Edit;     // PUT /players/{plin}
+    use \App\Controller\Trait\Delete;   // DELETE /players/{plin}
 
-    public function index()
+    // GET /players
+    public function index(): void
     {
         $query = $this->Players->find()
                     ->select([], true)

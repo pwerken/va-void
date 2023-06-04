@@ -15,6 +15,14 @@ use Cake\Validation\Validator;
 class LammiesTable
     extends AppTable
 {
+    public function beforeDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    {
+    }
+
+    public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    {
+    }
+
     public function findQueued(Query $query, array $options = [])
     {
         $query = $this->findWithContain($query, $options);
@@ -41,24 +49,16 @@ class LammiesTable
         return $query;
     }
 
-    public function beforeDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
-    {
-    }
-
-    public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
-    {
-    }
-
-    protected function orderBy(): array
-    {
-        return [ 'id' => 'ASC' ];
-    }
-
     public function setStatuses(ResultSet $set, $status)
     {
         foreach($set as $lammy) {
             $lammy->status = (is_null($lammy->lammy) ? 'Failed' : $status);
             $this->save($lammy);
         }
+    }
+
+    protected function orderBy(): array
+    {
+        return ['id' => 'ASC'];
     }
 }

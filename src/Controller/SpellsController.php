@@ -6,13 +6,12 @@ namespace App\Controller;
 class SpellsController
     extends AppController
 {
-    use \App\Controller\Trait\View;
+    use \App\Controller\Trait\View;     // GET /spells/{id}
 
-    public function index()
+    // GET /spells
+    public function index(): void
     {
         $query = $this->Spells->find();
-#       $this->Authorization->applyScope($query);
-
         $this->doRawIndex($query, 'Spells', '/spells/', 'id');
     }
 }

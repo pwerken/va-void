@@ -18,6 +18,7 @@ class AttributesTable
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->addDelete([$this, 'ruleNoItems']);
+
         return $rules;
     }
 
@@ -27,7 +28,7 @@ class AttributesTable
         $query->where(['attributes_id' => $entity->id]);
 
         if($query->count() > 0) {
-            $entity->errors('items', 'reference(s) present');
+            $entity->setError('items', $this->referencesPresent);
             return false;
         }
 
@@ -36,11 +37,11 @@ class AttributesTable
 
     protected function contain(): array
     {
-        return [ 'AttributesItems.Items' ];
+        return ['AttributesItems.Items'];
     }
 
     protected function orderBy(): array
     {
-        return  [ 'name' => 'ASC', 'id' => 'ASC' ];
+        return  ['name' => 'ASC', 'id' => 'ASC'];
     }
 }

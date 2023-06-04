@@ -18,6 +18,7 @@ class SpellsTable
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->addDelete([$this, 'ruleNoCharacters']);
+
         return $rules;
     }
 
@@ -27,7 +28,7 @@ class SpellsTable
         $query->where(['spell_id' => $entity->id]);
 
         if($query->count() > 0) {
-            $entity->errors('characters', 'reference(s) present');
+            $entity->setErrors('characters', $this->consistencyError);
             return false;
         }
 
@@ -36,6 +37,6 @@ class SpellsTable
 
     protected function orderBy(): array
     {
-        return  [ 'name' => 'ASC' ];
+        return ['name' => 'ASC'];
     }
 }

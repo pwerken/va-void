@@ -6,46 +6,52 @@ namespace App\Controller;
 class AttributesItemsController
     extends AppController
 {
-
-    public function attributesIndex($id)
+    // GET /attributes/{id}/items
+    public function attributesIndex(int $id): void
     {
         $this->parent = $this->loadModel('Attributes')->get($id);
-#TODO   $this->Authorization->authorize($this->parent, 'view');
 
         $query = $this->AttributesItems->findWithContain();
         $query->andWhere(['attribute_id' => $id]);
-#TODO   $this->Authorization->applyScope($query);
 
         $this->set('parent', $this->parent);
         $this->set('_serialize', $query->all());
     }
 
-    public function itemsAdd($itin)
-    {
-        $this->request->withData('itin_id', $itin);
-        //TODO $this->Create->action()
-    }
-
-    public function itemsIndex($itin)
+    // GET /items/{itin}/attributes
+    public function itemsIndex(int $itin): void
     {
         $this->parent = $this->loadModel('Items')->get($itin);
-#TODO   $this->Authorization->authorize($this->parent, 'view');
 
         $query = $this->AttributesItems->findWithContain();
         $query->andWhere(['item_id' => $itin]);
-#TODO   $this->Authorization->applyScope($query);
 
         $this->set('parent', $this->parent);
         $this->set('_serialize', $query->all());
     }
 
-    public function itemsView($itin, $id)
+    // PUT /items/{itin}/attributes
+    public function itemsAdd(int $itin): void
     {
-        $query = $this->AttributesItems->findWithContain();
-        $query->andWhere(['item_id' => $itin, 'attribute_id' => $id]);
-        $obj = $query->firstOrFail();
-        $this->Authorization->authorize($obj);
+        $request = $this->getRequest();
+        $request = $request->withData('item_id', $itin);
+        $this->setRequest($request);
 
-        $this->set('_serialize', $obj);
+        $this->Add->action();
+    }
+
+    // GET /items/{itin}/attributes/{id}
+    public function itemsView(int $itin, int $id): void
+    {
+        $parent = $this->loadModel('Items')->get($itin);
+        $this->Authorization->authorize($parent, 'view');
+
+        $this->View->action([$id, $itin], false);
+    }
+
+    // DELETE /items/{itin}/attributes/{id}
+    public function itemsDelete(int $itin, int $id): void
+    {
+        $this->Delete->action([$id, $itin]);
     }
 }

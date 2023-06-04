@@ -6,13 +6,15 @@ namespace App\Controller;
 class BelievesController
     extends AppController
 {
-    use \App\Controller\Trait\View;
+    use \App\Controller\Trait\Add;      // PUT /believes
+    use \App\Controller\Trait\View;     // GET /believes/{id}
+    use \App\Controller\Trait\Edit;     // PUT /believes/{id}
+    use \App\Controller\Trait\Delete;   // DELETE /believes/{id}
 
-    public function index()
+    // GET /believes
+    public function index(): void
     {
         $query = $this->Believes->find();
-#        $this->Authorization->applyScope($query);
-
         $this->doRawIndex($query, 'Believes', '/believes/', 'id');
     }
 }

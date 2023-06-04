@@ -17,8 +17,10 @@ class GroupsTable
 
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->isUnique(['name'], 'This name is already in use.'));
+        $rules->add($rules->isUnique(['name']));
+
         $rules->addDelete([$this, 'ruleNoCharacters']);
+
         return $rules;
     }
 
@@ -28,7 +30,7 @@ class GroupsTable
         $query->where(['group_id' => $entity->id]);
 
         if($query->count() > 0) {
-            $entity->errors('characters', 'reference(s) present');
+            $entity->setError('characters', $this->consistencyError);
             return false;
         }
 
@@ -37,11 +39,11 @@ class GroupsTable
 
     protected function contain(): array
     {
-        return [ 'Characters' ];
+        return ['Characters'];
     }
 
     protected function orderBy(): array
     {
-        return  [ 'name' => 'ASC' ];
+        return ['name' => 'ASC'];
     }
 }

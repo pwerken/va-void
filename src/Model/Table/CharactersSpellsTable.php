@@ -6,6 +6,7 @@ namespace App\Model\Table;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
+use Cake\ORM\RulesChecker;
 
 class CharactersSpellsTable
     extends AppTable
@@ -30,13 +31,23 @@ class CharactersSpellsTable
         $this->touchEntity('Characters', $entity->character_id);
     }
 
+    public function buildRules(RulesChecker $rules): RulesChecker
+    {
+        $rules->addCreate($rules->isUnique(['spell_id', 'character_id']));
+
+        $rules->add($rules->existsIn('character_id', 'Characters'));
+        $rules->add($rules->existsIn('spell_id', 'Spells'));
+
+        return $rules;
+    }
+
     protected function contain(): array
     {
-        return [ 'Characters', 'Spells' ];
+        return ['Characters', 'Spells'];
     }
 
     protected function orderBy(): array
     {
-        return [ 'level' => 'DESC' ];
+        return ['level' => 'DESC'];
     }
 }

@@ -28,20 +28,11 @@ class PlayersTable
 
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->addCreate([$this, 'rulePlinInUse'],
-            'unique', [ 'errorField' => 'plin' ]);
-        $rules->addDelete([$this, 'ruleNoCharacters'],
-            'consistency', [ 'errorField' => 'characters' ]);
+        $rules->addCreate([$this, 'rulePlinInUse']);
+
+        $rules->addDelete([$this, 'ruleNoCharacters']);
+
         return $rules;
-    }
-
-    public function rulePlinInUse($entity, $options)
-    {
-        if($this->exists(['id' => $entity->plin])) {
-            return 'PLIN already in use';
-        }
-
-        return true;
     }
 
     public function ruleNoCharacters($entity, $options)
@@ -50,7 +41,18 @@ class PlayersTable
         $query->where(['player_id' => $entity->id]);
 
         if($query->count() > 0) {
-            return 'Character reference(s) present';
+            $entity->setError('characters', $this->consistencyError);
+            return false;
+        }
+
+        return true;
+    }
+
+    public function rulePlinInUse($entity, $options)
+    {
+        if($this->exists(['id' => $entity->plin])) {
+            $entity->setError('plin', ['unique' => 'PLIN already in use']);
+            return false;
         }
 
         return true;
@@ -58,11 +60,11 @@ class PlayersTable
 
     protected function contain(): array
     {
-        return [ 'Characters' ];
+        return ['Characters'];
     }
 
     protected function orderBy(): array
     {
-        return  [ 'id' => 'ASC' ];
+        return ['id' => 'ASC'];
     }
 }

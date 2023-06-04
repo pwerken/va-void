@@ -38,7 +38,7 @@ class PlayerPolicy
 
     public function canDelete(User $identity, Player $obj): bool
     {
-        return $this->hasAuth(['super'], $obj);
+        return $this->canAdd($identity, $obj);
     }
 
     public function canCharactersIndex(User $identity, Player $obj): bool

@@ -6,41 +6,57 @@ namespace App\Controller;
 class CharactersSkillsController
     extends AppController
 {
-
-    public function charactersIndex($char_id)
+    // GET /characters/{plin}/{chin}/skills
+    public function charactersIndex(int $char_id): void
     {
         $this->parent = $this->loadModel('Characters')->get($char_id);
         $this->Authorization->authorize($this->parent, 'view');
 
         $query = $this->CharactersSkills->findWithContain();
         $query->andWhere(['CharactersSkills.character_id' => $char_id]);
-#        $this->Authorization->applyScope($query);
 
         $this->set('parent', $this->parent);
         $this->set('_serialize', $query->all());
     }
 
-    public function charactersView($char_id, $skill_id)
+    // PUT /characters/{plin}/{chin}/skills
+    public function charactersAdd(int $char_id): void
+    {
+        $request = $this->getRequest();
+        $request = $request->withData('character_id', $char_id);
+        $this->setRequest($request);
+
+        $this->Add->action();
+    }
+
+    // GET /characters/{plin}/{chin}/skills/{id}
+    public function charactersView(int $char_id, int $skill_id): void
     {
         $parent = $this->loadModel('Characters')->get($char_id);
         $this->Authorization->authorize($parent, 'view');
 
-        $query = $this->CharactersSkills->findWithContain();
-        $query->andWhere(['CharactersSkills.character_id' => $char_id]);
-        $query->andWhere(['CharactersSkills.skill_id' => $skill_id]);
-        $obj = $query->firstOrFail();
-
-        $this->set('_serialize', $obj);
+        $this->View->action([$char_id, $skill_id], false);
     }
 
-    public function skillsIndex($skill_id)
+    // PUT /characters/{plin}/{chin}/skills/{id}
+    public function charactersEdit(int $char_id, int $skill_id): void
+    {
+        $this->Edit->action([$char_id, $skill_id]);
+    }
+
+    // DELETE /characters/{plin}/{chin}/skills/{id}
+    public function charactersDelete(int $char_id, int $skill_id): void
+    {
+        $this->Delete->action([$char_id, $skill_id]);
+    }
+
+    // GET /skills/{id}/characters
+    public function skillsIndex(int $skill_id): void
     {
         $this->parent = $this->loadModel('Skills')->get($skill_id);
-        $this->Authorization->authorize($this->parent, 'view');
 
         $query = $this->CharactersSkills->findWithContain();
         $query->andWhere(['CharactersSkills.skill_id' => $skill_id]);
-#        $this->Authorization->applyScope($query);
 
         $this->set('parent', $this->parent);
         $this->set('_serialize', $query->all());

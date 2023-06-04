@@ -24,14 +24,18 @@ class PlinChinMiddleware
         if($hasPlinChin && count($pass) >= 2) {
             $table = TableRegistry::get('Characters');
             $char = $table->plinChin($pass[0], $pass[1])->id;
+            $request = $request->withParam('character_id', $char);
 
             array_shift($pass);
             $pass[0] = $char;
-
-            $request = $request->withParam('character_id', $char);
-            $request = $request->withParam('pass', $pass);
+        }
+        foreach($pass as $key => $value) {
+            if(is_numeric($value)) {
+                $pass[$key] = (int)$value;
+            }
         }
 
+        $request = $request->withParam('pass', $pass);
         return $handler->handle($request);
     }
 }

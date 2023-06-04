@@ -34,9 +34,11 @@ class HistoryTable
             ->setConditions(['History.entity LIKE' => '%sItem']);
     }
 
-    protected function orderBy(): array
+    public function logChange(EntityInterface $entity)
     {
-        return [ 'modified' => 'DESC', 'id' => 'DESC' ];
+        $history = History::fromEntity($entity);
+        $this->save($history);
+        return $history;
     }
 
     public function logDeletion(EntityInterface $entity)
@@ -51,13 +53,6 @@ class HistoryTable
 
         $this->save($history);
 
-        return $history;
-    }
-
-    public function logChange(EntityInterface $entity)
-    {
-        $history = History::fromEntity($entity);
-        $this->save($history);
         return $history;
     }
 
@@ -123,6 +118,11 @@ class HistoryTable
         }
     }
 
+    protected function orderBy(): array
+    {
+        return [ 'modified' => 'DESC', 'id' => 'DESC' ];
+    }
+
     private function getPlayerHistory($plin)
     {
         $entity = TableRegistry::get('Players')->find()
@@ -144,7 +144,7 @@ class HistoryTable
 
     private function getCharacterHistory($plin, $chin)
     {
-        $entity = TableRegistry::get('Characters')->find('withContain')
+        $entity = TableRegistry::get('Characters')->findWithContain()
             ->where(['Characters.player_id' => $plin])
             ->where(['Characters.chin' => $chin])
             ->first();
@@ -178,7 +178,7 @@ class HistoryTable
 
     private function getConditionHistory($coin)
     {
-        $entity = TableRegistry::get('Conditions')->find('withContain')
+        $entity = TableRegistry::get('Conditions')->findWithContain()
             ->where(['Conditions.id' => $coin])
             ->first();
 
@@ -205,7 +205,7 @@ class HistoryTable
 
     private function getPowerHistory($poin)
     {
-        $entity = TableRegistry::get('Powers')->find('withContain')
+        $entity = TableRegistry::get('Powers')->findWithContain()
             ->where(['Powers.id' => $poin])
             ->first();
 
@@ -232,7 +232,7 @@ class HistoryTable
 
     private function getItemHistory($itin)
     {
-        $entity = TableRegistry::get('Items')->find('withContain')
+        $entity = TableRegistry::get('Items')->findWithContain()
             ->where(['Items.id' => $itin])
             ->first();
 

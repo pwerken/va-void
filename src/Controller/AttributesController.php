@@ -6,13 +6,12 @@ namespace App\Controller;
 class AttributesController
     extends AppController
 {
-    use \App\Controller\Trait\View;
+    use \App\Controller\Trait\View; // GET /attributes/{id}
 
-    public function index()
+    // GET /attributes
+    public function index(): void
     {
         $query = $this->Attributes->find();
-#        $this->Authorization->applyScope($query);
-
         $this->doRawIndex($query, 'Attributes', '/attributes/', 'id');
     }
 }

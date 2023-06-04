@@ -13,6 +13,8 @@ use Cake\ORM\TableRegistry;
 abstract class AppTable
     extends Table
 {
+    protected $referencesPresent = ['consistency' => 'Reference(s) present'];
+
     public function initialize(array $config): void
     {
         parent::initialize($config);
@@ -23,29 +25,6 @@ abstract class AppTable
         $entityName = $this->getEntityClass();
         $entityName = substr($entityName, strrpos($entityName, '\\') + 1);
         $this->_validatorClass = "App\\Model\\Validation\\{$entityName}Validator";
-    }
-
-    public function findWithContain(Query $query = null, array $options = [])
-    {
-        if(is_null($query))
-            $query = $this->find('all', $options);
-
-        $contain = $this->contain();
-        if(!empty($contain))
-            $query->contain($contain);
-
-        return $query;
-    }
-
-    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
-    {
-        /* never marshal related/sub entities */
-        foreach($this->associations() as $sub) {
-            $field = $sub->getProperty();
-            if(isset($data[$field])) {
-                unset($data[$field]);
-            }
-        }
     }
 
     public function afterMarshal(EventInterface $event, EntityInterface $entity, ArrayObject $data, ArrayObject $options): void
@@ -77,20 +56,7 @@ abstract class AppTable
 
     public function beforeDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
-        TableRegistry::get('History')->logDeletion($entity);
-    }
-
-    public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
-    {
-        if($entity->isNew())
-            return;
-
-        if($entity->isDirty('modified') && $entity->isDirty('modifier_id')
-        && $entity->get('modifier_id') == $entity->getOriginal('modifier_id')
-        && count($entity->getDirty()) == 2)
-            return;
-
-        TableRegistry::get('History')->logChange($entity);
+//TODO    TableRegistry::get('History')->logDeletion($entity);
     }
 
     public function beforeFind(EventInterface $event, Query $query, ArrayObject $options, bool $primary): Query
@@ -122,18 +88,59 @@ abstract class AppTable
         return $query;
     }
 
+    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
+    {
+        // drop non-existant fields from input
+        // also prevents marshalling of associations
+        foreach($data as $field => $value) {
+            if(!$this->hasField($field))
+                unset($data[$field]);
+        }
+    }
+
+    public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    {
+        if($entity->isNew())
+            return;
+
+        if($entity->isDirty('modified') && $entity->isDirty('modifier_id')
+        && $entity->get('modifier_id') == $entity->getOriginal('modifier_id')
+        && count($entity->getDirty()) == 2)
+            return;
+
+        TableRegistry::get('History')->logChange($entity);
+    }
+
+    public function getWithContain($id)
+    {
+        return $this->get($id, ['contain' => $this->contain()]);
+    }
+
+    public function findWithContain(Query $query = null, array $options = []): Query
+    {
+        if(is_null($query))
+            $query = $this->find('all', $options);
+
+        $contain = $this->contain();
+        if(!empty($contain))
+            $query->contain($contain);
+
+        return $query;
+    }
+
     protected function contain(): array
     {
-        return [ ];
+        return [];
     }
 
     protected function orderBy(): array
     {
-        return [ ];
+        return [];
     }
 
     protected function touchEntity($model, $id): void
     {
+        return; //TODO
         $table = TableRegistry::get($model);
         $entity = $table->get($id);
         $table->touch($entity);

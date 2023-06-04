@@ -15,15 +15,12 @@ class BelievesTable
         $this->hasMany('Characters');
     }
 
-    protected function orderBy(): array
-    {
-        return  [ 'name' => 'ASC' ];
-    }
-
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->isUnique(['name'], 'This name is already in use.'));
+        $rules->add($rules->isUnique(['name']));
+
         $rules->addDelete([$this, 'ruleNoCharacters']);
+
         return $rules;
     }
 
@@ -33,11 +30,15 @@ class BelievesTable
         $query->where(['belief_id' => $entity->id]);
 
         if($query->count() > 0) {
-            $entity->errors('characters', 'reference(s) present');
+            $entity->setError('characters', $this->referencesPresent);
             return false;
         }
 
         return true;
     }
 
+    protected function orderBy(): array
+    {
+        return ['name' => 'ASC'];
+    }
 }

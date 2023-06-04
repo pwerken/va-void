@@ -8,7 +8,7 @@ class LammiesController
 {
     use \App\Controller\Trait\View;
 
-    public function index()
+    public function index(): void
     {
         $query = $this->Lammies->find()
                     ->select([], true)
@@ -37,23 +37,26 @@ class LammiesController
             ]);
     }
 
-    public function queue()
+    public function queue(): void
     {
     }
 
-    public function pdfSingle()
+    // POST /lammies/single
+    public function pdfSingle(): void
     {
         $this->uptoId(key($this->request->getData()));
         $this->pdfOutput(false);
     }
 
-    public function pdfDouble()
+    // POST /lammies/double
+    public function pdfDouble(): void
     {
         $this->uptoId(key($this->request->getData()));
         $this->pdfOutput(true);
     }
 
-    public function printed()
+    // POST /lammies/printed
+    public function printed(): void
     {
         $this->uptoId(key($this->request->data));
     }

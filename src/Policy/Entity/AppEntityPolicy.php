@@ -29,29 +29,29 @@ abstract class AppEntityPolicy
         $this->setIdentity($identity);
     }
 
-    public function scopeAccesible(User $identity, AppEntity $object): void
+    public function scopeAccesible(User $identity, AppEntity $obj): void
     {
         $this->setIdentity($identity);
 
         $audit_fields = ['created', 'created_id', 'modified', 'modified_id'];
-        $object->setAccess($audit_fields, false);
+        $obj->setAccess($audit_fields, false);
 
         foreach($this->editFieldAuth as $field => $access)
         {
-            $object->setAccess($field, $this->hasAuth($access, $object));
+            $obj->setAccess($field, $this->hasAuth($access, $obj));
         }
     }
 
-    public function scopeVisible(User $identity, AppEntity $object): void
+    public function scopeVisible(User $identity, AppEntity $obj): void
     {
         $this->setIdentity($identity);
 
         foreach($this->showFieldAuth as $field => $access)
         {
-            if ($this->hasAuth($access, $object)) {
+            if ($this->hasAuth($access, $obj)) {
                 continue;
             }
-            $object->setHidden([$field], true);
+            $obj->setHidden([$field], true);
         }
     }
 

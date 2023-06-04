@@ -18,6 +18,7 @@ class PowersTable
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->addDelete([$this, 'ruleNoCharacters']);
+
         return $rules;
     }
 
@@ -27,7 +28,7 @@ class PowersTable
         $query->where(['power_id' => $entity->id]);
 
         if($query->count() > 0) {
-            $entity->errors('characters', 'reference(s) present');
+            $entity->setError('characters', $this->consistencyError);
             return false;
         }
 
@@ -36,11 +37,11 @@ class PowersTable
 
     protected function contain(): array
     {
-        return [ 'CharactersPowers.Characters' ];
+        return ['CharactersPowers.Characters'];
     }
 
     protected function orderBy(): array
     {
-        return  [ 'id' => 'ASC' ];
+        return ['id' => 'ASC'];
     }
 }

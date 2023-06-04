@@ -13,12 +13,14 @@ class SkillsTable
         parent::initialize($config);
 
         $this->belongsTo('Manatypes');
+
         $this->hasMany('CharactersSkills')->setProperty('characters');
     }
 
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->addDelete([$this, 'ruleNoCharacters']);
+
         return $rules;
     }
 
@@ -28,7 +30,7 @@ class SkillsTable
         $query->where(['skill_id' => $entity->id]);
 
         if($query->count() > 0) {
-            $entity->errors('characters', 'reference(s) present');
+            $entity->setError('characters', $this->consistencyError);
             return false;
         }
 
@@ -37,11 +39,11 @@ class SkillsTable
 
     protected function contain(): array
     {
-        return [ 'Manatypes' ];
+        return ['Manatypes'];
     }
 
     protected function orderBy(): array
     {
-        return  [ 'sort_order' => 'ASC', 'name' => 'ASC' ];
+        return ['sort_order' => 'ASC', 'name' => 'ASC'];
     }
 }

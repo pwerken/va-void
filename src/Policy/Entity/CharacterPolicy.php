@@ -17,12 +17,9 @@ class CharacterPolicy
 
         $this->showFieldAuth('notes',         'read-only');
         $this->showFieldAuth('referee_notes', 'read-only');
-
-        $this->editFieldAuth('player_id',     'infobalie');
-        $this->editFieldAuth('chin',          'infobalie');
     }
 
-    public function canEdit(User $identity, Character $obj): bool
+    public function canAdd(User $identity, Character $obj): bool
     {
         return $this->hasAuth(['referee'], $obj);
     }
@@ -30,6 +27,16 @@ class CharacterPolicy
     public function canView(User $identity, Character $obj): bool
     {
         return $this->hasAuth(['read-only', 'user'], $obj);
+    }
+
+    public function canEdit(User $identity, Character $obj): bool
+    {
+        return $this->canAdd($identity, $obj);
+    }
+
+    public function canDelete(User $identity, Character $obj): bool
+    {
+        return $this->canAdd($identity, $obj);
     }
 
     protected function hasRoleUser(int $plin, AppEntity $obj): bool

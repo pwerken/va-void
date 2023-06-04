@@ -10,12 +10,13 @@ class EventsTable
 {
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->isUnique(['name'], 'This name is already in use.'));
+        $rules->add($rules->isUnique(['name']));
+
         return $rules;
     }
 
     protected function orderBy(): array
     {
-        return  [ 'id' => 'ASC' ];
+        return ['id' => 'ASC'];
     }
 }
