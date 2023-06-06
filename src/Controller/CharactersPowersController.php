@@ -50,6 +50,12 @@ class CharactersPowersController
         $this->Delete->action([$char_id, $poin]);
     }
 
+    // POST /characters/{plin}/{chin}/powers/{poin}/print
+    public function charactersQueue(int $char_id, int $poin): void
+    {
+        $this->QueueLammy->action([$char_id, $poin]);
+    }
+
     // GET /powers/{poin}/characters
     public function powersIndex(int $poin): void
     {

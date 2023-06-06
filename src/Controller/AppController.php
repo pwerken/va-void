@@ -24,6 +24,8 @@ class AppController
         $this->loadComponent('Edit');
         $this->loadComponent('Delete');
 
+        $this->loadComponent('QueueLammy');
+
         $this->viewBuilder()->setClassName('Api');
 
         $arr = ['exceptionRenderer' => 'App\Error\ApiExceptionRenderer']
@@ -72,5 +74,4 @@ class AppController
             , 'list' => $content
             ]);
     }
-
 }

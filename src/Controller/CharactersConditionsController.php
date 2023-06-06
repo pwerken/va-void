@@ -50,6 +50,12 @@ class CharactersConditionsController
         $this->Delete->action([$char_id, $coin]);
     }
 
+    // POST /characters/{plin}/{chin}/conditions/{coin}/print
+    public function charactersQueue(int $char_id, int $coin): void
+    {
+        $this->QueueLammy->action([$char_id, $coin]);
+    }
+
     // GET /condition/{coin}/characters
     public function conditionsIndex(int $coin): void
     {

@@ -71,10 +71,16 @@ class ItemsController
             ]);
     }
 
+    // POST /items/{itin}/print
+    public function queue(int $itin): void
+    {
+        $this->QueueLammy->action($itin);
+    }
+
     // GET /characters/{plin}/{chin}/items
     public function charactersIndex(int $char_id): void
     {
-        $this->parent = $this->loadModel('characters')->get($char_id);
+        $this->parent = $this->loadModel('Characters')->get($char_id);
         $this->Authorization->authorize($this->parent, 'view');
 
         $this->index();

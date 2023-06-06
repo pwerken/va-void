@@ -130,7 +130,11 @@ abstract class LammyCard
 	}
 	protected function text($x, $y, $w, $align, $text, $border = 0)
 	{
-		$text = utf8_decode($text);
+		if(is_null($text))
+			return;
+
+		$text = mb_convert_encoding($text, 'ISO-8859-1', 'UTF-8');
+
 		while($this->pdf->GetStringWidth($text) > $w) {
 			$text = substr($text, 0, -1);
 		}
@@ -140,9 +144,11 @@ abstract class LammyCard
 	}
 	protected function textblock($x, $y, $w, $align, $text, $border = 0)
 	{
+		$text = mb_convert_encoding($text, 'ISO-8859-1', 'UTF-8');
+
 		$h = $this->size / 2;
 		$this->pdf->SetXY($this->xPos + $x, $this->yPos + $y - $h/2);
-		$this->pdf->MultiCell($w, $h, utf8_decode($text), $border, $align);
+		$this->pdf->MultiCell($w, $h, $text, $border, $align);
 		$this->pdf->SetXY($this->xPos, $this->yPos);
 	}
 

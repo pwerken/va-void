@@ -93,6 +93,7 @@ class CharacterLammy
 
 		$g = 159;
 
+        // mana
 		$this->pdf->SetTextColor(@$data['mana']['Elemental'] ? 0 : $g);
 		$this->text( 8, 37.7, 13, 'R', 'Elemantal:');
 		$this->text(20, 37.7,  5, 'C', @$data['mana']['Elemental'] ?: 0);

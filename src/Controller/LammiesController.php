@@ -6,8 +6,11 @@ namespace App\Controller;
 class LammiesController
     extends AppController
 {
-    use \App\Controller\Trait\View;
+    use \App\Controller\Trait\View;     // GET /lammies/{id}
+    use \App\Controller\Trait\Edit;     // PUT /lammies/{id}
+    use \App\Controller\Trait\Delete;   // DELETE /lammies/{id}
 
+    // GET /lammies
     public function index(): void
     {
         $query = $this->Lammies->find()
@@ -37,35 +40,61 @@ class LammiesController
             ]);
     }
 
+    // GET /lammies/queue
+    // returns the ID of the last item in the queue
     public function queue(): void
     {
+        $last = $this->Lammies
+                ->find('lastInQueue')
+                ->disableHydration()
+                ->select(['id'])
+                ->first();
+        $last_id = is_array($last) ? $last['id'] : 0;
+        $this->set('_serialize', $last_id);
     }
 
     // POST /lammies/single
+    // change lammy status to printing
+    // returns PDF for single-sided printing
     public function pdfSingle(): void
     {
-        $this->uptoId(key($this->request->getData()));
-        $this->pdfOutput(false);
+        $max_id = key($this->getRequest()->getData()) ?? 0;
+        $this->pdfOutput($max_id, false);
     }
 
     // POST /lammies/double
+    // change lammy status to printing
+    // returns PDF for double-sided printing
     public function pdfDouble(): void
     {
-        $this->uptoId(key($this->request->getData()));
-        $this->pdfOutput(true);
+        $max_id = key($this->getRequest()->getData()) ?? 0;
+        $this->pdfOutput($max_id, true);
     }
 
     // POST /lammies/printed
+    // change lammy status to printed
     public function printed(): void
     {
-        $this->uptoId(key($this->request->data));
+        $max_id = key($this->getRequest()->getData()) ?? 0;
+        $lammies = $this->loadModel()->find('Printing')
+                    ->where(['Lammies.id <=' => $max_id])
+                    ->all();
+        $this->Lammies->setStatuses($lammies, 'Printed');
+
+        $this->set('_serialize', count($lammies));
     }
 
-    private function uptoId($id)
+    private function pdfOutput(int $max_id, ?bool $double = false)
     {
-    }
+        $lammies = $this->loadModel()->find('Queued')
+                    ->where(['Lammies.id <=' => $max_id])
+                    ->all();
 
-    private function pdfOutput($double = false)
-    {
+        $this->Lammies->setStatuses($lammies, 'Printing');
+
+        $this->viewBuilder()->setClassName('Pdf');
+        $this->set('viewVar', 'lammies');
+        $this->set('lammies', $lammies);
+        $this->set('double', $double);
     }
 }

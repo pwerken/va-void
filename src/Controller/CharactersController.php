@@ -61,6 +61,45 @@ class CharactersController
         $this->Add->action();
     }
 
+    // POST /characters/{plin}/{chin}/print
+    public function queue(int $char_id): void
+    {
+        $char = $this->loadModel()->getWithContain($char_id);
+
+        $table = $this->loadModel('Lammies');
+
+        $lammy = $table->newEmptyEntity();
+        $lammy->set('target', $char);
+        $table->saveOrFail($lammy);
+        $count = 1;
+
+        if($this->getRequest()->getData('all'))
+        {
+            foreach($char->powers as $power) {
+                $lammy = $table->newEmptyEntity();
+                $lammy->set('target', $power);
+                $table->saveOrFail($lammy);
+                $count++;
+            }
+
+            foreach($char->conditions as $condition) {
+                $lammy = $table->newEmptyEntity();
+                $lammy->set('target', $condition);
+                $table->saveOrFail($lammy);
+                $count++;
+            }
+
+            foreach($char->items as $item) {
+                $lammy = $table->newEmptyEntity();
+                $lammy->set('target', $item);
+                $table->saveOrFail($lammy);
+                $count++;
+            }
+        }
+
+        $this->set('_serialize', $count);
+    }
+
     // GET /believes/{id}/characters
     public function believesIndex(int $belief_id): void
     {

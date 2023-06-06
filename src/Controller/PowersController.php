@@ -19,4 +19,10 @@ class PowersController
 
         $this->doRawIndex($query, 'Powers', '/powers/', 'poin');
     }
+
+    // POST /powers/{poin}/print
+    public function queue(int $poin): void
+    {
+        $this->QueueLammy->action($poin);
+    }
 }

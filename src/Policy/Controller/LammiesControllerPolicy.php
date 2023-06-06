@@ -15,13 +15,13 @@ class LammiesControllerPolicy
     // PUT /lammies
     public function add(): bool
     {
-        return false; //$this->hasAuth('super');
+        return $this->hasAuth('super');
     }
 
     // GET /lammies/:id
     public function view(): bool
     {
-        $this->index();
+        return $this->index();
     }
 
     // PUT /lammies/:id

@@ -8,17 +8,16 @@ use Cake\Controller\Component;
 class QueueLammyComponent
 	extends Component
 {
-	public function execute(): void
-	{
-		$controller = $this->_registry->getController();
-	}
-
-	public function lammyBeforeRender(Event $event): void
+    public function action(int|array $id): void
     {
-		$controller = $this->_registry->getController();
-		$table = $controller->loadModel('lammies');
-		$entity = $event->getSubject()->entity;
-		$table->save($table->newEntity()->set('target', $entity));
-		$event->getSubject()->entity = 1;
-	}
+        $model = $this->getController()->loadModel();
+        $obj = $model->getWithContain($id);
+
+		$table = $this->getController()->loadModel('Lammies');
+        $lammy = $table->newEmptyEntity();
+        $lammy->set('target', $obj);
+		$table->saveOrFail($lammy);
+
+        $this->getController()->set('_serialize', 1);
+    }
 }

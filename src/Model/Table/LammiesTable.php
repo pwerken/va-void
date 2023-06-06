@@ -23,6 +23,14 @@ class LammiesTable
     {
     }
 
+    public function findLastInQueue(Query $query, array $options = [])
+    {
+        $query = $this->findQueued($query, $options);
+        $query->order(["Lammies.id" => "DESC"]);
+        $query->limit(1);
+        return $query;
+    }
+
     public function findQueued(Query $query, array $options = [])
     {
         $query = $this->findWithContain($query, $options);
@@ -38,14 +46,6 @@ class LammiesTable
     {
         $query = $this->findWithContain($query, $options);
         $query->where(["status LIKE" => "Printing"]);
-        return $query;
-    }
-
-    public function findLastInQueue(Query $query, array $options = [])
-    {
-        $query = $this->findQueued($query, $options);
-        $query->order(["Lammies.id" => "DESC"]);
-        $query->limit(1);
         return $query;
     }
 

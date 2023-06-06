@@ -20,4 +20,10 @@ class ConditionsController
 
         $this->doRawIndex($query, 'Condition', '/conditions/', 'coin');
     }
+
+    // POST /conditions/{coin}/print
+    public function queue(int $coin): void
+    {
+        $this->QueueLammy->action($coin);
+    }
 }
