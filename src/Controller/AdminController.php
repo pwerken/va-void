@@ -11,7 +11,6 @@ use Migrations\Migrations;
 
 use App\Model\Entity\Player;
 use App\Shell\BackupShell;
-use App\Utility\AuthState;
 
 class AdminController
     extends Controller
@@ -68,15 +67,15 @@ class AdminController
             return;
         }
 
-        if (!$this->Authorization->can($player, 'edit')) {
-            $this->Flash->error("Not authorized to change password for Player#$plin");
+        $this->Players->patchEntity($player, ['password' => $pass]);
+        if (!$player->isDirty('password')) {
+            $this->Flash->error("Not authorized to change passwords");
             return;
         }
 
-        $this->Players->patchEntity($player, ['password' => $pass]);
         $this->Players->save($player);
 
-        $errors = $player->getErrors('password');
+        $errors = $player->getError('password');
         if(!empty($errors)) {
             $this->Flash->error(reset($errors));
         } else {
@@ -102,22 +101,28 @@ class AdminController
             return;
         }
 
-        $player->role = $role;
+        $this->Players->patchEntity($player, ['role' => $role]);
+        if (!$player->isDirty('role')) {
+            $this->Flash->error("Not authorized to change roles");
+            return;
+        }
 
         if(!$this->Players->save($player)) {
-            $errors = $player->errors('role');
+            $errors = $player->getError('role');
             $this->Flash->error(reset($errors));
         } else {
-            $this->Flash->success("Player#$plin has `$role` authorisation");
+            $this->Flash->success("Player#$plin has `$role` authorization");
         }
     }
 
     public function checks()
     {
+        // handled by /templates/Admin/checks.php
     }
 
     public function routes()
     {
+        // handled by /templates/Admin/routes.php
     }
 
     public function backups()
@@ -180,8 +185,9 @@ class AdminController
             return;
         }
 
+        $user = $this->getRequest()->getAttribute('identity');
 
-        if($this->request->is('post') && AuthState::hasRole('Infobalie')) {
+        if($this->request->is('post') && $user->hasAuth('Infobalie')) {
             $ids = $this->request->getData('delete');
             if(!empty($ids)) {
                 $nr = $lammies->deleteAll(['id IN' => $ids]);
@@ -209,12 +215,13 @@ class AdminController
     public function skills()
     {
         $skills = $this->loadModel('Skills');
+        $this->set('skills', $skills->find('list')->all()->toArray());
 
-        $this->set('characters', []);
+        $characters = [];
 
-        if($this->request->is('post')
-        && AuthState::hasRole('Referee')
-        ) {
+        $user = $this->getRequest()->getAttribute('identity');
+        if($this->request->is('post') && $user->hasAuth('Referee'))
+        {
             $ids = $this->request->getData('skills');
             if(!is_array($ids))
                 $ids = [$ids];
@@ -226,7 +233,6 @@ class AdminController
                     return $q->where(['CharactersSkills.skill_id IN' => $ids]);
                 });
 
-            $characters = [];
             foreach($query->all() as $c) {
                 $id = $c['id'];
                 $skill_id = $c['_matchingData']['CharactersSkills']['skill_id'];
@@ -238,19 +244,16 @@ class AdminController
                 $characters[$id] = $c;
             }
 
-            $this->set('characters', $characters);
-        };
-
-        $this->set('skills', $skills->find('list')->all()->toArray());
+        }
+        $this->set('characters', $characters);
     }
 
     public function valea_paid()
     {
         $this->set('players', []);
 
-        if($this->request->is('post')
-        && AuthState::hasRole('Read-only')
-        ) {
+        if($this->request->is('post') && false)
+        {
             $e = $this->request->getData('event');
             $y = $this->request->getData('year');
 
@@ -274,8 +277,7 @@ class AdminController
 
     public function valea_void()
     {
-        if($this->request->is('post')
-        && AuthState::hasRole('Infobalie')
+        if($this->request->is('post') && false
         && is_array($this->request->getData('action'))
         ) {
             $done = [];

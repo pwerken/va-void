@@ -1,12 +1,13 @@
 <?php
 
+use Cake\Routing\Router;
+
 $cakeDescription = 'VOID-API';
 
-#$user = $this->Authorize->getIdentity();
-
+$user = Router::getRequest()->getAttribute('identity');
 $role = (!isset($user) ? '' : $user['role']);
-$nav = [];
 
+$nav = [];
 switch($role) {
 case 'Super':
 	$nav['/admin/migrations'] = 'Database Migrations';

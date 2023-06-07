@@ -1,26 +1,22 @@
 <?php
 namespace App\Shell;
 
-use App\Utility\AuthState;
 use Cake\Console\Shell;
+use Cake\Http\ServerRequest;
+use Cake\Routing\Router;
 
-class App extends Shell
+use App\Model\Entity\Player;
+
+class App
+    extends Shell
 {
-
     public function initialize(): void
     {
-        AuthState::initialize($this, -2);
-    }
+        $cli = new Player();
+        $cli->set('id', -2);
+        $cli->set('role', 'Super');
 
-    public function user($field)
-    {
-        switch($field) {
-        case 'id':
-            return -2;
-        case 'role':
-            return 'Super';
-        default:
-            return NULL;
-        }
+        $request = (new ServerRequest())->withAttribute('identity', $cli);
+        Router::setRequest($request);
     }
 }

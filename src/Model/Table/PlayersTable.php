@@ -6,6 +6,7 @@ namespace App\Model\Table;
 use ArrayObject;
 use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
+use Cake\Routing\Router;
 
 class PlayersTable
     extends AppTable
@@ -30,9 +31,33 @@ class PlayersTable
     {
         $rules->addCreate([$this, 'rulePlinInUse']);
 
+        $rules->add([$this, 'ruleAuthCheck']);
+
         $rules->addDelete([$this, 'ruleNoCharacters']);
 
         return $rules;
+    }
+
+    public function ruleAuthCheck($entity, $options)
+    {
+        if(!$entity->isDirty('role')) {
+            return true;
+        }
+
+        $user = Router::getRequest()->getAttribute('identity');
+        if(!$user->hasAuth($entity->getOriginal('role'))) {
+            $entity->setError('role', ['authorization' =>
+                'Cannot demote user with more authorization than you']);
+            return false;
+        }
+
+        if(!$user->hasAuth($entity->get('role'))) {
+            $entity->setError('role', ['authorization' =>
+                'Cannot promote user above your own authorization']);
+            return false;
+        }
+
+        return true;
     }
 
     public function ruleNoCharacters($entity, $options)

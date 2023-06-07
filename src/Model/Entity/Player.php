@@ -63,4 +63,21 @@ class Player
         $name = [$this->first_name, $this->insertion, $this->last_name];
         return implode(' ', array_filter($name));
     }
+
+    public function hasAuth(string $role): bool
+    {
+        $want = self::roleToInt($role);
+        $have = self::roleToInt($this->get('role'));
+
+        return $want <= $have;
+    }
+
+    private function roleToInt(string $role): int
+    {
+        foreach(self::roleValues() as $key => $value) {
+            if(strcasecmp($role, $value) == 0)
+                return $key + 1;
+        }
+        return $key + 2;
+    }
 }
