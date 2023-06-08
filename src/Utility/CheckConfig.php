@@ -8,6 +8,8 @@ use Migrations\Migrations;
 
 class CheckConfig
 {
+	const PHP_REQUIRED = '7.4.0';
+
 	public static function installation()
 	{
 		$status = [];
@@ -17,11 +19,11 @@ class CheckConfig
 			$status[$msg] = false;
 		}
 
-		if(version_compare(PHP_VERSION, '5.6.0', '>=')) {
-			$msg = sprintf('Your version of PHP is 5.6.0 or higher (detected %s).', PHP_VERSION);
+		if(version_compare(PHP_VERSION, self::PHP_REQUIRED, '>=')) {
+			$msg = sprintf('Your version of PHP is %s or higher (detected %s).', self::PHP_REQUIRED, PHP_VERSION);
 			$status[$msg] = true;
 		} else {
-			$msg = sprintf('You need PHP 5.6.0 or higher to use CakePHP (detected %s).', PHP_VERSION);
+			$msg = sprintf('You need PHP %s or higher to use CakePHP (detected %s).', self::PHP_REQUIRED, PHP_VERSION);
 			$status[$msg] = false;
 		}
 
@@ -53,18 +55,18 @@ class CheckConfig
 		}
 
 		if(is_writable(TMP)) {
-			$msg = "Your tmp directory is writable.";
+			$msg = sprintf("Your tmp directory (%s) is writable.", TMP);
 			$status[$msg] = true;
 		} else {
-			$msg = "Your tmp directory is NOT writable.";
+			$msg = sprintf("Your tmp directory (%s) NOT is writable.", TMP);
 			$status[$msg] = false;
 		}
 
 		if(is_writable(LOGS)) {
-			$msg = "Your logs directory is writable.";
+			$msg = sprintf("Your logs directory (%s) is writable.", LOGS);
 			$status[$msg] = true;
 		} else {
-			$msg = "Your logs directory is NOT writable.";
+			$msg = sprintf("Your logs directory (%s) NOT is writable.", LOGS);
 			$status[$msg] = false;
 		}
 
@@ -100,7 +102,7 @@ class CheckConfig
 		$migrations = new Migrations();
 		$migrations = $migrations->status();
 		if(empty($migrations)) {
-			$msg = 'Database table structures NOT set up using Migrations.';
+			$msg = 'Database table structures are NOT set up using Migrations.';
 			$status[$msg] = false;
 		} else {
 			$msg = false;
@@ -108,13 +110,13 @@ class CheckConfig
 				if($migration['status'] == 'up') {
 					continue;
 				}
-				$msg = 'Database table structures NOT up to date with Migrations.';
+				$msg = 'Database table structures are NOT up to date with Migrations.';
 				break;
 			}
 			if($msg !== false) {
 				$status[$msg] = false;
 			} else {
-				$msg = 'Database table structures up to date with Migrations.';
+				$msg = 'Database table structures are up to date with Migrations.';
 				$status[$msg] = true;
 			}
 		}
