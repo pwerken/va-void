@@ -19,8 +19,7 @@ abstract class AppTable
     {
         parent::initialize($config);
 
-        $this->addBehavior('Timestamp');
-#       $this->addBehavior('CreatorModifier');
+        $this->addBehavior('WhoWhen');
 
         $entityName = $this->getEntityClass();
         $entityName = substr($entityName, strrpos($entityName, '\\') + 1);
@@ -56,7 +55,7 @@ abstract class AppTable
 
     public function beforeDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
-//TODO    TableRegistry::get('History')->logDeletion($entity);
+        TableRegistry::get('History')->logDeletion($entity);
     }
 
     public function beforeFind(EventInterface $event, Query $query, ArrayObject $options, bool $primary): Query
@@ -100,13 +99,16 @@ abstract class AppTable
 
     public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
-        if($entity->isNew())
+        if($entity->isNew()) {
             return;
+        }
 
         if($entity->isDirty('modified') && $entity->isDirty('modifier_id')
         && $entity->get('modifier_id') == $entity->getOriginal('modifier_id')
         && count($entity->getDirty()) == 2)
+        {
             return;
+        }
 
         TableRegistry::get('History')->logChange($entity);
     }
@@ -140,10 +142,9 @@ abstract class AppTable
 
     protected function touchEntity($model, $id): void
     {
-        return; //TODO
         $table = TableRegistry::get($model);
         $entity = $table->get($id);
-        $table->touch($entity);
+        $table->WhoWhen->touch($entity);
         $table->save($entity);
     }
 }
