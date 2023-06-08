@@ -12,13 +12,14 @@ class ViewComponent
 
     public function action(int|array $id, bool $checkAuthorize = true): void
     {
-        $model = $this->getController()->loadModel();
+        $controller = $this->getController();
+        $model = $controller->loadModel();
 
         $obj = $model->getWithContain($id);
         if($checkAuthorize) {
             $this->Authorization->authorize($obj, 'view');
         }
 
-        $this->getController()->set('_serialize', $obj);
+        $controller->set('_serialize', $obj);
     }
 }

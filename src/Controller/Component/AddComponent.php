@@ -10,11 +10,12 @@ use App\Error\Exception\ValidationException;
 class AddComponent
     extends Component
 {
-    protected $components = ['Authorization', 'View'];
+    protected $components = ['Authorization'];
 
     public function action(bool $checkAuthorize = true): void
     {
-        $model = $this->getController()->loadModel();
+        $controller = $this->getController();
+        $model = $controller->loadModel();
 
         $obj = $model->newEmptyEntity();
         if($checkAuthorize) {
@@ -22,16 +23,19 @@ class AddComponent
         }
         $this->Authorization->applyScope($obj, 'accesible');
 
-        $data = $this->getController()->getRequest()->getData();
+        $data = $controller->getRequest()->getData();
         $obj = $model->patchEntity($obj, $data, ['associated' => []]);
 
         if(!$model->save($obj, ['checkExisting' => false])) {
             throw new ValidationException($obj);
         }
 
-        #TODO
-        var_dump($obj);
-        die;
-#        $this->View->action($id);
+        $obj = $obj->refresh();
+
+        $response = $controller->getResponse()
+                        ->withLocation($obj->getUrl())
+                        ->withStatus(201);
+        $controller->setResponse($response);
+        $controller->set('_serialize', $obj);
     }
 }

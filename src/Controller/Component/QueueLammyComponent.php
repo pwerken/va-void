@@ -10,14 +10,16 @@ class QueueLammyComponent
 {
     public function action(int|array $id): void
     {
+        $controller = $this->getController();
         $model = $this->getController()->loadModel();
+
         $obj = $model->getWithContain($id);
 
-		$table = $this->getController()->loadModel('Lammies');
+		$table = $controller->loadModel('Lammies');
         $lammy = $table->newEmptyEntity();
         $lammy->set('target', $obj);
 		$table->saveOrFail($lammy);
 
-        $this->getController()->set('_serialize', 1);
+        $contoller->set('_serialize', 1);
     }
 }

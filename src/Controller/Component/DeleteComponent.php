@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller\Component;
 
 use Cake\Controller\Component;
+use Cake\Http\Response;
 
 use App\Error\Exception\ValidationException;
 
@@ -14,7 +15,8 @@ class DeleteComponent
 
     public function action(int|array $id): void
     {
-        $model = $this->getController()->loadModel();
+        $controller = $this->getController();
+        $model = $controller->loadModel();
 
         $obj = $model->get($id);
         $this->Authorization->authorize($obj, 'delete');
@@ -23,6 +25,9 @@ class DeleteComponent
             throw new ValidationException($obj);
         }
 
-        //TODO redirect? / return ...?
+        $response = $controller->getResponse()
+                        ->withStatus(204);
+        $controller->setResponse($response);
+        $controller->set('_serialize', null);
     }
 }

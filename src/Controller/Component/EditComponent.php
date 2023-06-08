@@ -10,23 +10,24 @@ use App\Error\Exception\ValidationException;
 class EditComponent
     extends Component
 {
-    protected $components = ['Authorization', 'View'];
+    protected $components = ['Authorization'];
 
     public function action(int|array $id): void
     {
-        $model = $this->getController()->loadModel();
+        $controller = $this->getController();
+        $model = $controller->loadModel();
 
         $obj = $model->get($id);
         $this->Authorization->authorize($obj, 'edit');
         $this->Authorization->applyScope($obj, 'accesible');
 
-        $data = $this->getController()->getRequest()->getData();
+        $data = $controller->getRequest()->getData();
         $obj = $model->patchEntity($obj, $data);
 
         if (!$model->save($obj)) {
             throw new validationexception($obj);
         }
 
-        $this->View->action($id, false);
+        $controller->set('_serialize', $obj->refresh());
     }
 }
