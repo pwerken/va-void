@@ -4,15 +4,14 @@ use Cake\Routing\Router;
 
 $cakeDescription = 'VOID-API';
 
-$user = Router::getRequest()->getAttribute('identity');
 $role = (!isset($user) ? '' : $user['role']);
 
 $nav = [];
 switch($role) {
 case 'Super':
+case 'Infobalie':
 	$nav['/admin/migrations'] = 'Database Migrations';
 	$nav['/admin/backups'] = 'Database Backups';
-case 'Infobalie':
 case 'Referee':
 case 'Read-only':
 	$nav['/admin/authorization'] = 'Authorization';

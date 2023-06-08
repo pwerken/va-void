@@ -38,12 +38,12 @@ class AdminControllerPolicy
 
     public function backups(): bool
     {
-        return $this->hasAuth('super');
+        return $this->hasAuth('infobalie');
     }
 
     public function migrations(): bool
     {
-        return $this->hasAuth('super');
+        return $this->hasAuth('infobalie');
     }
 
     public function history(): bool
