@@ -40,7 +40,7 @@ class AuthController
                     , 'exp' =>  time() + 60*60*24*7
                     , 'name' => $user['full_name']
                     , 'role' => $user['role']
-                    ], Security::getSalt())
+                    ], Security::getSalt(), 'HS256')
                 , 'player' => '/players/'.$user['id']
                 ]
             ]);
