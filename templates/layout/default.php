@@ -13,14 +13,12 @@ case 'Super':
 	$nav['/admin/migrations'] = 'Database Migrations';
 	$nav['/admin/backups'] = 'Database Backups';
 case 'Infobalie':
-	$nav['/admin/valea_void'] = 'VALEA~VOID Sync';
 case 'Referee':
 case 'Read-only':
 	$nav['/admin/authorization'] = 'Authorization';
 	$nav['/admin/history'] = 'Entity History';
 	$nav['/admin/printing'] = 'Printing Queue';
 	$nav['/admin/skills'] = 'Skill~Player Lookup';
-	$nav['/admin/valea_paid'] = 'VALEA Pre-registration';
 case 'Player':
 	$nav['/admin/authentication'] = 'Authentication';
 default:
@@ -47,19 +45,6 @@ default:
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
-
-	<style>
-.cmp td { vertical-align: middle; }
-.cmp .different td.here { background-color: #ddf; }
-.cmp .onlyValea, .cmp .onlyValea:nth-of-type(even)
-{ background-color: #dfd; }
-.cmp .onlyVoid, .cmp .onlyVoid:nth-of-type(even)
- { background-color: #fdd; }
-.cmp button { margin: 0px; padding: 0.3em 1.5em; width: 4em; }
-.cmp button.red { background-color: #FF0000; }
-.cmp button.green { background-color: #009900; }
-.cmp button.blue{ background-color: #007095; }
-	</style>
 </head>
 <body>
     <nav class="top-bar expanded" data-topbar role="navigation">

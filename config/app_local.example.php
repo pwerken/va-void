@@ -68,18 +68,6 @@ return [
         ],
 
         /*
-         * VALEA database connection.
-         */
-        'valea' => [
-            'host' => 'localhost',
-            //'port' => 'non_standard_port_number',
-            'username' => 'valea',
-            'password' => '',
-            'database' => 'valea',
-            //'schema' => 'myapp',
-            'url' => env('DATABASE_URL', null),
-        ],
-        /*
          * The test connection is used during the test suite.
          */
         'test' => [

@@ -60,14 +60,4 @@ class AdminControllerPolicy
     {
         return $this->hasAuth('read-only');
     }
-
-    public function valea_paid(): bool
-    {
-        return $this->hasAuth('read-only');
-    }
-
-    public function valea_void(): bool
-    {
-        return $this->hasAuth('infobalie');
-    }
 }

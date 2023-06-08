@@ -22,7 +22,7 @@ abstract class AppPolicy
             return false;
 
         if (is_string($roles))
-            $roles = [ $roles ];
+            $roles = [$roles];
 
         foreach($roles as $role) {
             if (strcasecmp($role, 'user') == 0) {

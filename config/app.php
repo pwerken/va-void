@@ -352,23 +352,6 @@ return [
         ],
 
         /*
-         * VALEA database connection
-         * Use to compare void.players and valea.deelnemers tables.
-         */
-        'valea' => [
-            'className' => Connection::class,
-            'driver' => Mysql::class,
-            'persistent' => false,
-            'timezone' => 'UTC',
-            //'encoding' => 'utf8mb4',
-            'flags' => [],
-            'cacheMetadata' => false,
-            'quoteIdentifiers' => false,
-            'log' => false,
-            //'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
-        ],
-
-        /*
          * The test connection is used during the test suite.
          */
         'test' => [
