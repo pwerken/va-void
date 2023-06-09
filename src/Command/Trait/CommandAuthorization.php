@@ -1,14 +1,14 @@
 <?php
-namespace App\Shell;
+declare(strict_types=1);
 
-use Cake\Console\Shell;
+namespace App\Command\Trait;
+
 use Cake\Http\ServerRequest;
 use Cake\Routing\Router;
 
 use App\Model\Entity\Player;
 
-class App
-    extends Shell
+trait CommandAuthorization
 {
     public function initialize(): void
     {
