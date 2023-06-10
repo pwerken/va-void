@@ -6,10 +6,10 @@ namespace App\Controller;
 class GroupsController
     extends AppController
 {
-    use \App\Controller\Trait\Add;      // PUT /groups
-    use \App\Controller\Trait\View;     // GET /groups/{id}
-    use \App\Controller\Trait\Edit;     // PUT /groups/{id}
-    use \App\Controller\Trait\Delete;   // DELETE /groups/{id}
+    use \App\Controller\Traits\Add;      // PUT /groups
+    use \App\Controller\Traits\View;     // GET /groups/{id}
+    use \App\Controller\Traits\Edit;     // PUT /groups/{id}
+    use \App\Controller\Traits\Delete;   // DELETE /groups/{id}
 
     // GET /groups
     public function index(): void

@@ -9,7 +9,7 @@ use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Datasource\ConnectionManager;
 
-use App\Command\Trait\Backup;
+use App\Command\Traits\Backup;
 
 class BackupExportCommand
     extends Command

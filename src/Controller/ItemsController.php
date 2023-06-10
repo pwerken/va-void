@@ -8,10 +8,10 @@ use Cake\Utility\Inflector;
 class ItemsController
     extends AppController
 {
-    use \App\Controller\Trait\Add;      // PUT /items
-    use \App\Controller\Trait\View;     // GET /items/{itin}
-    use \App\Controller\Trait\Edit;     // PUT /items/{itin}
-    use \App\Controller\Trait\Delete;   // DELETE /items/{itin}
+    use \App\Controller\Traits\Add;      // PUT /items
+    use \App\Controller\Traits\View;     // GET /items/{itin}
+    use \App\Controller\Traits\Edit;     // PUT /items/{itin}
+    use \App\Controller\Traits\Delete;   // DELETE /items/{itin}
 
     // GET /items
     public function index(): void

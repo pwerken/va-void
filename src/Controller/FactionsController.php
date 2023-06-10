@@ -6,7 +6,7 @@ namespace App\Controller;
 class FactionsController
     extends AppController
 {
-    use \App\Controller\Trait\View;     // GET /factions/{id}
+    use \App\Controller\Traits\View;     // GET /factions/{id}
 
     // GET /factions
     public function index(): void

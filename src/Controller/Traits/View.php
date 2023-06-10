@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller\Trait;
+namespace App\Controller\Traits;
 
 trait View
 {

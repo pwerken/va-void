@@ -8,8 +8,8 @@ use Cake\Utility\Inflector;
 class CharactersController
     extends AppController
 {
-    use \App\Controller\Trait\View; // GET /characters/{plin}/{chin}
-    use \App\Controller\Trait\Edit; // PUT /characters/{plin}/{chin}
+    use \App\Controller\Traits\View; // GET /characters/{plin}/{chin}
+    use \App\Controller\Traits\Edit; // PUT /characters/{plin}/{chin}
 
     // GET /characters
     public function index(): void

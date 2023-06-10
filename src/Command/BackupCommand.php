@@ -8,7 +8,7 @@ use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 
-use App\Command\Trait\Backup;
+use App\Command\Traits\Backup;
 
 class BackupCommand
     extends Command

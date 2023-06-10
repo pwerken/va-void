@@ -8,7 +8,7 @@ use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 
-use App\Command\Trait\CommandAuthorization;
+use App\Command\Traits\CommandAuthorization;
 use App\Model\Entity\Player;
 
 class AdminPasswordCommand

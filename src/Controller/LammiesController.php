@@ -6,9 +6,9 @@ namespace App\Controller;
 class LammiesController
     extends AppController
 {
-    use \App\Controller\Trait\View;     // GET /lammies/{id}
-    use \App\Controller\Trait\Edit;     // PUT /lammies/{id}
-    use \App\Controller\Trait\Delete;   // DELETE /lammies/{id}
+    use \App\Controller\Traits\View;     // GET /lammies/{id}
+    use \App\Controller\Traits\Edit;     // PUT /lammies/{id}
+    use \App\Controller\Traits\Delete;   // DELETE /lammies/{id}
 
     // GET /lammies
     public function index(): void

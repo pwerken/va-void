@@ -8,7 +8,7 @@ use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 
-use App\Command\Trait\PrintLammies;
+use App\Command\Traits\PrintLammies;
 
 class QueueDoubleCommand
     extends Command

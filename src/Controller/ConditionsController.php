@@ -6,10 +6,10 @@ namespace App\Controller;
 class ConditionsController
     extends AppController
 {
-    use \App\Controller\Trait\Add;      // PUT /conditions
-    use \App\Controller\Trait\View;     // GET /conditions/{coin}
-    use \App\Controller\Trait\Edit;     // PUT /conditions/{coin}
-    use \App\Controller\Trait\Delete;   // DELETE /conditions/{coin}
+    use \App\Controller\Traits\Add;      // PUT /conditions
+    use \App\Controller\Traits\View;     // GET /conditions/{coin}
+    use \App\Controller\Traits\Edit;     // PUT /conditions/{coin}
+    use \App\Controller\Traits\Delete;   // DELETE /conditions/{coin}
 
     // GET /conditions
     public function index(): void

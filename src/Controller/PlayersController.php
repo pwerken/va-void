@@ -6,10 +6,10 @@ namespace App\Controller;
 class PlayersController
     extends AppController
 {
-    use \App\Controller\Trait\Add;      // PUT /players
-    use \App\Controller\Trait\View;     // GET /players/{plin}
-    use \App\Controller\Trait\Edit;     // PUT /players/{plin}
-    use \App\Controller\Trait\Delete;   // DELETE /players/{plin}
+    use \App\Controller\Traits\Add;      // PUT /players
+    use \App\Controller\Traits\View;     // GET /players/{plin}
+    use \App\Controller\Traits\Edit;     // PUT /players/{plin}
+    use \App\Controller\Traits\Delete;   // DELETE /players/{plin}
 
     // GET /players
     public function index(): void

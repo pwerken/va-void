@@ -6,9 +6,9 @@ namespace App\Controller;
 class PowersController
     extends AppController
 {
-    use \App\Controller\Trait\Add;      // PUT /powers
-    use \App\Controller\Trait\View;     // GET /powers/{poin}
-    use \App\Controller\Trait\Edit;     // PUT /powers/{poin}
+    use \App\Controller\Traits\Add;      // PUT /powers
+    use \App\Controller\Traits\View;     // GET /powers/{poin}
+    use \App\Controller\Traits\Edit;     // PUT /powers/{poin}
 
     // GET /powers
     public function index(): void

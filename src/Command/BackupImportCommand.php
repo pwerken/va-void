@@ -10,7 +10,7 @@ use Cake\Console\ConsoleOptionParser;
 use Cake\Datasource\ConnectionManager;
 use Cake\Filesystem\Folder;
 
-use App\Command\Trait\Backup;
+use App\Command\Traits\Backup;
 
 class BackupImportCommand
     extends Command

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Command\Trait;
+namespace App\Command\Traits;
 
 use Cake\Http\ServerRequest;
 use Cake\Routing\Router;

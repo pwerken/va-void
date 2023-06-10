@@ -6,7 +6,7 @@ namespace App\Controller;
 class AttributesController
     extends AppController
 {
-    use \App\Controller\Trait\View; // GET /attributes/{id}
+    use \App\Controller\Traits\View; // GET /attributes/{id}
 
     // GET /attributes
     public function index(): void

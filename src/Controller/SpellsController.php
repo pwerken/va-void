@@ -6,7 +6,7 @@ namespace App\Controller;
 class SpellsController
     extends AppController
 {
-    use \App\Controller\Trait\View;     // GET /spells/{id}
+    use \App\Controller\Traits\View;     // GET /spells/{id}
 
     // GET /spells
     public function index(): void
