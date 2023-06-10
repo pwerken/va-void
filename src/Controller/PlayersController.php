@@ -6,6 +6,7 @@ namespace App\Controller;
 class PlayersController
     extends AppController
 {
+    use \App\Controller\Traits\Add;      // PUT /players
     use \App\Controller\Traits\View;     // GET /players/{plin}
     use \App\Controller\Traits\Edit;     // PUT /players/{plin}
     use \App\Controller\Traits\Delete;   // DELETE /players/{plin}
@@ -42,13 +43,4 @@ class PlayersController
             ]);
     }
 
-    // PUT /players
-    public function add(): void
-    {
-        $request = $this->getRequest();
-        $request = $request->withData('id', $request->getData('plin'));
-        $this->setRequest($request);
-
-        $this->Add->action();
-    }
 }

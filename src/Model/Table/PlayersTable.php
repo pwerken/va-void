@@ -20,11 +20,12 @@ class PlayersTable
 
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
-        parent::beforeMarshal($event, $data, $options);
-
         if(isset($data['plin'])) {
             $data['id'] = $data['plin'];
+            unset($data['plin']);
         }
+
+        parent::beforeMarshal($event, $data, $options);
     }
 
     public function buildRules(RulesChecker $rules): RulesChecker
