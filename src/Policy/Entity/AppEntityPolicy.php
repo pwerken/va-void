@@ -55,7 +55,7 @@ abstract class AppEntityPolicy
         }
     }
 
-    protected function editFieldAuth(string $field, string|array $auth): void
+    protected function editFieldAuth(string $field, $auth): void
     {
         if (is_string($auth)) {
             $auth = [ $auth ];
@@ -63,7 +63,7 @@ abstract class AppEntityPolicy
         $this->editFieldAuth[$field] = $auth;
     }
 
-    protected function showFieldAuth(string $field, string|array $auth): void
+    protected function showFieldAuth(string $field, $auth): void
     {
         if (is_string($auth)) {
             $auth = [ $auth ];

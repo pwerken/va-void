@@ -13,7 +13,7 @@ class DeleteComponent
 {
     protected $components = ['Authorization'];
 
-    public function action(int|array $id): void
+    public function action($id): void
     {
         $controller = $this->getController();
         $model = $controller->loadModel();

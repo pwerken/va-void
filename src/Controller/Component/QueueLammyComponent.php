@@ -8,7 +8,7 @@ use Cake\Controller\Component;
 class QueueLammyComponent
 	extends Component
 {
-    public function action(int|array $id): void
+    public function action($id): void
     {
         $controller = $this->getController();
         $model = $this->getController()->loadModel();
