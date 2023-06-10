@@ -75,8 +75,6 @@ class CharactersTable
 
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
-        parent::beforeMarshal($event, $data, $options);
-
         if (isset($data['plin'])) {
             $plin = $data['player_id'] = $data['plin'];
             unset($data['plin']);
@@ -96,6 +94,8 @@ class CharactersTable
         $data['belief_id']  = $this->nameToIdOrAdd('Believes', @$data['belief']);
         $data['group_id']   = $this->nameToIdOrAdd('Groups',   @$data['group']);
         $data['world_id']   = $this->nameToIdOrAdd('Worlds',   @$data['world']);
+
+        parent::beforeMarshal($event, $data, $options);
     }
 
     public function buildRules(RulesChecker $rules): RulesChecker
