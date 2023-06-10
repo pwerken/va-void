@@ -22,9 +22,9 @@ class EditComponent
         $this->Authorization->applyScope($obj, 'accesible');
 
         $data = $controller->getRequest()->getData();
-        $obj = $model->patchEntity($obj, $data);
+        $obj = $model->patchEntity($obj, $data, ['associated' => []]);
 
-        if (!$model->save($obj)) {
+        if (!$model->save($obj, ['checkExisting' => false])) {
             throw new validationexception($obj);
         }
 
