@@ -90,9 +90,12 @@ abstract class AppTable
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
         // drop association data from input
-        foreach($this->associations() as $key => $value)
+        foreach($this->associations() as $assoc)
         {
-            unset($data[$value->getProperty()]);
+            $prop = $assoc->getProperty();
+
+            if(isset($data[$prop]))
+                unset($data[$prop]);
         }
 
         // drop non-existant fields from input
