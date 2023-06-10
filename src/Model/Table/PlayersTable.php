@@ -30,7 +30,7 @@ class PlayersTable
 
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->addCreate([$this, 'rulePlinInUse']);
+        $rules->addCreate($rules->isUnique(['id']));
 
         $rules->add([$this, 'ruleAuthCheck']);
 
@@ -68,16 +68,6 @@ class PlayersTable
 
         if($query->count() > 0) {
             $entity->setError('characters', $this->consistencyError);
-            return false;
-        }
-
-        return true;
-    }
-
-    public function rulePlinInUse($entity, $options)
-    {
-        if($this->exists(['id' => $entity->plin])) {
-            $entity->setError('plin', ['unique' => 'PLIN already in use']);
             return false;
         }
 
