@@ -30,14 +30,12 @@ class ApiExceptionRenderer
         if ($error instanceof RecordNotFoundException) {
             $code = 404;
         }
+        if ($code < Response::STATUS_CODE_MIN || $code > Response::STATUS_CODE_MAX) {
+            $code = 500;
+        }
 
         $response = $this->controller->getResponse();
-
-        if ($code < Response::STATUS_CODE_MIN || $code > Response::STATUS_CODE_MAX) {
-            $response = $response->withStatus(500);
-        } else {
-            $response = $response->withStatus($code);
-        }
+        $response = $response->withStatus($code);
 
         $data = [];
         $data['file'] = $error->getFile();
