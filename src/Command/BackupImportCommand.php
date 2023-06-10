@@ -39,7 +39,7 @@ class BackupImportCommand
 
         $filename = $args->getArgument('filename');
         if(!Folder::isAbsolute($filename)) {
-            $filename = $this->config('target') . $filename;
+            $filename = $this->config['target'] . $filename;
         }
 
         if(!file_exists($filename)) {
