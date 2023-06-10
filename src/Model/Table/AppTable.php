@@ -89,12 +89,18 @@ abstract class AppTable
 
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
+        // drop association data from input
+        foreach($this->associations() as $key => $value)
+        {
+            unset($data[$value->getProperty()]);
+        }
+
         // drop non-existant fields from input
-        // also prevents marshalling of associations
         foreach($data as $field => $value) {
-            if(!$this->hasField($field))
+            if(!$this->hasField((string)$field))
                 unset($data[$field]);
         }
+
     }
 
     public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
