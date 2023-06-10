@@ -49,6 +49,6 @@ class AuthController
     // GET /auth/logout
     public function logout(): void
     {
-        $this->redirect($this->Auth->logout());
+        $this->Authentication->logout();
     }
 }
