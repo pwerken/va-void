@@ -19,7 +19,28 @@ Download [Composer](https://getcomposer.org/doc/00-intro.md) or update `composer
      relevant for your site.
    * The database tables can be created with Migrations
      `./bin/cake migrations migrate`
-4. Configure apache to serve the `webroot` folder.
+4. Configure apache to serve the `webroot` folder.  
+   Example apache vhost.conf:
+    ```
+    <VirtualHost *:80>
+        ServerName api.your.domain
+        DocumentRoot /var/www/void/webroot
+
+        <Directory />
+            Options FollowSymLinks
+            AllowOverride None
+        </Directory>
+        <Directory /var/www/>
+            Options Indexes FollowSymLinks MultiViews
+            AllowOverride All
+            Order allow,deny
+            allow from all
+        </Directory>
+
+        CustomLog ${APACHE_LOG_DIR}/access.void.log combined
+    </VirtualHost>
+
+   ```
 5. Browse to /admin/checks
    * Again, fix everything it reports as NOT ok.
 6. Optionally: load some initial database content with
