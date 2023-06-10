@@ -41,16 +41,6 @@ abstract class AppTable
                 }
             }
         }
-
-        /* change "" to null for nullable fields */
-        $schema = $this->getSchema();
-        foreach($schema->columns() as $field)
-        {
-            if($schema->isNullable($field) and empty($entity->$field))
-            {
-                $entity->$field = NULL;
-            }
-        }
     }
 
     public function beforeDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
@@ -104,6 +94,16 @@ abstract class AppTable
                 unset($data[$field]);
         }
 
+        /* change "" to null for nullable fields */
+        $schema = $this->getSchema();
+        foreach($schema->columns() as $field)
+        {
+            if(!$schema->isNullable($field) or !isset($data[$field]))
+                continue;
+
+            if(empty($data[$field]))
+                $data[$field] = null;
+        }
     }
 
     public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
