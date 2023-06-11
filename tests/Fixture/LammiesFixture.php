@@ -8,28 +8,6 @@ use Cake\TestSuite\Fixture\TestFixture;
 class LammiesFixture
 	extends TestFixture
 {
-
-	public $fields =
-		[ 'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null]
-		, 'status' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => 'Queued', 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null]
-		, 'entity' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null]
-		, 'key1' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null]
-		, 'key2' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null]
-		, 'created' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null]
-		, 'creator_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null]
-		, 'modified' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null]
-		, '_indexes' =>
-			[ 'status' => ['type' => 'index', 'columns' => ['status', 'id'], 'length' => []]
-			]
-		, '_constraints' =>
-			[ 'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []]
-			]
-		, '_options' =>
-			[ 'engine' => 'InnoDB'
-			, 'collation' => 'utf8_general_ci'
-			]
-		];
-
 	public function init(): void
 	{
 		$this->records =

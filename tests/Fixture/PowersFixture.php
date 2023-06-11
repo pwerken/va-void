@@ -8,6 +8,7 @@ use Cake\TestSuite\Fixture\TestFixture;
 class PowersFixture
 	extends TestFixture
 {
+<<<<<<< HEAD
 
 	public $fields =
 		[ 'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null]
@@ -25,6 +26,8 @@ class PowersFixture
 			]
 		];
 
+=======
+>>>>>>> 0533d1f (tests: use migration for testdb setup instead of fixtures)
 	public function init(): void
 	{
 		$this->records =

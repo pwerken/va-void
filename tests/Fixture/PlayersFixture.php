@@ -9,6 +9,7 @@ use Cake\TestSuite\Fixture\TestFixture;
 class PlayersFixture
 	extends TestFixture
 {
+<<<<<<< HEAD
 	public $fields =
 		[ 'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null]
 		, 'role' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null]
@@ -32,6 +33,8 @@ class PlayersFixture
 			]
 		];
 
+=======
+>>>>>>> 0533d1f (tests: use migration for testdb setup instead of fixtures)
 	public function init(): void
 	{
 		$hasher = new DefaultPasswordHasher();
