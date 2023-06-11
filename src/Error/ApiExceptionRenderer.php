@@ -30,7 +30,9 @@ class ApiExceptionRenderer
         if ($error instanceof RecordNotFoundException) {
             $code = 404;
         }
-        if ($code < Response::STATUS_CODE_MIN || $code > Response::STATUS_CODE_MAX) {
+        if (!is_numeric($code)
+            || $code < Response::STATUS_CODE_MIN
+            || $code > Response::STATUS_CODE_MAX) {
             $code = 500;
         }
 
