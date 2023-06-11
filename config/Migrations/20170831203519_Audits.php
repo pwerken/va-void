@@ -1,9 +1,8 @@
 <?php
-use Migrations\AbstractMigration;
+use App\Migrations\AppMigration;
 
-class Audits extends AbstractMigration
+class Audits extends AppMigration
 {
-
     public function up()
     {
 

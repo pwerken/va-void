@@ -1,9 +1,8 @@
 <?php
-use Migrations\AbstractMigration;
+use App\Migrations\AppMigration;
 
-class CreatorModifier extends AbstractMigration
+class CreatorModifier extends AppMigration
 {
-
     public function up()
     {
 

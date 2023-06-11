@@ -1,9 +1,9 @@
 <?php
-use Migrations\AbstractMigration;
 
-class Events extends AbstractMigration
+use App\Migrations\AppMigration;
+
+class Events extends AppMigration
 {
-
     public function up()
     {
 

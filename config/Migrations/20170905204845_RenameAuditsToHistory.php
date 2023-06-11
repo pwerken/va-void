@@ -1,9 +1,8 @@
 <?php
-use Migrations\AbstractMigration;
+use App\Migrations\AppMigration;
 
-class RenameAuditsToHistory extends AbstractMigration
+class RenameAuditsToHistory extends AppMigration
 {
-
 	public function up()
 	{
 		$this->table('audits')->rename('history')->update();

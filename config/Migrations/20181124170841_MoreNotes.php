@@ -1,12 +1,10 @@
 <?php
-use Migrations\AbstractMigration;
+use App\Migrations\AppMigration;
 
-class MoreNotes extends AbstractMigration
+class MoreNotes extends AppMigration
 {
-
 	public function up()
 	{
-
 		$this->table('characters')
 			->addColumn('referee_notes', 'text', [
 				'after' => 'status',
@@ -50,7 +48,6 @@ class MoreNotes extends AbstractMigration
 
     public function down()
     {
-
 		$this->table('characters')
 			->removeColumn('referee_notes')
 			->renameColumn('notes', 'comments')

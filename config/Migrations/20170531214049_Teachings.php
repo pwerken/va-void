@@ -1,9 +1,8 @@
 <?php
-use Migrations\AbstractMigration;
+use App\Migrations\AppMigration;
 
-class Teachings extends AbstractMigration
+class Teachings extends AppMigration
 {
-
     public function up()
     {
 

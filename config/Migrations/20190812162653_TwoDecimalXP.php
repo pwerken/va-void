@@ -1,7 +1,7 @@
 <?php
-use Migrations\AbstractMigration;
+use App\Migrations\AppMigration;
 
-class TwoDecimalXP extends AbstractMigration
+class TwoDecimalXP extends AppMigration
 {
 	public function up()
 	{
