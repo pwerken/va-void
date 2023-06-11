@@ -116,7 +116,7 @@ class Application
             // It should be after routing and body parser.
             ->add(new AuthenticationMiddleware(new AppAuthenticationService()))
 
-            // Add the AuthenticationMiddleware.
+            // Add the AuthorizationMiddleware.
             // It should be after routing and body parser.
             ->add(new AuthorizationMiddleware(new AppAuthorizationService()))
             ->add(new RequestAuthorizationMiddleware())
