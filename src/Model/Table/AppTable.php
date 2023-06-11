@@ -153,7 +153,7 @@ abstract class AppTable
     {
         $table = TableRegistry::get($model);
         $entity = $table->get($id);
-        $table->WhoWhen->touch($entity);
+        $table->touch($entity);
         $table->save($entity);
     }
 }
