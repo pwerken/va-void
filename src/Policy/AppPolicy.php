@@ -16,7 +16,7 @@ abstract class AppPolicy
         $this->identity = $identity;
     }
 
-    protected function hasAuth($roles, ?AppEntity $obj = NULL): bool
+    protected function hasAuth(string|array $roles, ?AppEntity $obj = NULL): bool
     {
         if (is_null($this->identity))
             return false;

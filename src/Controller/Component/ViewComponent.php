@@ -10,7 +10,7 @@ class ViewComponent
 {
     protected $components = ['Authorization'];
 
-    public function action($id, bool $checkAuthorize = true): void
+    public function action(int|array $id, bool $checkAuthorize = true): void
     {
         $controller = $this->getController();
         $model = $controller->loadModel();

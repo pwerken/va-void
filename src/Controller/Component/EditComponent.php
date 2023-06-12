@@ -12,7 +12,7 @@ class EditComponent
 {
     protected $components = ['Authorization'];
 
-    public function action($id): void
+    public function action(int|array $id): void
     {
         $controller = $this->getController();
         $model = $controller->loadModel();
