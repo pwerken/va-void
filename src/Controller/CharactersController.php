@@ -135,13 +135,6 @@ class CharactersController
         $this->index();
     }
 
-    // GET /spells/{id}/characters
-    public function spellsIndex(int $spell_id): void
-    {
-        $this->parent = $this->loadModel('Spells')->get($spell_id);
-        $this->index();
-    }
-
     // GET /worlds/{id}/characters
     public function worldsIndex(int $world_id): void
     {

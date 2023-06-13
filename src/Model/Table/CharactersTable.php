@@ -29,7 +29,6 @@ class CharactersTable
         $this->hasMany('CharactersConditions')->setProperty('conditions');
         $this->hasMany('CharactersPowers')->setProperty('powers');
         $this->hasMany('CharactersSkills')->setProperty('skills');
-        $this->hasMany('CharactersSpells')->setProperty('spells');
 
         $this->hasMany('MyStudents', ['className' => 'Teachings'])
                 ->setForeignKey('teacher_id')->setProperty('students');
@@ -112,7 +111,6 @@ class CharactersTable
         $rules->addDelete([$this, 'ruleNoItems']);
         $rules->addDelete([$this, 'ruleNoPowers']);
         $rules->addDelete([$this, 'ruleNoSkills']);
-        $rules->addDelete([$this, 'ruleNoSpells']);
 
         return $rules;
     }
@@ -169,19 +167,6 @@ class CharactersTable
         return true;
     }
 
-    public function ruleNoSpells($entity, $options)
-    {
-        $query = $this->CharactersSpells->find();
-        $query->where(['character_id' => $entity->id]);
-
-        if($query->count() > 0) {
-            $entity->setError('spells', 'reference(s) present');
-            return false;
-        }
-
-        return true;
-    }
-
     protected function contain(): array
     {
         return
@@ -189,7 +174,6 @@ class CharactersTable
             , 'CharactersConditions.Conditions'
             , 'CharactersPowers.Powers'
             , 'CharactersSkills.Skills.Manatypes'
-            , 'CharactersSpells.Spells'
             , 'MyTeacher'  =>   [ 'Teacher', 'Student', 'Skills.Manatypes'
                                 , 'Started', 'Updated' ]
             , 'MyStudents' =>   [ 'Teacher', 'Student', 'Skills.Manatypes'

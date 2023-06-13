@@ -50,8 +50,6 @@ class History
             $history->set('power', $entity->get('power'));
         if($entity->get('skill'))
             $history->set('skill', $entity->get('skill'));
-        if($entity->get('spell'))
-            $history->set('spell', $entity->get('spell'));
         if($entity->get('attribute'))
             $history->set('attribute', $entity->get('attribute'));
         if($entity->get('item'))
@@ -149,9 +147,6 @@ class History
             break;
         case 'CharactersSkill':
             $relation = $this->get('skill');
-            break;
-        case 'CharactersSpell':
-            $relation = $this->get('spell');
             break;
         }
         if(is_null($relation))

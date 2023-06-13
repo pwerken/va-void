@@ -15,7 +15,6 @@ class GettersTest
 		, 'app.CharactersConditions'
 		, 'app.CharactersPowers'
 		, 'app.CharactersSkills'
-		, 'app.CharactersSpells'
 		, 'app.Conditions'
 		, 'app.Events'
 		, 'app.Factions'
@@ -26,7 +25,6 @@ class GettersTest
 		, 'app.Players'
 		, 'app.Powers'
 		, 'app.Skills'
-		, 'app.Spells'
 		, 'app.Teachings'
 		, 'app.Worlds'
 		];
@@ -53,8 +51,6 @@ class GettersTest
 		$this->assertGet('/characters/1/1/powers/2', 401);
 		$this->assertGet('/characters/1/1/skills', 401);
 		$this->assertGet('/characters/1/1/skills/1', 401);
-		$this->assertGet('/characters/1/1/spells', 401);
-		$this->assertGet('/characters/1/1/spells/1', 401);
 		$this->assertGet('/characters/1/1/students', 401);
 		$this->assertGet('/characters/1/1/teacher', 401);
 		$this->assertGet('/characters/1/2', 404);
@@ -67,8 +63,6 @@ class GettersTest
 		$this->assertGet('/characters/1/2/powers/2', 404);
 		$this->assertGet('/characters/1/2/skills', 404);
 		$this->assertGet('/characters/1/2/skills/1', 404);
-		$this->assertGet('/characters/1/2/spells', 404);
-		$this->assertGet('/characters/1/2/spells/1', 404);
 		$this->assertGet('/characters/1/2/students', 404);
 		$this->assertGet('/characters/1/2/teacher', 404);
 		$this->assertGet('/characters/2', 401);
@@ -80,8 +74,6 @@ class GettersTest
 		$this->assertGet('/characters/2/1/powers/1', 401);
 		$this->assertGet('/characters/2/1/skills', 401);
 		$this->assertGet('/characters/2/1/skills/1', 401);
-		$this->assertGet('/characters/2/1/spells', 401);
-		$this->assertGet('/characters/2/1/spells/1', 401);
 		$this->assertGet('/characters/2/1/students', 401);
 		$this->assertGet('/characters/2/1/teacher', 401);
 		$this->assertGet('/characters/2/2', 404);
@@ -92,8 +84,6 @@ class GettersTest
 		$this->assertGet('/characters/2/2/powers/1', 404);
 		$this->assertGet('/characters/2/2/skills', 404);
 		$this->assertGet('/characters/2/2/skills/1', 404);
-		$this->assertGet('/characters/2/2/spells', 404);
-		$this->assertGet('/characters/2/2/spells/1', 404);
 		$this->assertGet('/characters/2/2/students', 404);
 		$this->assertGet('/characters/2/2/teacher', 404);
 		$this->assertGet('/characters/99', 401);
@@ -105,8 +95,6 @@ class GettersTest
 		$this->assertGet('/characters/99/1/powers/1', 404);
 		$this->assertGet('/characters/99/1/skills', 404);
 		$this->assertGet('/characters/99/1/skills/1', 404);
-		$this->assertGet('/characters/99/1/spells', 404);
-		$this->assertGet('/characters/99/1/spells/1', 404);
 		$this->assertGet('/characters/99/1/students', 404);
 		$this->assertGet('/characters/99/1/teacher', 404);
 
@@ -124,9 +112,6 @@ class GettersTest
 		$this->assertGet('/characters/1/1/skills');
 		$this->assertGet('/characters/1/1/skills/1');
 		$this->assertGet('/characters/1/1/skills/2', 404);
-		$this->assertGet('/characters/1/1/spells');
-		$this->assertGet('/characters/1/1/spells/1');
-		$this->assertGet('/characters/1/1/spells/2', 404);
 #       $this->assertGet('/characters/1/1/students');
 #		$this->assertGet('/characters/1/1/teacher'); // FIXME fixture
 		$this->assertGet('/characters/1/2', 404);
@@ -140,9 +125,6 @@ class GettersTest
 		$this->assertGet('/characters/1/2/skills', 404);
 		$this->assertGet('/characters/1/2/skills/1', 404);
 		$this->assertGet('/characters/1/2/skills/2', 404);
-		$this->assertGet('/characters/1/2/spells', 404);
-		$this->assertGet('/characters/1/2/spells/1', 404);
-		$this->assertGet('/characters/1/2/spells/2', 404);
 		$this->assertGet('/characters/1/2/students', 404);
 		$this->assertGet('/characters/1/2/teacher', 404);
 		$this->assertGet('/characters/2', 403);
@@ -154,8 +136,6 @@ class GettersTest
 		$this->assertGet('/characters/2/1/powers/1', 403);
 		$this->assertGet('/characters/2/1/skills', 403);
 		$this->assertGet('/characters/2/1/skills/1', 403);
-		$this->assertGet('/characters/2/1/spells', 403);
-		$this->assertGet('/characters/2/1/spells/1', 403);
 #		$this->assertGet('/characters/2/1/students', 403);
 #		$this->assertGet('/characters/2/1/teacher', 403);
 		$this->assertGet('/characters/99', 404);
@@ -167,8 +147,6 @@ class GettersTest
 		$this->assertGet('/characters/99/1/powers/1', 404);
 		$this->assertGet('/characters/99/1/skills', 404);
 		$this->assertGet('/characters/99/1/skills/1', 404);
-		$this->assertGet('/characters/99/1/spells', 404);
-		$this->assertGet('/characters/99/1/spells/1', 404);
 #		$this->assertGet('/characters/99/1/students', 404);
 #		$this->assertGet('/characters/99/1/teacher', 404);
 	}
@@ -255,30 +233,6 @@ class GettersTest
 		$this->assertGet('/skills/1/characters');
 		$this->assertGet('/skills/99', 404);
 		$this->assertGet('/skills/99/characters', 404);
-	}
-
-	public function testSpells()
-	{
-		$this->withoutAuth();
-		$this->assertGet('/spells', 401);
-		$this->assertGet('/spells/1', 401);
-		$this->assertGet('/spells/1/characters', 401);
-		$this->assertGet('/spells/99', 401);
-		$this->assertGet('/spells/99/characters', 401);
-
-		$this->withAuthPlayer();
-		$this->assertGet('/spells');
-		$this->assertGet('/spells/1');
-		$this->assertGet('/spells/1/characters', 403);
-		$this->assertGet('/spells/99', 404);
-		$this->assertGet('/spells/99/characters', 403);
-
-		$this->withAuthReadOnly();
-		$this->assertGet('/spells');
-		$this->assertGet('/spells/1');
-		$this->assertGet('/spells/1/characters');
-		$this->assertGet('/spells/99', 404);
-		$this->assertGet('/spells/99/characters', 404);
 	}
 
 	public function testItems()

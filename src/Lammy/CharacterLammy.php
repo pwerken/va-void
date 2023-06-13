@@ -55,7 +55,6 @@ class CharacterLammy
 		$data['xp'] = 0;
 		$data['mana'] = [];
 		$data['skills'] = [];
-		$data['spells'] = [[], []];
 
 		foreach($this->entity->skills as $relation) {
 			$skill = $relation->skill;
@@ -79,11 +78,6 @@ class CharacterLammy
 			if(!isset($data['mana'][$skill->manatype->name]))
 				$data['mana'][$skill->manatype->name] = 0;
 			$data['mana'][$skill->manatype->name] += $skill->mana_amount;
-		}
-		foreach($this->entity->spells as $relation) {
-			$spell = $relation->spell;
-			$descr = $spell->short.': '.$relation->level;
-			$data['spells'][$spell->spiritual][] = $descr;
 		}
 
 		$this->cardBack('Skills');

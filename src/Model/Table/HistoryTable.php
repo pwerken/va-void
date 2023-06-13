@@ -25,8 +25,6 @@ class HistoryTable
             ->setConditions(['History.entity' => 'CharactersPower']);
         $this->belongsTo('Skills')->setForeignKey('key2')
             ->setConditions(['History.entity' => 'CharactersSkill']);
-        $this->belongsTo('Spells')->setForeignKey('key2')
-            ->setConditions(['History.entity' => 'CharactersSpell']);
 
         $this->belongsTo('Attributes')->setForeignKey('key1')
             ->setConditions(['History.entity' => 'AttributesItem']);
@@ -225,7 +223,7 @@ class HistoryTable
         $id = $entity->get('id');
         $list = $this->find()
             ->where(['entity LIKE' => 'Character%', 'key1' => $id])
-            ->contain(['Conditions', 'Powers', 'Skills', 'Spells'])
+            ->contain(['Conditions', 'Powers', 'Skills'])
             ->all()->toList();
 
         $list[] = History::fromEntity($entity);
@@ -237,9 +235,6 @@ class HistoryTable
         }
         foreach($entity->get('skills') as $skill) {
             $list[] = History::fromEntity($skill);
-        }
-        foreach($entity->get('spells') as $spell) {
-            $list[] = History::fromEntity($spell);
         }
 
         usort($list, array("App\Model\Entity\History", "compare"));
