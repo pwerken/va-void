@@ -41,10 +41,10 @@ class SkillsLoreBlanks extends AbstractMigration
 
             preg_match('/^(.*) (\\(.*\\))$/', $row['name'], $matches);
             $name = $matches[1];
-            $hasLore =   (substr($matches[2], 0, 5) == '(lore');
-            $hasBlanks = (substr($matches[2], -7) == 'blanks)');
+            $hasLore =   (int)(substr($matches[2], 0, 5) == '(lore');
+            $hasBlanks = (int)(substr($matches[2], -7) == 'blanks)');
 
-            $query = $this->getQueryBuilder()
+            $this->getQueryBuilder()
                 ->update('skills')
                 ->set(['name' => $name])
                 ->set(['loresheet' => $hasLore])
