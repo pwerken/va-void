@@ -44,8 +44,10 @@ foreach($list as $cur)
 
 	switch($cur->get('state')) {
 	case 'added':
-		if(count($data) == 0)
+		if(empty($data)) {
 			echo $prefix . "</span><br/>\n";
+			break;
+		}
 		foreach($data as $k => $v) {
 			if(is_null($v))
 				$v = '<em>NULL</em>';
