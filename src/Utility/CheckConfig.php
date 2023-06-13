@@ -8,7 +8,7 @@ use Migrations\Migrations;
 
 class CheckConfig
 {
-	const PHP_REQUIRED = '7.4.0';
+	const PHP_REQUIRED = '8.2.0';
 
 	public static function installation()
 	{
