@@ -26,8 +26,9 @@ class WhoWhenBehavior
 
     public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options)
     {
-        if($entity instanceof History)
+        if($entity instanceof History and !is_null($entity->data)) {
             return;
+        }
 
         if($entity->isNew() !== false)
         {
