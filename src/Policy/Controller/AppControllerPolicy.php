@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Policy\Controller;
 
+use Authentication\Authenticator\UnauthenticatedException;
 use Authorization\IdentityInterface as User;
 use Cake\Http\ServerRequest;
 
@@ -15,6 +16,11 @@ class AppControllerPolicy
     {
         $this->setIdentity($identity);
         $action = $request->getParam('action');
-        return $this->{$action}();
+
+        $allowed = $this->{$action}();
+        if(!$allowed and is_null($identity)) {
+            throw new UnauthenticatedException();
+        }
+        return $allowed;
     }
 }

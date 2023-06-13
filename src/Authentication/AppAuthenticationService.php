@@ -11,6 +11,8 @@ use Authentication\Identifier\JwtSubjectIdentifier;
 use Authentication\Identifier\PasswordIdentifier;
 use Authentication\Identifier\Resolver\OrmResolver;
 use Cake\Routing\Router;
+use Cake\Http\ServerRequest;
+Use Psr\Http\Message\ServerRequestInterface;
 
 use App\Model\Entity\Player;
 
@@ -59,5 +61,22 @@ class AppAuthenticationService
             'fields' => $fields,
             'resolver' => $resolver,
         ]);
+    }
+
+    /**
+     * Return the URL to redirect unauthenticated users to.
+     *
+     * If $request is to /admin* redirect to /admin, with a return query
+     * parameter.  Otherwise it returns null.
+     */
+    public function getUnauthenticatedRedirectUrl(ServerRequestInterface $request): ?string
+    {
+        if($request->getParam('controller') != 'Admin')
+            return NULL;
+
+        $this->setConfig('queryParam', 'redirect');
+        $this->setConfig('unauthenticatedRedirect', Router::url('/admin'));
+
+        return parent::getUnauthenticatedRedirectUrl($request);
     }
 }

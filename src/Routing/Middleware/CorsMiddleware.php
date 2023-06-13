@@ -31,7 +31,12 @@ class CorsMiddleware
 
     public function process(Request $request, RequestHandler $handler): Response
     {
-        $cors = $handler->handle($request)->cors($request);
+        $response = $handler->handle($request);
+        if(!method_exists($response, 'cors')) {
+            return $response;
+        }
+
+        $cors = $response->cors($request);
         if($request->is('options')) {
             $cors = $cors
                 ->allowMethods($this->config['allowMethods'])
