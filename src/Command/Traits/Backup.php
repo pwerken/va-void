@@ -9,17 +9,19 @@ use Cake\Utility\Hash;
 
 trait Backup
 {
-    public function initialize(): void
+    protected $_config = null;
+
+    protected function config(string $key)
     {
-        parent::initialize();
-
-        $defaults =
-            [ 'target' => ROOT . DS . 'backups' . DS
-            , 'mysql' => '/usr/bin/mysql'
-            , 'mysqldump' => '/usr/bin/mysqldump'
-            ];
-
-        $this->config = (Hash::merge($defaults, Configure::read('Backups')));
+        if (is_null($this->_config)) {
+            $defaults =
+                [ 'target' => ROOT . DS . 'backups' . DS
+                , 'mysql' => '/usr/bin/mysql'
+                , 'mysqldump' => '/usr/bin/mysqldump'
+                ];
+            $this->_config = (Hash::merge($defaults, Configure::read('Backups')));
+        }
+        return $this->_config[$key];
     }
 
     protected function checkApp(string $app): void
@@ -32,12 +34,12 @@ trait Backup
 
     protected function getBackupFiles()
     {
-        $files = (new Folder($this->config['target']))->find('.+\.sql');
+        $files = (new Folder($this->config('target')))->find('.+\.sql');
         sort($files);
 
         return collection($files)
             ->map(function ($file) {
-                $fullpath = $this->config['target'] . $file;
+                $fullpath = $this->config('target') . $file;
                 $datetime = date('Y-m-d H:i:s', filemtime($fullpath));
                 return [ $file, filesize($fullpath), $datetime ];
             })

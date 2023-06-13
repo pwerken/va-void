@@ -35,11 +35,11 @@ class BackupImportCommand
 
     public function execute(Arguments $args, ConsoleIo $io): int
     {
-        $this->checkApp($this->config['mysql']);
+        $this->checkApp($this->config('mysql'));
 
         $filename = $args->getArgument('filename');
         if(!Folder::isAbsolute($filename)) {
-            $filename = $this->config['target'] . $filename;
+            $filename = $this->config('target') . $filename;
         }
 
         if(!file_exists($filename)) {
@@ -72,7 +72,7 @@ class BackupImportCommand
         $connection = ConnectionManager::getConfig('default');
         $auth = $this->storeAuth($connection, 'mysql');
         $cmd = sprintf('%s --defaults-extra-file=%s %s < %s'
-                    , $this->config['mysql'], $auth
+                    , $this->config('mysql'), $auth
                     , $connection['database'], $filename);
         $io->verbose('exec: '.$cmd);
 

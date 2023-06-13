@@ -34,9 +34,9 @@ class BackupExportCommand
 
     public function execute(Arguments $args, ConsoleIo $io): int
     {
-        $this->checkApp($this->config['mysqldump']);
+        $this->checkApp($this->config('mysqldump'));
 
-        $target = $this->config['target'];
+        $target = $this->config('target');
         if(!is_writable($target)) {
             $this->abort(sprintf('Directory `%s` not writable', $target));
         }
@@ -58,7 +58,7 @@ class BackupExportCommand
 
         $connection = ConnectionManager::getConfig('default');
         $auth = $this->storeAuth($connection, 'mysqldump');
-        $cmd = $this->config['mysqldump'];
+        $cmd = $this->config('mysqldump');
         $cmd .= ' --defaults-file=' . $auth;
         $cmd .= ' -t --result-file=' . $filename;
         $cmd .= ' --ignore-table=' . $connection['database'] . '.phinxlog';

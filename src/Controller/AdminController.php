@@ -9,12 +9,13 @@ use Cake\Datasource\ConnectionManager;
 use Cake\Http\Exception\NotFoundException;
 use Migrations\Migrations;
 
+use App\Command\Traits\Backup;
 use App\Model\Entity\Player;
-use App\Shell\BackupShell;
 
 class AdminController
     extends Controller
 {
+    use Backup;
 
     public function initialize(): void
     {
@@ -127,10 +128,7 @@ class AdminController
 
     public function backups()
     {
-        $backupShell = new BackupShell();
-        $backupShell->initialize();
-
-        $this->set('backups', array_reverse($backupShell->getBackupFiles()));
+        $this->set('backups', array_reverse($this->getBackupFiles()));
     }
 
     public function history($e = NULL, $k1 = NULL, $k2 = NULL)
