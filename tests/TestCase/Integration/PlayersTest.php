@@ -68,13 +68,13 @@ class PlayersTest
     public function testUnauthenticatedAccess()
     {
         $this->withoutAuth();
-        $this->assertGet('/players', 403);
-        $this->assertGet('/players/1', 403);
-        $this->assertGet('/players/1/characters', 403);
-        $this->assertGet('/players/2', 403);
-        $this->assertGet('/players/2/characters', 403);
-        $this->assertGet('/players/99', 403);
-        $this->assertGet('/players/99/characters', 403);
+        $this->assertGet('/players', 401);
+        $this->assertGet('/players/1', 401);
+        $this->assertGet('/players/1/characters', 401);
+        $this->assertGet('/players/2', 401);
+        $this->assertGet('/players/2/characters', 401);
+        $this->assertGet('/players/99', 401);
+        $this->assertGet('/players/99/characters', 401);
     }
 
     public function testGetAsPlayer()
