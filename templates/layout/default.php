@@ -4,7 +4,7 @@ use Cake\Routing\Router;
 
 $cakeDescription = 'VOID-API';
 
-$role = (!isset($user) ? '' : $user['role']);
+$role = $user?->get('role');
 
 $nav = [];
 switch($role) {
