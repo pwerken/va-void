@@ -1,4 +1,4 @@
-<h3>Authentication</h3>
+<h3>Password authentication</h3>
 <?php
 
 echo $this->Form->create();

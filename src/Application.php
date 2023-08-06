@@ -23,6 +23,7 @@ use Cake\Core\Configure;
 use Cake\Core\ContainerInterface;
 use Cake\Datasource\FactoryLocator;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
+use Cake\Event\EventManager;
 use Cake\Http\BaseApplication;
 use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
@@ -33,9 +34,11 @@ use Cake\Routing\Middleware\RoutingMiddleware;
 
 use App\Authentication\AppAuthenticationService;
 use App\Authorization\AppAuthorizationService;
+use App\Event\SocialAuthListener;
 use App\Routing\Middleware\CorsMiddleware;
 use App\Routing\Middleware\JsonInputMiddleware;
 use App\Routing\Middleware\PlinChinMiddleware;
+use App\Routing\Middleware\SocialAuthMiddleware;
 
 /**
  * Application setup class.
@@ -65,6 +68,9 @@ class Application
 
         $this->addPlugin('Authentication');
         $this->addPlugin('Authorization');
+        $this->addPlugin('ADmad/SocialAuth');
+
+        EventManager::instance()->on(new SocialAuthListener());
     }
 
     /**
@@ -111,6 +117,10 @@ class Application
 #            ->add(new CsrfProtectionMiddleware([
 #                'httponly' => true,
 #            ]))
+
+            // Add the SocialAuthMiddleware
+            // It should be after routing.
+            ->add(new SocialAuthMiddleware())
 
             // Add the AuthenticationMiddleware.
             // It should be after routing and body parser.

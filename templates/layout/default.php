@@ -13,13 +13,14 @@ case 'Infobalie':
 	$nav['/admin/migrations'] = 'Database Migrations';
 	$nav['/admin/backups'] = 'Database Backups';
 case 'Referee':
+	$nav['/admin/socialauth'] = 'Authentication';
 case 'Read-only':
 	$nav['/admin/authorization'] = 'Authorization';
 	$nav['/admin/history'] = 'Entity History';
 	$nav['/admin/printing'] = 'Printing Queue';
 	$nav['/admin/skills'] = 'Skill~Player Lookup';
 case 'Player':
-	$nav['/admin/authentication'] = 'Authentication';
+	$nav['/admin/password'] = 'Password login';
 default:
 	$nav['/admin/checks'] = 'Check Configuration';
 	$nav['/admin/routes'] = 'Configured Routes';

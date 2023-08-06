@@ -58,37 +58,9 @@ class AdminController
         return $this->redirect(['controller' => 'Admin', 'action' => 'index']);
     }
 
-    public function authentication()
+    public function socialauth()
     {
-        if(!$this->request->is('post')) {
-            return;
-        }
-
-        $plin = $this->request->getData('plin');
-        $pass = $this->request->getData('password');
-
-        $this->loadModel('Players');
-        $player = $this->Players->findById($plin)->first();
-
-        if(is_null($player)) {
-            $this->Flash->error("Player#$plin not found");
-            return;
-        }
-
-        $this->Players->patchEntity($player, ['password' => $pass]);
-        if (!$player->isDirty('password')) {
-            $this->Flash->error("Not authorized to change passwords");
-            return;
-        }
-
-        $this->Players->save($player);
-
-        $errors = $player->getError('password');
-        if(!empty($errors)) {
-            $this->Flash->error(reset($errors));
-        } else {
-            $this->Flash->success("Player#$plin password set");
-        }
+        // handled by /templates/Admin/socialauth.php
     }
 
     public function authorization()
@@ -138,6 +110,12 @@ class AdminController
         $this->set('backups', array_reverse($this->getBackupFiles()));
     }
 
+    public function migrations()
+    {
+        $migrations = new Migrations();
+        $this->set('migrations', array_reverse($migrations->status()));
+    }
+
     public function history($e = NULL, $k1 = NULL, $k2 = NULL)
     {
         $table = $this->loadModel('History');
@@ -168,10 +146,37 @@ class AdminController
         $this->set('list', $list);
     }
 
-    public function migrations()
+    public function password()
     {
-        $migrations = new Migrations();
-        $this->set('migrations', array_reverse($migrations->status()));
+        if(!$this->request->is('post')) {
+            return;
+        }
+
+        $plin = $this->request->getData('plin');
+        $pass = $this->request->getData('password');
+
+        $this->loadModel('Players');
+        $player = $this->Players->findById($plin)->first();
+
+        if(is_null($player)) {
+            $this->Flash->error("Player#$plin not found");
+            return;
+        }
+
+        $this->Players->patchEntity($player, ['password' => $pass]);
+        if (!$player->isDirty('password')) {
+            $this->Flash->error("Not authorized to change passwords");
+            return;
+        }
+
+        $this->Players->save($player);
+
+        $errors = $player->getError('password');
+        if(!empty($errors)) {
+            $this->Flash->error(reset($errors));
+        } else {
+            $this->Flash->success("Player#$plin password set");
+        }
     }
 
     public function printing($sides = NULL)

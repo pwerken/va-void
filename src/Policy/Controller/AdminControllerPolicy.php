@@ -16,9 +16,9 @@ class AdminControllerPolicy
         return true;
     }
 
-    public function authentication(): bool
+    public function socialauth(): bool
     {
-        return $this->hasAuth('player');
+        return $this->hasAuth('referee');
     }
 
     public function authorization(): bool
@@ -49,6 +49,11 @@ class AdminControllerPolicy
     public function history(): bool
     {
         return $this->hasAuth('read-only');
+    }
+
+    public function password(): bool
+    {
+        return $this->hasAuth('player');
     }
 
     public function printing(): bool

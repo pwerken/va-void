@@ -98,4 +98,34 @@ return [
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
         ],
     ],
+
+    /*
+     * Social authentication configuration.
+     *
+     * Host and credential configuration in case you are using SmtpTransport
+     *
+     * See app.php for more configuration options.
+     */
+    'SocialAuth' => [
+# https://discord.com/developers/applications
+        'discord' => [
+            'applicationId' => '',
+            'applicationSecret' => '',
+        ],
+# https://developers.facebook.com/docs/facebook-login/web
+       'facebook' => [
+            'applicationId' => '',
+            'applicationSecret' => '',
+        ],
+# https://console.developers.google.com/
+       'google' => [
+            'applicationId' => '',
+            'applicationSecret' => '',
+        ],
+# https://gitlab.com/groups/vortexadventures/-/settings/applications
+        'gitlab' => [
+            'applicationId' => '',
+            'applicationSecret' => '',
+        ],
+    ],
 ];
