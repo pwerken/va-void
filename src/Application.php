@@ -119,6 +119,8 @@ class Application
             // Add the AuthorizationMiddleware.
             // It should be after routing and body parser.
             ->add(new AuthorizationMiddleware(new AppAuthorizationService()))
+
+            // Perform ControllerPolicy canAccess authorization check.
             ->add(new RequestAuthorizationMiddleware())
             ;
 
