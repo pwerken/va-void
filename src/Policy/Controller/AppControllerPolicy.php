@@ -6,7 +6,7 @@ namespace App\Policy\Controller;
 use Authorization\IdentityInterface as User;
 use Cake\Http\ServerRequest;
 
-use App\Authentication\AuthenticationRequiredException;
+use App\Authentication\UnauthenticatedException;
 use App\Policy\AppPolicy;
 
 class AppControllerPolicy
@@ -19,7 +19,7 @@ class AppControllerPolicy
 
         $allowed = $this->{$action}();
         if(!$allowed and is_null($identity)) {
-            throw new AuthenticationRequiredException();
+            throw new UnauthenticatedException();
         }
         return $allowed;
     }
