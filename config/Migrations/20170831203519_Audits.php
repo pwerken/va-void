@@ -42,7 +42,6 @@ class Audits extends AppMigration
 
     public function down()
     {
-
         $this->dropTable('audits');
     }
 }
