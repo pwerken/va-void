@@ -80,25 +80,3 @@ try {
 <?php else : ?>
 	<li class="bullet problem">CakePHP is NOT able to connect to the database.<br /><?= $errorMsg ?></li>
 <?php endif; ?>
-
-<?php
-try {
-	$connection = ConnectionManager::get('valea');
-	$connected = $connection->connect();
-} catch (Exception $connectionError) {
-	$connected = false;
-	$errorMsg = $connectionError->getMessage();
-	if (method_exists($connectionError, 'getAttributes')) :
-		$attributes = $connectionError->getAttributes();
-		if (isset($errorMsg['message'])) :
-			$errorMsg .= '<br />' . $attributes['message'];
-		endif;
-	endif;
-}
-?>
-<?php if ($connected) : ?>
-	<li class="bullet success">CakePHP is able to connect to the VALEA database.</li>
-<?php else : ?>
-	<li class="bullet problem">CakePHP is NOT able to connect to the VALEA database.<br /><?= $errorMsg ?></li>
-<?php endif; ?>
-</ul>
