@@ -82,6 +82,9 @@ class Application
     public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue
     {
         $middlewareQueue
+            // Support Cross-Origin Request Sharing
+            ->add(new CorsMiddleware())
+
             // Catch any exceptions in the lower layers,
             // and make an error page/response
             ->add(new ErrorHandlerMiddleware(Configure::read('Error')))
@@ -90,9 +93,6 @@ class Application
             ->add(new AssetMiddleware([
                 'cacheTime' => Configure::read('Asset.cacheTime')
             ]))
-
-            // Support Cross-Origin Request Sharing
-            ->add(new CorsMiddleware())
 
             // Add routing middleware.
             // If you have a large number of routes connected, turning on routes
