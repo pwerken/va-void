@@ -50,13 +50,6 @@ class Player
             $data = ['Player', 'Read-only', 'Referee', 'Infobalie', 'Super'];
         return $data;
     }
-    public static function genderValues()
-    {
-        static $data = null;
-        if(is_null($data))
-            $data = ['F', 'M'];
-        return $data;
-    }
 
     protected function _getFullName()
     {

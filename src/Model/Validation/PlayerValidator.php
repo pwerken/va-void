@@ -22,7 +22,6 @@ class PlayerValidator
         $this->notEmptyString('first_name');
         $this->allowEmptyString('insertion');
         $this->notEmptyString('last_name');
-        $this->allowEmptyString('gender')->inList('gender', Player::genderValues());
-        $this->allowEmptyString('date_of_birth')->date('date_of_birth');
+        $this->allowEmptyString('email');
     }
 }
