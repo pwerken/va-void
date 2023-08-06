@@ -27,10 +27,6 @@ class AppController
         $this->loadComponent('QueueLammy');
 
         $this->viewBuilder()->setClassName('Api');
-
-        $arr = ['exceptionRenderer' => 'App\Error\ApiExceptionRenderer']
-            + Configure::read('Error');
-        (new ErrorHandler($arr))->register();
     }
 
     protected function setResponseModified(): bool
