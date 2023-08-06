@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Routing\Middleware;
 
 use Cake\Core\Configure;
+use Cake\Utility\Hash;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
@@ -14,7 +15,7 @@ class CorsMiddleware
 {
     protected $config;
 
-    public function __construct($config = [])
+    public function __construct()
     {
         $default =
             [ 'allowOrigin' => [ '*' ]
@@ -25,8 +26,8 @@ class CorsMiddleware
             , 'exposeHeaders' => [ 'Location' ]
             ];
 
-        $data = Configure::read('Cors', []);
-        $this->config = array_merge($default, $data, $config);
+        $config = Configure::read('Cors', []);
+        $this->config = Hash::merge($default, $config);
     }
 
     public function process(Request $request, RequestHandler $handler): Response
