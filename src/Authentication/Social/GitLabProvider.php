@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Authorization;
+namespace App\Authentication\Social;
 
 use SocialConnect\Common\ArrayHydrator;
 use SocialConnect\Common\Entity\User;

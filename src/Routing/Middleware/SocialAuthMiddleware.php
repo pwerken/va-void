@@ -8,7 +8,7 @@ use Cake\Core\Configure;
 use Cake\Utility\Hash;
 use SocialConnect\Auth\CollectionFactory;
 
-use App\Authorization\GitLabProvider;
+use App\Authentication\Social\GitLabProvider;
 
 class SocialAuthMiddleware
     extends ADmadMiddleware
