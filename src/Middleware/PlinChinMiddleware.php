@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Routing\Middleware;
+namespace App\Middleware;
 
 use Cake\ORM\TableRegistry;
 use Psr\Http\Message\ResponseInterface as Response;

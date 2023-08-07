@@ -35,10 +35,10 @@ use Cake\Routing\Middleware\RoutingMiddleware;
 use App\Authentication\AppAuthenticationService;
 use App\Authorization\AppAuthorizationService;
 use App\Event\SocialAuthListener;
-use App\Routing\Middleware\CorsMiddleware;
-use App\Routing\Middleware\JsonInputMiddleware;
-use App\Routing\Middleware\PlinChinMiddleware;
-use App\Routing\Middleware\SocialAuthMiddleware;
+use App\Middleware\CorsMiddleware;
+use App\Middleware\JsonInputMiddleware;
+use App\Middleware\PlinChinMiddleware;
+use App\Middleware\SocialAuthMiddleware;
 
 /**
  * Application setup class.

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Routing\Middleware;
+namespace App\Middleware;
 
 use ADmad\SocialAuth\Middleware\SocialAuthMiddleware as ADmadMiddleware;
 use Cake\Core\Configure;
