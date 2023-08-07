@@ -34,7 +34,6 @@ use Cake\Routing\Middleware\RoutingMiddleware;
 
 use App\Authentication\AppAuthenticationService;
 use App\Authorization\AppAuthorizationService;
-use App\Event\SocialAuthListener;
 use App\Middleware\CorsMiddleware;
 use App\Middleware\JsonInputMiddleware;
 use App\Middleware\PlinChinMiddleware;
@@ -69,8 +68,6 @@ class Application
         $this->addPlugin('Authentication');
         $this->addPlugin('Authorization');
         $this->addPlugin('ADmad/SocialAuth');
-
-        EventManager::instance()->on(new SocialAuthListener());
     }
 
     /**
