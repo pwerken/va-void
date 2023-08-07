@@ -40,7 +40,10 @@ class AppAuthenticationService
         ];
 
         // Load the authenticators. Session should be first.
-        $this->loadAuthenticator(SessionAuthenticator::class);
+        $this->loadAuthenticator(SessionAuthenticator::class, [
+            'fields' => [ 'sub' => 'id' ],
+            'identify' => true,
+        ]);
         $this->loadAuthenticator(JwtAuthenticator::class, [
             'returnPayload' => false,
         ]);
