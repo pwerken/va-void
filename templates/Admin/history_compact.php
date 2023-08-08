@@ -1,6 +1,8 @@
 <h3>Entity History</h3>
 <?php
 
+use Cake\ORM\TableRegistry;
+
 $state = [];
 for($i = count($list) - 1; $i >= 0; $i--)
 {
@@ -17,6 +19,17 @@ for($i = count($list) - 1; $i >= 0; $i--)
 		$cur->set('prev', $state[$key]);
 		$state[$key] = $cur->get('data');
 	}
+}
+
+function format_v($k, $v)
+{
+	if(is_null($v))
+		return '<em>NULL</em>';
+	if($k !== 'character_id')
+		return $v;
+
+	$char = TableRegistry::get('Characters')->get($v);
+	return $v . '=' . $char->player_id . '/' . $char->chin . ' ' . $char->name;
 }
 
 foreach($list as $cur)
@@ -49,8 +62,7 @@ foreach($list as $cur)
 			break;
 		}
 		foreach($data as $k => $v) {
-			if(is_null($v))
-				$v = '<em>NULL</em>';
+			$v = format_v($k, $v);
 			echo $prefix . "<em>$k</em>: $v</span><br/>\n";
 		}
 		break;
@@ -63,9 +75,7 @@ foreach($list as $cur)
 			} elseif (is_null($v)) {
 				continue;
 			}
-
-			if(is_null($v))
-				$v = '<em>NULL</em>';
+			$v = format_v($k, $v);
 			echo $prefix . "<em>$k</em>: $v</span><br/>\n";
 		}
 		break;
