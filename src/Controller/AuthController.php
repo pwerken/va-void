@@ -22,8 +22,9 @@ class AuthController
         ]);
     }
 
-    // GET /auth/login
-    // PUT /auth/login
+    // GET  /auth/login (refresh JWT)
+    // PUT  /auth/login (new JWT)
+    // POST /auth/login (new JWT)
     public function login(): void
     {
         $result = $this->Authentication->getResult();

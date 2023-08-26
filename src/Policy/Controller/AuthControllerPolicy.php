@@ -6,8 +6,9 @@ namespace App\Policy\Controller;
 class AuthControllerPolicy
     extends AppControllerPolicy
 {
-    // GET /auth/login
-    // PUT /auth/login
+    // GET  /auth/login
+    // PUT  /auth/login
+    // POST /auth/login
     public function login(): bool
     {
         return true;
