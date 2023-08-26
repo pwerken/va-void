@@ -16,9 +16,10 @@ class AdminControllerPolicy
         return true;
     }
 
-    public function socialauth(): bool
+    public function social(): bool
     {
-        return $this->hasAuth('referee');
+        return true;
+    }
 
     public function authentication(): bool
     {

@@ -29,12 +29,13 @@ if(isset($user)) {
 			[ 'alt' => $social, 'class' => 'action-link' ]);
 		echo $this->Form->postLink($img,
 			[ 'prefix' => false
-			, 'plugin' => 'ADmad/SocialAuth'
-			, 'controller' => 'Auth'
-			, 'action' => 'login'
-			, 'provider' => $social
-			, '?' => ['redirect' => $redirect ]
-			], ['escape' => false]);
+			, 'controller' => 'Admin'
+			, 'action' => 'social'
+            , $social
+			],
+            [ 'escape' => false
+			, 'data' => ['redirect' => $redirect]
+            ]);
 		echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 	}
 

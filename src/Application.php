@@ -39,7 +39,6 @@ use App\Middleware\JsonInputMiddleware;
 use App\Middleware\LoginWithPlinMiddleware;
 use App\Middleware\PlinChinMiddleware;
 use App\Middleware\SessionAdminOnlyMiddleware;
-use App\Middleware\SocialAuthMiddleware;
 
 /**
  * Application setup class.
@@ -69,7 +68,6 @@ class Application
 
         $this->addPlugin('Authentication');
         $this->addPlugin('Authorization');
-        $this->addPlugin('ADmad/SocialAuth');
     }
 
     /**
@@ -123,10 +121,6 @@ class Application
 
             // At login accept either 'id' or 'plin' as the player id.
             ->add(new LoginWithPlinMiddleware())
-
-            // Add the SocialAuthMiddleware
-            // It should be after routing.
-            ->add(new SocialAuthMiddleware())
 
             // Add the AuthenticationMiddleware.
             // It should be after routing and body parser.

@@ -24,31 +24,34 @@ class AdminController
         $this->loadComponent('Flash');
         $this->loadComponent('Authentication.Authentication');
         $this->loadComponent('Authorization.Authorization');
+        $this->loadComponent('SocialAuth');
 
-        $this->Authentication->allowUnauthenticated([
-            'index',
-            'logout',
-            'checks',
-            'routes',
-        ]);
+        $this->Authentication->allowUnauthenticated(
+            [ 'index'
+            , 'logout'
+            , 'social'
+            , 'checks'
+            , 'routes'
+            ]);
         $this->set('user', $this->Authentication->getResult()->getData());
     }
 
     public function index()
     {
         $result = $this->Authentication->getResult();
+        $redirect = $this->request->getQuery('redirect');
         if ($this->request->is('post'))
         {
             if (!$result->isValid()) {
                 $this->Flash->error('Invalid username or password');
                 return;
             }
-            $redirect = $this->request->getQuery('redirect');
             if (!empty($redirect)) {
                 return $this->redirect($redirect);
             }
         }
 
+        $this->set('redirect', $redirect);
         $this->set('user', $result->getData());
     }
 
@@ -58,9 +61,39 @@ class AdminController
         return $this->redirect(['controller' => 'Admin', 'action' => 'index']);
     }
 
-    public function socialauth()
+    public function social($providerName = null)
     {
-        // handled by /templates/Admin/socialauth.php
+        if ($this->request->is('post')) {
+            // redirect to login via social site
+            $providerName = $this->request->getData('provider', $providerName);
+            $authUrl = $this->SocialAuth->authUrl($providerName);
+
+            // save redirectUri for post login redirect
+            $redirect = $this->request->getData('redirect');
+            $this->request->getSession()->write('redirect', $redirect);
+
+            return $this->redirect($authUrl);
+        }
+
+        if(!empty($providerName)) {
+            // callback after login via social site
+            $user = $this->SocialAuth->loginCallbackProfile($providerName);
+
+            if($user and $user->id) {
+                $this->request->getSession()->write('Auth', $user);
+
+                // redirect back to page from before login
+                $redirect = $this->request->getSession()->consume('redirect');
+                if (!empty($redirect)) {
+                    return $this->redirect($redirect);
+                }
+            } elseif ($user) {
+                $this->Flash->error('Logged is not linked to a plin.');
+            } else {
+                $this->Flash->error('Failed to login');
+            }
+        }
+        return $this->redirect('/admin');
     }
 
     public function authentication()
