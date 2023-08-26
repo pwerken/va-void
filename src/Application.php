@@ -36,6 +36,7 @@ use App\Authentication\AppAuthenticationService;
 use App\Authorization\AppAuthorizationService;
 use App\Middleware\CorsMiddleware;
 use App\Middleware\JsonInputMiddleware;
+use App\Middleware\LoginWithPlinMiddleware;
 use App\Middleware\PlinChinMiddleware;
 use App\Middleware\SocialAuthMiddleware;
 
@@ -114,6 +115,9 @@ class Application
 #            ->add(new CsrfProtectionMiddleware([
 #                'httponly' => true,
 #            ]))
+
+            // At login accept either 'id' or 'plin' as the player id.
+            ->add(new LoginWithPlinMiddleware())
 
             // Add the SocialAuthMiddleware
             // It should be after routing.

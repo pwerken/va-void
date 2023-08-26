@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
-use Cake\ORM\TableRegistry;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
@@ -14,12 +13,14 @@ class LoginWithPlinMiddleware
 {
     public function process(Request $request, RequestHandler $handler): Response
     {
-        $isAuthComp = $request->getParam('controller') === 'AuthController';
+        $isAuthComp = $request->getParam('controller') === 'Auth';
         $isLogin = $request->getParam('action') === 'login';
 
         if($isAuthComp and $isLogin) {
-            $plin = $request->getData('plin');
+            $id = $request->getData('id');
+            $plin = $request->getData('plin', $id);
             $request = $request->withData('id', $plin);
+
         }
 
         return $handler->handle($request);
