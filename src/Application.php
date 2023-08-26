@@ -38,6 +38,7 @@ use App\Middleware\CorsMiddleware;
 use App\Middleware\JsonInputMiddleware;
 use App\Middleware\LoginWithPlinMiddleware;
 use App\Middleware\PlinChinMiddleware;
+use App\Middleware\SessionAdminOnlyMiddleware;
 use App\Middleware\SocialAuthMiddleware;
 
 /**
@@ -98,6 +99,10 @@ class Application
             // creating the middleware instance specify the cache config name by
             // using it's second constructor argument:
             ->add(new RoutingMiddleware($this, '_cake_routes_'))
+
+            // Forces the use of the issued JWT by disabling the PHP Session
+            // outside of /admin
+            ->add(new SessionAdminOnlyMiddleware())
 
             // Force PUT/POST to 'Content-Type: application/json'
             ->add(new JsonInputMiddleware())
