@@ -53,6 +53,7 @@ class SocialAuthMiddleware
 
     protected function _getUserEntity(EntityInterface $profile, Session $session): EntityInterface
     {
+        $email = $profile->email;
         if(!$email) {
             return $this->unknownPlayer();
         }
