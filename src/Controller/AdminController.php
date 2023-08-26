@@ -63,6 +63,41 @@ class AdminController
         // handled by /templates/Admin/socialauth.php
     }
 
+    public function authentication()
+    {
+        if(!$this->request->is('post')) {
+            return;
+        }
+
+        // modify legacy password
+
+        $plin = $this->request->getData('plin');
+        $pass = $this->request->getData('password');
+
+        $this->loadModel('Players');
+        $player = $this->Players->findById($plin)->first();
+
+        if(is_null($player)) {
+            $this->Flash->error("Player#$plin not found");
+            return;
+        }
+
+        $this->Players->patchEntity($player, ['password' => $pass]);
+        if (!$player->isDirty('password')) {
+            $this->Flash->error("Not authorized to change passwords");
+            return;
+        }
+
+        $this->Players->save($player);
+
+        $errors = $player->getError('password');
+        if(!empty($errors)) {
+            $this->Flash->error(reset($errors));
+        } else {
+            $this->Flash->success("Player#$plin password set");
+        }
+    }
+
     public function authorization()
     {
         $this->set('roles', Player::roleValues());
@@ -147,39 +182,6 @@ class AdminController
         }
 
         $this->set('list', $list);
-    }
-
-    public function password()
-    {
-        if(!$this->request->is('post')) {
-            return;
-        }
-
-        $plin = $this->request->getData('plin');
-        $pass = $this->request->getData('password');
-
-        $this->loadModel('Players');
-        $player = $this->Players->findById($plin)->first();
-
-        if(is_null($player)) {
-            $this->Flash->error("Player#$plin not found");
-            return;
-        }
-
-        $this->Players->patchEntity($player, ['password' => $pass]);
-        if (!$player->isDirty('password')) {
-            $this->Flash->error("Not authorized to change passwords");
-            return;
-        }
-
-        $this->Players->save($player);
-
-        $errors = $player->getError('password');
-        if(!empty($errors)) {
-            $this->Flash->error(reset($errors));
-        } else {
-            $this->Flash->success("Player#$plin password set");
-        }
     }
 
     public function printing($sides = NULL)
