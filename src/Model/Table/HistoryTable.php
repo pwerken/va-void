@@ -56,7 +56,7 @@ class HistoryTable
         return $history;
     }
 
-    public function getAllLastModified($since = NULL, $byPlin = NULL)
+    public function getAllLastModified($since = NULL, $byPlin = NULL, $what = NULL)
     {
         if($since == NULL) {
             $where = ["modified IS NOT" => "NULL"];
@@ -85,10 +85,16 @@ class HistoryTable
                 [ "key1" => "id", "key2" => "NULL"
                 , "name", "modified", "modifier_id"]
             ];
-
+        if(empty($what) OR !array_key_exists($what, $tbls)) {
+            $what = NULL;
+        }
         $dateParser = new DateTimeType();
         $list = [];
         foreach($tbls as $tbl => $select) {
+            if(!is_null($what) and $tbl != $what) {
+                continue;
+            }
+
             $result = TableRegistry::get($tbl.'s')->find()
                 ->select($select)->where($where)
                 ->order(['modified' => 'DESC'])->enableHydration(false)->all();

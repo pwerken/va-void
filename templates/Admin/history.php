@@ -1,12 +1,27 @@
 <h3>Entity History</h3>
 
 <?php
-$style = ['style' => 'display: inline-block; width: auto; margin-right: 1rem'];
 echo $this->Form->create();
+$style = ['style' => 'display: inline-block; width: auto; margin-right: 1rem'];
+
+$style['value'] = $what;
+$values =
+    [ '' => 'All'
+    , 'Player' => 'Players'
+    , 'Character' => 'Characters'
+    , 'Item' => 'Items'
+    , 'Condition' => 'Conditions'
+    , 'Power' => 'Powers'
+    ];
+echo $this->Form->select('what', $values, $style);
+unset($style['value']);
+
 $style['default'] = $since;
 echo 'Since: ' . $this->Form->text('since', $style);
+
 $style['default'] = $plin;
 echo 'Plin: ' . $this->Form->text('plin', $style);
+
 echo $this->Form->button(__('Update'));
 echo $this->Form->end();
 

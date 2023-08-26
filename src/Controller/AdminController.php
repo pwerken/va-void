@@ -132,6 +132,8 @@ class AdminController
         } else {
             $plin = $this->request->getData('plin');
             $since = $this->request->getData('since');
+            $what = $this->request->getData('what');
+
             if(empty($since)) {
                 $date = new \DateTime();
                 $date->sub(new \DateInterval('P3M'));
@@ -140,7 +142,8 @@ class AdminController
 
             $this->set('plin', $plin);
             $this->set('since', $since);
-            $list = $table->getAllLastModified($since, $plin);
+            $this->set('what', $what);
+            $list = $table->getAllLastModified($since, $plin, $what);
         }
 
         $this->set('list', $list);
