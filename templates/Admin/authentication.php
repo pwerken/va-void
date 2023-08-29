@@ -15,7 +15,7 @@ default:
 
 if($access) {
 
-$profiles = TableRegistry::get('ADmad/SocialAuth.SocialProfiles');
+$profiles = TableRegistry::get('SocialProfiles');
 
 $total = $profiles->find()->count();
 $users = $profiles->find()->distinct('user_id')->where(['user_id IS NOT NULL'])->count();
