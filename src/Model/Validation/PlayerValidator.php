@@ -23,5 +23,6 @@ class PlayerValidator
         $this->allowEmptyString('insertion');
         $this->notEmptyString('last_name');
         $this->allowEmptyString('email');
+        $this->email('email');
     }
 }

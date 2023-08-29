@@ -32,7 +32,6 @@ class PlayersTable
     {
         $rules->addCreate($rules->isUnique(['id']));
 
-        $rules->add($rules->isUnique(['email']));
         $rules->add([$this, 'ruleAuthCheck']);
 
         $rules->addDelete([$this, 'ruleNoCharacters']);
