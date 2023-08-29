@@ -71,19 +71,16 @@ class AuthController
     {
         $code = $this->request->getQuery('code');
         if(!$code) {
-            echo 'bad request: no code';
-            die;
+            throw new BadRequestException('Missing "code" query parameter');
         }
         $redirectUri = $this->request->getQuery('redirect_uri');
         if(!$redirectUri) {
-            echo 'bad request: no redirect_uri';
-            die;
+            throw new BadRequestException('Missing "redirect_uri" query parameter');
         }
 
         $user = $this->SocialAuth->loginCode($providerName, $code, $redirectUri);
         if(!$user->get('id')) {
-            echo 'login succesful, but unknown player';
-            die;
+            throw new LoginFailedException('Login has no associated plin');
         }
         $this->set('_serialize', $this->_jwt($user));
     }
