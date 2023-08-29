@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\NotFoundException;
 use Cake\Routing\Router;
 use Cake\Utility\Security;
 use Firebase\JWT\JWT;
@@ -69,6 +71,11 @@ class AuthController
     // GET  /auth/social/{provider}?code=...
     public function socialLogin(string $providerName): void
     {
+        $providers = $this->SocialAuth->getProviders();
+        if(!in_array($providerName, $providers)) {
+            throw new NotFoundException();
+        }
+
         $code = $this->request->getQuery('code');
         if(!$code) {
             throw new BadRequestException('Missing "code" query parameter');
