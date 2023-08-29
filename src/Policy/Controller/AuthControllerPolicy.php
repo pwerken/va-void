@@ -19,4 +19,17 @@ class AuthControllerPolicy
     {
         return true;
     }
+
+    // GET /auth/social
+    public function socialListing(): bool
+    {
+        return true;
+    }
+
+    // PUT  /auth/social/{provider}
+    // POST /auth/social/{provider}
+    public function socialLogin(): bool
+    {
+        return true;
+    }
 }

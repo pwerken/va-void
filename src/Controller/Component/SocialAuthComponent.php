@@ -21,6 +21,7 @@ use SocialConnect\Provider\InvalidResponse;
 use SocialConnect\Provider\Session\Session as SocialConnectSession;
 
 use App\Authentication\Social\GitLabProvider;
+use App\Error\LoginFailedException;
 use App\Model\Entity\Player;
 
 class SocialAuthComponent
@@ -29,8 +30,7 @@ class SocialAuthComponent
     use LocatorAwareTrait;
 
     protected $_defaultConfig =
-        [ 'profileModel' => 'ADmad/SocialAuth.SocialProfiles'
-        , 'serviceConfig' =>
+        [ 'serviceConfig' =>
             [ 'provider' =>
                 [ 'discord' =>
                     [ 'scope' => [ 'identify', 'email' ]
@@ -75,7 +75,7 @@ class SocialAuthComponent
         $this->_factory = new CollectionFactory();
         $this->_factory->register(GitLabProvider::NAME, GitLabProvider::class);
 
-        $this->_profileModel = $this->fetchTable($this->getConfig('profileModel'));
+        $this->_profileModel = $this->fetchTable('SocialProfiles');
         $this->_playerModel = $this->fetchTable('Players');
     }
 
@@ -85,15 +85,14 @@ class SocialAuthComponent
         return $this->_getProvider($providerName)->makeAuthUrl();
     }
 
-    // after social login, get the access token from the social site
-    public function loginCallbackProfile(string $providerName): ?Player
+    // After social login, this get's called by the callback redirect
+    public function loginCallback(string $providerName): Player
     {
-        $request = $this->getController()->getRequest();
-        $queryParams = $request->getQueryParams();
+        $query = $this->getController()->getRequest()->getQueryParams();
 
         try {
             $provider = $this->_getProvider($providerName);
-            $token = $provider->getAccessTokenByRequestParameters($queryParams);
+            $token = $provider->getAccessTokenByRequestParameters($query);
             $identity = $provider->getIdentity($token);
 
             if(!$identity->id) {
@@ -102,68 +101,45 @@ class SocialAuthComponent
                 );
             }
 
-            $profile = $this->_getProfile($providerName, $identity);
-            return $this->_getUser($profile);
+            return $this->_getUser($providerName, $identity);
         } catch (SocialConnectException $e) {
-            $message = sprintf('[%s] %s', get_class($e), $e->getMessage());
-            $message .= "\n Request URL: " . $request->getRequestTarget();
+            $this->_logException($e);
 
-            $referer = $request->getHeaderLine('Referer');
-            if($referer) {
-                $message .= "\nReferer URL: " . $referer;
-            }
-
-            if ($e instanceof InvalidResponse) {
-                $response = $e->getResponse();
-                $messgae .= "\nProvided Response: ";
-                $message .= ($response ? (string)$response->getBody() : 'n/a');
-            }
-
-            $message .= "\nStack Trace:\n" . $e->getTraceAsString() . "\n\n";
-
-            Log::error($message);
+            throw new LoginFailedException('Login via '.$providerName.' failed');
         }
-        return null;
     }
 
-    protected function _getProfile($providerName, $identity)
+    // Front-end did the social login and caught the callback.
+    // It then passes the received 'code' as param here to login the player.
+    public function loginCode(string $provider, string $code, string $redirectUri): Player
     {
-        $profile = $this->_profileModel
-            ->find()
-            ->where(
-                ['provider' => $providerName
-                ,'identifier' => $identity->id
-                ])
-            ->first();
+        // code param should already by be set, but lets not assume
+        $request = $this->getController()->getRequest();
+        $request = $request->withParam('code', $code);
+        $this->getController()->setRequest($request);
 
-        if($profile === null) {
-            $profile = $this->_profileModel->newEntity([]);
-        }
+        // skip the state param check, should be handled by front-end
+        $this->setConfig("serviceConfig.provider.$provider.options.stateless", true);
+        $this->setConfig('serviceConfig.redirectUri', $redirectUri);
 
-        $data = ['provider' => $providerName];
-        foreach(get_object_vars($identity) as $key => $value) {
-            switch($key) {
-                case 'id':
-                    $data['identifier'] = $value;
-                    break;
-                case 'fullname':
-                    $data['full_name'] = $value;
-                    break;
-                default:
-                    $data[$key] = $value;
-                    break;
+        return $this->loginCallback($provider);
+    }
+
+    // Return list of providerName's that are supported and configured.
+    public function getProviders(): array
+    {
+        $providers = $this->getConfig('serviceConfig.provider');
+        $output = [];
+        foreach($providers as $key => $value)
+        {
+            if(!empty($value['applicationId'])) {
+                $output[] = $key;
             }
         }
-
-        return $this->_profileModel->patchEntity($profile, $data);
+        return $output;
     }
 
     protected function _getProvider(string $providerName)
-    {
-        return $this->_getService()->getProvider($providerName);
-    }
-
-    protected function _getService(): Service
     {
         if(is_null($this->_service))
         {
@@ -182,17 +158,49 @@ class SocialAuthComponent
                 $this->_factory
             );
         }
-        return $this->_service;
+
+        return $this->_service->getProvider($providerName);
     }
 
-    protected function _getUser($profile)
+    protected function _getUser($providerName, $identity): Player
     {
+        // first look for SocialProfile in DB
+        $profile = $this->_profileModel
+            ->find()
+            ->where(
+                ['provider' => $providerName
+                ,'identifier' => $identity->id
+                ])
+            ->first();
+
+        if($profile === null) {
+            $profile = $this->_profileModel->newEntity([]);
+        }
+
+        // update $profile with data from $identity
+        $data = ['provider' => $providerName];
+        foreach(get_object_vars($identity) as $key => $value) {
+            switch($key) {
+                case 'id':
+                    $data['identifier'] = $value;
+                    break;
+                case 'fullname':
+                    $data['full_name'] = $value;
+                    break;
+                default:
+                    $data[$key] = $value;
+                    break;
+            }
+        }
+        $profile = $this->_profileModel->patchEntity($profile, $data);
+
+        // then try to find the related player
         $user = null;
         $id = $profile->get('user_id');
         $email = $profile->get('email');
 
         if(!$id and $email) {
-            // New login, lookup player by known email.
+            // new login, look for player based on known email
             $result = $this->_playerModel
                 ->find()
                 ->select('id', true)
@@ -204,7 +212,7 @@ class SocialAuthComponent
             }
         }
         if(!$id and $email) {
-            // Fallback, is there another social profile with the same email?
+            // fallback, is there another social profile with the same email?
             $result = $this->_profileModel
                 ->find()
                 ->select('user_id', true)
@@ -220,7 +228,7 @@ class SocialAuthComponent
             $user = $this->_playerModel->find()->where(['id' => $id])->first();
             $profile->set('user_id', $user->get('id'));
         } else {
-            // No luck, return a non-existant player without plin
+            // no luck, return a non-existant player without plin
             $unknown = ['first_name' => 'Onbekende', 'last_name' => 'Speler'];
             $user = $this->_playerModel->newEntity($unknown);
         }
@@ -232,12 +240,30 @@ class SocialAuthComponent
         return $user;
     }
 
-    //TODO? needed when getting 'code' passed in by the front-end app
-    public function setStateless()
+    protected function _logException($e): void
     {
-        $providers = $this->getConfig('serviceConfig.provider');
-        foreach($providers as $key => $provider) {
-            $this->setConfig("serviceConfig.provider.$key.stateless", true);
+        if(!$this->getConfig('logErrors')) {
+            return;
         }
+
+        $request = $this->getController()->getRequest();
+
+        $message = sprintf('[%s] %s', get_class($e), $e->getMessage());
+        $message .= "\n Request URL: " . $request->getRequestTarget();
+
+        $referer = $request->getHeaderLine('Referer');
+        if($referer) {
+            $message .= "\nReferer URL: " . $referer;
+        }
+
+        if ($e instanceof InvalidResponse) {
+            $response = $e->getResponse();
+            $messgae .= "\nProvided Response: ";
+            $message .= ($response ? (string)$response->getBody() : 'n/a');
+        }
+
+        $message .= "\nStack Trace:\n" . $e->getTraceAsString() . "\n\n";
+
+        Log::error($message);
     }
 }

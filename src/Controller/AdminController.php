@@ -77,7 +77,7 @@ class AdminController
 
         if(!empty($providerName)) {
             // callback after login via social site
-            $user = $this->SocialAuth->loginCallbackProfile($providerName);
+            $user = $this->SocialAuth->loginCallback($providerName);
 
             if($user and $user->id) {
                 $this->request->getSession()->write('Auth', $user);
