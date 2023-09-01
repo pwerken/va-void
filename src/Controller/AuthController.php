@@ -68,7 +68,7 @@ class AuthController
         $this->set('_serialize', $result);
     }
 
-    // GET  /auth/social/{provider}?code=...
+    // GET  /auth/social/{provider}?code=...&redirect_uri=...
     public function socialLogin(string $providerName): void
     {
         $providers = $this->SocialAuth->getProviders();
@@ -112,7 +112,6 @@ class AuthController
     protected function _social(string $provider): array
     {
         $auth = $this->SocialAuth->authUrl($provider);
-        $auth = preg_replace('/(\&redirect_uri)=[^&]*/', '\1=CALLBACK', $auth);
         $auth = preg_replace('/(\&state)=[^&]*/', '\1=STATE', $auth);
 
         $result = [];

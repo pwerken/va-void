@@ -51,6 +51,7 @@ class AdminController
             }
         }
 
+        $this->set('socials', $this->SocialAuth->getProviders());
         $this->set('redirect', $redirect);
         $this->set('user', $result->getData());
     }
@@ -63,37 +64,51 @@ class AdminController
 
     public function social($providerName = null)
     {
-        if ($this->request->is('post')) {
-            // redirect to login via social site
-            $providerName = $this->request->getData('provider', $providerName);
-            $authUrl = $this->SocialAuth->authUrl($providerName);
-
-            // save redirectUri for post login redirect
-            $redirect = $this->request->getData('redirect');
-            $this->request->getSession()->write('redirect', $redirect);
-
-            return $this->redirect($authUrl);
+        if(empty($providerName)) {
+            return $this->redirect(['controller' => 'Admin', 'action' => 'index']);
         }
 
-        if(!empty($providerName)) {
-            // callback after login via social site
-            $user = $this->SocialAuth->loginCallback($providerName);
+        $this->SocialAuth->setCallbackUri(
+            [ 'controller' => 'Admin'
+            , 'action' => 'social'
+            , 'callback'
+            ]);
 
-            if($user and $user->id) {
-                $this->request->getSession()->write('Auth', $user);
+        if($providerName == 'callback') {
+            return $this->social_callback();
+        }
 
-                // redirect back to page from before login
-                $redirect = $this->request->getSession()->consume('redirect');
-                if (!empty($redirect)) {
-                    return $this->redirect($redirect);
-                }
-            } elseif ($user) {
-                $this->Flash->error('Logged is not linked to a plin.');
-            } else {
-                $this->Flash->error('Failed to login');
+        $redirect = $this->request->getQuery('redirect', '/admin');
+        $redirect = $this->request->getData('redirect', $redirect);
+        // save redirectUri for after the login callback
+        $this->request->getSession()->write('redirect', $redirect);
+
+        // redirect to login via social site
+        $this->request->getSession()->write('provider', $providerName);
+        $authUrl = $this->SocialAuth->authUrl($providerName);
+        return $this->redirect($authUrl);
+    }
+
+    protected function social_callback()
+    {
+        // callback from the social site login
+        $providerName = $this->request->getSession()->consume('provider');
+        $user = $this->SocialAuth->loginCallback($providerName);
+
+        if($user and $user->id) {
+            $this->request->getSession()->write('Auth', $user);
+
+            // redirect back to page from before login
+            $redirect = $this->request->getSession()->consume('redirect');
+            if (!empty($redirect)) {
+                return $this->redirect($redirect);
             }
+        } elseif ($user) {
+            $this->Flash->error('Email is not linked to a plin.');
+        } else {
+            $this->Flash->error('Failed to login');
         }
-        return $this->redirect('/admin');
+        return $this->redirect(['controller' => 'Admin', 'action' => 'index']);
     }
 
     public function authentication()
@@ -291,7 +306,6 @@ class AdminController
                 $c['_matchingData'] = [$skill_id => true];
                 $characters[$id] = $c;
             }
-
         }
         $this->set('characters', $characters);
     }

@@ -65,12 +65,7 @@ class SocialAuthComponent
         # merge in config/app_local.php
         $providerConfig = Configure::read('SocialAuth', []);
         $this->setConfig('serviceConfig.provider', $providerConfig);
-
-        $redirectUri = Router::url(
-            [ 'controller' => 'Admin'
-            , 'action' => 'social'
-            ], true) . '/${provider}';
-        $this->setConfig('serviceConfig.redirectUri', $redirectUri);
+        $this->setConfig('serviceConfig.redirectUri', 'CALLBACK');
 
         $this->_factory = new CollectionFactory();
         $this->_factory->register(GitLabProvider::NAME, GitLabProvider::class);
@@ -111,7 +106,7 @@ class SocialAuthComponent
 
     // Front-end did the social login and caught the callback.
     // It then passes the received 'code' as param here to login the player.
-    public function loginCode(string $provider, string $code, string $redirectUri): Player
+    public function loginCode(string $provider, string $code, string $callbackUri): Player
     {
         // code param should already by be set, but lets not assume
         $request = $this->getController()->getRequest();
@@ -120,7 +115,7 @@ class SocialAuthComponent
 
         // skip the state param check, should be handled by front-end
         $this->setConfig("serviceConfig.provider.$provider.options.stateless", true);
-        $this->setConfig('serviceConfig.redirectUri', $redirectUri);
+        $this->setConfig('serviceConfig.redirectUri', $callbackUri);
 
         return $this->loginCallback($provider);
     }
@@ -128,15 +123,21 @@ class SocialAuthComponent
     // Return list of providerName's that are supported and configured.
     public function getProviders(): array
     {
+        $result = [];
         $providers = $this->getConfig('serviceConfig.provider');
-        $output = [];
         foreach($providers as $key => $value)
         {
             if(!empty($value['applicationId'])) {
-                $output[] = $key;
+                $result[] = $key;
             }
         }
-        return $output;
+        return $result;
+    }
+
+    public function setCallbackUri(array|string $url)
+    {
+        $callbackUri = Router::url($url, true);
+        $this->setConfig('serviceConfig.redirectUri', $callbackUri);
     }
 
     protected function _getProvider(string $providerName)
