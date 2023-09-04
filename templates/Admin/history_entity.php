@@ -24,7 +24,7 @@ foreach($list as $cur)
 	if(!is_null($related))
 		$related = ' - <em>'.$related.'</em>';
 
-	$data = $cur->get('data');
+	$data = $cur->get('data') ?? '';
 	if(strlen($data) > 2)
 		$data = "<br/>\n" . $cur->get('data');
 	else
