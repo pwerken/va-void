@@ -203,6 +203,8 @@ class AdminController
     {
         $table = $this->loadModel('History');
         if(!is_null($e)) {
+            $this->set('plin', $this->request->getQuery('highlight'));
+
             if(array_key_exists('verbose', $this->request->getQueryParams())) {
                 $this->viewBuilder()->setTemplate('historyEntity');
             } else {

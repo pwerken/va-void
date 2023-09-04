@@ -41,6 +41,12 @@ foreach($list as $cur)
 	default:			$color = '';
 	}
 
+    if($plin && ($plin == $cur->get('modifier_id'))) {
+        $bgcolor = ' style="background-color:yellow"';
+    } else {
+        $bgcolor = '';
+    }
+
 	$data = $cur->get('data');
 	if (!is_null($data))
 		$data = json_decode($data, true);
@@ -51,19 +57,22 @@ foreach($list as $cur)
 	if(!is_null($related))
 		$related = '<strong>'.$related.'</strong> ';
 
-	$prefix = "<samp>" . str_pad($cur->modifiedString(), 19, '_', STR_PAD_BOTH)
-        . " " . $cur->modifierString() . "</samp> "
+	$prefix = "<span$bgcolor><samp>"
+        . str_pad($cur->modifiedString(), 19, '_', STR_PAD_BOTH) . " "
+        . $cur->modifierString() . "</samp> "
 		. $cur->keyString() . "<span$color> " . $related;
+    $postfix = "</span></span><br/>\n";
 
 	switch($cur->get('state')) {
 	case 'added':
+	case 'removed':
 		if(empty($data)) {
-			echo $prefix . "</span><br/>\n";
+			echo $prefix . $postfix;
 			break;
 		}
 		foreach($data as $k => $v) {
 			$v = format_v($k, $v);
-			echo $prefix . "<em>$k</em>: $v</span><br/>\n";
+			echo $prefix . "<em>$k</em>: $v" . $postfix;
 		}
 		break;
 	case 'modified':
@@ -76,11 +85,8 @@ foreach($list as $cur)
 				continue;
 			}
 			$v = format_v($k, $v);
-			echo $prefix . "<em>$k</em>: $v</span><br/>\n";
+			echo $prefix . "<em>$k</em>: $v" . $postfix;
 		}
-		break;
-	case 'removed':
-		echo $prefix . "</span><br/>\n";
 		break;
 	default:
 		break;

@@ -25,6 +25,11 @@ echo 'Plin: ' . $this->Form->text('plin', $style);
 echo $this->Form->button(__('Update'));
 echo $this->Form->end();
 
+$highlight = '';
+if($plin) {
+    $highlight = "?highlight=$plin";
+}
+
 echo "<samp>";
 foreach($list as $row) {
 	$name = $row['entity'].'/'.$row['key1'];
@@ -41,6 +46,6 @@ foreach($list as $row) {
 
 	echo str_pad($row['modified'], 19, '_', STR_PAD_BOTH) . " "
 		. $this->Html->link(str_pad($modifier, 4, '0', STR_PAD_LEFT), $link.'?verbose')
-		." " . $this->Html->link($name, $link)."<br/>\n";
+		." " . $this->Html->link($name, $link.$highlight)."<br/>\n";
 }
 echo "</samp>\n";
