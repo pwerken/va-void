@@ -8,7 +8,6 @@ use Cake\ORM\TableRegistry;
 class History
     extends Entity
 {
-
     public static function fromEntity(EntityInterface $entity)
     {
         if(is_null($entity))

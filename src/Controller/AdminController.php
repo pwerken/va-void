@@ -203,34 +203,51 @@ class AdminController
     {
         $table = $this->loadModel('History');
         if(!is_null($e)) {
-            $this->set('plin', $this->request->getQuery('highlight'));
+            $plin = $this->request->getQuery('highlight');
+            if(!empty($plin)) {
+                $plin = (int)$plin;
+            }
+            $this->set('plin', $plin);
 
+            $this->viewBuilder()->setTemplate('historyCompact');
             if(array_key_exists('verbose', $this->request->getQueryParams())) {
                 $this->viewBuilder()->setTemplate('historyEntity');
-            } else {
-                $this->viewBuilder()->setTemplate('historyCompact');
             }
+
             $list = $table->getEntityHistory($e, $k1, $k2);
             if(empty($list)) {
                 throw new NotFoundException();
             }
-        } else {
-            $plin = $this->request->getData('plin');
-            $since = $this->request->getData('since');
-            $what = $this->request->getData('what');
-
-            if(empty($since)) {
-                $date = new \DateTime();
-                $date->sub(new \DateInterval('P3M'));
-                $since = $date->format('Y-m-d');
-            }
-
-            $this->set('plin', $plin);
-            $this->set('since', $since);
-            $this->set('what', $what);
-            $list = $table->getAllLastModified($since, $plin, $what);
+            $this->set('list', $list);
+            return;
         }
 
+        $plin = $this->request->getData('plin');
+        if(!empty($plin)) {
+            $plin = (int)$plin;
+        }
+
+        $since = $this->request->getData('since', '');
+        $date = \DateTimeImmutable::createFromFormat("Y-m-d", $since);
+        if(!$date) {
+            $date = new \DateTime();
+            $date->sub(new \DateInterval('P3M'));
+        }
+        $since = $date->format('Y-m-d');
+
+        $what = $this->request->getData('what');
+
+        $this->set('what', $what);
+        $this->set('since', $since);
+        $this->set('plin', $plin);
+
+        $list = $table->getAllLastModified($plin, $since, $what);
+
+        if($plin) {
+            $all = $table->getAllModificationsBy($plin, $since, $what);
+            $list = array_merge($list, $all);
+            usort($list, array($table, 'compare'));
+        }
         $this->set('list', $list);
     }
 

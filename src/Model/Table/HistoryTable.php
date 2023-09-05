@@ -56,34 +56,35 @@ class HistoryTable
         return $history;
     }
 
-    public function getAllLastModified($since = NULL, $byPlin = NULL, $what = NULL)
+    public function getAllLastModified($byPlin = NULL, $since = NULL, $what = NULL)
     {
+        $where = [];
         if($since == NULL) {
-            $where = ["modified IS NOT" => "NULL"];
+            $where['modified IS NOT'] = 'NULL';
         } else {
-            $where = ["modified >" => $since];
+            $where['modified >'] = $since;
         }
         if($byPlin != NULL) {
             $where['modifier_id'] = $byPlin;
         }
 
         $tbls =
-            [ 'Player' =>
-                [ "key1" => "id", "key2" => "NULL"
-                , "name" => "NULL", "first_name", "insertion", "last_name"
-                , "modified", "modifier_id"]
-            , 'Character' =>
-                [ "key1" => "player_id", "key2" => "chin"
-                , "name", "modified" , "modifier_id"]
-            , 'Condition' =>
-                [ "key1" => "id", "key2" => "NULL"
-                , "name", "modified", "modifier_id"]
-            , 'Power' =>
-                [ "key1" => "id", "key2" => "NULL"
-                , "name", "modified", "modifier_id"]
-            , 'Item' =>
-                [ "key1" => "id", "key2" => "NULL"
-                , "name", "modified", "modifier_id"]
+            [ 'Players' =>
+                [ 'key1' => 'id', 'key2' => 'NULL'
+                , 'name' => 'NULL', 'first_name', 'insertion', 'last_name'
+                , 'modified', 'modifier_id']
+            , 'Characters' =>
+                [ 'key1' => 'player_id', 'key2' => 'chin'
+                , 'name', 'modified' , 'modifier_id']
+            , 'Conditions' =>
+                [ 'key1' => 'id', 'key2' => 'NULL'
+                , 'name', 'modified', 'modifier_id']
+            , 'Powers' =>
+                [ 'key1' => 'id', 'key2' => 'NULL'
+                , 'name', 'modified', 'modifier_id']
+            , 'Items' =>
+                [ 'key1' => 'id', 'key2' => 'NULL'
+                , 'name', 'modified', 'modifier_id']
             ];
         if(empty($what) OR !array_key_exists($what, $tbls)) {
             $what = NULL;
@@ -94,21 +95,84 @@ class HistoryTable
             if(!is_null($what) and $tbl != $what) {
                 continue;
             }
+            switch(strtolower($tbl)) {
+            case 'players':     $entity = 'Player';     break;
+            case 'characters':  $entity = 'Character';  break;
+            case 'items':       $entity = 'Item';       break;
+            case 'conditions':  $entity = 'Condition';  break;
+            case 'powers':      $entity = 'Power';      break;
+            default:            $entity = '';           break;
+            }
 
-            $result = TableRegistry::get($tbl.'s')->find()
+            $result = TableRegistry::get($tbl)->find()
                 ->select($select)->where($where)
                 ->order(['modified' => 'DESC'])->enableHydration(false)->all();
             foreach($result as $row) {
-                if(is_null($row['name']) && $tbl == 'Player') {
+                if(is_null($row['name']) && $tbl == 'Players') {
                     $name = [$row['first_name'], $row['insertion'], $row['last_name']];
                     $row['name'] = implode(' ', array_filter($name));
                 }
-                $row['entity'] = $tbl;
+                $row['entity'] = $entity;
                 $row['modified'] = $dateParser->marshal($row['modified'])->jsonSerialize();
                 $list[] = $row;
             }
         }
-        usort($list, array($this, "compare"));
+        usort($list, array($this, 'compare'));
+        return $list;
+    }
+
+    public function getAllModificationsBy($byPlin = NULL, $since = NULL, $what = NULL)
+    {
+        $where = [];
+        $all = ['player', 'character', 'item', 'condition', 'power'];
+        switch(strtolower($what)) {
+        case 'players':     $where['entity'] = 'player';    break;
+        case 'characters':  $where['entity'] = 'character'; break;
+        case 'items':       $where['entity'] = 'item';      break;
+        case 'conditions':  $where['entity'] = 'condition'; break;
+        case 'powers':      $where['entity'] = 'power';     break;
+        default:            $where['entity IN'] = $all;     break;
+        }
+        if($since == NULL) {
+            $where['modified IS NOT'] = 'NULL';
+        } else {
+            $where['modified >'] = $since;
+        }
+        if($byPlin != NULL) {
+            $where['modifier_id'] = $byPlin;
+        }
+
+        $dateParser = new DateTimeType();
+
+        $result = $this->find()
+            ->where($where)
+            ->all();
+        $list = [];
+        foreach($result as $obj)
+        {
+            $row = [];
+            $row['entity'] = $obj->entity;
+            $row['key1'] = $obj->key1;
+            $row['key2'] = $obj->key2;
+            $row['modified'] = $obj->modifiedString();
+            $row['modifier_id'] = $obj->modifier_id;
+
+            $data = json_decode($obj->data ?? '', true);
+            if($obj->entity == 'Character') {
+                $row['key1'] = $data['player_id'];
+                $row['key2'] = $data['chin'];
+            }
+
+            if(is_null(@$data['name']) && $obj->entity == 'Player') {
+                $name = [$data['first_name'], $data['insertion'], $data['last_name']];
+                $row['name'] = implode(' ', array_filter($name));
+            } else {
+                $row['name'] = @$data['name'];
+            }
+            $list[] = $row;
+        }
+
+        usort($list, array($this, 'compare'));
         return $list;
     }
 
