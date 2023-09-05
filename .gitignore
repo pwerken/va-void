@@ -9,6 +9,7 @@
 ######################
 /database.sqlite
 /webroot/coverage
+.phpunit.result.cache
 
 # CakePHP specific files #
 ##########################
