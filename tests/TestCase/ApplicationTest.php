@@ -21,16 +21,17 @@ use Cake\Core\Configure;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\Http\Middleware\BodyParserMiddleware;
-use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\TestSuite\IntegrationTestCase;
 use InvalidArgumentException;
 
 use App\Application;
-use App\Routing\Middleware\CorsMiddleware;
-use App\Routing\Middleware\JsonInputMiddleware;
-use App\Routing\Middleware\PlinChinMiddleware;
+use App\Middleware\CorsMiddleware;
+use App\Middleware\JsonInputMiddleware;
+use App\Middleware\LoginWithPlinMiddleware;
+use App\Middleware\PlinChinMiddleware;
+use App\Middleware\SessionAdminOnlyMiddleware;
 
 /**
  * ApplicationTest class
@@ -85,28 +86,33 @@ class ApplicationTest extends IntegrationTestCase
     public function testMiddleware()
     {
         $app = new Application(dirname(dirname(__DIR__)) . '/config');
-        $middleware = new MiddlewareQueue();
+        $middleware = $app->middleware(new MiddlewareQueue());
 
-        $middleware = $app->middleware($middleware);
-
-        $this->assertInstanceOf(ErrorHandlerMiddleware::class, $middleware->current());
-        $middleware->seek(1);
-        $this->assertInstanceOf(AssetMiddleware::class, $middleware->current());
-        $middleware->seek(2);
         $this->assertInstanceOf(CorsMiddleware::class, $middleware->current());
+        $middleware->seek(1);
+        $this->assertInstanceOf(ErrorHandlerMiddleware::class, $middleware->current());
+        $middleware->seek(2);
+        $this->assertInstanceOf(AssetMiddleware::class, $middleware->current());
         $middleware->seek(3);
+
         $this->assertInstanceOf(RoutingMiddleware::class, $middleware->current());
         $middleware->seek(4);
-        $this->assertInstanceOf(JsonInputMiddleware::class, $middleware->current());
-        $middleware->seek(5);
-        $this->assertInstanceOf(BodyParserMiddleware::class, $middleware->current());
-        $middleware->seek(6);
         $this->assertInstanceOf(PlinChinMiddleware::class, $middleware->current());
+        $middleware->seek(5);
+
+        $this->assertInstanceOf(JsonInputMiddleware::class, $middleware->current());
+        $middleware->seek(6);
+        $this->assertInstanceOf(BodyParserMiddleware::class, $middleware->current());
         $middleware->seek(7);
-        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->current());
+
+        $this->assertInstanceOf(SessionAdminOnlyMiddleware::class, $middleware->current());
         $middleware->seek(8);
-        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->current());
+        $this->assertInstanceOf(LoginWithPlinMiddleware::class, $middleware->current());
         $middleware->seek(9);
+        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->current());
+        $middleware->seek(10);
+        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->current());
+        $middleware->seek(11);
         $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->current());
     }
 }

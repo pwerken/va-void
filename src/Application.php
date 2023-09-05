@@ -26,7 +26,6 @@ use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Event\EventManager;
 use Cake\Http\BaseApplication;
 use Cake\Http\Middleware\BodyParserMiddleware;
-use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\ORM\Locator\TableLocator;
 use Cake\Routing\Middleware\AssetMiddleware;
@@ -98,9 +97,8 @@ class Application
             // using it's second constructor argument:
             ->add(new RoutingMiddleware($this, '_cake_routes_'))
 
-            // Forces the use of the issued JWT by disabling the PHP Session
-            // outside of /admin
-            ->add(new SessionAdminOnlyMiddleware())
+            // Convert url's :plin/:chin to :character_id
+            ->add(new PlinChinMiddleware())
 
             // Force PUT/POST to 'Content-Type: application/json'
             ->add(new JsonInputMiddleware())
@@ -110,14 +108,15 @@ class Application
             // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
             ->add(new BodyParserMiddleware())
 
-            // Convert url's :plin/:chin to :character_id
-            ->add(new PlinChinMiddleware())
-
 #            // Cross Site Request Forgery (CSRF) Protection Middleware
 #            // https://book.cakephp.org/4/en/controllers/middleware.html#cross-site-request-forgery-csrf-middleware
 #            ->add(new CsrfProtectionMiddleware([
 #                'httponly' => true,
 #            ]))
+
+            // Forces the use of the issued JWT by disabling the PHP Session
+            // outside of /admin
+            ->add(new SessionAdminOnlyMiddleware())
 
             // At login accept either 'id' or 'plin' as the player id.
             ->add(new LoginWithPlinMiddleware())
