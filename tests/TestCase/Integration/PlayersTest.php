@@ -47,7 +47,7 @@ class PlayersTest
 
         $data = $this->assertGet($url);
 
-        $this->assertCount(13, $data);
+        $this->assertCount(12, $data);
         $this->assertArrayKeyValue('class', $ref->getClass(), $data);
         $this->assertArrayKeyValue('url', $ref->getUrl(), $data);
         $this->assertArrayKeyValue('plin', $ref->getIdentifier(), $data);
@@ -57,8 +57,7 @@ class PlayersTest
         $this->assertArrayKeyValue('first_name', $ref->first_name, $data);
         $this->assertArrayKeyValue('insertion', $ref->insertion, $data);
         $this->assertArrayKeyValue('last_name', $ref->last_name, $data);
-        $this->assertArrayKeyValue('gender', $ref->gender, $data);
-        $this->assertArrayKeyValue('date_of_birth', $ref->date_of_birth, $data);
+        $this->assertArrayKeyValue('email', $ref->email, $data);
         $this->assertArrayKeyValue('modified', $ref->modified, $data);
         $this->assertArrayKeyValue('full_name', $ref->full_name, $data);
 

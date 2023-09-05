@@ -1,0 +1,90 @@
+<?php
+namespace App\Test\TestCase\Controller;
+
+use App\Test\TestSuite\AuthIntegrationTestCase;
+
+class WorldsControllerTest
+	extends AuthIntegrationTestCase
+{
+
+	public $fixtures = [ 'app.players', 'app.worlds' ];
+
+    public function testIndex()
+    {
+		$this->withoutAuth();
+		$this->assertGet('/worlds', 403);
+
+		$this->withAuthPlayer();
+		$this->assertGet('/worlds');
+
+		$data = $this->jsonBody();
+		$this->assertArrayKeyValue('class', 'List', $data);
+		$this->assertArrayKeyValue('url', '/worlds', $data);
+		$this->assertArrayHasKey('list', $data);
+		$this->assertCount(2, $data['list']);
+
+		$this->withAuthReadonly();
+		$this->assertGet('/worlds');
+		$this->assertCount(2, $this->jsonBody('list'));
+
+		$this->withAuthReferee();
+		$this->assertGet('/worlds');
+		$this->assertCount(2, $this->jsonBody('list'));
+
+		$this->withAuthInfobalie();
+		$this->assertGet('/worlds');
+		$this->assertCount(2, $this->jsonBody('list'));
+
+		$this->withAuthSuper();
+		$this->assertGet('/worlds');
+		$this->assertCount(2, $this->jsonBody('list'));
+    }
+
+    public function testView()
+    {
+		$this->withoutAuth();
+		$this->assertGet('/worlds/1', 403);
+
+		$this->withAuthPlayer();
+		$this->assertGet('/worlds/1');
+
+		$data = $this->jsonBody();
+		$this->assertCount(5, $data);
+		$this->assertArrayKeyValue('class', 'World', $data);
+		$this->assertArrayKeyValue('url', '/worlds/1', $data);
+		$this->assertArrayKeyValue('id', '1', $data);
+		$this->assertArrayKeyValue('name', '-', $data);
+		$this->assertArrayKeyValue('modified', NULL, $data);
+
+		$this->withAuthReadonly();
+		$this->assertGet('/worlds/1');
+
+		$data = $this->jsonBody();
+		$this->assertCount(7, $data);
+		$this->assertArrayKeyValue('class', 'World', $data);
+		$this->assertArrayKeyValue('url', '/worlds/1', $data);
+		$this->assertArrayKeyValue('id', '1', $data);
+		$this->assertArrayKeyValue('name', '-', $data);
+		$this->assertArrayKeyValue('modified', NULL, $data);
+		$this->assertArrayKeyValue('modifier_id', NULL, $data);
+		$this->assertArrayHasKey('characters', $data);
+
+		$data = $data['characters'];
+		$this->assertCount(3, $data);
+		$this->assertArrayKeyValue('class', 'List', $data);
+		$this->assertArrayKeyValue('url', '/worlds/1/characters', $data);
+		$this->assertArrayHasKey('list', $data);
+
+		$this->withAuthReferee();
+		$this->assertGet('/worlds/1');
+		$this->assertCount(7, $this->jsonBody());
+
+		$this->withAuthInfobalie();
+		$this->assertGet('/worlds/1');
+		$this->assertCount(7, $this->jsonBody());
+
+		$this->withAuthSuper();
+		$this->assertGet('/worlds/1');
+		$this->assertCount(7, $this->jsonBody());
+    }
+}
