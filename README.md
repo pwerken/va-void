@@ -1,4 +1,4 @@
-[![License](https://img.shields.io/:license-ISC-blue.svg)](https://tldrlegal.com/license/-isc-license)
+[![License](https://img.shields.io/:license-ISC-blue.svg)](LICENSE.txt)
 [![CakePHP](https://img.shields.io/badge/powered%20by-CakePHP-red.svg)](https://cakephp.org)
 # VA - VOID
 
