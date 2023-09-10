@@ -11,7 +11,7 @@ class SkillsController
     // GET /skills
     public function index(): void
     {
-        $query = $this->Skills->find();
-        $this->doRawIndex($query, 'Skills', '/skills/', 'id');
+        $query = $this->Skills->findWithContain();
+        $this->set('_serialize', $query->all());
     }
 }
