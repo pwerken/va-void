@@ -8,7 +8,8 @@ class Skill
     {
         parent::__construct($properties, $options);
 
-        $this->setCompact(['cost', 'mana_amount', 'manatype'], true);
+        $this->setCompact(['cost', 'times_max'], true);
+        $this->setCompact(['mana_amount', 'manatype'], true);
         $this->setCompact(['loresheet', 'blanks'], true);
     }
 }

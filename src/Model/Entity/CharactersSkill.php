@@ -9,7 +9,7 @@ class CharactersSkill
     {
         parent::__construct($properties, $options);
 
-        $this->setCompact(['character', 'skill']);
+        $this->setCompact(['character', 'skill', 'times']);
         $this->setHidden(['character_id', 'skill_id'], true);
     }
 
@@ -21,6 +21,9 @@ class CharactersSkill
     public function printableName()
     {
         $name = $this->skill->name;
+        if($this->times > 1) {
+            $name .= ' x' . $this->times;
+        }
         if($this->skill->loresheet && $this->skill->blanks) {
             $name .= ' (lore & blanks)';
         } elseif($this->skill->loresheet) {
@@ -28,7 +31,7 @@ class CharactersSkill
         } elseif($this->skill->blanks) {
             $name .= ' (blanks)';
         }
-        $name .= ' (' . $this->skill->cost . ')';
+        $name .= ' (' . ($this->times * $this->skill->cost) . ')';
         return $name;
     }
 }

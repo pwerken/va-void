@@ -40,7 +40,7 @@ foreach($characters as $c)
 	foreach($this->request->getData('skills') as $s) {
 		echo "\t<td>";
 		if(isset($c['_matchingData'][$s])) {
-			echo $skills[$s];
+			echo $c['_matchingData'][$s] . 'x';
 		} else {
 			echo '&nbsp;';
 		}

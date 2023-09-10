@@ -6,7 +6,7 @@ ToDo-list:
  - Datastructure cleanup:
    - [ ] condition/power/item: add 'archived' or 'deprecated' property
    - [ ] add skill.base property
-   - [ ] add skill relation 'times' property
+   - [x] add skill relation 'times' property
    - [x] remove spells
    - [ ] remove attributes and attributes-items
    - [ ] remove character.soulpath property

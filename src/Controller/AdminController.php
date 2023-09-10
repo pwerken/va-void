@@ -347,11 +347,12 @@ class AdminController
             foreach($query->all() as $c) {
                 $id = $c['id'];
                 $skill_id = $c['_matchingData']['CharactersSkills']['skill_id'];
+                $times = $c['_matchingData']['CharactersSkills']['times'];
                 if(isset($characters[$id])) {
-                    $characters[$id]['_matchingData'][$skill_id] = true;
+                    $characters[$id]['_matchingData'][$skill_id] = $times;
                     continue;
                 }
-                $c['_matchingData'] = [$skill_id => true];
+                $c['_matchingData'] = [$skill_id => $times];
                 $characters[$id] = $c;
             }
         }

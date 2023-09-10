@@ -27,7 +27,7 @@ class CharactersSkillsControllerPolicy
     // PUT /characters/:plin/:chin/skills/:id
     public function charactersEdit(): bool
     {
-        return false;
+        return $this->charactersAdd();
     }
 
     // DELETE /characters/:plin/:chin/skills/:id

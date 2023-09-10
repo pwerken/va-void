@@ -60,16 +60,18 @@ class CharacterLammy
 
 		foreach($this->entity->skills as $relation) {
 			$skill = $relation->skill;
+			$times = $relation->times;
 
-			$data['xp'] += $skill->cost;
+			$data['xp'] += $times * $skill->cost;
 			$data['skills'][] = $relation->printableName();
 
 			if(!isset($skill->manatype))
 				continue;
 
-			if(!isset($data['mana'][$skill->manatype->name]))
-				$data['mana'][$skill->manatype->name] = 0;
-			$data['mana'][$skill->manatype->name] += $skill->mana_amount;
+			$mana = $skill->manatype->name;
+			if(!isset($data['mana'][$mana]))
+				$data['mana'][$mana] = 0;
+			$data['mana'][$mana] += $times * $skill->mana_amount;
 		}
 		$data['skills'] = SkillNameGroup::group($data['skills']);
 

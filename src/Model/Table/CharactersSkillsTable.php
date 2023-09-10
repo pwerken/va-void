@@ -39,6 +39,7 @@ class CharactersSkillsTable
         $rules->add($rules->existsIn('skill_id', 'Skills'));
 
         $rules->addCreate([$this, 'disallowDeprecated']);
+        $rules->add([$this, 'limitTimesToMax']);
 
         return $rules;
     }
@@ -48,6 +49,17 @@ class CharactersSkillsTable
         $skill = $this->Skills->get($entity->skill_id);
         if($skill->deprecated) {
             $entity->setError('skill_id', ['deprecated' => 'Skill is deprecated']);
+            return false;
+        }
+
+        return true;
+    }
+
+    public function limitTimesToMax($entity, $options)
+    {
+        $skill = $this->Skills->get($entity->skill_id);
+        if($entity->times > $skill->times_max) {
+            $entity->setError('times', ['limit' => 'Value exceeds skills times_max']);
             return false;
         }
 

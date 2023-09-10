@@ -15,5 +15,6 @@ class CharactersSkillValidator
 
         $this->nonNegativeInteger('character_id');
         $this->nonNegativeInteger('skill_id');
+        $this->nonNegativeInteger('times');
     }
 }
