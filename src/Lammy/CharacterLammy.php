@@ -59,8 +59,19 @@ class CharacterLammy
 
 		foreach($this->entity->skills as $relation) {
 			$skill = $relation->skill;
+
+			$name = $skill->name;
+			if($skill->loresheet && $skill->blanks) {
+			$name .= '(lore & blanks)';
+			} elseif($skill->loresheet) {
+				$name .= '(lore)';
+			} elseif($skill->blanks) {
+				$name .= '(blanks)';
+			}
+			$name .= ' ('.$skill->cost.')';
+
 			$data['xp'] += $skill->cost;
-			$data['skills'][] = $skill->name.' ('.$skill->cost.')';
+			$data['skills'][] = $name;
 
 			if(!isset($skill->manatype))
 				continue;
