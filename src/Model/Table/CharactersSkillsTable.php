@@ -58,4 +58,9 @@ class CharactersSkillsTable
     {
         return ['Characters', 'Skills.Manatypes'];
     }
+
+    protected function orderBy(): array
+    {
+        return ['Skills.sort_order' => 'ASC', 'Skills.name' => 'ASC'];
+    }
 }
