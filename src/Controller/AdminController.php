@@ -117,18 +117,37 @@ class AdminController
             return;
         }
 
-        // modify legacy password
-
         $plin = $this->request->getData('plin');
+        $social = $this->request->getData('social');
         $pass = $this->request->getData('password');
 
         $this->loadModel('Players');
         $player = $this->Players->findById($plin)->first();
-
         if(is_null($player)) {
             $this->Flash->error("Player#$plin not found");
             return;
         }
+
+        if($plin && $social && is_null($pass)) {
+            // link $plin to $social profile
+            $this->loadModel('SocialProfiles');
+            $login = $this->SocialProfiles->findById($social)->first();
+            if(is_null($login)) {
+                $this->Flash->error("Player#$plin not found");
+                return;
+            }
+
+            $login->user_id = $player->id;
+
+            if(!$this->SocialProfiles->save($login)) {
+                $this->Flash->error("Failed to link Social Profile");
+            } else {
+                $this->Flash->success("Social Profile linked to Player#$plin");
+            }
+            return;
+        }
+
+        // modify legacy password
 
         $this->Players->patchEntity($player, ['password' => $pass]);
         if (!$player->isDirty('password')) {
@@ -137,10 +156,11 @@ class AdminController
         }
 
         $this->Players->save($player);
-
         $errors = $player->getError('password');
         if(!empty($errors)) {
             $this->Flash->error(reset($errors));
+        } else if(strlen($pass) == 0) {
+            $this->Flash->success("Player#$plin password REMOVED");
         } else {
             $this->Flash->success("Player#$plin password set");
         }
