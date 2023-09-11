@@ -148,7 +148,15 @@ class AdminController
 
     public function authorization()
     {
-        $this->set('roles', Player::roleValues());
+        $user = $this->getRequest()->getAttribute('identity');
+
+        $roles = Player::roleValues();
+        if(!$user->hasAuth('Super')) {
+            # hide 'Super' to prevent authorization envy
+            array_pop($roles);
+        }
+        $this->set('roles', $roles);
+
 
         if(!$this->request->is('post')) {
             return;

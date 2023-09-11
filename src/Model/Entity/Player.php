@@ -47,7 +47,7 @@ class Player
     {
         static $data = null;
         if(is_null($data))
-            $data = ['Player', 'Read-only', 'Referee', 'Infobalie', 'Super'];
+            $data = ['Player', 'Read-only', 'Referee', 'Infobalie', 'Event Control', 'Super'];
         return $data;
     }
 
