@@ -28,13 +28,6 @@ return [
         'salt' => env('SECURITY_SALT', '__SALT__'),
     ],
 
-    /**
-     * Configure Cross Origin Request Headers (CORS).
-     */
-    'Cors' => [
-        'allowOrigin' => [ 'yvo.muze.nl' ],
-    ],
-
     /*
      * Connection information used by the ORM to connect
      * to your application's datastores.

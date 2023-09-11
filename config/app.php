@@ -84,7 +84,7 @@ return [
      * Configure Cross Origin Request Headers (CORS).
      */
     'Cors' => [
-        'allowOrigin' => [ '*.the-vortex.nl', 'localhost' ],
+        'allowOrigin' => [ '*' ],
         'allowCredentials' => true,
         'allowMethods' => [ 'GET', 'PUT', 'DELETE', 'POST', 'OPTIONS' ],
         'allowHeaders' => [ 'X-Requested-With', 'Content-Type', 'Origin',
