@@ -39,13 +39,14 @@ class AdminController
     public function index()
     {
         $result = $this->Authentication->getResult();
-        $redirect = $this->request->getQuery('redirect');
-        if ($this->request->is('post'))
-        {
+        if ($this->request->is('post')) {
             if (!$result->isValid()) {
                 $this->Flash->error('Invalid username or password');
-                return;
             }
+        }
+
+        $redirect = $this->request->getQuery('redirect');
+        if ($result->isValid()) {
             if (!empty($redirect)) {
                 return $this->redirect($redirect);
             }
