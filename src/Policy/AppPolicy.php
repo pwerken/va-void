@@ -27,10 +27,12 @@ abstract class AppPolicy
         foreach($roles as $role) {
             if (strcasecmp($role, 'user') == 0) {
                 if (is_null($obj)) {
-                    return false;
+                    continue;
                 }
                 $plin = (int)$this->identity->getIdentifier();
-                return $this->hasRoleUser($plin, $obj);
+                if ($this->hasRoleUser($plin, $obj)) {
+                    return true;
+                }
             }
             elseif ($this->identity->hasAuth($role)) {
                 return true;
