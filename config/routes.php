@@ -260,7 +260,7 @@ $rest = function($routes, $name, $subs = [], $nest = [], $rels = []) {
 	}
 };
 
-	$rest($routes, 'Players',  [ 'Characters' ]);
+	$rest($routes, 'Players',  [ 'Characters' ], [], [ 'Socials' ]);
 	$rest($routes, 'Characters'
 					, [ 'Items' ]
 					, [ ]

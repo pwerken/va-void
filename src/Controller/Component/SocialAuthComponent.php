@@ -235,7 +235,9 @@ class SocialAuthComponent
         }
 
         if($profile->isDirty()) {
-            $this->_profileModel->save($profile);
+            if(!$this->_profileModel->save($profile)) {
+                throw new SocialConnectException('Failed to save profile');
+            }
         }
 
         return $user;

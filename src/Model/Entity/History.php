@@ -28,9 +28,13 @@ class History
             unset($data[$field]);
         }
         $history->set('modified', $data['modified']);
-        $history->set('modifier_id', $data['modifier_id']);
+        $history->set('modifier_id', @$data['modifier_id']);
         unset($data['modified']);
         unset($data['modifier_id']);
+
+        if($history->get('entity') == 'SocialProfile') {
+            $history->set('key12', $data['user_id']);
+        }
 
         if(empty($data)) {
             $history->set('data', '{}');

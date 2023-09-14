@@ -16,6 +16,7 @@ class PlayerPolicy
         parent::__construct();
 
         $this->showFieldAuth('password', ['user', 'infobalie']);
+        $this->showFieldAuth('socials',  ['user', 'infobalie']);
 
         $this->editFieldAuth('role', 'infobalie');
         $this->editFieldAuth('password', ['user', 'infobalie']);

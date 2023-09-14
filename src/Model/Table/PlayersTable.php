@@ -16,6 +16,9 @@ class PlayersTable
         parent::initialize($config);
 
         $this->hasMany('Characters');
+        $this->hasMany('SocialProfiles')
+                ->setProperty('socials')
+                ->setForeignKey('user_id');
     }
 
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
@@ -76,7 +79,7 @@ class PlayersTable
 
     protected function contain(): array
     {
-        return ['Characters'];
+        return ['Characters', 'SocialProfiles'];
     }
 
     protected function orderBy(): array
