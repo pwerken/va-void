@@ -19,6 +19,7 @@ class ViewComponent
         if($checkAuthorize) {
             $this->Authorization->authorize($obj, 'view');
         }
+        $this->Authorization->applyScope($obj, 'visible');
 
         $controller->set('_serialize', $obj);
     }
