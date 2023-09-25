@@ -38,7 +38,7 @@ class AdminControllerPolicy
 
     public function routes(): bool
     {
-        return true;
+        return $this->hasAuth('player');
     }
 
     public function backups(): bool

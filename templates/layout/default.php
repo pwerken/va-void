@@ -20,9 +20,9 @@ case 'Read-only':
 	$nav['/admin/skills'] = 'Skill~Player Lookup';
 case 'Player':
 	$nav['/admin/authentication'] = 'Authentication';
+	$nav['/admin/routes'] = 'Configured Routes';
 default:
 	$nav['/admin/checks'] = 'Check Configuration';
-	$nav['/admin/routes'] = 'Configured Routes';
 	asort($nav);
 }
 
