@@ -10,6 +10,7 @@ use Cake\View\View;
 
 use App\Model\Entity\AppEntity;
 use App\View\Helper\AuthorizeHelper;
+use App\Utility\Json;
 
 class ApiView
     extends View
@@ -46,12 +47,8 @@ class ApiView
             $data = $result;
         }
 
-        $jsonOptions = JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT;
-        if(Configure::read('debug'))
-            $jsonOptions = $jsonOptions | JSON_PRETTY_PRINT;
-
         $this->response = $this->response->withType('json');
-        return json_encode($data, $jsonOptions);
+        return Json::encode($data);
     }
 
     private function _jsonData($obj)

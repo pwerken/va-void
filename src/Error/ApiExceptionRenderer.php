@@ -10,6 +10,7 @@ use Cake\Error\ExceptionRenderer;
 use Exception;
 
 use App\Error\Exception\ValidationException;
+use App\Utility\Json;
 
 class ApiExceptionRenderer
     extends ExceptionRenderer
@@ -62,12 +63,8 @@ class ApiExceptionRenderer
         $data['errors'] = $errors;
         $data['trace'] = $trace;
 
-        $jsonOptions = JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT;
-        if(Configure::read('debug'))
-            $jsonOptions = $jsonOptions | JSON_PRETTY_PRINT;
-
         $response = $response->withType('json');
-        $response->getBody()->write(json_encode($data, $jsonOptions));
+        $response->getBody()->write(Json::encode($data));
         $this->controller->setResponse($response);
         return $response;
     }
