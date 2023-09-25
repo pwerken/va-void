@@ -1,41 +1,49 @@
 ToDo-list:
- - Project details
-   - [ ] make nice welcome page
-   - [ ] write API documentation
- - Authorization
-   - [x] basic account/password management
-   - [ ] new user registration / password recovery
- - Business logic
-   - [ ] more validator rules
-   - [ ] Search: only search field you're allowed to view
-   - [ ] Skills: prereq/dependancy checks
-   - [ ] Characters add field: player text (for background)
-   - [ ] Skills add field: type (base/extra/deprecated)
-   - [ ] Skills add field: class (fighter/healing/mage,...)
-   - [ ] templating for common conditions/powers/items
-   - [ ] use 'Labels' (?) for factions/worlds/groups/etc...
- - Test cases (unit / application)
-   - [x] support different auth levels in tests
-   - [x] all the GET request API routes
-   - [ ] editing of Player (happy flow)
-   - [ ] editing of Character (happy flow)
-   - [ ] editing of Condition/Power (happy flow)
-   - [ ] adding & removing Character relations
-   - [ ] printing API routes
-   - [ ] expand tests cases with validation errors
-   - [ ] expand tests cases to verify logging to history table
- - Reference sheets
+ - Error handling
+   - [ ] check error responses on failed social authentication
+   - [ ] uniform error messages (when debug=false ?)
+         i.e. 404 should always be "Not found"
+ - Datastructure cleanup:
+   - [ ] condition/power/item: add 'archived' or 'deprecated' property
+   - [ ] add skill.base property
+   - [ ] add skill relation 'times' property
+   - [ ] remove spells
+   - [ ] remove attributes and attributes-items
+   - [ ] remove character.soulpath property
+   - [ ] belief/group/world: de-normalize and remove tables
+ - /admin pages for tables with lookup-data
+   - [ ] CRUD-operations page(s) for Factions
+   - [ ] CRUD-operations page(s) for Skills
+ - Player editable concept character
+   - [ ] add character status 'concept'
+   - [ ] allow player to add 'concept' character (max 1)
+   - [ ] allow (limited) editing by the player
+   - [ ] limit access to the "base" skills
+   - [ ] don't track changes when status='concept'
+ - Glyph/Rune attunement
+   - [ ] add table, fields similar to 'powers'
+   - [ ] add characters relation table
+   - [ ] add new printable lammy (similar to 'power')
+   - [ ] char lammy: calculate character.rune/glyph attunement cap
+ - Item crafting and imbues
+   - [ ] add item.imbuecap property
+   - [ ] add goods table
+   - [ ] add relation between items and goods
+   - [ ] /admin CRUD-operations page for Goods
+ - Indirect skills and mana
+   - [ ] add relation between items and skills
+   - [ ] add relation between conditions and skills
+   - [ ] add relation between powers and skills
+   - [ ] add relation between attunement and skills
+   - [ ] character: skills get a 'source' property/reference
+   - [ ] char lammy: calculate mana from sources
+ - Ruleset reference sheets
    - [ ] store spell-lists / add all the individual spells
-   - [ ] store loresheets (or links to pdf's ? auth >= RO)
+   - [ ] store loresheets or links to pdf's?
+   - [ ] store imbue recipes
  - Auditing
-   - [ ] void-api/admin: add heuristic to compact history
-   - [x] void-api/admin: human-readible shorthand log of changes
-   - [ ] add .../history routes: with shorthand log of changes
+   - [ ] /admin: add heuristic to compact history
+   - [x] /admin: human-readible shorthand log of changes
+   - [ ] api .../history routes: with shorthand log of changes
  - Optimizations
    - [ ] headers: add Last-Modified / ETag
- - Technical dept
-   - [ ] rename 'Spells' to 'Casting'
-   - [ ] stop using deprecated methods/classes
- - Upstream changes
-   - [ ] Crud cake3: support multiple primary keys
-   - [ ] CreatorModifier: fix deprecated warnings
