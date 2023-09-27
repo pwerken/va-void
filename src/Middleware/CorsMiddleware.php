@@ -40,7 +40,9 @@ class CorsMiddleware
         if($request->is('options')) {
             $cors = $cors
                 ->allowMethods($this->config['allowMethods'])
-                ->allowHeaders($this->config['allowHeaders'])
+                ->allowHeaders($this->config['allowHeaders']);
+        } else {
+            $cors = $cors
                 ->exposeHeaders($this->config['exposeHeaders']);
         }
         return $cors
