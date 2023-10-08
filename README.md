@@ -73,3 +73,24 @@ This tool uses the commandline mysql and mysqldump commands internally.
 The created backup files are stored in the `backups/` folder.
 
 **Warning**: old backups might not be compatible with newer tables structures.  It is possible to use `cake migrations` to revert to an earlier database structure.  Don't forget to save your data / make a backup before doing this!
+
+
+## Social provider login
+
+Call the `/auth/social` api endpoint to get the list of all supported social login providers.  For each provider the result contains a `url` and `authUri` link.  Both need to be customized by the front-end before they can be used.
+
+1. First in the `authUri` replace the `STATE` and `CALLBACK` strings:
+   - `STATE` should be a random string used to prevent cross-site request forgery
+   - `CALLBACK` is the front-end url where the user gets redirect to after login
+
+2. Now redirect the user to this modified `authUri` to start the login proces.
+
+3. On succesful login the user gets redirected to the `CALLBACK` location.
+
+4. Check that the returned `state` query parameter matches with the earlier provided `STATE` value.
+
+5. In the `url` of the social provider replace `CODE` and `CALLBACK`:
+   - `CODE` with the `code` string we got in the query parameter after the login
+   - `CALLBACK` must be the same as used in the `authUri`
+
+6. Perform a GET on the modified `url`.  This should yield the same result as a regular user+name password.  The result contains a JWT that can be used for all following interactions with the void api.  Similar, a failed login will result in a 401 error response.
