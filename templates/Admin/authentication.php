@@ -9,25 +9,25 @@ $inputStyle = 'width:5em;display:inline-block;margin-right:1rem;';
 $profiles = TableRegistry::get('SocialProfiles');
 
 $total = $profiles->find()->count();
-$users = $profiles->find()->distinct('user_id')->where(['user_id IS NOT NULL'])->count();
 
 $noPlins = $profiles->find()
                 ->where(['user_id IS NULL'])
                 ->orderDesc('modified')
                 ->all();
 
-
 ?>
 <h3>Social media authentication</h3>
 
 <p>
-There are <?=$total?> social media logins stored, linked to
-<?=$users?> different players.
+There are <?=$total?> social media logins stored.
 </p>
 <?php if($noPlins->count() > 0): ?>
 <p>
-With <b><?=$noPlins->count()?></b> social media logins where the provided email
-(if any) did <b>not</b> match a known player's email.
+With <b><?=$noPlins->count()?></b> social media login(s) where the provided
+email did <b>not</b> match a known player's email.<br/>
+This can be resolved by either updating the players information with the used
+email adres (via voidwalker).</br>
+Or by linking the specific login below to a specific plin.
 </p>
 
 <?php foreach($noPlins as $noPlin): ?>

@@ -86,9 +86,6 @@ class AuthController
         }
 
         $user = $this->SocialAuth->loginCode($providerName, $code, $redirectUri);
-        if(!$user->get('id')) {
-            throw new LoginFailedException('Login has no associated plin');
-        }
         $this->set('_serialize', $this->_jwt($user));
     }
 

@@ -224,15 +224,12 @@ class SocialAuthComponent
                 $id = $result['user_id'];
             }
         }
-
-        if($id) {
-            $user = $this->_playerModel->find()->where(['id' => $id])->first();
-            $profile->set('user_id', $user->get('id'));
-        } else {
-            // no luck, return a non-existant player without plin
-            $unknown = ['first_name' => 'Onbekende', 'last_name' => 'Speler'];
-            $user = $this->_playerModel->newEntity($unknown);
+        if(!$id) {
+            throw new LoginFailedException('E-mail has no associated plin, contact infobalie.');
         }
+
+        $user = $this->_playerModel->find()->where(['id' => $id])->first();
+        $profile->set('user_id', $user->get('id'));
 
         if($profile->isDirty()) {
             if(!$this->_profileModel->save($profile)) {
