@@ -236,7 +236,7 @@ class SocialAuthComponent
             throw new LoginFailedException('E-mail has no associated plin, contact infobalie.');
         }
 
-        return $user;
+        return $this->_playerModel->get($id);
     }
 
     protected function _logException($e): void
