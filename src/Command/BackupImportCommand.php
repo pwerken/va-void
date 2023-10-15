@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use Cake\Command\CacheClearallCommand;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -61,8 +62,8 @@ class BackupImportCommand
         foreach($tables as $table) {
             $io->verbose("- $table");
 
-            $model = $this->loadModel($table);
-            $model->query()->delete()->execute();
+            $model = $this->fetchModel($table);
+            $model->deleteQuery()->execute();
             $model->getConnection()->execute(sprintf($sql, $model->getTable()));
         }
 
@@ -78,6 +79,15 @@ class BackupImportCommand
 
         exec($cmd);
         unlink($auth);
+
+        $io->out('Clearing cache...');
+        $cache_args = [];
+        if($io->level() >= ConsoleIo::VERBOSE) {
+            $cache_args[] = '-v';
+        } else {
+            $cache_args[] = '-q';
+        }
+        $this->executeCommand(CacheClearallCommand::class, $cache_args, $io);
 
         $io->out('Done');
         return static::CODE_SUCCESS;

@@ -31,8 +31,7 @@ class AppController
 
     protected function setResponseModified(): bool
     {
-        $model = $this->modelClass;
-        $query = $this->$model->find();
+        $query = $this->fetchModel()->find();
         $query->select(['last' => $query->func()->max("$model.modified")]);
         $modified = $this->doRawQuery($query);
         if($modified[0][0] == null) {

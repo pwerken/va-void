@@ -80,7 +80,7 @@ class ItemsController
     // GET /characters/{plin}/{chin}/items
     public function charactersIndex(int $char_id): void
     {
-        $this->parent = $this->loadModel('Characters')->get($char_id);
+        $this->parent = $this->fetchModel('Characters')->get($char_id);
         $this->Authorization->authorize($this->parent, 'view');
 
         $this->index();

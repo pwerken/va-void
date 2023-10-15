@@ -64,9 +64,9 @@ class CharactersController
     // POST /characters/{plin}/{chin}/print
     public function queue(int $char_id): void
     {
-        $char = $this->loadModel()->getWithContain($char_id);
+        $char = $this->Characters->getWithContain($char_id);
 
-        $table = $this->loadModel('Lammies');
+        $table = $this->fetchModel('Lammies');
 
         $lammy = $table->newEmptyEntity();
         $lammy->set('target', $char);
@@ -103,42 +103,42 @@ class CharactersController
     // GET /believes/{id}/characters
     public function believesIndex(int $belief_id): void
     {
-        $this->parent = $this->loadModel('Believes')->get($belief_id);
+        $this->parent = $this->fetchModel('Believes')->get($belief_id);
         $this->index();
     }
 
     // GET /factions/{id}/characters
     public function factionsIndex(int $faction_id): void
     {
-        $this->parent = $this->loadModel('Factions')->get($faction_id);
+        $this->parent = $this->fetchModel('Factions')->get($faction_id);
         $this->index();
     }
 
     // GET /groups/{id}/characters
     public function groupsIndex(int $group_id): void
     {
-        $this->parent = $this->loadModel('Groups')->get($group_id);
+        $this->parent = $this->fetchModel('Groups')->get($group_id);
         $this->index();
     }
 
     // GET /players/{plin}/characters
     public function playersIndex(int $plin): void
     {
-        $this->parent = $this->loadModel('Players')->get($plin);
+        $this->parent = $this->fetchModel('Players')->get($plin);
         $this->index();
     }
 
     // GET /skills/{id}/characters
     public function skillsIndex(int $skill_id): void
     {
-        $this->parent = $this->loadModel('Skills')->get($skill_id);
+        $this->parent = $this->fetchModel('Skills')->get($skill_id);
         $this->index();
     }
 
     // GET /worlds/{id}/characters
     public function worldsIndex(int $world_id): void
     {
-        $this->parent = $this->loadModel('Worlds')->get($world_id);
+        $this->parent = $this->fetchModel('Worlds')->get($world_id);
         $this->index();
     }
 }

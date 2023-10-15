@@ -186,20 +186,20 @@ class AdminController
         $plin = $this->request->getData('plin');
         $role = $this->request->getData('role');
 
-        $this->loadModel('Players');
-        $player = $this->Players->findById($plin)->first();
+        $table = $this->fetchModel('Players');
+        $player = $table->findById($plin)->first();
         if(is_null($player)) {
             $this->Flash->error("Player#$plin not found");
             return;
         }
 
-        $this->Players->patchEntity($player, ['role' => $role]);
+        $table->patchEntity($player, ['role' => $role]);
         if (!$player->isDirty('role')) {
             $this->Flash->error("Not authorized to change roles");
             return;
         }
 
-        if(!$this->Players->save($player)) {
+        if(!$table->save($player)) {
             $errors = $player->getError('role');
             $this->Flash->error(reset($errors));
         } else {
@@ -230,7 +230,7 @@ class AdminController
 
     public function history($e = NULL, $k1 = NULL, $k2 = NULL)
     {
-        $table = $this->loadModel('History');
+        $table = $this->fetchModel('History');
         if(!is_null($e)) {
             $plin = $this->request->getQuery('highlight');
             if(!empty($plin)) {
@@ -282,7 +282,7 @@ class AdminController
 
     public function printing($sides = NULL)
     {
-        $lammies = $this->loadModel('Lammies');
+        $lammies = $this->fetchModel('Lammies');
 
         if(!is_null($sides)) {
             $queued = $lammies->find('Queued')->all();
@@ -325,7 +325,7 @@ class AdminController
 
     public function skills()
     {
-        $skills = $this->loadModel('Skills');
+        $skills = $this->fetchModel('Skills');
         $this->set('skills', $skills->find('list')->all()->toArray());
 
         $characters = [];
@@ -337,7 +337,7 @@ class AdminController
             if(!is_array($ids))
                 $ids = [$ids];
 
-            $query = $this->loadModel('Characters')->find();
+            $query = $this->fetchModel('Characters')->find();
             $query->orderDesc('Characters.modified');
             $query->enableHydration(false);
             $query->innerJoinWith('CharactersSkills', function ($q) use ($ids) {

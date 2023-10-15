@@ -76,7 +76,7 @@ class LammiesController
     public function printed(): void
     {
         $max_id = key($this->getRequest()->getData()) ?? 0;
-        $lammies = $this->loadModel()->find('Printing')
+        $lammies = $this->Lammies->find('Printing')
                     ->where(['Lammies.id <=' => $max_id])
                     ->all();
         $this->Lammies->setStatuses($lammies, 'Printed');
@@ -86,7 +86,7 @@ class LammiesController
 
     private function pdfOutput(int $max_id, ?bool $double = false)
     {
-        $lammies = $this->loadModel()->find('Queued')
+        $lammies = $this->Lammies->find('Queued')
                     ->where(['Lammies.id <=' => $max_id])
                     ->all();
 

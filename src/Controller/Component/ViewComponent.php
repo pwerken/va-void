@@ -13,7 +13,7 @@ class ViewComponent
     public function action(int|array $id, bool $checkAuthorize = true): void
     {
         $controller = $this->getController();
-        $model = $controller->loadModel();
+        $model = $controller->fetchModel();
 
         $obj = $model->getWithContain($id);
         if($checkAuthorize) {

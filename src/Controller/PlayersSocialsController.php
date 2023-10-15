@@ -13,10 +13,10 @@ class PlayersSocialsController
     // GET /players/{plin}/socials
     public function playersIndex(int $plin): void
     {
-        $parent = $this->loadModel('Players')->get($plin);
+        $parent = $this->fetchModel('Players')->get($plin);
         $this->Authorization->authorize($parent, 'edit');
 
-        $query = $this->fetchTable()->findWithContain();
+        $query = $this->SocialProfiles->findWithContain();
         $query->andWhere(['user_id' => $plin]);
 
         $this->set('parent', $parent);
@@ -26,7 +26,7 @@ class PlayersSocialsController
     // GET /players/{plin}/socials/{id}
     public function playersView(int $plin, int $id): void
     {
-        $obj = $this->fetchTable()->getWithContain($id);
+        $obj = $this->SocialProfiles->getWithContain($id);
         if($obj->user_id != $plin) {
             throw new NotFoundException();
         }

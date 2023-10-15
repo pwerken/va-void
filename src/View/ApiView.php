@@ -26,7 +26,7 @@ class ApiView
 
     public function initialize(): void
     {
-        $this->loadHelper(AuthorizeHelper::class);
+        $this->addHelper(AuthorizeHelper::class);
     }
 
     public function render(?string $view = null, $layout = null): string

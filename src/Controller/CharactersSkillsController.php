@@ -9,7 +9,7 @@ class CharactersSkillsController
     // GET /characters/{plin}/{chin}/skills
     public function charactersIndex(int $char_id): void
     {
-        $this->parent = $this->loadModel('Characters')->get($char_id);
+        $this->parent = $this->fetchModel('Characters')->get($char_id);
         $this->Authorization->authorize($this->parent, 'view');
 
         $query = $this->CharactersSkills->findWithContain();
@@ -32,7 +32,7 @@ class CharactersSkillsController
     // GET /characters/{plin}/{chin}/skills/{id}
     public function charactersView(int $char_id, int $skill_id): void
     {
-        $parent = $this->loadModel('Characters')->get($char_id);
+        $parent = $this->fetchModel('Characters')->get($char_id);
         $this->Authorization->authorize($parent, 'view');
 
         $this->View->action([$char_id, $skill_id], false);
@@ -53,7 +53,7 @@ class CharactersSkillsController
     // GET /skills/{id}/characters
     public function skillsIndex(int $skill_id): void
     {
-        $this->parent = $this->loadModel('Skills')->get($skill_id);
+        $this->parent = $this->fetchModel('Skills')->get($skill_id);
 
         $query = $this->CharactersSkills->findWithContain();
         $query->andWhere(['CharactersSkills.skill_id' => $skill_id]);

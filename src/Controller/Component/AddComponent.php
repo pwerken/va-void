@@ -15,7 +15,7 @@ class AddComponent
     public function action(bool $checkAuthorize = true): void
     {
         $controller = $this->getController();
-        $model = $controller->loadModel();
+        $model = $controller->fetchModel();
 
         $obj = $model->newEmptyEntity();
         if($checkAuthorize) {
