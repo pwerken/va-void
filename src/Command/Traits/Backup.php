@@ -62,7 +62,8 @@ trait Backup
 
     protected function tablesTruncateOrder()
     {
-        return  [ 'attributes_items'
+        return  [ 'social_profiles'
+                , 'attributes_items'
                 , 'characters_conditions'
                 , 'characters_powers'
                 , 'characters_skills'
