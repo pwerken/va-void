@@ -47,7 +47,7 @@ class PlayersTest
 
         $data = $this->assertGet($url);
 
-        $this->assertCount(12, $data);
+        $this->assertCount(13, $data);
         $this->assertArrayKeyValue('class', $ref->getClass(), $data);
         $this->assertArrayKeyValue('url', $ref->getUrl(), $data);
         $this->assertArrayKeyValue('plin', $ref->getIdentifier(), $data);
@@ -62,6 +62,7 @@ class PlayersTest
         $this->assertArrayKeyValue('full_name', $ref->full_name, $data);
 
         $this->assertArrayHasKey('characters', $data);
+        $this->assertArrayHasKey('socials', $data);
     }
 
     public function testUnauthenticatedAccess()
@@ -86,10 +87,13 @@ class PlayersTest
         $this->checkPlayer('/players/1', 1);
 
         $this->assertGet('/players/1/characters');
+        $this->assertGet('/players/1/socials');
         $this->assertGet('/players/2', 403);
         $this->assertGet('/players/2/characters', 403);
+        $this->assertGet('/players/2/socials', 403);
         $this->assertGet('/players/99', 404);
         $this->assertGet('/players/99/characters', 404);
+        $this->assertGet('/players/99/socials', 404);
     }
 
     public function testGetAsReadonly($asReadOnly = True)

@@ -16,6 +16,8 @@ class SkillsFixture
 				, 'cost' => 5
 				, 'manatype_id' => 1
 				, 'mana_amount' => 10
+				, 'loresheet' => 0
+				, 'blanks' => 0
 				, 'sort_order' => 1
 				, 'deprecated' => False
 				]
