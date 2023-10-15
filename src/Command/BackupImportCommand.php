@@ -55,13 +55,19 @@ class BackupImportCommand
             $this->abort(sprintf('File `%s` is empty', $filename));
         }
 
-        $tables = $this->tablesTruncateOrder();
-
         $io->out('Truncating database tables...');
+        $tables = $this->tablesTruncateOrder();
+        $existing = ConnectionManager::get('default')
+                        ->getSchemaCollection()
+                        ->listTables();
         $sql = 'ALTER TABLE `%s` auto_increment = 1;';
         foreach($tables as $table) {
-            $io->verbose("- $table");
+            if(!in_array($table, $existing)) {
+                $io->warning("! $table ");
+                continue;
+            }
 
+            $io->verbose("- $table");
             $model = $this->fetchModel($table);
             $model->deleteQuery()->execute();
             $model->getConnection()->execute(sprintf($sql, $model->getTable()));
