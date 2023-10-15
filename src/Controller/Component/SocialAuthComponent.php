@@ -224,17 +224,16 @@ class SocialAuthComponent
                 $id = $result['user_id'];
             }
         }
-        if(!$id) {
-            throw new LoginFailedException('E-mail has no associated plin, contact infobalie.');
-        }
-
-        $user = $this->_playerModel->find()->where(['id' => $id])->first();
-        $profile->set('user_id', $user->get('id'));
+        $profile->set('user_id', $id);
 
         if($profile->isDirty()) {
             if(!$this->_profileModel->save($profile)) {
                 throw new SocialConnectException('Failed to save profile');
             }
+        }
+
+        if(!$id) {
+            throw new LoginFailedException('E-mail has no associated plin, contact infobalie.');
         }
 
         return $user;
