@@ -7,7 +7,7 @@ ToDo-list:
    - [ ] condition/power/item: add 'archived' or 'deprecated' property
    - [ ] add skill.base property
    - [ ] add skill relation 'times' property
-   - [ ] remove spells
+   - [x] remove spells
    - [ ] remove attributes and attributes-items
    - [ ] remove character.soulpath property
    - [ ] belief/group/world: de-normalize and remove tables
