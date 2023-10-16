@@ -1,6 +1,8 @@
 <?php
 namespace App\Lammy;
 
+use App\Utility\SkillNameGroup;
+
 class CharacterLammy
 	extends LammyCard
 {
@@ -69,6 +71,7 @@ class CharacterLammy
 				$data['mana'][$skill->manatype->name] = 0;
 			$data['mana'][$skill->manatype->name] += $skill->mana_amount;
 		}
+		$data['skills'] = SkillNameGroup::group($data['skills']);
 
 		$this->cardBack('Skills');
 
