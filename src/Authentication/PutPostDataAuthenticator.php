@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Authentication;
 
 use Authentication\Authenticator\FormAuthenticator;
+use Authentication\Identifier\IdentifierInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
@@ -32,12 +33,18 @@ class PutPostDataAuthenticator
                 return null;
             }
 
-            # FIXED: cast $value to string
+            // Authenticator\Identifier\PasswordIdentifier requires both the
+            // username and password to be of type string
             $value = (string)$body[$field];
-            if (!is_string($value) || !strlen($value)) {
+            if (!strlen($value)) {
                 return null;
             }
-
+            if ($key === IdentifierInterface::CREDENTIAL_USERNAME) {
+                // special case, as our db expects a int
+                if (!ctype_digit($value)) {
+                    return null;
+                }
+            }
             $data[$key] = $value;
         }
 
