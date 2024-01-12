@@ -9,6 +9,7 @@ $role = $user?->get('role');
 $nav = [];
 switch($role) {
 case 'Super':
+case 'Event Control':
 case 'Infobalie':
 	$nav['/admin/migrations'] = 'Database Migrations';
 	$nav['/admin/backups'] = 'Database Backups';
