@@ -8,9 +8,7 @@ use Cake\Utility\Inflector;
 class ItemsController
     extends AppController
 {
-    use \App\Controller\Traits\Add;      // PUT /items
     use \App\Controller\Traits\View;     // GET /items/{itin}
-    use \App\Controller\Traits\Edit;     // PUT /items/{itin}
     use \App\Controller\Traits\Delete;   // DELETE /items/{itin}
 
     // GET /items
@@ -71,6 +69,20 @@ class ItemsController
             ]);
     }
 
+    // PUT /items
+    public function add(int $itin): void
+    {
+        $this->setCharacterId();
+        $this->Add->action();
+    }
+
+    // PUT /items/{itin}
+    public function edit(int $itin): void
+    {
+        $this->setCharacterId();
+        $this->Edit->action($itin);
+    }
+
     // POST /items/{itin}/print
     public function queue(int $itin): void
     {
@@ -84,5 +96,22 @@ class ItemsController
         $this->Authorization->authorize($this->parent, 'view');
 
         $this->index();
+    }
+
+    protected function setCharacterId()
+    {
+        $plin = $this->request->getData('plin');
+        $chin = $this->request->getData('chin');
+        $this->request = $this->request->withoutData('plin');
+        $this->request = $this->request->withoutData('chin');
+
+        if($plin || $chin) {
+            $this->loadModel('Characters');
+            $char = $this->Characters->findByPlayerIdAndChin($plin, $chin)->first();
+            $char_id = $char ? $char->id : -1;
+            $this->request = $this->request->withData('character_id', $char_id);
+        } else {
+            $this->request = $this->request->withData('character_id', null);
+        }
     }
 }
