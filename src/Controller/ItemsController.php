@@ -70,7 +70,7 @@ class ItemsController
     }
 
     // PUT /items
-    public function add(int $itin): void
+    public function add(): void
     {
         $this->setCharacterId();
         $this->Add->action();
