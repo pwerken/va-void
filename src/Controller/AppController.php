@@ -29,24 +29,21 @@ class AppController
         $this->viewBuilder()->setClassName('Api');
     }
 
-    protected function setResponseModified(): bool
+    public function checkModified($modified = null): void
     {
-        $query = $this->fetchModel()->find();
-        $query->select(['last' => $query->func()->max("$model.modified")]);
-        $modified = $this->doRawQuery($query);
-        if($modified[0][0] == null) {
-            $modified[0][0] = '1970-01-01 12:00:00';
-        }
-        $this->response = $this->response->withModified($modified[0][0]);
+        if($modified == null)
+            return;
 
-        return $this->response->checkNotModified($this->request);
+        $this->response = $this->response->withModified($modified);
+        if($this->response->isNotModified($this->request)) {
+            $this->response = $this->response->withNotModified($modified);
+        }
     }
 
     protected function doRawQuery($query)
     {
         // TODO FIX $this->request->getQuery('q') for searching
 
-        $query->decorateResults(NULL, True);
         $query->disableResultsCasting();
         return $query->execute()->fetchAll();
     }
@@ -54,6 +51,7 @@ class AppController
     protected function doRawIndex($query, $class, $url, $id = 'id')
     {
         $content = [];
+        $modified_max = null;
         foreach($this->doRawQuery($query) as $row) {
             $content[] =
                 [ 'class' => $class
@@ -61,8 +59,13 @@ class AppController
                 , $id     => (int)$row[0]
                 , 'name'  => $row[1]
                 ];
+
+            if(isset($row[2])) {
+                $modified_max = max($modified_max, $row[2]);
+            }
         }
 
+        $this->checkModified($modified_max);
         $this->set('_serialize',
             [ 'class' => 'List'
             , 'url' => rtrim($this->request->getPath(), '/')

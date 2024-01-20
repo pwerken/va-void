@@ -11,7 +11,8 @@ class AttributesController
     // GET /attributes
     public function index(): void
     {
-        $query = $this->Attributes->find();
+        $query = $this->Attributes->find()
+                    ->select(['Attributes.id', 'Attributes.name'], true);
         $this->doRawIndex($query, 'Attributes', '/attributes/', 'id');
     }
 }

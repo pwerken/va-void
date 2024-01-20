@@ -19,6 +19,7 @@ class ItemsController
                     ->select('Items.id')
                     ->select('Items.name')
                     ->select('Items.expiry')
+                    ->select('Items.modified')
                     ->select('Characters.player_id')
                     ->select('Characters.chin')
                     ->select('Characters.name')
@@ -39,6 +40,7 @@ class ItemsController
         }
 
         $content = [];
+        $modified_max = null;
         foreach($this->doRawQuery($query) as $row) {
             $char = NULL;
             if(!is_null($row[3]) && !$hasParent) {
@@ -61,7 +63,10 @@ class ItemsController
                 unset($contentEntry['character']);
             }
             $content[] = $contentEntry;
+            $modified_max = max($modified_max, $row[4]);
         }
+
+        $this->checkModified($modified_max);
         $this->set('_serialize',
             [ 'class' => 'List'
             , 'url' => rtrim($this->request->getPath(), '/')

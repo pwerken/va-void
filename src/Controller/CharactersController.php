@@ -8,7 +8,6 @@ use Cake\Utility\Inflector;
 class CharactersController
     extends AppController
 {
-    use \App\Controller\Traits\View; // GET /characters/{plin}/{chin}
     use \App\Controller\Traits\Edit; // PUT /characters/{plin}/{chin}
 
     // GET /characters
@@ -19,7 +18,8 @@ class CharactersController
                     ->select('Characters.player_id')
                     ->select('Characters.chin')
                     ->select('Characters.name')
-                    ->select('Characters.status');
+                    ->select('Characters.status')
+                    ->select('Characters.modified');
         $this->Authorization->applyScope($query);
 
         if(isset($this->parent)) {
@@ -34,6 +34,7 @@ class CharactersController
         }
 
         $content = [];
+        $modified_max = null;
         foreach($this->doRawQuery($query) as $row) {
             $content[] =
                 [ 'class' => 'Character'
@@ -43,12 +44,39 @@ class CharactersController
                 , 'name' => $row[2]
                 , 'status' => $row[3]
                 ];
+            $modified_max = max($modified_max, $row[4]);
         }
+
+        $this->checkModified($modified_max);
         $this->set('_serialize',
             [ 'class' => 'List'
             , 'url' => rtrim($this->request->getPath(), '/')
             , 'list' => $content
             ]);
+    }
+
+    // PUT /characters/{plin}/{chin}
+    public function view(int $id): void
+    {
+        $this->View->action($id);
+
+        $char = $this->viewBuilder()->getVar('_serialize');
+        if(!$char) {
+            return;
+        }
+
+        $modified_max = max($char->modified, $char->player->modified);
+        foreach($char->items as $obj) {
+            $modified_max = max($modified_max, $obj->modified);
+        }
+        foreach($char->conditions as $obj) {
+            $modified_max = max($modified_max, $obj->modified, $obj->condition->modified);
+        }
+        foreach($char->powers as $obj) {
+            $modified_max = max($modified_max, $obj->modified, $obj->power->modified);
+        }
+
+        $this->checkModified($modified_max);
     }
 
     // PUT /players/{plin}/characters
