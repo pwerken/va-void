@@ -16,14 +16,13 @@ if(isset($user)) {
 }
 
 ?>
-<h3>Social media login</h3>
-<fieldset>
+<h3>Login with:</h3>
 <?php
-
 foreach($socials as $social)
 {
-    $img = $this->Html->image("social-auth/$social.png",
-        [ 'alt' => $social, 'class' => 'action-link' ]);
+    $img = $this->Html->image("social-auth/$social.svg",
+        [ 'alt' => $social, 'class' => 'action-link'
+        , 'style' => 'width: 64px; height: 64px; margin: 16px;' ]);
     echo $this->Form->postLink($img,
         [ 'prefix' => false
         , 'controller' => 'Admin'
@@ -33,20 +32,16 @@ foreach($socials as $social)
         [ 'escape' => false
         , 'data' => ['redirect' => $redirect]
         ]);
-    echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 }
 ?>
-<br/><br/>
+<br/>
 <em>Requires that your VOID account has the same email adres as used with the service.</em>
-</fieldset>
 <hr>
-<h3>Legacy password login</h3>
 <?= $this->Form->create(); ?>
-<fieldset>
+    <h3>Legacy password:</h3>
 	<?=$this->Form->control('id', ['label' => 'Plin', 'type' => 'text']); ?>
 	<?=$this->Form->control('password', ['type'=>'password']); ?>
 	<?=$this->Form->button(__('Login')); ?>
 <br/>
 <em>Requires that a password is set for your VOID account.</em>
-</fieldset>
 <?= $this->Form->end(); ?>
