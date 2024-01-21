@@ -83,12 +83,22 @@ return [
      */
     'EmailTransport' => [
         'default' => [
-            'host' => 'localhost',
-            'port' => 25,
+            'host' => 'ssl://smtp.gmail.com',
+            'port' => 465,
             'username' => null,
             'password' => null,
-            'client' => null,
-            'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
+            'className' => 'Smtp',
+        ],
+    ],
+
+    /*
+     * Email delivery profiles
+     */
+    'Email' => [
+        'default' => [
+            'transport' => 'default',
+            'from' => ['you@localhost' => 'VOID api'],
+            'to' => null, // site admin email adres
         ],
     ],
 

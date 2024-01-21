@@ -2,6 +2,8 @@
 namespace App\Utility;
 
 use Cake\Cache\Cache;
+use Cake\Mailer\Mailer;
+use Cake\Mailer\TransportFactory;
 use Cake\Datasource\ConnectionManager;
 use Cake\Utility\Security;
 use Migrations\Migrations;
@@ -126,6 +128,24 @@ class CheckConfig
                 $msg = 'Database table structures are up to date with Migrations.';
                 $status[$msg] = true;
             }
+        }
+
+        $transport = TransportFactory::get('default');
+        if($transport->getConfig('username') && $transport->getConfig('password')) {
+            $msg = "EmailTransport configured.";
+            $status[$msg] = true;
+        } else {
+            $msg = "EmailTransport NOT configured.";
+            $status[$msg] = false;
+        }
+
+        $admin = Mailer::getConfig('default');
+        if($admin['to']) {
+            $msg = 'Email default "To" set.';
+            $status[$msg] = true;
+        } else {
+            $msg = 'Email default "To" NOT set.';
+            $status[$msg] = false;
         }
 
         return $status;

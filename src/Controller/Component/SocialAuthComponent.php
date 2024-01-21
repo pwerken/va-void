@@ -29,6 +29,8 @@ class SocialAuthComponent
 {
     use LocatorAwareTrait;
 
+    protected $components = ['Mailer'];
+
     protected $_defaultConfig =
         [ 'serviceConfig' =>
             [ 'provider' =>
@@ -225,6 +227,7 @@ class SocialAuthComponent
             }
         }
         $profile->set('user_id', $id);
+        $this->Mailer->socialLogin($profile);
 
         if($profile->isDirty()) {
             if(!$this->_profileModel->save($profile)) {
@@ -233,7 +236,7 @@ class SocialAuthComponent
         }
 
         if(!$id) {
-            throw new LoginFailedException('E-mail has no associated plin, contact infobalie.');
+            throw new LoginFailedException('E-mail has no associated plin, site admin notified.');
         }
 
         return $this->_playerModel->get($id);
