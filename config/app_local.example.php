@@ -83,8 +83,9 @@ return [
      */
     'EmailTransport' => [
         'default' => [
-            'host' => 'ssl://smtp.gmail.com',
-            'port' => 465,
+            'host' => 'smtp.gmail.com',
+            'port' => 587,
+            'tls' => true,
             'username' => null,
             'password' => null,
             'className' => 'Smtp',
