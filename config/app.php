@@ -3,8 +3,13 @@
 use Cake\Cache\Engine\FileEngine;
 use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
+use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Http\Exception\NotFoundException;
 use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\MailTransport;
+use Cake\Routing\Exception\MissingRouteException;
+
+use App\Authentication\UnauthenticatedException;
 use App\Error\ApiExceptionRenderer;
 use App\Error\LoginFailedException;
 
@@ -204,7 +209,13 @@ return [
     'Error' => [
         'errorLevel' => E_ALL & ~E_USER_DEPRECATED,
         'exceptionRenderer' => ApiExceptionRenderer::class,
-        'skipLog' => [LoginFailedException::class],
+        'skipLog' => [
+            LoginFailedException::class,
+            UnauthenticatedException::class,
+            NotFoundException::class,
+            MissingRouteException::class,
+            RecordNotFoundException::class,
+        ],
         'log' => true,
         'trace' => true,
         'ignoredDeprecationPaths' => [],
