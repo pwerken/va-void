@@ -61,7 +61,8 @@ class ApiExceptionRenderer
         $data['url'] = $this->controller->getRequest()->getRequestTarget();
         $data['message'] = $error->getMessage();
         $data['errors'] = $errors;
-        $data['trace'] = $trace;
+        if(Configure::read('debug'))
+            $data['trace'] = $trace;
 
         $response = $response->withType('json');
         $response->getBody()->write(Json::encode($data));
