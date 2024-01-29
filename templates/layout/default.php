@@ -61,7 +61,7 @@ default:
 				$descr = $user['full_name'].' ('.$user['role'].')';
 				$link = '/players/'.$user['id'];
 ?>
-				<li><?= $this->Html->link($descr, $link); ?></li>
+				<li><?= $this->Html->link($descr, '/admin'); ?></li>
 				<li><?= $this->Html->link('LOGOUT', '/admin/logout') ?></li>
 <?php endif ?>
             </ul>
