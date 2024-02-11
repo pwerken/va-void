@@ -43,13 +43,13 @@ class ItemsController
         $modified_max = null;
         foreach($this->doRawQuery($query) as $row) {
             $char = NULL;
-            if(!is_null($row[3]) && !$hasParent) {
+            if(!is_null($row[4]) && !$hasParent) {
                 $char = [ 'class' => 'Character'
-                        , 'url' => '/characters/'.$row[3].'/'.$row[4]
-                        , 'plin' => (int)$row[3]
-                        , 'chin' => (int)$row[4]
-                        , 'name' => $row[5]
-                        , 'status' => $row[6]
+                        , 'url' => '/characters/'.$row[4].'/'.$row[5]
+                        , 'plin' => (int)$row[4]
+                        , 'chin' => (int)$row[5]
+                        , 'name' => $row[6]
+                        , 'status' => $row[7]
                         ];
             }
             $contentEntry = [ 'class' => 'Item'
@@ -63,7 +63,7 @@ class ItemsController
                 unset($contentEntry['character']);
             }
             $content[] = $contentEntry;
-            $modified_max = max($modified_max, $row[4]);
+            $modified_max = max($modified_max, $row[3]);
         }
 
         $this->checkModified($modified_max);
