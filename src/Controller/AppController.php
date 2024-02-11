@@ -29,10 +29,14 @@ class AppController
         $this->viewBuilder()->setClassName('Api');
     }
 
-    public function checkModified($modified = null): void
+    public function checkModified($modified): void
     {
-        if($modified == null)
+        if(empty($modified)) {
             return;
+        }
+        if(is_array($modified)) {
+            $modified = max($modified);
+        }
 
         $this->response = $this->response->withModified($modified);
         if($this->response->isNotModified($this->request)) {
@@ -51,7 +55,7 @@ class AppController
     protected function doRawIndex($query, $class, $url, $id = 'id')
     {
         $content = [];
-        $modified_max = null;
+        $modified = [];
         foreach($this->doRawQuery($query) as $row) {
             $content[] =
                 [ 'class' => $class
@@ -61,11 +65,11 @@ class AppController
                 ];
 
             if(isset($row[2])) {
-                $modified_max = max($modified_max, $row[2]);
+                $modified[] = $row[2];
             }
         }
 
-        $this->checkModified($modified_max);
+        $this->checkModified($modified);
         $this->set('_serialize',
             [ 'class' => 'List'
             , 'url' => rtrim($this->request->getPath(), '/')

@@ -31,6 +31,7 @@ class PlayersSocialsController
             throw new NotFoundException();
         }
         $this->Authorization->authorize($obj, 'view');
+        $this->checkModified($obj->modified);
         $this->set('_serialize', $obj);
     }
 

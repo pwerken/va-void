@@ -22,6 +22,7 @@ class LammiesController
                     ->select('Lammies.key2')
                     ->select('Lammies.modified');
         $content = [];
+        $modified = [];
         foreach($this->doRawQuery($query) as $row) {
             $content[] =
                 [ 'class' => 'Lammy'
@@ -32,7 +33,10 @@ class LammiesController
                 , 'key2' => (int)$row[4]
                 , 'modified' => $row[5]
                 ];
+            $modified[] = $row[5];
         }
+
+        $this->checkModified($modified);
         $this->set('_serialize',
             [ 'class' => 'List'
             , 'url' => rtrim($this->request->getPath(), '/')

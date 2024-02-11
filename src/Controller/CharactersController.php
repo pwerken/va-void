@@ -34,7 +34,7 @@ class CharactersController
         }
 
         $content = [];
-        $modified_max = null;
+        $modified = [];
         foreach($this->doRawQuery($query) as $row) {
             $content[] =
                 [ 'class' => 'Character'
@@ -44,10 +44,10 @@ class CharactersController
                 , 'name' => $row[2]
                 , 'status' => $row[3]
                 ];
-            $modified_max = max($modified_max, $row[4]);
+            $modified[] = $row[4];
         }
 
-        $this->checkModified($modified_max);
+        $this->checkModified($modified);
         $this->set('_serialize',
             [ 'class' => 'List'
             , 'url' => rtrim($this->request->getPath(), '/')
@@ -65,18 +65,22 @@ class CharactersController
             return;
         }
 
-        $modified_max = max($char->modified, $char->player->modified);
+        $modified = [];
+        $modified[] = $char->modified;
+        $modified[] = $char->player->modified;
         foreach($char->items as $obj) {
-            $modified_max = max($modified_max, $obj->modified);
+            $modified[] = $obj->modified;
         }
         foreach($char->conditions as $obj) {
-            $modified_max = max($modified_max, $obj->modified, $obj->condition->modified);
+            $modified[] = $obj->modified;
+            $modified[] = $obj->condition->modified;
         }
         foreach($char->powers as $obj) {
-            $modified_max = max($modified_max, $obj->modified, $obj->power->modified);
+            $modified[] = $obj->modified;
+            $modified[] = $obj->power->modified;
         }
 
-        $this->checkModified($modified_max);
+        $this->checkModified($modified);
     }
 
     // PUT /players/{plin}/characters

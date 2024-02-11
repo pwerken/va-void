@@ -23,7 +23,7 @@ class PlayersController
         $this->Authorization->applyScope($query);
 
         $content = [];
-        $modified_max = null;
+        $modified = [];
         foreach($this->doRawQuery($query) as $row) {
             $name = $row[1];
             if(!empty($row[2]))
@@ -36,11 +36,10 @@ class PlayersController
                 , 'plin' => (int)$row[0]
                 , 'full_name' => $name
                 ];
-
-            $modified_max = max($modified_max, $row[4]);
+            $modified[] = $row[4];
         }
 
-        $this->checkModified($modified_max);
+        $this->checkModified($modified);
         $this->set('_serialize',
             [ 'class' => 'List'
             , 'url' => rtrim($this->request->getPath(), '/')
@@ -58,15 +57,15 @@ class PlayersController
             return;
         }
 
-        $modified_max = $player->modified;
+        $modified = [$player->modified];
         foreach($player->socials as $obj) {
-            $modified_max = max($modified_max, $obj->modified);
+            $modified[] = $obj->modified;
         }
         foreach($player->characters as $obj) {
-            $modified_max = max($modified_max, $obj->modified);
+            $modified[] = $obj->modified;
         }
 
-        $this->checkModified($modified_max);
+        $this->checkModified($modified);
     }
 
 }

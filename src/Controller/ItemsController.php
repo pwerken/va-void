@@ -28,6 +28,7 @@ class ItemsController
                             ['Characters.id = Items.character_id']);
 
         $this->Authorization->applyScope($query);
+        $modified = [];
 
         $hasParent = isset($this->parent);
         if($hasParent) {
@@ -37,10 +38,10 @@ class ItemsController
 
             $query = $query->andWhere(["Items.$key" => $value]);
             $this->set('parent', $this->parent);
+            $modified[] = $this->parent->modified;
         }
 
         $content = [];
-        $modified_max = null;
         foreach($this->doRawQuery($query) as $row) {
             $char = NULL;
             if(!is_null($row[4]) && !$hasParent) {
@@ -63,10 +64,10 @@ class ItemsController
                 unset($contentEntry['character']);
             }
             $content[] = $contentEntry;
-            $modified_max = max($modified_max, $row[3]);
+            $modified[] = $row[3];
         }
 
-        $this->checkModified($modified_max);
+        $this->checkModified($modified);
         $this->set('_serialize',
             [ 'class' => 'List'
             , 'url' => rtrim($this->request->getPath(), '/')
