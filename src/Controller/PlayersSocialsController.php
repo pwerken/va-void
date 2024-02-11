@@ -14,13 +14,11 @@ class PlayersSocialsController
     public function playersIndex(int $plin): void
     {
         $parent = $this->fetchModel('Players')->get($plin);
-        $this->Authorization->authorize($parent, 'edit');
 
         $query = $this->SocialProfiles->findWithContain();
         $query->andWhere(['user_id' => $plin]);
 
-        $this->set('parent', $parent);
-        $this->set('_serialize', $query->all());
+        $this->IndexRelation->action($parent, $query, 'edit');
     }
 
     // GET /players/{plin}/socials/{id}

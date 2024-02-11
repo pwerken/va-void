@@ -9,14 +9,12 @@ class CharactersPowersController
     // GET /characters/{plin}/{chin}/powers
     public function charactersIndex(int $char_id): void
     {
-        $this->parent = $this->fetchModel('Characters')->get($char_id);
-        $this->Authorization->authorize($this->parent, 'view');
+        $parent = $this->fetchModel('Characters')->get($char_id);
 
         $query = $this->CharactersPowers->findWithContain();
         $query->andWhere(['CharactersPowers.character_id' => $char_id]);
 
-        $this->set('parent', $this->parent);
-        $this->set('_serialize', $query->all());
+        $this->IndexRelation->action($parent, $query);
     }
 
     // PUT /characters/{plin}/{chin}/powers
@@ -67,12 +65,11 @@ class CharactersPowersController
     // GET /powers/{poin}/characters
     public function powersIndex(int $poin): void
     {
-        $this->parent = $this->fetchModel('Powers')->get($poin);
+        $parent = $this->fetchModel('Powers')->get($poin);
 
         $query = $this->CharactersPowers->findWithContain();
         $query->andWhere(['CharactersPowers.power_id' => $poin]);
 
-        $this->set('parent', $this->parent);
-        $this->set('_serialize', $query->all());
+        $this->IndexRelation->action($parent, $query);
     }
 }

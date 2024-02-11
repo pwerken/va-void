@@ -9,14 +9,12 @@ class CharactersSkillsController
     // GET /characters/{plin}/{chin}/skills
     public function charactersIndex(int $char_id): void
     {
-        $this->parent = $this->fetchModel('Characters')->get($char_id);
-        $this->Authorization->authorize($this->parent, 'view');
+        $parent = $this->fetchModel('Characters')->get($char_id);
 
         $query = $this->CharactersSkills->findWithContain();
         $query->andWhere(['CharactersSkills.character_id' => $char_id]);
 
-        $this->set('parent', $this->parent);
-        $this->set('_serialize', $query->all());
+        $this->IndexRelation->action($parent, $query);
     }
 
     // PUT /characters/{plin}/{chin}/skills
@@ -53,12 +51,11 @@ class CharactersSkillsController
     // GET /skills/{id}/characters
     public function skillsIndex(int $skill_id): void
     {
-        $this->parent = $this->fetchModel('Skills')->get($skill_id);
+        $parent = $this->fetchModel('Skills')->get($skill_id);
 
         $query = $this->CharactersSkills->findWithContain();
         $query->andWhere(['CharactersSkills.skill_id' => $skill_id]);
 
-        $this->set('parent', $this->parent);
-        $this->set('_serialize', $query->all());
+        $this->IndexRelation->action($parent, $query);
     }
 }

@@ -9,14 +9,12 @@ class CharactersConditionsController
     // GET /characters/{plin}/{chin}/conditions
     public function charactersIndex(int $char_id): void
     {
-        $this->parent = $this->fetchModel('Characters')->get($char_id);
-        $this->Authorization->authorize($this->parent, 'view');
+        $parent = $this->fetchModel('Characters')->get($char_id);
 
         $query = $this->CharactersConditions->findWithContain();
         $query->andWhere(['CharactersConditions.character_id' => $char_id]);
 
-        $this->set('parent', $this->parent);
-        $this->set('_serialize', $query->all());
+        $this->IndexRelation->action($parent, $query);
     }
 
     // PUT /characters/{plin}/{chin}/conditions
@@ -67,12 +65,11 @@ class CharactersConditionsController
     // GET /condition/{coin}/characters
     public function conditionsIndex(int $coin): void
     {
-        $this->parent = $this->fetchModel('Conditions')->get($coin);
+        $parent = $this->fetchModel('Conditions')->get($coin);
 
         $query = $this->CharactersConditions->findWithContain();
         $query->andWhere(['CharactersConditions.condition_id' => $coin]);
 
-        $this->set('parent', $this->parent);
-        $this->set('_serialize', $query->all());
+        $this->IndexRelation->action($parent, $query);
     }
 }

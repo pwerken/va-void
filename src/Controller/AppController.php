@@ -19,6 +19,7 @@ class AppController
         $this->loadComponent('Authentication.Authentication');
         $this->loadComponent('Authorization.Authorization');
 
+        $this->loadComponent('IndexRelation');
         $this->loadComponent('Add');
         $this->loadComponent('View');
         $this->loadComponent('Edit');
