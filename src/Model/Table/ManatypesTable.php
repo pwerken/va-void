@@ -35,11 +35,6 @@ class ManatypesTable
         return true;
     }
 
-    protected function contain(): array
-    {
-        return ['Skills'];
-    }
-
     protected function orderBy(): array
     {
         return ['name' => 'ASC'];

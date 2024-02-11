@@ -235,6 +235,19 @@ class GettersTest
 		$this->assertGet('/skills/99/characters', 404);
 	}
 
+	public function testManatypes()
+	{
+		$this->withoutAuth();
+		$this->assertGet('/manatypes', 401);
+		$this->assertGet('/manatypes/1', 401);
+		$this->assertGet('/manatypes/99', 401);
+
+		$this->withAuthPlayer();
+		$this->assertGet('/manatypes');
+		$this->assertGet('/manatypes/1');
+		$this->assertGet('/manatypes/99', 404);
+	}
+
 	public function testItems()
 	{
 		$this->withoutAuth();

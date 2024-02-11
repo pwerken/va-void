@@ -280,6 +280,7 @@ $rest = function($routes, $name, $subs = [], $nest = [], $rels = []) {
 	$rest($routes, 'Groups',   [ 'Characters' ]);
 	$rest($routes, 'Worlds',   [ 'Characters' ]);
 
+	$rest($routes, 'Manatypes');
 	$rest($routes, 'Lammies');
 	$rest($routes, 'Events');
 
