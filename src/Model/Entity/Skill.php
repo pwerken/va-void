@@ -12,5 +12,7 @@ class Skill
         $this->setCompact(['mana_amount', 'manatype'], true);
         $this->setCompact(['loresheet', 'blanks'], true);
         $this->setCompact(['deprecated'], true);
+
+        $this->setHidden(['manatype_id'], true);
     }
 }
