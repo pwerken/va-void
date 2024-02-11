@@ -11,5 +11,6 @@ class Skill
         $this->setCompact(['cost', 'times_max'], true);
         $this->setCompact(['mana_amount', 'manatype'], true);
         $this->setCompact(['loresheet', 'blanks'], true);
+        $this->setCompact(['deprecated'], true);
     }
 }
