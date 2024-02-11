@@ -11,6 +11,7 @@ use Cake\Routing\Exception\MissingRouteException;
 
 use App\Authentication\UnauthenticatedException;
 use App\Error\ApiExceptionRenderer;
+use App\Error\AppErrorLogger;
 use App\Error\LoginFailedException;
 
 return [
@@ -216,6 +217,7 @@ return [
             MissingRouteException::class,
             RecordNotFoundException::class,
         ],
+        'logger' => AppErrorLogger::class,
         'log' => true,
         'trace' => true,
         'ignoredDeprecationPaths' => [],
