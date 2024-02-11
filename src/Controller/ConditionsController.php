@@ -15,7 +15,10 @@ class ConditionsController
     public function index(): void
     {
         $query = $this->Conditions->find()
-                    ->select(['Conditions.id', 'Conditions.name', 'Conditions.modified'], true);
+                    ->select([], true)
+                    ->select('Conditions.id')
+                    ->select('Conditions.name')
+                    ->select('Conditions.modified');
         $this->Authorization->applyScope($query);
 
         $this->doRawIndex($query, 'Condition', '/conditions/', 'coin');

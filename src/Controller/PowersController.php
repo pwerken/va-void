@@ -14,7 +14,10 @@ class PowersController
     public function index(): void
     {
         $query = $this->Powers->find()
-                    ->select(['Powers.id', 'Powers.name', 'Powers.modified'], true);
+                    ->select([], true)
+                    ->select('Powers.id')
+                    ->select('Powers.name')
+                    ->select('Powers.modified');
         $this->Authorization->applyScope($query);
 
         $this->doRawIndex($query, 'Powers', '/powers/', 'poin');
