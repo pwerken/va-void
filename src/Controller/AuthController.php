@@ -69,23 +69,29 @@ class AuthController
     }
 
     // GET  /auth/social/{provider}?code=...&redirect_uri=...
-    public function socialLogin(string $providerName): void
+    // GET  /auth/social/{provider}?token=...
+    public function socialLogin(string $provider): void
     {
         $providers = $this->SocialAuth->getProviders();
-        if(!in_array($providerName, $providers)) {
+        if(!in_array($provider, $providers)) {
             throw new NotFoundException();
         }
 
-        $code = $this->request->getQuery('code');
-        if(!$code) {
-            throw new BadRequestException('Missing "code" query parameter');
+        $token = $this->request->getQuery('token');
+        if($token) {
+            $user = $this->SocialAuth->accountFromToken($provider, $token);
         }
-        $redirectUri = $this->request->getQuery('redirect_uri');
-        if(!$redirectUri) {
-            throw new BadRequestException('Missing "redirect_uri" query parameter');
+        else {
+            $code = $this->request->getQuery('code');
+            if(!$code) {
+                throw new BadRequestException('Missing "code" query parameter');
+            }
+            $redirectUri = $this->request->getQuery('redirect_uri');
+            if(!$redirectUri) {
+                throw new BadRequestException('Missing "redirect_uri" query parameter');
+            }
+            $user = $this->SocialAuth->loginWithCode($provider, $code, $redirectUri);
         }
-
-        $user = $this->SocialAuth->loginCode($providerName, $code, $redirectUri);
         $this->set('_serialize', $this->_jwt($user));
     }
 

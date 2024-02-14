@@ -83,23 +83,16 @@ class SocialAuthComponent
     }
 
     // After social login, this get's called by the callback redirect
-    public function loginCallback(string $providerName): Player
+    public function loginCallback(string $provider): Player
     {
         $query = $this->getController()->getRequest()->getQueryParams();
 
         try {
-            $provider = $this->_getProvider($providerName);
-            $token = $provider->getAccessTokenByRequestParameters($query);
-            $identity = $provider->getIdentity($token);
-
-            if(!$identity->id) {
-                throw new RuntimeException(
-                    "`id` field is empty for the identity returned by `{$providerName}` provider."
-                );
-            }
-
-            return $this->_getUser($providerName, $identity);
-        } catch (SocialConnectException $e) {
+            $token = $this->_getProvider($provider)
+                          ->getAccessTokenByRequestParameters($query);
+            return $this->accountFromToken($provider, $token);
+        }
+        catch (SocialConnectException $e) {
             $this->_logException($e);
 
             throw new LoginFailedException('Login via '.$providerName.' failed');
@@ -108,7 +101,7 @@ class SocialAuthComponent
 
     // Front-end did the social login and caught the callback.
     // It then passes the received 'code' as param here to login the player.
-    public function loginCode(string $provider, string $code, string $callbackUri): Player
+    public function loginWithCode(string $provider, string $code, string $callbackUri): Player
     {
         // code param should already by be set, but lets not assume
         $request = $this->getController()->getRequest();
@@ -120,6 +113,20 @@ class SocialAuthComponent
         $this->setConfig('serviceConfig.redirectUri', $callbackUri);
 
         return $this->loginCallback($provider);
+    }
+
+    // Client did all provider authentication by it self.
+    // We use the provided 'token' to get info from the social provider.
+    public function accountFromToken($provider, $token): Player
+    {
+        $identity = $this->_getProvider($provider)->getIdentity($token);
+        if(!$identity->id) {
+            throw new SocialConnectException(
+                "`id` field is empty for the identity returned by `{$provider}` provider."
+            );
+        }
+
+        return $this->_getUser($provider, $identity);
     }
 
     // Return list of providerName's that are supported and configured.
@@ -202,7 +209,11 @@ class SocialAuthComponent
         $id = $profile->get('user_id');
         $email = $profile->get('email');
 
-        if(!$id and $email) {
+        if(!$email) {
+            throw new SocialConnectException('Missing e-mail adres');
+        }
+
+        if(!$id) {
             // new login, look for player based on known email
             $result = $this->_playerModel
                 ->find()
@@ -214,7 +225,7 @@ class SocialAuthComponent
                 $id = $result['id'];
             }
         }
-        if(!$id and $email) {
+        if(!$id) {
             // fallback, is there another social profile with the same email?
             $result = $this->_profileModel
                 ->find()
