@@ -8,6 +8,7 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\Routing\Router;
 use Cake\Utility\Security;
 use Firebase\JWT\JWT;
+use SocialConnect\OAuth2\AccessToken;
 
 use App\Error\LoginFailedException;
 use App\Model\Entity\Player;
@@ -79,7 +80,8 @@ class AuthController
 
         $token = $this->request->getQuery('token');
         if($token) {
-            $user = $this->SocialAuth->accountFromToken($provider, $token);
+            $obj = new AccessToken(['access_token' => $token]);
+            $user = $this->SocialAuth->accountFromToken($provider, $obj);
         }
         else {
             $code = $this->request->getQuery('code');
