@@ -77,9 +77,9 @@ class SocialAuthComponent
     }
 
     // URL to redirect to, for logging in via the social site
-    public function authUrl(string $providerName): string
+    public function authUrl(string $provider): string
     {
-        return $this->_getProvider($providerName)->makeAuthUrl();
+        return $this->_getProvider($provider)->makeAuthUrl();
     }
 
     // After social login, this get's called by the callback redirect
@@ -95,7 +95,7 @@ class SocialAuthComponent
         catch (SocialConnectException $e) {
             $this->_logException($e);
 
-            throw new LoginFailedException('Login via '.$providerName.' failed');
+            throw new LoginFailedException('Login via '.$provider.' failed');
         }
     }
 
@@ -129,7 +129,7 @@ class SocialAuthComponent
         return $this->_getUser($provider, $identity);
     }
 
-    // Return list of providerName's that are supported and configured.
+    // Return list of provider's that are supported and configured.
     public function getProviders(): array
     {
         $result = [];
@@ -149,7 +149,7 @@ class SocialAuthComponent
         $this->setConfig('serviceConfig.redirectUri', $callbackUri);
     }
 
-    protected function _getProvider(string $providerName)
+    protected function _getProvider(string $provider)
     {
         if(is_null($this->_service))
         {
@@ -169,16 +169,16 @@ class SocialAuthComponent
             );
         }
 
-        return $this->_service->getProvider($providerName);
+        return $this->_service->getProvider($provider);
     }
 
-    protected function _getUser($providerName, $identity): Player
+    protected function _getUser($provider, $identity): Player
     {
         // first look for SocialProfile in DB
         $profile = $this->_profileModel
             ->find()
             ->where(
-                ['provider' => $providerName
+                ['provider' => $provider
                 ,'identifier' => $identity->id
                 ])
             ->first();
@@ -188,7 +188,7 @@ class SocialAuthComponent
         }
 
         // update $profile with data from $identity
-        $data = ['provider' => $providerName];
+        $data = ['provider' => $provider];
         foreach(get_object_vars($identity) as $key => $value) {
             switch($key) {
                 case 'id':
