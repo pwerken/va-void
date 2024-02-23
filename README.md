@@ -94,3 +94,36 @@ Call the `/auth/social` api endpoint to get the list of all supported social log
    - `CALLBACK` must be the same as used in the `authUri`
 
 6. Perform a GET on the modified `url`.  This should yield the same result as a regular user+name password.  The result contains a JWT that can be used for all following interactions with the void api.  Similar, a failed login will result in a 401 error response.
+
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant C as Client App
+    participant A as VOID Api
+    participant P as Provider
+
+B-)+C: get login page
+activate B
+C-)+A: (0) HTTP GET /auth/social
+A--)-C: list of providers, each with "authUri" and "url"
+C->>C: (1) replace STATE and CALLBACK in "authUri"
+C--)-B: login page
+B->>B: user selects login provider
+B-)+P: (2) redirect to modified "authUri"
+P--)B: login page
+B-)P: user authenticates
+P--)-B: (3) redirect to CALLBACK with CODE and STATE
+B-)+C: 
+C->>C: (4) check STATE is unmodified
+C->>C: (5) replace CODE and CALLBACK in "url"
+C-)+A: (6) GET "url"
+A-)+P: verify CODE
+P-)-A: user information
+A->>A: find player plin
+A--)-C: provide JWT
+Note over C,A: use JWT to access VOID Api as user
+C-)+A: GET /players/<plin>
+A--)-C: 
+C--)-B: ...
+deactivate B
+```
