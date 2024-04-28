@@ -283,8 +283,9 @@ class AdminController
     public function printing($sides = NULL)
     {
         $lammies = $this->fetchModel('Lammies');
+        $user = $this->getRequest()->getAttribute('identity');
 
-        if(!is_null($sides)) {
+        if(!is_null($sides) && $user->hasAuth('Infobalie')) {
             $queued = $lammies->find('Queued')->all();
 
             $this->set('double', ($sides == 'double'));
@@ -295,8 +296,6 @@ class AdminController
             $lammies->setStatuses($queued, 'Printed');
             return;
         }
-
-        $user = $this->getRequest()->getAttribute('identity');
 
         if($this->request->is('post') && $user->hasAuth('Infobalie')) {
             $ids = $this->request->getData('delete');

@@ -25,6 +25,7 @@ echo $this->Form->create();
 $role = (!isset($user) ? '' : $user['role']);
 switch($role) {
 case 'Super':
+case 'Event Control':
 case 'Infobalie':
 	echo $this->Form->button(__('Delete selected'));
 	echo '<span style="padding-left:100px;"></span>';
