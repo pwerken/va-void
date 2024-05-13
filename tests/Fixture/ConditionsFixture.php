@@ -14,14 +14,18 @@ class ConditionsFixture
 			[	[ 'id' => 1
 				, 'name' => 'Glasses'
 				, 'player_text' => 'You require glasses.'
-				, 'cs_text' => 'Not just the drinking kind.'
+				, 'referee_notes' => ''
+				, 'notes' => 'Not just the drinking kind.'
+				, 'deprecated' => 0
 				, 'modified' => NULL
 				, 'modifier_id' => NULL
 				]
 			,	[ 'id' => 2
 				, 'name' => 'No'
 				, 'player_text' => 'No you can\'t.'
-				, 'cs_text' => ''
+				, 'referee_notes' => ''
+				, 'notes' => ''
+				, 'deprecated' => 1
 				, 'modified' => NULL
 				, 'modifier_id' => NULL
 				]

@@ -15,9 +15,11 @@ class ItemsFixture
 				, 'name' => 'Sword'
 				, 'description' => '1-h sword'
 				, 'player_text' => 'Magic sword'
-				, 'cs_text' => ''
+				, 'referee_notes' => ''
+				, 'notes' => ''
 				, 'character_id' => 1
 				, 'expiry' => '2018-06-23'
+				, 'deprecated' => 1
 				, 'modified' => '2018-06-23 14:30:19'
 				, 'modifier_id' => 1
 				]
@@ -25,9 +27,11 @@ class ItemsFixture
 				, 'name' => 'Shield'
 				, 'description' => 'Shield'
 				, 'player_text' => 'Pretty Shield'
-				, 'cs_text' => ''
+				, 'referee_notes' => ''
+				, 'notes' => ''
 				, 'character_id' => 2
 				, 'expiry' => '2018-06-23'
+				, 'deprecated' => 0
 				, 'modified' => '2018-06-23 14:30:19'
 				, 'modifier_id' => 1
 				]
