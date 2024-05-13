@@ -74,7 +74,7 @@ class CharactersController
         $table->saveOrFail($lammy);
         $count = 1;
 
-        if($this->getRequest()->getData('all'))
+        if(array_key_exists('all', $this->getRequest()->getData()))
         {
             foreach($char->powers as $power) {
                 $lammy = $table->newEmptyEntity();
