@@ -17,10 +17,25 @@ class ConditionsController
         $query = $this->Conditions->find()
                     ->select([], true)
                     ->select('Conditions.id')
-                    ->select('Conditions.name');
+                    ->select('Conditions.name')
+                    ->select('Conditions.deprecated');
         $this->Authorization->applyScope($query);
 
-        $this->doRawIndex($query, 'Condition', '/conditions/', 'coin');
+        $content = [];
+        foreach($this->doRawQuery($query) as $row) {
+            $content[] = [ 'class' => 'Condition'
+                , 'url' => '/conditions/'.$row[0]
+                , 'coin' => (int)$row[0]
+                , 'name' => $row[1]
+                , 'deprecated' => (boolean)$row[2]
+                ];
+        }
+
+        $this->set('_serialize',
+            [ 'class' => 'List'
+            , 'url' => rtrim($this->request->getPath(), '/')
+            , 'list' => $content
+            ]);
     }
 
     // POST /conditions/{coin}/print

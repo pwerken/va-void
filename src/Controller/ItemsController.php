@@ -19,13 +19,13 @@ class ItemsController
                     ->select('Items.id')
                     ->select('Items.name')
                     ->select('Items.expiry')
+                    ->select('Items.deprecated')
                     ->select('Characters.player_id')
                     ->select('Characters.chin')
                     ->select('Characters.name')
                     ->select('Characters.status')
                     ->leftJoin(['Characters' => 'characters'],
                             ['Characters.id = Items.character_id']);
-
         $this->Authorization->applyScope($query);
 
         $hasParent = isset($this->parent);
@@ -43,11 +43,11 @@ class ItemsController
             $char = NULL;
             if(!is_null($row[4]) && !$hasParent) {
                 $char = [ 'class' => 'Character'
-                        , 'url' => '/characters/'.$row[4].'/'.$row[5]
-                        , 'plin' => (int)$row[3]
-                        , 'chin' => (int)$row[4]
-                        , 'name' => $row[5]
-                        , 'status' => $row[6]
+                        , 'url' => '/characters/'.$row[5].'/'.$row[6]
+                        , 'plin' => (int)$row[4]
+                        , 'chin' => (int)$row[5]
+                        , 'name' => $row[6]
+                        , 'status' => $row[7]
                         ];
             }
             $contentEntry = [ 'class' => 'Item'
@@ -56,6 +56,7 @@ class ItemsController
                 , 'name' => $row[1]
                 , 'expiry' => $row[2]
                 , 'character' => $char
+                , 'deprecated' => (boolean)$row[3]
                 ];
             if($hasParent) {
                 unset($contentEntry['character']);

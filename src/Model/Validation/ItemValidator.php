@@ -20,5 +20,6 @@ class ItemValidator
         $this->allowEmptyString('notes');
         $this->allowEmpty('character_id')->nonNegativeInteger('character_id');
         $this->allowEmptyDate('expiry')->date('expiry');
+        $this->allowEmpty('deprecated')->boolean('deprecated');
     }
 }

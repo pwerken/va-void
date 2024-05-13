@@ -12,7 +12,7 @@ class Item
     {
         parent::__construct($properties, $options);
 
-        $this->setCompact(['expiry', 'character'], true);
+        $this->setCompact(['expiry', 'character', 'deprecated'], true);
         $this->setVirtual(['plin', 'chin']);
         $this->setHidden(['character_id'], true);
     }

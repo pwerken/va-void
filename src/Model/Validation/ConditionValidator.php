@@ -18,5 +18,6 @@ class ConditionValidator
         $this->notEmptyString('player_text');
         $this->allowEmptyString('notes');
         $this->allowEmptyString('referee_notes');
+        $this->allowEmpty('deprecated')->boolean('deprecated');
     }
 }
