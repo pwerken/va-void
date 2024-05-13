@@ -17,14 +17,9 @@ class IndexRelationComponent
     {
         $this->Authorization->authorize($parent, $authAction);
 
-        $modified = [$parent->modified];
         $objs = $query->all();
-        foreach($objs as $obj) {
-            $modified[] = $obj->modified;
-        }
 
         $controller = $this->getController();
-        $controller->checkModified($modified);
         $controller->set('parent', $parent);
         $controller->set('_serialize', $objs);
     }

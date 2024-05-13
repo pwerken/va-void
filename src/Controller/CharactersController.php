@@ -8,6 +8,7 @@ use Cake\Utility\Inflector;
 class CharactersController
     extends AppController
 {
+    use \App\Controller\Traits\View; // GET /characters/{plin}/{chin}
     use \App\Controller\Traits\Edit; // PUT /characters/{plin}/{chin}
 
     // GET /characters
@@ -18,8 +19,7 @@ class CharactersController
                     ->select('Characters.player_id')
                     ->select('Characters.chin')
                     ->select('Characters.name')
-                    ->select('Characters.status')
-                    ->select('Characters.modified');
+                    ->select('Characters.status');
         $this->Authorization->applyScope($query);
 
         if(isset($this->parent)) {
@@ -34,7 +34,6 @@ class CharactersController
         }
 
         $content = [];
-        $modified = [];
         foreach($this->doRawQuery($query) as $row) {
             $content[] =
                 [ 'class' => 'Character'
@@ -44,43 +43,13 @@ class CharactersController
                 , 'name' => $row[2]
                 , 'status' => $row[3]
                 ];
-            $modified[] = $row[4];
         }
 
-        $this->checkModified($modified);
         $this->set('_serialize',
             [ 'class' => 'List'
             , 'url' => rtrim($this->request->getPath(), '/')
             , 'list' => $content
             ]);
-    }
-
-    // PUT /characters/{plin}/{chin}
-    public function view(int $id): void
-    {
-        $this->View->action($id);
-
-        $char = $this->viewBuilder()->getVar('_serialize');
-        if(!$char) {
-            return;
-        }
-
-        $modified = [];
-        $modified[] = $char->modified;
-        $modified[] = $char->player->modified;
-        foreach($char->items as $obj) {
-            $modified[] = $obj->modified;
-        }
-        foreach($char->conditions as $obj) {
-            $modified[] = $obj->modified;
-            $modified[] = $obj->condition->modified;
-        }
-        foreach($char->powers as $obj) {
-            $modified[] = $obj->modified;
-            $modified[] = $obj->power->modified;
-        }
-
-        $this->checkModified($modified);
     }
 
     // PUT /players/{plin}/characters

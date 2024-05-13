@@ -7,6 +7,7 @@ class PlayersController
     extends AppController
 {
     use \App\Controller\Traits\Add;      // PUT /players
+    use \App\Controller\Traits\View;     // GET /players/{plin}
     use \App\Controller\Traits\Edit;     // PUT /players/{plin}
     use \App\Controller\Traits\Delete;   // DELETE /players/{plin}
 
@@ -18,12 +19,10 @@ class PlayersController
                     ->select('Players.id')
                     ->select('Players.first_name')
                     ->select('Players.insertion')
-                    ->select('Players.last_name')
-                    ->select('Players.modified');
+                    ->select('Players.last_name');
         $this->Authorization->applyScope($query);
 
         $content = [];
-        $modified = [];
         foreach($this->doRawQuery($query) as $row) {
             $name = $row[1];
             if(!empty($row[2]))
@@ -36,36 +35,12 @@ class PlayersController
                 , 'plin' => (int)$row[0]
                 , 'full_name' => $name
                 ];
-            $modified[] = $row[4];
         }
 
-        $this->checkModified($modified);
         $this->set('_serialize',
             [ 'class' => 'List'
             , 'url' => rtrim($this->request->getPath(), '/')
             , 'list' => $content
             ]);
     }
-
-    // GET /players/{plin}
-    public function view($id): void
-    {
-        $this->View->action($id);
-
-        $player = $this->viewBuilder()->getVar('_serialize');
-        if(!$player) {
-            return;
-        }
-
-        $modified = [$player->modified];
-        foreach($player->socials as $obj) {
-            $modified[] = $obj->modified;
-        }
-        foreach($player->characters as $obj) {
-            $modified[] = $obj->modified;
-        }
-
-        $this->checkModified($modified);
-    }
-
 }

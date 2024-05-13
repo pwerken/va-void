@@ -34,14 +34,6 @@ class CharactersPowersController
         $this->Authorization->authorize($parent, 'view');
 
         $this->View->action([$char_id, $poin], false);
-
-        $obj = $this->viewBuilder()->getVar('_serialize');
-        $modified = [];
-        $modified[] = $obj->modified;
-        $modified[] = $obj->character->modified;
-        $modified[] = $obj->power->modified;
-
-        $this->checkModified($modified);
     }
 
     // PUT /characters/{plin}/{chin}/powers/{poin}

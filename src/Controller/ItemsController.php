@@ -19,7 +19,6 @@ class ItemsController
                     ->select('Items.id')
                     ->select('Items.name')
                     ->select('Items.expiry')
-                    ->select('Items.modified')
                     ->select('Characters.player_id')
                     ->select('Characters.chin')
                     ->select('Characters.name')
@@ -28,7 +27,6 @@ class ItemsController
                             ['Characters.id = Items.character_id']);
 
         $this->Authorization->applyScope($query);
-        $modified = [];
 
         $hasParent = isset($this->parent);
         if($hasParent) {
@@ -38,7 +36,6 @@ class ItemsController
 
             $query = $query->andWhere(["Items.$key" => $value]);
             $this->set('parent', $this->parent);
-            $modified[] = $this->parent->modified;
         }
 
         $content = [];
@@ -47,10 +44,10 @@ class ItemsController
             if(!is_null($row[4]) && !$hasParent) {
                 $char = [ 'class' => 'Character'
                         , 'url' => '/characters/'.$row[4].'/'.$row[5]
-                        , 'plin' => (int)$row[4]
-                        , 'chin' => (int)$row[5]
-                        , 'name' => $row[6]
-                        , 'status' => $row[7]
+                        , 'plin' => (int)$row[3]
+                        , 'chin' => (int)$row[4]
+                        , 'name' => $row[5]
+                        , 'status' => $row[6]
                         ];
             }
             $contentEntry = [ 'class' => 'Item'
@@ -64,10 +61,8 @@ class ItemsController
                 unset($contentEntry['character']);
             }
             $content[] = $contentEntry;
-            $modified[] = $row[3];
         }
 
-        $this->checkModified($modified);
         $this->set('_serialize',
             [ 'class' => 'List'
             , 'url' => rtrim($this->request->getPath(), '/')
