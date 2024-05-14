@@ -193,6 +193,11 @@ class AdminController
             return;
         }
 
+        if ($player->role == $role) {
+            $this->Flash->success("Player#$plin already as `$role` authorization");
+            return;
+        }
+
         $table->patchEntity($player, ['role' => $role]);
         if (!$player->isDirty('role')) {
             $this->Flash->error("Not authorized to change roles");
