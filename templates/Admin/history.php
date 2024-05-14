@@ -1,7 +1,7 @@
 <h3>Entity History</h3>
 
 <?php
-echo $this->Form->create();
+echo $this->Form->create(null, ['type' => 'get']);
 $style = ['style' => 'display: inline-block; width: auto; margin-right: 1rem'];
 
 $style['value'] = $what;

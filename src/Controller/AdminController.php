@@ -251,12 +251,12 @@ class AdminController
             return;
         }
 
-        $plin = $this->request->getData('plin');
+        $plin = $this->request->getQuery('plin');
         if(!empty($plin)) {
             $plin = (int)$plin;
         }
 
-        $since = $this->request->getData('since', '');
+        $since = $this->request->getQuery('since', '');
         $date = \DateTimeImmutable::createFromFormat("Y-m-d", $since);
         if(!$date) {
             $date = new \DateTime();
@@ -264,7 +264,7 @@ class AdminController
         }
         $since = $date->format('Y-m-d');
 
-        $what = $this->request->getData('what');
+        $what = $this->request->getQuery('what');
 
         $this->set('what', $what);
         $this->set('since', $since);
