@@ -1,10 +1,13 @@
-<h3>Password authentication</h3>
+<h3>Legacy password authentication</h3>
+<p>
+If the password field is left blank, the password is removed.<br/>
+</p>
 <?php
 
 echo $this->Form->create();
 echo $this->Form->control('plin'
-		, ['label' => 'Plin', 'type' => 'text']);
+		, ['label' => 'Plin', 'type' => 'text', 'value' => '']);
 echo $this->Form->control('password'
 		, ['label' => 'Password', 'type' => 'password']);
 echo $this->Form->button(__('Set password'));
-
+echo $this->Form->end();

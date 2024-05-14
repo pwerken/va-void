@@ -120,8 +120,29 @@ class AdminController
 
         $plin = $this->request->getData('plin');
         $social = $this->request->getData('social');
-        $pass = $this->request->getData('password');
 
+        if(empty($plin) or empty($social)) {
+            return;
+        }
+
+        $this->loadModel('SocialProfiles');
+        $login = $this->SocialProfiles->findById($social)->first();
+        if(is_null($login)) {
+            $this->Flash->error("SocialProfile#$social not found ?!");
+            return;
+        }
+
+        // delete login attempt
+        if(!is_null($this->request->getData('delete'))) {
+            if(!$this->SocialProfiles->delete($login)) {
+                $this->Flash->error("Failed to delete SocialProfile#$social");
+            } else {
+                $this->Flash->success("Deleted SocialProfile#$social");
+            }
+            return;
+        }
+
+        // link $plin to $social profile
         $this->loadModel('Players');
         $player = $this->Players->findById($plin)->first();
         if(is_null($player)) {
@@ -129,22 +150,18 @@ class AdminController
             return;
         }
 
-        if($plin && $social && is_null($pass)) {
-            // link $plin to $social profile
-            $this->loadModel('SocialProfiles');
-            $login = $this->SocialProfiles->findById($social)->first();
-            if(is_null($login)) {
-                $this->Flash->error("Player#$plin not found");
-                return;
-            }
+        $login->user_id = $player->id;
 
-            $login->user_id = $player->id;
+        if(!$this->SocialProfiles->save($login)) {
+            $this->Flash->error("Failed to link SocialProfile#$social");
+        } else {
+            $this->Flash->success("SocialProfile#$social linked to Player#$plin");
+        }
+    }
 
-            if(!$this->SocialProfiles->save($login)) {
-                $this->Flash->error("Failed to link Social Profile");
-            } else {
-                $this->Flash->success("Social Profile linked to Player#$plin");
-            }
+    public function password()
+    {
+        if(!$this->request->is('post')) {
             return;
         }
 

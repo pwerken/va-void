@@ -23,6 +23,11 @@ class AdminControllerPolicy
 
     public function authentication(): bool
     {
+        return $this->hasAuth('referee');
+    }
+
+    public function password(): bool
+    {
         return $this->hasAuth('player');
     }
 
