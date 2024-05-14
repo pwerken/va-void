@@ -9,7 +9,10 @@ foreach($printing as $row) {
 		continue;
 	$queued ++;
 	$key = $row['entity'] . "_" . $row['key1'] . "_" . $row['key2'];
-	if(isset($uniq[$key])) {
+	if(isset($uniq[$key])
+	and $row['entity'] != 'Power'
+	and $row['entity'] != 'Condition'
+	) {
 		$duplicates++;
 	}
 	$uniq[$key] = $row['id'];
@@ -59,7 +62,10 @@ foreach($printing as $row) {
 		."<td>" . $row['id'];
 	if($row['status'] == 'Queued') {
 		$key = $row['entity'] . "_" . $row['key1'] . "_" . $row['key2'];
-		if($uniq[$key] != $row['id']) {
+		if($uniq[$key] != $row['id']
+		and $row['entity'] != 'Power'
+		and $row['entity'] != 'Condition'
+		) {
 			$checked = ' checked';
 		} else {
 			$checked = '';
