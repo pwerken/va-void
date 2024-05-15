@@ -73,7 +73,7 @@ class HistoryTable
                 , 'modified', 'modifier_id']
             , 'Characters' =>
                 [ 'key1' => 'player_id', 'key2' => 'chin'
-                , 'name', 'modified' , 'modifier_id']
+                , 'name', 'modified', 'modifier_id']
             , 'Conditions' =>
                 [ 'key1' => 'id', 'key2' => 'NULL'
                 , 'name', 'modified', 'modifier_id']

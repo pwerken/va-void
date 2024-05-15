@@ -18,6 +18,7 @@ abstract class AppEntityPolicy
 
     public function __construct()
     {
+        $this->showFieldAuth('creator_id', 'read-only');
         $this->showFieldAuth('modifier_id', 'read-only');
     }
 
@@ -33,7 +34,7 @@ abstract class AppEntityPolicy
     {
         $this->setIdentity($identity);
 
-        $audit_fields = ['created', 'created_id', 'modified', 'modified_id'];
+        $audit_fields = ['created', 'creator_id', 'modified', 'modifier_id'];
         $obj->setAccess($audit_fields, false);
 
         foreach($this->editFieldAuth as $field => $access)
