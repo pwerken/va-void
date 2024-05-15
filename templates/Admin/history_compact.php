@@ -25,11 +25,14 @@ function format_v($k, $v)
 {
 	if(is_null($v))
 		return '<em>NULL</em>';
+	if(is_bool($v))
+		return '<em>'.($v?'true':'false').'</em>';
+
 	if($k !== 'character_id')
 		return $v;
 
 	$char = TableRegistry::get('Characters')->get($v);
-	return $v . '=' . $char->player_id . '/' . $char->chin . ' ' . $char->name;
+	return $v.' = '.$char->player_id.'/'.$char->chin.' '.$char->name;
 }
 
 foreach($list as $cur)
