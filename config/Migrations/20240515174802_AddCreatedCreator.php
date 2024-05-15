@@ -86,12 +86,15 @@ class AddCreatedCreator extends AbstractMigration
 
         // try to improve on created/creator_id based on historical data
         $query = $this->getQueryBuilder()
-                    ->select('*')
+                    ->select(function($query) {
+                        return ['min' => $query->func()->min('id')];
+                    })
+                    ->select(['entity', 'key1', 'modified', 'modifier_id'])
                     ->from('history')
                     ->group(['entity', 'key1', 'key2'])
                     ->having(function($exp, $query) {
-                        $or = $exp->or(['modified IS' => NULL]);
-                        $or->add(['modifier_id IS' => NULL]);
+                        $or = $exp->or(['modified IS NOT' => NULL]);
+                        $or->add(['modifier_id IS NOT' => NULL]);
                         $list = $exp->in('entity', ['item', 'condition', 'power']);
                         return $exp->and([$or, $list]);
                     });
