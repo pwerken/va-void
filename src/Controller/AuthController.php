@@ -111,6 +111,7 @@ class AuthController
                     , 'role' => $user['role']
                     ], Security::getSalt(), 'HS256')
                 , 'player' => '/players/'.$user['id']
+                , 'plin' => $user['id']
                 ];
     }
 
