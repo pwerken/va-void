@@ -1,0 +1,21 @@
+stages:
+- deploy
+
+image: debian:stable-slim
+
+before_script:
+- 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
+- eval $(ssh-agent -s)
+- echo "$SSH_USER_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+- mkdir -p ~/.ssh
+- chmod 700 ~/.ssh
+- cp "$SSH_SERVER_HOSTKEYS" ~/.ssh/known_hosts
+- chmod 644 ~/.ssh/known_hosts
+
+hetzner:
+  stage: deploy
+  script:
+  - ssh $SSH_USER@$SSH_SERVER ./bin/cicd-void-deploy $CI_COMMIT_BRANCH
+  only:
+  - main
+  - develop
