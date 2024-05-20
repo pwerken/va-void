@@ -27,7 +27,7 @@ class AddDeprecatedIndicator extends AppMigration
 
         $this->table('items')
             ->addColumn('deprecated', 'boolean',
-                [ 'default' => null
+                [ 'default' => false
                 , 'limit' => null
                 , 'null' => false
                 , 'after' => 'expiry'
