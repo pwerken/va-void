@@ -32,7 +32,7 @@ class PdfView
         return $this->createPdf($data, $this->get('double'));
     }
 
-    public function createPdf($data, $twosided = false)
+    public function createPdf($data, $twosided = false): string
     {
         $lammies = [];
         $todo = [];
@@ -46,7 +46,7 @@ class PdfView
         }
 
         if(empty($todo)) {
-            return NULL;
+            return "";
         }
 
         if(!$twosided) {
