@@ -166,7 +166,7 @@ class AdminController
         }
 
         // modify legacy password
-
+        $this->loadModel('Players');
         $this->Players->patchEntity($player, ['password' => $pass]);
         if (!$player->isDirty('password')) {
             $this->Flash->error("Not authorized to change passwords");
