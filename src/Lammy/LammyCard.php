@@ -1,7 +1,6 @@
 <?php
 namespace App\Lammy;
 
-use FPDF;
 include_once ROOT . DS . 'plugins' . DS . 'qrcode' . DS . 'qrcode.class.php';
 
 /**
@@ -19,10 +18,16 @@ abstract class LammyCard
 	private   $xPos   = 0;
 	private   $yPos   = 0;
 	private   $size   = 0;
+	protected $who    = null;
 
 	public function __construct($entity)
 	{
 		$this->entity = $entity;
+	}
+
+	public function printedBy($plin)
+	{
+		$this->who = $plin;
 	}
 
 	/************************* USED BY PdfSheet ***************************/
@@ -152,4 +157,25 @@ abstract class LammyCard
 		$this->pdf->SetXY($this->xPos, $this->yPos);
 	}
 
+	protected function inMargin($text)
+	{
+		$this->font(9);
+
+		$text = mb_convert_encoding($text, 'ISO-8859-1', 'UTF-8');
+		$w = $this->pdf->GetStringWidth($text);
+
+		$x = -5;
+		$y = (self::$HEIGHT - $w) / 2;
+		$a = 'D';
+
+		if($this->xPos > self::$WIDTH) {
+			$x = self::$WIDTH + 5;
+			$y = (self::$HEIGHT + $w) / 2;
+			$a = 'U';
+		}
+		$x += $this->xPos;
+		$y += $this->yPos;
+
+		$this->pdf->TextWithDirection($x, $y, $text, $a);
+	}
 }

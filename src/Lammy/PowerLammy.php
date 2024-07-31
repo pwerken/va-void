@@ -2,7 +2,7 @@
 namespace App\Lammy;
 
 class PowerLammy
-	extends CharactersConditionLammy
+	extends ConditionLammy
 {
 
 	public function draw($side, $data = NULL)

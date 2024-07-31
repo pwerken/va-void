@@ -50,6 +50,14 @@ class ItemLammy
 		$this->font(8, 'B');
 		$this->text(12, 10, 60, 'L', $this->entity->name);
 		$this->text(12, 43, 60, 'L', $expiry);
+
+		if($this->entity->character) {
+			$owner = $this->entity->character->player_id;
+			$owner .= '/' . $this->entity->character->chin;
+		} else {
+			$owner = 'unknown';
+		}
+		$this->inMargin('owner: ' . $owner);
 	}
 
 	protected function _drawPlayer()

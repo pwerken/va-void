@@ -20,4 +20,10 @@ class ConditionLammy
 		parent::draw($side, $data);
 	}
 
+    protected function _drawFront($data)
+    {
+        parent::_drawFront($data);
+
+        $this->inMargin('printed by: ' . $this->who);
+    }
 }

@@ -7,7 +7,7 @@ use App\Lammy\LammyCard;
 use App\Model\Entity\Lammy;
 use Cake\ORM\ResultSet;
 use Cake\View\View;
-use FPDF;
+use RPDF\Rpdf;
 
 class PdfView
     extends View
@@ -41,6 +41,8 @@ class PdfView
             if(is_null($lammy)) {
                 continue;
             }
+
+            $lammy->printedBy($entity->creator_id);
             $lammies[$key] = $lammy;
             $todo[] = [$key, $lammy->sides()];
         }
@@ -55,7 +57,7 @@ class PdfView
             $layout = $this->makeLayout2P($todo);
         }
 
-        $pdf = new FPDF('P', 'mm', 'A4');
+        $pdf = new Rpdf('P', 'mm', 'A4');
         $pdf->SetMargins(self::$M_SIDE, self::$M_TOP, self::$M_SIDE);
         $pdf->SetTitle('Lammies!');
         $pdf->SetAutoPageBreak(false);
