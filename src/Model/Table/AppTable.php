@@ -112,10 +112,18 @@ abstract class AppTable
             return;
         }
 
-        if($entity->isDirty('modified') && $entity->isDirty('modifier_id')
-        && $entity->get('modifier_id') == $entity->getOriginal('modifier_id')
-        && count($entity->getDirty()) == 2)
-        {
+        $dirties = [];
+        foreach($entity->getDirty() as $dirty) {
+            if($dirty == 'modified' || $dirty == 'modifier_id') {
+                continue;
+            }
+            if($this->hasField($dirty)) {
+                $dirties[] = $dirty;
+            }
+        }
+        if(empty($dirties)) {
+            $entity->modified = $entity->getOriginal('modified');
+            $entity->modifier_id = $entity->getOriginal('modifier_id');
             return;
         }
 
