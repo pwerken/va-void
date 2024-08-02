@@ -1,7 +1,7 @@
 <?php
 namespace App\Lammy;
 
-include_once ROOT . DS . 'plugins' . DS . 'qrcode' . DS . 'qrcode.class.php';
+use QRcode\QRcode;
 
 /**
  *  Contains all the basics for making a lammy.
@@ -124,7 +124,7 @@ abstract class LammyCard
 	}
 	protected function qrcode()
 	{
-		$qr = new \QRcode($this->entity->getUrl(), 'L');
+		$qr = new QRcode($this->entity->getUrl(), 'L');
 		$qr->disableBorder();
 
 		$w = 17;
