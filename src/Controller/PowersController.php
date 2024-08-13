@@ -40,6 +40,17 @@ class PowersController
     // POST /powers/{poin}/print
     public function queue(int $poin): void
     {
+        if(array_key_exists('all', $this->getRequest()->getData())) {
+            $power = $this->fetchModel()->getWithContain($poin);
+            $table = $this->fetchModel('Lammies');
+            foreach($power->characters as $character) {
+                $lammy = $table->newEmptyEntity();
+                $lammy->set('target', $character);
+                $table->saveOrFail($lammy);
+            }
+            return;
+        }
+
         $this->QueueLammy->action($poin);
     }
 }

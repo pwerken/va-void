@@ -41,6 +41,17 @@ class ConditionsController
     // POST /conditions/{coin}/print
     public function queue(int $coin): void
     {
+        if(array_key_exists('all', $this->getRequest()->getData())) {
+            $condition = $this->fetchModel()->getWithContain($coin);
+            $table = $this->fetchModel('Lammies');
+            foreach($condition->characters as $character) {
+                $lammy = $table->newEmptyEntity();
+                $lammy->set('target', $character);
+                $table->saveOrFail($lammy);
+            }
+            return;
+        }
+
         $this->QueueLammy->action($coin);
     }
 }
