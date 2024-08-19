@@ -164,9 +164,16 @@ class AdminController
         if(!$this->request->is('post')) {
             return;
         }
+        $plin = $this->request->getData('plin');
+        $pass = $this->request->getData('password');
 
-        // modify legacy password
         $this->loadModel('Players');
+        $player = $this->Players->findById($plin)->first();
+        if(is_null($player)) {
+            $this->Flash->error("Player#$plin not found");
+            return;
+        }
+
         $this->Players->patchEntity($player, ['password' => $pass]);
         if (!$player->isDirty('password')) {
             $this->Flash->error("Not authorized to change passwords");
