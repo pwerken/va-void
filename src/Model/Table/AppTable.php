@@ -80,26 +80,23 @@ abstract class AppTable
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
         // drop association data from input
-        foreach($this->associations() as $assoc)
-        {
+        foreach($this->associations() as $assoc) {
             $prop = $assoc->getProperty();
-
             if(isset($data[$prop]))
                 unset($data[$prop]);
         }
 
-        // drop non-existant fields from input
         foreach($data->getArrayCopy() as $field => $value) {
+            // drop non-existant fields from input
             if(!$this->hasField($field)) {
                 unset($data[$field]);
                 continue;
             }
         }
 
-        /* change "" to null for nullable fields */
+        // change "" to null for nullable fields
         $schema = $this->getSchema();
-        foreach($schema->columns() as $field)
-        {
+        foreach($schema->columns() as $field) {
             if(!$schema->isNullable($field) or !isset($data[$field]))
                 continue;
 
