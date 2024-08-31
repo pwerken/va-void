@@ -89,9 +89,11 @@ abstract class AppTable
         }
 
         // drop non-existant fields from input
-        foreach($data as $field => $value) {
-            if(!$this->hasField((string)$field))
+        foreach($data->getArrayCopy() as $field => $value) {
+            if(!$this->hasField($field)) {
                 unset($data[$field]);
+                continue;
+            }
         }
 
         /* change "" to null for nullable fields */
