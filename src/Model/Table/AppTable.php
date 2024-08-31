@@ -92,6 +92,11 @@ abstract class AppTable
                 unset($data[$field]);
                 continue;
             }
+
+            // trim whitespace from string
+            if(is_string($value)) {
+                $data[$field] = trim($value);
+            }
         }
 
         // change "" to null for nullable fields
