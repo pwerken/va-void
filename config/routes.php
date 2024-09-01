@@ -264,13 +264,12 @@ $rest = function($routes, $name, $subs = [], $nest = [], $rels = []) {
 	$rest($routes, 'Characters'
 					, [ 'Items' ]
 					, [ ]
-					, [ 'Conditions', 'Powers', 'Skills', 'Spells' ]
+					, [ 'Conditions', 'Powers', 'Skills' ]
 					);
 
 	$rest($routes, 'Conditions', [], [ 'Characters' ]);
 	$rest($routes, 'Powers',     [], [ 'Characters' ]);
 	$rest($routes, 'Skills',     [], [ 'Characters' ]);
-	$rest($routes, 'Spells',     [], [ 'Characters' ]);
 
 	$rest($routes, 'Items',      [], [              ], ['Attributes']);
 	$rest($routes, 'Attributes', [], [ 'Items'      ]);
