@@ -10,7 +10,6 @@ class GettersTest
 	public $fixtures =
 		[ 'app.Attributes'
 		, 'app.AttributesItems'
-		, 'app.Believes'
 		, 'app.Characters'
 		, 'app.CharactersConditions'
 		, 'app.CharactersPowers'
@@ -18,7 +17,6 @@ class GettersTest
 		, 'app.Conditions'
 		, 'app.Events'
 		, 'app.Factions'
-		, 'app.Groups'
 		, 'app.Items'
 		, 'app.Lammies'
 		, 'app.Manatypes'
@@ -26,7 +24,6 @@ class GettersTest
 		, 'app.Powers'
 		, 'app.Skills'
 		, 'app.Teachings'
-		, 'app.Worlds'
 		];
 
 	public function testRoot()
@@ -316,24 +313,13 @@ class GettersTest
 	{
 		$this->withoutAuth();
 		$this->assertGet('/believes', 401);
-		$this->assertGet('/believes/1', 401);
-		$this->assertGet('/believes/1/characters', 401);
-		$this->assertGet('/believes/99', 401);
-		$this->assertGet('/believes/99/characters', 401);
+		$this->assertGet('/believes/1', 404);
+		$this->assertGet('/believes/1/characters', 404);
 
 		$this->withAuthPlayer();
 		$this->assertGet('/believes');
-		$this->assertGet('/believes/1');
-		$this->assertGet('/believes/1/characters', 403);
-		$this->assertGet('/believes/99', 404);
-		$this->assertGet('/believes/99/characters', 403);
-
-		$this->withAuthReadOnly();
-		$this->assertGet('/believes');
-		$this->assertGet('/believes/1');
-		$this->assertGet('/believes/1/characters');
-		$this->assertGet('/believes/99', 404);
-		$this->assertGet('/believes/99/characters', 404);
+		$this->assertGet('/believes/1', 404);
+		$this->assertGet('/believes/1/characters', 404);
 	}
 
 	public function testFactions()
@@ -364,48 +350,26 @@ class GettersTest
 	{
 		$this->withoutAuth();
 		$this->assertGet('/groups', 401);
-		$this->assertGet('/groups/1', 401);
-		$this->assertGet('/groups/1/characters', 401);
-		$this->assertGet('/groups/99', 401);
-		$this->assertGet('/groups/99/characters', 401);
+		$this->assertGet('/groups/1', 404);
+		$this->assertGet('/groups/1/characters', 404);
 
 		$this->withAuthPlayer();
 		$this->assertGet('/groups');
-		$this->assertGet('/groups/1');
-		$this->assertGet('/groups/1/characters', 403);
-		$this->assertGet('/groups/99', 404);
-		$this->assertGet('/groups/99/characters', 403);
-
-		$this->withAuthReadOnly();
-		$this->assertGet('/groups');
-		$this->assertGet('/groups/1');
-		$this->assertGet('/groups/1/characters');
-		$this->assertGet('/groups/99', 404);
-		$this->assertGet('/groups/99/characters', 404);
+		$this->assertGet('/groups/1', 404);
+		$this->assertGet('/groups/1/characters', 404);
 	}
 
 	public function testWorlds()
 	{
 		$this->withoutAuth();
 		$this->assertGet('/worlds', 401);
-		$this->assertGet('/worlds/1', 401);
-		$this->assertGet('/worlds/1/characters', 401);
-		$this->assertGet('/worlds/99', 401);
-		$this->assertGet('/worlds/99/characters', 401);
+		$this->assertGet('/worlds/1', 404);
+		$this->assertGet('/worlds/1/characters', 404);
 
 		$this->withAuthPlayer();
 		$this->assertGet('/worlds');
-		$this->assertGet('/worlds/1');
-		$this->assertGet('/worlds/1/characters', 403);
-		$this->assertGet('/worlds/99', 404);
-		$this->assertGet('/worlds/99/characters', 403);
-
-		$this->withAuthReadOnly();
-		$this->assertGet('/worlds');
-		$this->assertGet('/worlds/1');
-		$this->assertGet('/worlds/1/characters');
-		$this->assertGet('/worlds/99', 404);
-		$this->assertGet('/worlds/99/characters', 404);
+		$this->assertGet('/worlds/1', 404);
+		$this->assertGet('/worlds/1/characters', 404);
 	}
 
 	public function testEvents()

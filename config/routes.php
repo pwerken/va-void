@@ -275,10 +275,7 @@ $rest = function($routes, $name, $subs = [], $nest = [], $rels = []) {
 	$rest($routes, 'Items',      [], [              ], ['Attributes']);
 	$rest($routes, 'Attributes', [], [ 'Items'      ]);
 
-	$rest($routes, 'Believes', [ 'Characters' ]);
 	$rest($routes, 'Factions', [ 'Characters' ]);
-	$rest($routes, 'Groups',   [ 'Characters' ]);
-	$rest($routes, 'Worlds',   [ 'Characters' ]);
 
 	$rest($routes, 'Manatypes');
 	$rest($routes, 'Lammies');
@@ -296,4 +293,22 @@ $rest = function($routes, $name, $subs = [], $nest = [], $rels = []) {
 		$defaults['action'] = $action;
 		$routes->connect($url, $defaults, []);
 	}
+
+	$defaults = [];
+	$defaults['_method'] = ['GET'];
+	$defaults['controller'] = 'Believes';
+	$defaults['action'] = 'index';
+	$routes->connect('/believes', $defaults);
+
+	$defaults = [];
+	$defaults['_method'] = ['GET'];
+	$defaults['controller'] = 'Groups';
+	$defaults['action'] = 'index';
+	$routes->connect('/groups', $defaults);
+
+	$defaults = [];
+	$defaults['_method'] = ['GET'];
+	$defaults['controller'] = 'Worlds';
+	$defaults['action'] = 'index';
+	$routes->connect('/worlds', $defaults);
 };

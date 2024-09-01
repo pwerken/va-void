@@ -68,20 +68,20 @@ class HistoryTable
 
         $tbls =
             [ 'Players' =>
-                [ 'key1' => 'id', 'key2' => 'NULL'
-                , 'name' => 'NULL', 'first_name', 'insertion', 'last_name'
+                [ 'key1' => 'id', 'key2' => 'id'
+                , 'name' => 'first_name', 'first_name', 'insertion', 'last_name'
                 , 'modified', 'modifier_id']
             , 'Characters' =>
                 [ 'key1' => 'player_id', 'key2' => 'chin'
                 , 'name', 'modified', 'modifier_id']
             , 'Conditions' =>
-                [ 'key1' => 'id', 'key2' => 'NULL'
+                [ 'key1' => 'id', 'key2' => 'id'
                 , 'name', 'modified', 'modifier_id']
             , 'Powers' =>
-                [ 'key1' => 'id', 'key2' => 'NULL'
+                [ 'key1' => 'id', 'key2' => 'id'
                 , 'name', 'modified', 'modifier_id']
             , 'Items' =>
-                [ 'key1' => 'id', 'key2' => 'NULL'
+                [ 'key1' => 'id', 'key2' => 'id'
                 , 'name', 'modified', 'modifier_id']
             ];
         if(empty($what) OR !array_key_exists($what, $tbls)) {

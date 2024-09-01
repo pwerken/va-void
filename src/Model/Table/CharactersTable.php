@@ -6,6 +6,7 @@ namespace App\Model\Table;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
@@ -21,9 +22,6 @@ class CharactersTable
 
         $this->belongsTo('Players');
         $this->belongsTo('Factions')->setProperty('faction_object');
-        $this->belongsTo('Believes')->setProperty('belief_object');
-        $this->belongsTo('Groups')->setProperty('group_object');
-        $this->belongsTo('Worlds')->setProperty('world_object');
 
         $this->hasMany('Items');
         $this->hasMany('CharactersConditions')->setProperty('conditions');
@@ -90,9 +88,6 @@ class CharactersTable
         }
 
         $data['faction_id'] = $this->nameToId('Factions', @$data['faction']);
-        $data['belief_id']  = $this->nameToIdOrAdd('Believes', @$data['belief']);
-        $data['group_id']   = $this->nameToIdOrAdd('Groups',   @$data['group']);
-        $data['world_id']   = $this->nameToIdOrAdd('Worlds',   @$data['world']);
 
         parent::beforeMarshal($event, $data, $options);
     }
@@ -103,9 +98,6 @@ class CharactersTable
         $rules->addCreate($rules->isUnique(['name', 'player_id']));
 
         $rules->add($rules->existsIn('faction_id', 'Factions'));
-        $rules->add($rules->existsIn('group_id', 'Groups'));
-        $rules->add($rules->existsIn('belief_id', 'Believes'));
-        $rules->add($rules->existsIn('world_id', 'Worlds'));
 
         $rules->addDelete([$this, 'ruleNoConditions']);
         $rules->addDelete([$this, 'ruleNoItems']);
@@ -113,6 +105,27 @@ class CharactersTable
         $rules->addDelete([$this, 'ruleNoSkills']);
 
         return $rules;
+    }
+
+    public function findBelief(Query $query)
+    {
+        return $query->select(['name' => 'belief'])
+                    ->distinct(['belief'])
+                    ->order(['belief'], true);
+    }
+
+    public function findGroup(Query $query)
+    {
+        return $query->select(['name' => 'group'])
+                    ->distinct(['group'])
+                    ->order(['group'], true);
+    }
+
+    public function findWorld(Query $query)
+    {
+        return $query->select(['name' => 'world'])
+                    ->distinct(['world'])
+                    ->order(['world'], true);
     }
 
     public function ruleNoConditions($entity, $options)
@@ -170,7 +183,7 @@ class CharactersTable
     protected function contain(): array
     {
         return
-            [ 'Believes', 'Factions', 'Groups', 'Players', 'Worlds', 'Items'
+            [ 'Factions', 'Players', 'Items'
             , 'CharactersConditions.Conditions'
             , 'CharactersPowers.Powers'
             , 'CharactersSkills.Skills.Manatypes'
@@ -200,17 +213,5 @@ class CharactersTable
             return 0;
         }
         return $result['id'];
-    }
-
-    protected function nameToIdOrAdd($model, $name)
-    {
-        $id = $this->nameToId($model, $name);
-        if($id == 0) {
-            $obj = $this->$model->newEmptyEntity();
-            $obj->name = $name;
-            $this->$model->save($obj);
-            $id = $obj->id;
-        }
-        return $id;
     }
 }

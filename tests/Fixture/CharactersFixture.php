@@ -17,9 +17,9 @@ class CharactersFixture
 				, 'name' => 'Sir Killalot'
 				, 'xp' => 15.0
 				, 'faction_id' => 1
-				, 'belief_id' => 1
-				, 'group_id' => 1
-				, 'world_id' => 1
+				, 'belief' => '-'
+				, 'group' => '-'
+				, 'world' => '-'
 				, 'soulpath' => ''
 				, 'status' => 'Active'
 				, 'comments' => ''
@@ -32,9 +32,9 @@ class CharactersFixture
 				, 'name' => 'Mathilda'
 				, 'xp' => 15.0
 				, 'faction_id' => 2
-				, 'belief_id' => 2
-				, 'group_id' => 2
-				, 'world_id' => 2
+				, 'belief' => 'Self'
+				, 'group' => 'The Gang'
+				, 'world' => 'Home'
 				, 'soulpath' => 'MO'
 				, 'status' => 'Active'
 				, 'comments' => ''

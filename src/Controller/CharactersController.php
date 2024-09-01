@@ -101,24 +101,10 @@ class CharactersController
         $this->set('_serialize', $count);
     }
 
-    // GET /believes/{id}/characters
-    public function believesIndex(int $belief_id): void
-    {
-        $this->parent = $this->fetchModel('Believes')->get($belief_id);
-        $this->index();
-    }
-
     // GET /factions/{id}/characters
     public function factionsIndex(int $faction_id): void
     {
         $this->parent = $this->fetchModel('Factions')->get($faction_id);
-        $this->index();
-    }
-
-    // GET /groups/{id}/characters
-    public function groupsIndex(int $group_id): void
-    {
-        $this->parent = $this->fetchModel('Groups')->get($group_id);
         $this->index();
     }
 
@@ -133,13 +119,6 @@ class CharactersController
     public function skillsIndex(int $skill_id): void
     {
         $this->parent = $this->fetchModel('Skills')->get($skill_id);
-        $this->index();
-    }
-
-    // GET /worlds/{id}/characters
-    public function worldsIndex(int $world_id): void
-    {
-        $this->parent = $this->fetchModel('Worlds')->get($world_id);
         $this->index();
     }
 }

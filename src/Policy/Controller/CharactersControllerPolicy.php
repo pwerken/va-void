@@ -48,26 +48,8 @@ class CharactersControllerPolicy
         return $this->hasAuth('player');
     }
 
-    // GET /believes/:id/characters
-    public function believesIndex(): bool
-    {
-        return $this->hasAuth('read-only');
-    }
-
     // GET /factions/:id/characters
     public function factionsIndex(): bool
-    {
-        return $this->hasAuth('read-only');
-    }
-
-    // GET /groups/:id/characters
-    public function groupsIndex(): bool
-    {
-        return $this->hasAuth('read-only');
-    }
-
-    // GET /worlds/:id/characters
-    public function worldsIndex(): bool
     {
         return $this->hasAuth('read-only');
     }

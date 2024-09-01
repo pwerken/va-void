@@ -78,11 +78,8 @@ trait Backup
                 , 'events'
                 , 'characters'
                 , 'manatypes'
-                , 'believes'
                 , 'players'
                 , 'factions'
-                , 'groups'
-                , 'worlds'
                 ];
     }
 }
