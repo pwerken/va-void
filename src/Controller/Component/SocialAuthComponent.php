@@ -247,7 +247,7 @@ class SocialAuthComponent
         }
 
         if(!$id) {
-            throw new LoginFailedException('E-mail has no associated plin, site admin notified.');
+            throw new LoginFailedException('Email has no associated plin. Site admin notified. Expect an email.');
         }
 
         return $this->_playerModel->get($id);
