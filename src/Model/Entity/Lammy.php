@@ -36,7 +36,7 @@ class Lammy
     {
         if(is_null($this->target)) {
             $name = Inflector::pluralize($this->entity);
-            $table = TableRegistry::get($name);
+            $table = TableRegistry::getTableLocator()->get($name);
 
             $keys = [$this->key1, $this->key2];
             $primary = $table->getPrimaryKey();
@@ -59,7 +59,7 @@ class Lammy
         if(is_null($target))
             return;
 
-        $table = TableRegistry::get($target->getSource());
+        $table = TableRegistry::getTableLocator()->get($target->getSource());
         $class = $table->getEntityClass();
         if($pos = strrpos($class, '\\'))
             $class = substr($class, $pos + 1);

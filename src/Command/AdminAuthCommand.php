@@ -16,7 +16,7 @@ class AdminAuthCommand
 {
     use CommandAuthorization;
 
-    protected $defaultTable = 'Players';
+    protected ?string $defaultTable = 'Players';
 
     public static function defaultName(): string
     {
@@ -63,7 +63,7 @@ class AdminAuthCommand
             }
 
             foreach($perms[$role] as $plin) {
-                $player = $this->Players->get($plin);
+                $player = $this->fetchTable()->get($plin);
                 $io->out(sprintf('<info>%4d</info> %s', $plin, $player->fullName));
             }
         }
@@ -72,14 +72,15 @@ class AdminAuthCommand
 
     protected function authPlayer($io, $plin, $role): int
     {
-        $player = $this->fetchTable()->findById($plin)->first();
+        $table = $this->fetchTable();
+        $player = $table->findById($plin)->first();
         if (is_null($player) || strcmp((string)$player->id, $plin)) {
             $this->abort(sprintf('No player found with plin `%s`.', $plin));
         }
 
         if (isset($role)) {
-            $this->Players->patchEntity($player, ['role' => $role]);
-            $this->Players->save($player);
+            $table->patchEntity($player, ['role' => $role]);
+            $table->save($player);
 
             $errors = $player->getErrors('role');
             if(!empty($errors)) {

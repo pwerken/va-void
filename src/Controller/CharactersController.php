@@ -67,7 +67,7 @@ class CharactersController
     {
         $char = $this->Characters->getWithContain($char_id);
 
-        $table = $this->fetchModel('Lammies');
+        $table = $this->fetchTable('Lammies');
 
         $lammy = $table->newEmptyEntity();
         $lammy->set('target', $char);
@@ -104,21 +104,21 @@ class CharactersController
     // GET /factions/{id}/characters
     public function factionsIndex(int $faction_id): void
     {
-        $this->parent = $this->fetchModel('Factions')->get($faction_id);
+        $this->parent = $this->fetchTable('Factions')->get($faction_id);
         $this->index();
     }
 
     // GET /players/{plin}/characters
     public function playersIndex(int $plin): void
     {
-        $this->parent = $this->fetchModel('Players')->get($plin);
+        $this->parent = $this->fetchTable('Players')->get($plin);
         $this->index();
     }
 
     // GET /skills/{id}/characters
     public function skillsIndex(int $skill_id): void
     {
-        $this->parent = $this->fetchModel('Skills')->get($skill_id);
+        $this->parent = $this->fetchTable('Skills')->get($skill_id);
         $this->index();
     }
 }

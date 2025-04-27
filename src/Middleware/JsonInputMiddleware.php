@@ -16,6 +16,12 @@ class JsonInputMiddleware
         if ($request->is('put'))
             $request = $request->withHeader('Content-Type', 'application/json');
 
+            # BodyParserMiddleware doesn't rewind before reading the stream
+            $stream = $request->getBody();
+            if($stream->isSeekable()) {
+                $stream->rewind();
+            }
+
         return $handler->handle($request);
     }
 }

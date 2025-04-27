@@ -5,7 +5,7 @@ use App\Migrations\AppMigration;
 
 class AddDeprecatedIndicator extends AppMigration
 {
-    public function up()
+    public function up(): void
     {
         $this->table('conditions')
             ->addColumn('deprecated', 'boolean',
@@ -35,7 +35,7 @@ class AddDeprecatedIndicator extends AppMigration
             ->save();
     }
 
-    public function down()
+    public function down(): void
     {
         $this->table('conditions')
             ->removeColumn('deprecated')

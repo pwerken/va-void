@@ -1,10 +1,13 @@
 <?php
 /**
- * Routes configuration
+ * Routes configuration.
  *
  * In this file, you set up routes to your controllers and their actions.
  * Routes are very important mechanism that allows you to freely connect
  * different URLs to chosen controllers and their actions (functions).
+ *
+ * It's loaded within the context of `Application::routes()` method which
+ * receives a `RouteBuilder` instance `$routes` as method argument.
  *
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -18,9 +21,7 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
-use Cake\Core\Plugin;
 use Cake\Routing\RouteBuilder;
-use Cake\Utility\Inflector;
 
 /**
  * The default class to use for all routes
@@ -43,9 +44,7 @@ use Cake\Utility\Inflector;
  * constructor in your `src/Application.php` file to change this behavior.
  *
  */
-#Router::defaultRouteClass(DashedRoute::class);
-
-return static function (RouteBuilder $routes) {
+return function (RouteBuilder $routes):void {
 
     $routes->connect('/', ['controller' => 'Root', 'action' => 'root']);
 
@@ -56,7 +55,7 @@ return static function (RouteBuilder $routes) {
 	$routes->connect('/*', $defaults);
 
     /**
-     *  Debug helper pages
+     *  Admin pages
      */
 	$defaults = [];
 	$defaults['_method'] = ['GET', 'POST'];
@@ -260,6 +259,9 @@ $rest = function($routes, $name, $subs = [], $nest = [], $rels = []) {
 	}
 };
 
+    /**
+     * Rest API
+     */
 	$rest($routes, 'Players',  [ 'Characters' ], [], [ 'Socials' ]);
 	$rest($routes, 'Characters'
 					, [ 'Items' ]

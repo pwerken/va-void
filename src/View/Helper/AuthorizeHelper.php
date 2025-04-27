@@ -1,11 +1,13 @@
 <?php
+declare(strict_types=1);
+
 namespace App\View\Helper;
 
 use Authorization\AuthorizationServiceInterface;
 use Authorization\Exception\ForbiddenException;
 use Authorization\IdentityInterface;
-use Cake\Utility\Hash;
 use Cake\View\Helper;
+use InvalidArgumentException;
 use RuntimeException;
 
 /**
@@ -18,14 +20,14 @@ class AuthorizeHelper extends Helper
     /**
      * Identity Object
      *
-     * @var null|\Authorization\IdentityInterface
+     * @var \Authorization\IdentityInterface|null
      */
     protected $identity;
 
     /**
      * Authorization Object
      *
-     * @var null|\Authorization\AuthorizationServiceInterface
+     * @var \Authorization\AuthorizationServiceInterface|null
      */
     protected $authorize;
 
@@ -35,7 +37,6 @@ class AuthorizeHelper extends Helper
      * Implement this method to avoid having to overwrite the constructor and call parent.
      *
      * @param array $config The configuration settings provided to this helper.
-     *
      * @return void
      */
     public function initialize(array $config): void
@@ -49,10 +50,12 @@ class AuthorizeHelper extends Helper
         }
 
         if (!$this->identity instanceof IdentityInterface) {
-            throw new RuntimeException(sprintf('Identity found in request does not implement %s', IdentityInterface::class));
+            $message = 'Identity found in request does not implement %s';
+            throw new RuntimeException(sprintf($message, IdentityInterface::class));
         }
         if (!$this->authorize instanceof AuthorizationServiceInterface) {
-            throw new RuntimeException(sprintf('Authorization service found in request does not implement %s', AuthorizationServiceInterface::class));
+            $message = 'Authorization service found in request does not implement %s';
+            throw new RuntimeException(sprintf($message, AuthorizationServiceInterface::class));
         }
     }
 
@@ -63,13 +66,13 @@ class AuthorizeHelper extends Helper
      * @param mixed $resource The resource being operated on.
      * @return bool
      */
-    public function can(string $action, $resource): bool
+    public function can(string $action, mixed $resource): bool
     {
         if (empty($this->authorize)) {
             return false;
         }
         if (empty($resource)) {
-            throw new \InvalidArgumentException('No resource passed to "can" function.');
+            throw new InvalidArgumentException('No resource passed to "can" function.');
         }
 
         try {
@@ -84,15 +87,15 @@ class AuthorizeHelper extends Helper
      *
      * @param string $action The action/operation being performed.
      * @param mixed $resource The resource being operated on.
-     * @return
+     * @return mixed
      */
-    public function applyScope(string $action, $resource)
+    public function applyScope(string $action, mixed $resource): mixed
     {
         if (empty($this->authorize)) {
             throw new RuntimeException('Authorization service not present');
         }
         if (empty($resource)) {
-            throw new \InvalidArgumentException('No resource passed to "can" function.');
+            throw new InvalidArgumentException('No resource passed to "can" function.');
         }
 
         return $this->authorize->applyScope($this->identity, $action, $resource);
@@ -102,9 +105,9 @@ class AuthorizeHelper extends Helper
      * Gets the identity itself
      *
      * @param string|null $key Key of something you want to get from the identity data
-     * @return IdentityInterface
+     * @return \Authorization\IdentityInterface
      */
-    public function getIdentity()
+    public function getIdentity(): IdentityInterface
     {
         return $this->identity->getOriginalData();
     }

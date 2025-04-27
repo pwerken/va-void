@@ -6,8 +6,7 @@ use App\Test\TestSuite\AuthIntegrationTestCase;
 class GettersTest
 	extends AuthIntegrationTestCase
 {
-
-	public $fixtures =
+	public array $fixtures =
 		[ 'app.Attributes'
 		, 'app.AttributesItems'
 		, 'app.Characters'

@@ -6,9 +6,8 @@ namespace App\Model\Table;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
-use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 use App\Model\Entity\Character;
@@ -107,25 +106,25 @@ class CharactersTable
         return $rules;
     }
 
-    public function findBelief(Query $query)
+    public function findBelief(SelectQuery $query)
     {
         return $query->select(['name' => 'belief'])
                     ->distinct(['belief'])
-                    ->order(['belief'], true);
+                    ->orderBy(['belief'], true);
     }
 
-    public function findGroup(Query $query)
+    public function findGroup(SelectQuery $query)
     {
         return $query->select(['name' => 'group'])
                     ->distinct(['group'])
-                    ->order(['group'], true);
+                    ->orderBy(['group'], true);
     }
 
-    public function findWorld(Query $query)
+    public function findWorld(SelectQuery $query)
     {
         return $query->select(['name' => 'world'])
                     ->distinct(['world'])
-                    ->order(['world'], true);
+                    ->orderBy(['world'], true);
     }
 
     public function ruleNoConditions($entity, $options)

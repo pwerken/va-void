@@ -1,12 +1,12 @@
 <?php
+declare(strict_types=1);
 
 use App\Migrations\AppMigration;
 
 class Events extends AppMigration
 {
-    public function up()
+    public function up(): void
     {
-
         $this->table('events')
             ->addColumn('name', 'string', [
                 'default' => null,
@@ -26,10 +26,8 @@ class Events extends AppMigration
             ->create();
     }
 
-    public function down()
+    public function down(): void
     {
-
         $this->dropTable('events');
     }
 }
-

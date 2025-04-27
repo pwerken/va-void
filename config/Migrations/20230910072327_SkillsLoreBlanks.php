@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use App\Migrations\AppMigration;
 
-class SkillsLoreBlanks extends AbstractMigration
+class SkillsLoreBlanks extends AppMigration
 {
     public function up(): void
     {
@@ -26,7 +26,7 @@ class SkillsLoreBlanks extends AbstractMigration
             ->update();
 
         // fill columns based on skill name
-        $query = $this->getQueryBuilder();
+        $query = $this->getQueryBuilder('select');
         $query->select('*')->from('skills')
             ->where($query->newExpr()->or([])
                       ->add($query->newExpr()->like('name', '% (blanks)'))
@@ -44,7 +44,7 @@ class SkillsLoreBlanks extends AbstractMigration
             $hasLore =   (int)(substr($matches[2], 0, 5) == '(lore');
             $hasBlanks = (int)(substr($matches[2], -7) == 'blanks)');
 
-            $this->getQueryBuilder()
+            $this->getQueryBuilder('update')
                 ->update('skills')
                 ->set(['name' => $name])
                 ->set(['loresheet' => $hasLore])
@@ -57,7 +57,7 @@ class SkillsLoreBlanks extends AbstractMigration
     public function down(): void
     {
         // add loresheet and blanks back to skill name
-        $query = $this->getQueryBuilder();
+        $query = $this->getQueryBuilder('select');
         $query->select('*')->from('skills')
             ->where($query->newExpr()->or([])
                       ->add(['loresheet' => true])
@@ -73,7 +73,7 @@ class SkillsLoreBlanks extends AbstractMigration
             } else {
                 $name .= ' (blanks)';
             }
-            $query = $this->getQueryBuilder()
+            $query = $this->getQueryBuilder('update')
                 ->update('skills')
                 ->set(['name' => $name])
                 ->where(['id' => $row['id']])

@@ -9,7 +9,7 @@ class AttributesItemsController
     // GET /attributes/{id}/items
     public function attributesIndex(int $id): void
     {
-        $this->parent = $this->fetchModel('Attributes')->get($id);
+        $this->parent = $this->fetchTable('Attributes')->get($id);
 
         $query = $this->AttributesItems->findWithContain();
         $query->andWhere(['attribute_id' => $id]);
@@ -21,7 +21,7 @@ class AttributesItemsController
     // GET /items/{itin}/attributes
     public function itemsIndex(int $itin): void
     {
-        $this->parent = $this->fetchModel('Items')->get($itin);
+        $this->parent = $this->fetchTable('Items')->get($itin);
 
         $query = $this->AttributesItems->findWithContain();
         $query->andWhere(['item_id' => $itin]);
@@ -43,7 +43,7 @@ class AttributesItemsController
     // GET /items/{itin}/attributes/{id}
     public function itemsView(int $itin, int $id): void
     {
-        $parent = $this->fetchModel('Items')->get($itin);
+        $parent = $this->fetchTable('Items')->get($itin);
         $this->Authorization->authorize($parent, 'view');
 
         $this->View->action([$id, $itin], false);

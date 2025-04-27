@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use App\Migrations\AppMigration;
 
-class AddCreatedCreator extends AbstractMigration
+class AddCreatedCreator extends AppMigration
 {
-    public function up()
+    public function up(): void
     {
         $this->table('items')
             ->addColumn('created', 'datetime',
@@ -56,7 +56,7 @@ class AddCreatedCreator extends AbstractMigration
             ->save();
 
         // set initial created/creator_field based on modified/modifier_id
-        $query = $this->getQueryBuilder()
+        $query = $this->getQueryBuilder('update')
                     ->update('items')
                     ->set(function ($exp) {
                         return $exp->equalFields('created', 'modified');
@@ -65,7 +65,7 @@ class AddCreatedCreator extends AbstractMigration
                         return $exp->equalFields('creator_id', 'modifier_id');
                     })
                     ->execute();
-        $query = $this->getQueryBuilder()
+        $query = $this->getQueryBuilder('update')
                     ->update('conditions')
                     ->set(function ($exp) {
                         return $exp->equalFields('created', 'modified');
@@ -74,7 +74,7 @@ class AddCreatedCreator extends AbstractMigration
                         return $exp->equalFields('creator_id', 'modifier_id');
                     })
                     ->execute();
-        $query = $this->getQueryBuilder()
+        $query = $this->getQueryBuilder('update')
                     ->update('powers')
                     ->set(function ($exp) {
                         return $exp->equalFields('created', 'modified');
@@ -85,7 +85,7 @@ class AddCreatedCreator extends AbstractMigration
                     ->execute();
 
         // try to improve on created/creator_id based on historical data
-        $query = $this->getQueryBuilder()
+        $query = $this->getQueryBuilder('select')
                     ->select(function($query) {
                         return ['min' => $query->func()->min('id')];
                     })
@@ -100,7 +100,7 @@ class AddCreatedCreator extends AbstractMigration
                     });
         foreach($query->execute() as $row)
         {
-            $query = $this->getQueryBuilder()
+            $query = $this->getQueryBuilder('update')
                         ->update(strtolower($row['entity'].'s'))
                         ->set('created', $row['modified'])
                         ->set('creator_id', $row['modifier_id'])
@@ -109,7 +109,7 @@ class AddCreatedCreator extends AbstractMigration
         }
     }
 
-    public function down()
+    public function down(): void
     {
         $this->table('conditions')
             ->removeColumn('created')

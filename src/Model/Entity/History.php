@@ -13,7 +13,7 @@ class History
         if(is_null($entity))
             return NULL;
 
-        $table = TableRegistry::get($entity->getSource());
+        $table = TableRegistry::getTableLocator()->get($entity->getSource());
         $columns = $table->getSchema()->columns();
         $data = $entity->extractOriginal($columns);
 

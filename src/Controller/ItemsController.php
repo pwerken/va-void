@@ -94,7 +94,7 @@ class ItemsController
     // GET /characters/{plin}/{chin}/items
     public function charactersIndex(int $char_id): void
     {
-        $this->parent = $this->fetchModel('Characters')->get($char_id);
+        $this->parent = $this->fetchTable('Characters')->get($char_id);
         $this->Authorization->authorize($this->parent, 'view');
 
         $this->index();
@@ -108,8 +108,8 @@ class ItemsController
         $this->request = $this->request->withoutData('chin');
 
         if($plin || $chin) {
-            $this->loadModel('Characters');
-            $char = $this->Characters->findByPlayerIdAndChin($plin, $chin)->first();
+            $characters = $this->fetchTable('Characters');
+            $char = $characters->findByPlayerIdAndChin($plin, $chin)->first();
             $char_id = $char ? $char->id : -1;
             $this->request = $this->request->withData('character_id', $char_id);
         } else {

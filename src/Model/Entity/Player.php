@@ -2,7 +2,9 @@
 namespace App\Model\Entity;
 
 use Authentication\IdentityInterface;
-use Cake\Auth\DefaultPasswordHasher;
+use Authentication\PasswordHasher\DefaultPasswordHasher;
+
+use ArrayAccess;
 
 class Player
     extends AppEntity
@@ -28,12 +30,12 @@ class Player
         return (new DefaultPasswordHasher())->hash($password);
     }
 
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return (string)$this->id;
     }
 
-    public function getOriginalData()
+    public function getOriginalData(): ArrayAccess|array
     {
         return $this;
     }

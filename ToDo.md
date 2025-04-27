@@ -4,13 +4,13 @@ ToDo-list:
    - [ ] uniform error messages (when debug=false ?)
          i.e. 404 should always be "Not found"
  - Datastructure cleanup:
-   - [ ] condition/power/item: add 'archived' or 'deprecated' property
+   - [x] condition/power/item: add 'deprecated' property
    - [ ] add skill.base property
    - [x] add skill relation 'times' property
    - [x] remove spells
    - [ ] remove attributes and attributes-items
    - [ ] remove character.soulpath property
-   - [ ] belief/group/world: de-normalize and remove tables
+   - [x] belief/group/world: de-normalize and remove tables
  - /admin pages for tables with lookup-data
    - [ ] CRUD-operations page(s) for Factions
    - [ ] CRUD-operations page(s) for Skills

@@ -1,9 +1,11 @@
 <?php
+declare(strict_types=1);
+
 use App\Migrations\AppMigration;
 
 class CreatorModifier extends AppMigration
 {
-    public function up()
+    public function up(): void
     {
 
         $this->table('attributes_items')
@@ -190,7 +192,7 @@ class CreatorModifier extends AppMigration
             ->update();
     }
 
-    public function down()
+    public function down(): void
     {
 
         $this->table('attributes_items')
@@ -267,4 +269,3 @@ class CreatorModifier extends AppMigration
             ->update();
     }
 }
-

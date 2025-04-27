@@ -5,7 +5,6 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
-use Cake\Datasource\ConnectionManager;
 use Cake\Http\Exception\NotFoundException;
 use Migrations\Migrations;
 
@@ -125,8 +124,8 @@ class AdminController
             return;
         }
 
-        $this->loadModel('SocialProfiles');
-        $login = $this->SocialProfiles->findById($social)->first();
+        $profiles = $this->fetchTable('SocialProfiles');
+        $login = $profiles->findById($social)->first();
         if(is_null($login)) {
             $this->Flash->error("SocialProfile#$social not found ?!");
             return;
@@ -134,7 +133,7 @@ class AdminController
 
         // delete login attempt
         if(!is_null($this->request->getData('delete'))) {
-            if(!$this->SocialProfiles->delete($login)) {
+            if(!$profiles->delete($login)) {
                 $this->Flash->error("Failed to delete SocialProfile#$social");
             } else {
                 $this->Flash->success("Deleted SocialProfile#$social");
@@ -143,8 +142,8 @@ class AdminController
         }
 
         // link $plin to $social profile
-        $this->loadModel('Players');
-        $player = $this->Players->findById($plin)->first();
+        $players = $this->fetchTable('Players');
+        $player = $players->findById($plin)->first();
         if(is_null($player)) {
             $this->Flash->error("Player#$plin not found");
             return;
@@ -152,7 +151,7 @@ class AdminController
 
         $login->user_id = $player->id;
 
-        if(!$this->SocialProfiles->save($login)) {
+        if(!$profiles->save($login)) {
             $this->Flash->error("Failed to link SocialProfile#$social");
         } else {
             $this->Flash->success("SocialProfile#$social linked to Player#$plin");
@@ -167,20 +166,20 @@ class AdminController
         $plin = $this->request->getData('plin');
         $pass = $this->request->getData('password');
 
-        $this->loadModel('Players');
-        $player = $this->Players->findById($plin)->first();
+        $players = $this->fetchTable('Players');
+        $player = $players->findById($plin)->first();
         if(is_null($player)) {
             $this->Flash->error("Player#$plin not found");
             return;
         }
 
-        $this->Players->patchEntity($player, ['password' => $pass]);
+        $players->patchEntity($player, ['password' => $pass]);
         if (!$player->isDirty('password')) {
             $this->Flash->error("Not authorized to change passwords");
             return;
         }
 
-        $this->Players->save($player);
+        $players->save($player);
         $errors = $player->getError('password');
         if(!empty($errors)) {
             $this->Flash->error(reset($errors));
@@ -210,8 +209,8 @@ class AdminController
         $plin = $this->request->getData('plin');
         $role = $this->request->getData('role');
 
-        $table = $this->fetchModel('Players');
-        $player = $table->findById($plin)->first();
+        $players = $this->fetchTable('Players');
+        $player = $players->findById($plin)->first();
         if(is_null($player)) {
             $this->Flash->error("Player#$plin not found");
             return;
@@ -222,13 +221,13 @@ class AdminController
             return;
         }
 
-        $table->patchEntity($player, ['role' => $role]);
+        $players->patchEntity($player, ['role' => $role]);
         if (!$player->isDirty('role')) {
             $this->Flash->error("Not authorized to change roles");
             return;
         }
 
-        if(!$table->save($player)) {
+        if(!$players->save($player)) {
             $errors = $player->getError('role');
             $this->Flash->error(reset($errors));
         } else {
@@ -259,7 +258,7 @@ class AdminController
 
     public function history($e = NULL, $k1 = NULL, $k2 = NULL)
     {
-        $table = $this->fetchModel('History');
+        $history = $this->fetchTable('History');
         if(!is_null($e)) {
             $plin = $this->request->getQuery('highlight');
             if(!empty($plin)) {
@@ -272,7 +271,7 @@ class AdminController
                 $this->viewBuilder()->setTemplate('historyEntity');
             }
 
-            $list = $table->getEntityHistory($e, $k1, $k2);
+            $list = $history->getEntityHistory($e, $k1, $k2);
             if(empty($list)) {
                 throw new NotFoundException();
             }
@@ -299,19 +298,19 @@ class AdminController
         $this->set('since', $since);
         $this->set('plin', $plin);
 
-        $list = $table->getAllLastModified($plin, $since, $what);
+        $list = $history->getAllLastModified($plin, $since, $what);
 
         if($plin) {
-            $all = $table->getAllModificationsBy($plin, $since, $what);
+            $all = $history->getAllModificationsBy($plin, $since, $what);
             $list = array_merge($list, $all);
-            usort($list, array($table, 'compare'));
+            usort($list, array($history, 'compare'));
         }
         $this->set('list', $list);
     }
 
     public function printing($sides = NULL)
     {
-        $lammies = $this->fetchModel('Lammies');
+        $lammies = $this->fetchTable('Lammies');
         $user = $this->getRequest()->getAttribute('identity');
 
         if(!is_null($sides) && $user->hasAuth('Infobalie')) {
@@ -353,7 +352,7 @@ class AdminController
 
     public function skills()
     {
-        $skills = $this->fetchModel('Skills');
+        $skills = $this->fetchTable('Skills');
         $this->set('skills', $skills->find('list')->all()->toArray());
 
         $characters = [];
@@ -365,7 +364,7 @@ class AdminController
             if(!is_array($ids))
                 $ids = [$ids];
 
-            $query = $this->fetchModel('Characters')->find();
+            $query = $this->fetchTable('Characters')->find();
             $query->orderDesc('Characters.modified');
             $query->enableHydration(false);
             $query->innerJoinWith('CharactersSkills', function ($q) use ($ids) {

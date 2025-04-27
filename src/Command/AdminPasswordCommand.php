@@ -16,7 +16,7 @@ class AdminPasswordCommand
 {
     use CommandAuthorization;
 
-    protected $defaultTable = 'Players';
+    protected ?string $defaultTable = 'Players';
 
     public static function defaultName(): string
     {
@@ -45,7 +45,8 @@ class AdminPasswordCommand
         $plin = $args->getArgument('plin');
         $remove = $args->getOption('remove');
 
-        $player = $this->fetchTable()->findById($plin)->first();
+        $table = $this->fetchTable();
+        $player = $table->findById($plin)->first();
         if(is_null($player) || strcmp((string)$player->id, $plin)) {
             $this->abort(sprintf('No player found with plin `%s`.', $plin));
         }
@@ -66,7 +67,7 @@ class AdminPasswordCommand
             $msg = 'Password unchanged';
         } else {
             $player->set('password', $new_password);
-            $this->fetchTable()->save($player);
+            $table->save($player);
             $errors = $player->getErrors('password');
             if(!empty($errors)) {
                 foreach($errors as $error) {

@@ -12,7 +12,7 @@ use App\Model\Entity\SocialProfile;
 class MailerComponent
     extends Component
 {
-    public function socialLogin(SocialProfile $profile):  void
+    public function socialLogin(SocialProfile $profile): void
     {
         if(!$profile->isNew() || $profile->user_id) {
             return;

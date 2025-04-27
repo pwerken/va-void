@@ -29,9 +29,9 @@ class SocialAuthComponent
 {
     use LocatorAwareTrait;
 
-    protected $components = ['Mailer'];
+    protected array $components = ['Mailer'];
 
-    protected $_defaultConfig =
+    protected array $_defaultConfig =
         [ 'serviceConfig' =>
             [ 'provider' =>
                 [ 'discord' =>

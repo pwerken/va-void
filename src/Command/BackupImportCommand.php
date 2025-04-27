@@ -9,7 +9,6 @@ use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Datasource\ConnectionManager;
-use Cake\Filesystem\Folder;
 
 use App\Command\Traits\Backup;
 
@@ -39,7 +38,7 @@ class BackupImportCommand
         $this->checkApp($this->config('mysql'));
 
         $filename = $args->getArgument('filename');
-        if(!Folder::isAbsolute($filename)) {
+        if(!empty($filename) && $filename[0] !== '/') {
             $filename = $this->config('target') . $filename;
         }
 
@@ -68,7 +67,7 @@ class BackupImportCommand
             }
 
             $io->verbose("- $table");
-            $model = $this->fetchModel($table);
+            $model = $this->fetchTable($table);
             $model->deleteQuery()->execute();
             $model->getConnection()->execute(sprintf($sql, $model->getTable()));
         }

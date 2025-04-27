@@ -10,7 +10,7 @@ class EventValidator
     {
         parent::__construct();
 
-        $this->requirePresence('name', 'create')
+        $this->requirePresence('name', 'create');
 
         $this->nonNegativeInteger('id');
         $this->notEmptyString('name');

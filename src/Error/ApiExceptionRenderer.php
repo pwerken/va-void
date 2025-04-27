@@ -5,15 +5,15 @@ namespace App\Error;
 
 use Cake\Core\Configure;
 use Cake\Datasource\Exception\RecordNotFoundException;
-use Cake\Http\Response;
-use Cake\Error\ExceptionRenderer;
+use Cake\Error\Renderer\WebExceptionRenderer;
 use Exception;
+use Psr\Http\Message\ResponseInterface;
 
 use App\Error\Exception\ValidationException;
 use App\Utility\Json;
 
 class ApiExceptionRenderer
-    extends ExceptionRenderer
+    extends WebExceptionRenderer
 {
     public function configuration($error)
     {
@@ -23,17 +23,15 @@ class ApiExceptionRenderer
         return $this->_outputMessage('error400');
     }
 
-    protected function _outputMessage($template): Response
+    public function Render(): ResponseInterface
     {
-        $error = $this->error;
-        $code = $error->getCode();
+        $exception = $this->error;
+        $code = $this->getHttpCode($exception);
 
-        if ($error instanceof RecordNotFoundException) {
+        if ($exception instanceof RecordNotFoundException) {
             $code = 404;
         }
-        if (!is_numeric($code)
-            || $code < Response::STATUS_CODE_MIN
-            || $code > Response::STATUS_CODE_MAX) {
+        if (!is_numeric($code) || $code < 100 || $code > 599) {
             $code = 500;
         }
 
@@ -41,25 +39,25 @@ class ApiExceptionRenderer
         $response = $response->withStatus($code);
 
         $data = [];
-        $data['file'] = $error->getFile();
-        $data['line'] = $error->getLine();
+        $data['file'] = $exception->getFile();
+        $data['line'] = $exception->getLine();
 
         $trace = [];
         $trace[] = $this->traceLine($data);
-        foreach($error->getTrace() as $line) {
+        foreach($exception->getTrace() as $line) {
             $trace[] = $this->traceLine($line);
         }
 
         $errors = [];
-        if ($error instanceof ValidationException) {
-            $errors = $error->getValidationErrors();
+        if ($exception instanceof ValidationException) {
+            $errors = $exception->getValidationErrors();
         }
 
         $data = [];
         $data['class'] = 'Error';
         $data['code'] = $code;
         $data['url'] = $this->controller->getRequest()->getRequestTarget();
-        $data['message'] = $error->getMessage();
+        $data['message'] = $exception->getMessage();
         $data['errors'] = $errors;
         if(Configure::read('debug'))
             $data['trace'] = $trace;

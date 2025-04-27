@@ -15,6 +15,6 @@ class HistoryValidator
 
         $this->notEmptyString('entity');
         $this->nonNegativeInteger('key1');
-        $this->nonNegativeInteger('key2')->allowEmpty('key2');
+        $this->nonNegativeInteger('key2')->allowEmptyString('key2');
     }
 }

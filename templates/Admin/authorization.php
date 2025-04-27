@@ -17,7 +17,7 @@ echo $this->Form->select('role', $options, $style);
 echo $this->Form->button(__('Set Role'));
 
 
-$players = TableRegistry::get('Players');
+$players = TableRegistry::getTableLocator()->get('Players');
 $perms = $query = $players->find('list',
 			[ 'valueField' => 'id'
 			, 'groupField' => 'role'

@@ -14,7 +14,7 @@ use App\View\PdfView;
 class QueuePrintedCommand
     extends Command
 {
-    protected $defaultTable = 'Lammies';
+    protected ?string $defaultTable = 'Lammies';
 
     public static function defaultName(): string
     {

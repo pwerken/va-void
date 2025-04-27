@@ -6,7 +6,7 @@ namespace App\Authentication;
 use Authentication\AuthenticationService;
 use Authentication\Authenticator\JwtAuthenticator;
 use Authentication\Authenticator\SessionAuthenticator;
-use Authentication\Identifier\IdentifierInterface;
+use Authentication\Identifier\AbstractIdentifier;
 use Authentication\Identifier\JwtSubjectIdentifier;
 use Authentication\Identifier\PasswordIdentifier;
 use Authentication\Identifier\Resolver\OrmResolver;
@@ -31,8 +31,8 @@ class AppAuthenticationService
         parent::setConfig($config);
 
         $fields = [
-            IdentifierInterface::CREDENTIAL_USERNAME => 'id',
-            IdentifierInterface::CREDENTIAL_PASSWORD => 'password',
+            AbstractIdentifier::CREDENTIAL_USERNAME => 'id',
+            AbstractIdentifier::CREDENTIAL_PASSWORD => 'password',
         ];
         $resolver = [
             'className' => OrmResolver::class,

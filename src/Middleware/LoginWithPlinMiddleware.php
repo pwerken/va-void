@@ -20,7 +20,6 @@ class LoginWithPlinMiddleware
             $id = $request->getData('id');
             $plin = $request->getData('plin', $id);
             $request = $request->withData('id', $plin);
-
         }
 
         return $handler->handle($request);

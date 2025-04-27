@@ -17,11 +17,19 @@ abstract class AppEntity
         parent::__construct($properties, $options);
 
         if($this->isNew()) {
-            $this->set($this->_defaults, ['guard' => false]);
+            $this->patch($this->_defaults, ['guard' => false, 'asOriginal' => true]);
         }
     }
 
-    public function getClass()
+    protected function emptyToDefault(string $name, mixed $value): mixed
+    {
+        if (empty($value) && array_key_exists($name, $this->_defaults)) {
+            return $this->_defaults[$name];
+        }
+        return $value;
+    }
+
+    public function getClass(): string
     {
         $class = get_class($this);
         return substr($class, strrpos($class, '\\') + 1);
@@ -45,7 +53,8 @@ abstract class AppEntity
 
     public function refresh()
     {
-        $table = TableRegistry::get(Inflector::pluralize($this->getClass()));
+        $name = Inflector::pluralize($this->getClass());
+        $table = TableRegistry::getTableLocator()->get($name);
         $query = $table->find('withContain');
 
         $keys = $table->getPrimaryKey();

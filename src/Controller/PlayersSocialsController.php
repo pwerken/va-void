@@ -8,12 +8,12 @@ use Cake\Http\Exception\NotFoundException;
 class PlayersSocialsController
     extends AppController
 {
-    protected $defaultTable = 'SocialProfiles';
+    protected ?string $defaultTable = 'SocialProfiles';
 
     // GET /players/{plin}/socials
     public function playersIndex(int $plin): void
     {
-        $parent = $this->fetchModel('Players')->get($plin);
+        $parent = $this->fetchTable('Players')->get($plin);
 
         $query = $this->SocialProfiles->findWithContain();
         $query->andWhere(['user_id' => $plin]);

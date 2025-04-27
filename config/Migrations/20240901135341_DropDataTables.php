@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use App\Migrations\AppMigration;
 
-class DropDataTables extends AbstractMigration
+class DropDataTables extends AppMigration
 {
-    public function up()
+    public function up(): void
     {
         $this->_removeLookupTable('believes', 'belief_id', 'belief');
         $this->_removeLookupTable('groups', 'group_id', 'group');
@@ -25,11 +25,11 @@ class DropDataTables extends AbstractMigration
             ->save();
 
         // fill text field
-        $subQuery = $this->getQueryBuilder()
+        $subQuery = $this->getQueryBuilder('select')
                     ->select("`name`")
                     ->from("`$lookupTable`")
                     ->where(["`id` = `characters`.`$reference`"]);
-        $query = $this->getQueryBuilder()
+        $query = $this->getQueryBuilder('update')
                     ->update("`characters`")
                     ->set(["`$name`" => $subQuery])
                     ->execute();
@@ -45,7 +45,7 @@ class DropDataTables extends AbstractMigration
         $this->table($lookupTable)->drop()->save();
     }
 
-    public function down()
+    public function down(): void
     {
         $this->_restoreLookupTable('believes', 'belief_id', 'belief');
         $this->_restoreLookupTable('groups', 'group_id', 'group');
@@ -75,12 +75,12 @@ class DropDataTables extends AbstractMigration
             ->create();
 
         // fill lookup tables
-        $subQuery = $this->getQueryBuilder()
+        $subQuery = $this->getQueryBuilder('select')
                     ->select([$name])
                     ->distinct([$name])
                     ->from("characters")
                     ->orderAsc($name);
-        $query = $this->getQueryBuilder()
+        $query = $this->getQueryBuilder('insert')
                     ->insert(["name"])
                     ->into($lookupTable)
                     ->values($subQuery)
@@ -106,11 +106,11 @@ class DropDataTables extends AbstractMigration
             ->update();
 
         // set foreign key fields
-        $subQuery = $this->getQueryBuilder()
+        $subQuery = $this->getQueryBuilder('select')
                     ->select("id")
                     ->from($lookupTable)
                     ->where(["name = characters.$name"]);
-        $query = $this->getQueryBuilder()
+        $query = $this->getQueryBuilder('update')
                     ->update('characters')
                     ->set([$reference => $subQuery])
                     ->execute();

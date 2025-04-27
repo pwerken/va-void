@@ -15,7 +15,7 @@ class ControllerPolicyResolver
      * Used by the RequestAuthorizationMiddleware.
      * Returns the policy beloging to the controller of the ServerRequest.
      */
-    public function getPolicy($resource)
+    public function getPolicy(mixed $resource): mixed
     {
         if (!($resource instanceof ServerRequest)) {
             throw new MissingPolicyException($resource);

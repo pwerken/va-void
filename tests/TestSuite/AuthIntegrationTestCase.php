@@ -4,14 +4,15 @@ declare(strict_types=1);
 namespace App\Test\TestSuite;
 
 use Cake\TestSuite\IntegrationTestTrait;
-use Cake\TestSuite\TestCase;
+
+use App\Test\TestSuite\TestCase;
 
 class AuthIntegrationTestCase
 	extends TestCase
 {
 	use IntegrationTestTrait;
 
-	public $fixtures = [ 'app.Players' ];
+	public array $fixtures = [ 'app.Players' ];
 
 	protected $token = NULL;
 

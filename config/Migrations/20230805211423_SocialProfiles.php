@@ -1,9 +1,11 @@
 <?php
-use Phinx\Migration\AbstractMigration;
+declare(strict_types=1);
 
-class SocialProfiles extends AbstractMigration
+use App\Migrations\AppMigration;
+
+class SocialProfiles extends AppMigration
 {
-    public function up()
+    public function up(): void
     {
         $this->table('players')
             ->addColumn('email', 'string', [
@@ -62,7 +64,7 @@ class SocialProfiles extends AbstractMigration
             ->create();
     }
 
-    public function down()
+    public function down(): void
     {
         $this->table('social_profiles')
             ->drop()

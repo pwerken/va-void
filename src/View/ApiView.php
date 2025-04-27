@@ -29,7 +29,7 @@ class ApiView
         $this->addHelper(AuthorizeHelper::class);
     }
 
-    public function render(?string $view = null, $layout = null): string
+    public function render(?string $template = null, string|false|null $layout = null): string
     {
         $parent = $this->get('parent');
         $data = $this->get('_serialize', $this->viewVars);

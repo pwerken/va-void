@@ -8,12 +8,12 @@ use Cake\Controller\Component;
 class ViewComponent
     extends Component
 {
-    protected $components = ['Authorization'];
+    protected array $components = ['Authorization'];
 
     public function action(int|array $id, bool $checkAuthorize = true): void
     {
         $controller = $this->getController();
-        $model = $controller->fetchModel();
+        $model = $controller->fetchTable();
 
         $obj = $model->getWithContain($id);
         if($checkAuthorize) {

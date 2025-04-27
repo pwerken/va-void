@@ -50,7 +50,7 @@ class ItemsTable
         return true;
     }
 
-    protected function _newID($primary)
+    protected function _newID(array $primary): ?string
     {
         $holes = [ 1980, 2201, 2300, 8001, 8888, 9000, 9999, -1 ];
         foreach($holes as $max) {

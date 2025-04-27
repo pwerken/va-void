@@ -9,7 +9,7 @@ class CharactersPowersController
     // GET /characters/{plin}/{chin}/powers
     public function charactersIndex(int $char_id): void
     {
-        $parent = $this->fetchModel('Characters')->get($char_id);
+        $parent = $this->fetchTable('Characters')->get($char_id);
 
         $query = $this->CharactersPowers->findWithContain();
         $query->andWhere(['CharactersPowers.character_id' => $char_id]);
@@ -30,7 +30,7 @@ class CharactersPowersController
     // GET /characters/{plin}/{chin}/powers/{poin}
     public function charactersView(int $char_id, int $poin): void
     {
-        $parent = $this->fetchModel('Characters')->get($char_id);
+        $parent = $this->fetchTable('Characters')->get($char_id);
         $this->Authorization->authorize($parent, 'view');
 
         $this->View->action([$char_id, $poin], false);
@@ -57,7 +57,7 @@ class CharactersPowersController
     // GET /powers/{poin}/characters
     public function powersIndex(int $poin): void
     {
-        $parent = $this->fetchModel('Powers')->get($poin);
+        $parent = $this->fetchTable('Powers')->get($poin);
 
         $query = $this->CharactersPowers->findWithContain();
         $query->andWhere(['CharactersPowers.power_id' => $poin]);

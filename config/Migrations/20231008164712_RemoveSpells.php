@@ -1,19 +1,16 @@
 <?php
-
-use Cake\I18n\FrozenTime;
+declare(strict_types=1);
 
 use App\Migrations\AppMigration;
 
 class RemoveSpells extends AppMigration
 {
-    protected $_when;
-
-    public function up()
+    public function up(): void
     {
         // create history entries before dropping the tables
         $history = $this->table('history');
 
-        $rows = $this->getQueryBuilder()
+        $rows = $this->getQueryBuilder('select')
             ->select('*')
             ->from('characters_spells')
             ->order(['character_id' => 'ASC', 'spell_id' => 'ASC'])
@@ -34,7 +31,7 @@ class RemoveSpells extends AppMigration
 
             $delete = $current;
             $delete['data'] = null;
-            $delete['modified'] = $this->when();
+            $delete['modified'] = $this->now();
             $delete['modifier_id'] = -2;
 
             $history
@@ -42,7 +39,7 @@ class RemoveSpells extends AppMigration
                 ->insert($delete)
                 ->saveData();
         }
-        $rows = $this->getQueryBuilder()
+        $rows = $this->getQueryBuilder('select')
             ->select('*')
             ->from('spells')
             ->order(['id' => 'ASC'])
@@ -59,7 +56,7 @@ class RemoveSpells extends AppMigration
                 , 'key1' => $row['id']
                 , 'key2' => null
                 , 'data' => json_encode($data)
-                , 'modified' => $this->when()
+                , 'modified' => $this->now()
                 , 'modifier_id' => -2
                 ];
 
@@ -73,7 +70,7 @@ class RemoveSpells extends AppMigration
         $this->table('spells')->drop()->save();
     }
 
-    public function down()
+    public function down(): void
     {
         $spells = $this->table('spells');
         $spells
@@ -138,15 +135,5 @@ class RemoveSpells extends AppMigration
                 , 'delete' => 'RESTRICT'
                 ])
             ->create();
-    }
-
-    protected function when(): string
-    {
-        if($this->_when === null) {
-            $now = new FrozenTime();
-            $this->_when = $now->toDateTimeString();
-        }
-
-        return $this->_when;
     }
 }

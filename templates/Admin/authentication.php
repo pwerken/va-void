@@ -4,7 +4,7 @@ use Cake\ORM\TableRegistry;
 
 $inputStyle = 'width:5em;display:inline-block;margin-right:1rem;';
 
-$profiles = TableRegistry::get('SocialProfiles');
+$profiles = TableRegistry::getTableLocator()->get('SocialProfiles');
 
 $total = $profiles->find()->count();
 

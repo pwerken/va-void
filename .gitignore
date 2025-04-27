@@ -3,20 +3,17 @@
 /backups/*.sql
 /printing/log
 /printing/pdfs
-/webroot/coverage
 
 # Test related files #
 ######################
-/database.sqlite
 /webroot/coverage
 .phpunit.result.cache
 
 # CakePHP specific files #
 ##########################
-/composer.lock
-/config/.env # josegonzalez/php-dotenv
 /config/app_local.php
-/config/Migrations/schema-dump-default.lock
+/config/.env
+/config/Migrations/*.lock
 /logs/*
 /tmp/*
 /vendor/*
@@ -28,12 +25,19 @@
 ._*
 .Spotlight-V100
 .Trashes
-Icon?
+# Icon must end with two \r
+Icon
 ehthumbs.db
 Thumbs.db
+.directory
 
 # Tool specific files #
 #######################
+# Composer
+composer.lock
+# PHPUnit
+.phpunit.cache
+tests.sqlite
 # vim
 *~
 *.swp
@@ -51,5 +55,12 @@ Thumbs.db
 nbproject/*
 # Visual Studio Code
 .vscode
+# nova
+.nova
 # Sass preprocessor
 .sass-cache/
+# node
+/node_modules/*
+# yarn
+yarn-debug.log
+yarn-error.log

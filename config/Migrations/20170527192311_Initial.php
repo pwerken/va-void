@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
+
 use App\Migrations\AppMigration;
 
 class Initial extends AppMigration
 {
-    public function up()
+    public function up(): void
     {
-
         $this->table('attributes')
             ->addColumn('name', 'string', [
                 'default' => null,
@@ -754,7 +755,7 @@ class Initial extends AppMigration
             ->update();
     }
 
-    public function down()
+    public function down(): void
     {
         $this->table('attributes_items')
             ->dropForeignKey(

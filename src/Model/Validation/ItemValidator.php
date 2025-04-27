@@ -18,8 +18,8 @@ class ItemValidator
         $this->allowEmptyString('player_text');
         $this->allowEmptyString('referee_notes');
         $this->allowEmptyString('notes');
-        $this->allowEmpty('character_id')->nonNegativeInteger('character_id');
+        $this->allowEmptyString('character_id')->nonNegativeInteger('character_id');
         $this->allowEmptyDate('expiry')->date('expiry');
-        $this->allowEmpty('deprecated')->boolean('deprecated');
+        $this->allowEmptyString('deprecated')->boolean('deprecated');
     }
 }

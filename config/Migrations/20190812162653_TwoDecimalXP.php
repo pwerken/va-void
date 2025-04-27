@@ -1,9 +1,11 @@
 <?php
+declare(strict_types=1);
+
 use App\Migrations\AppMigration;
 
 class TwoDecimalXP extends AppMigration
 {
-	public function up()
+	public function up(): void
 	{
 		$this->table('characters')
 			->changeColumn('xp', 'decimal', [
@@ -25,7 +27,7 @@ class TwoDecimalXP extends AppMigration
 			->save();
 	}
 
-	public function down()
+	public function down(): void
 	{
 		$this->table('characters')
 			->changeColumn('xp', 'decimal', [

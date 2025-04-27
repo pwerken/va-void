@@ -7,7 +7,7 @@ use ArrayObject;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
@@ -23,7 +23,7 @@ class LammiesTable
     {
     }
 
-    public function findLastInQueue(Query $query, array $options = [])
+    public function findLastInQueue(SelectQuery $query, array $options = [])
     {
         $query = $this->findQueued($query, $options);
         $query->order(["Lammies.id" => "DESC"]);
@@ -31,7 +31,7 @@ class LammiesTable
         return $query;
     }
 
-    public function findQueued(Query $query, array $options = [])
+    public function findQueued(SelectQuery $query, array $options = [])
     {
         $query = $this->findWithContain($query, $options);
 
@@ -42,7 +42,7 @@ class LammiesTable
         return $query;
     }
 
-    public function findPrinting(Query $query, array $options = [])
+    public function findPrinting(SelectQuery $query, array $options = [])
     {
         $query = $this->findWithContain($query, $options);
         $query->where(["status LIKE" => "Printing"]);

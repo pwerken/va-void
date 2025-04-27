@@ -15,7 +15,7 @@ class QueueSingleCommand
 {
     use PrintLammies;
 
-    protected $defaultTable = 'Lammies';
+    protected ?string $defaultTable = 'Lammies';
 
     public static function defaultName(): string
     {

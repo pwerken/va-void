@@ -31,7 +31,7 @@ function format_v($k, $v)
 	if($k !== 'character_id')
 		return $v;
 
-	$char = TableRegistry::get('Characters')->get($v);
+	$char = TableRegistry::getTableLocator()->get('Characters')->get($v);
 	return $v.' = '.$char->player_id.'/'.$char->chin.' '.$char->name;
 }
 

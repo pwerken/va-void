@@ -25,9 +25,10 @@ abstract class AppEntityPolicy
     /**
      * This method is called just prior to the 'can{$action}' check.
      */
-    public function before(?User $identity, $resource, $action): void
+    public function before(?User $identity, mixed $resource, string $action): null
     {
         $this->setIdentity($identity);
+        return null;
     }
 
     public function scopeAccesible(User $identity, AppEntity $obj): void

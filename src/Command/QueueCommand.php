@@ -11,7 +11,7 @@ use Cake\Console\ConsoleOptionParser;
 class QueueCommand
     extends Command
 {
-    protected $defaultTable = 'Lammies';
+    protected ?string $defaultTable = 'Lammies';
 
     public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {

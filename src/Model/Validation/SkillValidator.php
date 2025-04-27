@@ -16,7 +16,7 @@ class SkillValidator
         $this->nonNegativeInteger('id');
         $this->notEmptyString('name');
         $this->nonNegativeInteger('cost');
-        $this->nonNegativeInteger('manatype_id')->allowEmpty('manatype_id')
+        $this->nonNegativeInteger('manatype_id')->allowEmptyString('manatype_id');
         $this->nonNegativeInteger('mana_amount');
         $this->nonNegativeInteger('sort_order');
     }

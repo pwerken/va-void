@@ -5,12 +5,11 @@ namespace App\Model\Behavior;
 
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 use Cake\ORM\Behavior;
 use Cake\Routing\Router;
 
 use ArrayObject;
-use DateTimeInterface;
 
 use App\Model\Entity\History;
 
@@ -24,7 +23,7 @@ class WhoWhenBehavior
 
     protected $_who;
 
-    public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options)
+    public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
         if($entity instanceof History and !is_null($entity->data)) {
             return;
@@ -59,10 +58,10 @@ class WhoWhenBehavior
         return $return;
     }
 
-    protected function when(): DateTimeInterface
+    protected function when(): DateTime
     {
         if($this->_when === null) {
-            $this->_when = new FrozenTime();
+            $this->_when = new DateTime();
         }
 
         return $this->_when;

@@ -68,7 +68,7 @@ class TeachingsTable
 
     public function findStudent($plin, $chin)
     {
-        $query = $this->find('all', ['contain' => ['Student']]);
+        $query = $this->find('all', contain: ['Student']);
         $query->select(['Teachings.student_id']);
         $query->where(['Student.player_id =' => $plin, 'Student.chin = ' => $chin]);
         $query->limit(1);

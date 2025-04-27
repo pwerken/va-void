@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Authentication;
 
 use Authentication\Authenticator\FormAuthenticator;
-use Authentication\Identifier\IdentifierInterface;
+use Authentication\Identifier\AbstractIdentifier;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
@@ -39,7 +39,7 @@ class PutPostDataAuthenticator
             if (!strlen($value)) {
                 return null;
             }
-            if ($key === IdentifierInterface::CREDENTIAL_USERNAME) {
+            if ($key === AbstractIdentifier::CREDENTIAL_USERNAME) {
                 // special case, as our db expects a int
                 if (!ctype_digit($value)) {
                     return null;

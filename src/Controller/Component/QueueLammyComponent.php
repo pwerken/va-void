@@ -12,9 +12,9 @@ class QueueLammyComponent
     {
         $controller = $this->getController();
 
-        $obj = $controller->fetchModel()->getWithContain($id);
+        $obj = $controller->fetchTable()->getWithContain($id);
 
-        $table = $controller->fetchModel('Lammies');
+        $table = $controller->fetchTable('Lammies');
         $lammy = $table->newEmptyEntity();
         $lammy->set('target', $obj);
 		$table->saveOrFail($lammy);

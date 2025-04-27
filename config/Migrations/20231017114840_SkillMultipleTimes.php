@@ -1,13 +1,10 @@
 <?php
 declare(strict_types=1);
 
-use Cake\I18n\FrozenTime;
-use Migrations\AbstractMigration;
+use App\Migrations\AppMigration;
 
-class SkillMultipleTimes extends AbstractMigration
+class SkillMultipleTimes extends AppMigration
 {
-    protected $_when;
-
     public function up(): void
     {
        // add columns
@@ -29,7 +26,7 @@ class SkillMultipleTimes extends AbstractMigration
            ->update();
 
         // converting old skills entries that are multiples...
-        $query = $this->getQueryBuilder()
+        $query = $this->getQueryBuilder('select')
                     ->select('*')
                     ->from('skills')
                     ->where(['name LIKE' => '% (%x)', 'deprecated' => False]);
@@ -50,7 +47,7 @@ class SkillMultipleTimes extends AbstractMigration
 
             // rename & remember $name - $id relation
             $base[$name] = $row['id'];
-            $query = $this->getQueryBuilder()
+            $query = $this->getQueryBuilder('update')
                         ->update('skills')
                         ->set('name', $name)
                         ->where(['id' => $row['id']])
@@ -62,7 +59,7 @@ class SkillMultipleTimes extends AbstractMigration
             if(isset($base[$skill['name']]))
                 continue;
 
-            $result = $this->getQueryBuilder()
+            $result = $this->getQueryBuilder('select')
                         ->select('id')
                         ->from('skills')
                         ->where(['name LIKE' => $skill['name']])
@@ -74,12 +71,12 @@ class SkillMultipleTimes extends AbstractMigration
         foreach($mapping as $key => $skill) {
             $replace_id = $base[$skill['name']];
 
-            $query = $this->getQueryBuilder()
+            $query = $this->getQueryBuilder('update')
                         ->update('skills')
                         ->set('deprecated', true)
                         ->where(['id' => $key])
                         ->execute();
-            $query = $this->getQueryBuilder()
+            $query = $this->getQueryBuilder('update')
                         ->update('skills')
                         ->set('times_max', $skill['times'])
                         ->where(['id' => $replace_id
@@ -87,7 +84,7 @@ class SkillMultipleTimes extends AbstractMigration
                         ->execute();
 
             // update characters that have the skill
-            $query = $this->getQueryBuilder()
+            $query = $this->getQueryBuilder('select')
                         ->select('*')
                         ->from('characters_skills')
                         ->where(['skill_id' => $key]);
@@ -102,32 +99,32 @@ class SkillMultipleTimes extends AbstractMigration
 
                 $delete = $current;
                 $delete['data'] = NULL;
-                $delete['modified'] = $this->when();
+                $delete['modified'] = $this->now();
                 $delete['modifier_id'] = -2;
 
                 $replacement = [];
                 $replacement['character_id'] = $row['character_id'];
                 $replacement['skill_id'] = $replace_id;
                 $replacement['times'] = $skill['times'];
-                $replacement['modified'] = $this->when();
+                $replacement['modified'] = $this->now();
                 $replacement['modifier_id'] = -2;
 
                 // log the changes
-                $query = $this->getQueryBuilder()
+                $query = $this->getQueryBuilder('insert')
                         ->into('history')
                         ->insert(array_keys($current))
                         ->values($current)
                         ->values($delete)
                         ->execute();
                 // remove the old skill
-                $query = $this->getQueryBuilder()
+                $query = $this->getQueryBuilder('delete')
                         ->delete('characters_skills')
                         ->where(['character_id' => $row['character_id']
                                 , 'skill_id' => $key])
                         ->execute();
 
                 // check if base skill already present
-                $query = $this->getQueryBuilder()
+                $query = $this->getQueryBuilder('select')
                         ->select('times')
                         ->from('characters_skills')
                         ->where(['character_id' => $row['character_id']
@@ -137,7 +134,7 @@ class SkillMultipleTimes extends AbstractMigration
                     // if it does, add to existing skill
                     $existing = $query->fetch();
                     $times = $existing[0] + $skill['times'];
-                    $query = $this->getQueryBuilder()
+                    $query = $this->getQueryBuilder('update')
                                 ->update('characters_skills')
                                 ->set('times', $times)
                                 ->where(['character_id' => $row['character_id']
@@ -145,7 +142,7 @@ class SkillMultipleTimes extends AbstractMigration
                                 ->execute();
                 } else {
                     // else insert base skill
-                    $query = $this->getQueryBuilder()
+                    $query = $this->getQueryBuilder('insert')
                             ->into('characters_skills')
                             ->insert(array_keys($replacement))
                             ->values($replacement)
@@ -166,15 +163,5 @@ class SkillMultipleTimes extends AbstractMigration
         $this->table('skills')
             ->removeColumn('times_max')
             ->update();
-    }
-
-    protected function when(): string
-    {
-        if($this->_when === null) {
-            $now = new FrozenTime();
-            $this->_when = $now->toDateTimeString();
-        }
-
-        return $this->_when;
     }
 }

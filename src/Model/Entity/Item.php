@@ -47,7 +47,7 @@ class Item
 
         $key++;
 
-        $table = TableRegistry::get('Attributes');
+        $table = TableRegistry::getTableLocator()->get('Attributes');
         $max = $table->find()->enableHydration(false)
                     ->select(['max' => 'COUNT(*)'])
                     ->where(['category LIKE' => 'random'])

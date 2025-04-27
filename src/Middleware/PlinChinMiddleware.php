@@ -22,7 +22,7 @@ class PlinChinMiddleware
 
         $pass = $request->getParam('pass');
         if($hasPlinChin && count($pass) >= 2) {
-            $table = TableRegistry::get('Characters');
+            $table = TableRegistry::getTableLocator()->get('Characters');
             $char = $table->plinChin($pass[0], $pass[1])->id;
             $request = $request->withParam('character_id', $char);
 

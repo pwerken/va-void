@@ -22,9 +22,9 @@ class CharacterValidator
         $this->notEmptyString('name');
         $this->numeric('xp')->regex('xp', '/^\d+([.,](0|25|5|75)0*)?$/');
         $this->nonNegativeInteger('faction_id');
-        $this->notEmptyString('belief');
-        $this->notEmptyString('group');
-        $this->notEmptyString('world');
+        $this->allowEmptyString('belief');
+        $this->allowEmptyString('group');
+        $this->allowEmptyString('world');
         $this->allowEmptyString('soulpath')->inList('soulpath', Character::soulpathValues());
         $this->inList('status', Character::statusValues());
     }

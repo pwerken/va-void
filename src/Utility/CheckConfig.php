@@ -79,18 +79,26 @@ class CheckConfig
             $status[$msg] = false;
         }
 
-        $settings = Cache::getConfig('_cake_core_');
+        $settings = Cache::getConfig('_cake_translations_');
         if(!empty($settings)) {
-            $msg = "cache is working.";
+            $msg = "framework cache is working.";
             $status[$msg] = true;
         } else {
-            $msg = "cache is NOT working.";
+            $msg = "framework cache is NOT working.";
+            $status[$msg] = false;
+        }
+
+        $settings = Cache::getConfig('_cake_model_');
+        if(!empty($settings)) {
+            $msg = "model cache is working.";
+            $status[$msg] = true;
+        } else {
+            $msg = "model cache is NOT working.";
             $status[$msg] = false;
         }
 
         try {
-            $connection = ConnectionManager::get('default');
-            $connected = $connection->connect();
+            ConnectionManager::get('default')->getDriver()->connect();
 
             $msg = 'CakePHP is able to connect to the database.';
             $status[$msg] = true;

@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
+
 use App\Migrations\AppMigration;
 
 class Audits extends AppMigration
 {
-    public function up()
+    public function up(): void
     {
-
         $this->table('audits')
             ->addColumn('entity', 'string', [
                 'default' => null,
@@ -40,9 +41,8 @@ class Audits extends AppMigration
             ->create();
     }
 
-    public function down()
+    public function down(): void
     {
         $this->dropTable('audits');
     }
 }
-

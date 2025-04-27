@@ -1,17 +1,6 @@
 <?php
-/**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link          https://cakephp.org CakePHP(tm) Project
- * @since         3.3.0
- * @license       https://opensource.org/licenses/mit-license.php MIT License
- */
+declare(strict_types=1);
+
 namespace App\Test\TestCase;
 
 use Authentication\Middleware\AuthenticationMiddleware;
@@ -23,7 +12,7 @@ use Cake\Http\MiddlewareQueue;
 use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
-use Cake\TestSuite\IntegrationTestCase;
+use Cake\TestSuite\IntegrationTestTrait;
 use InvalidArgumentException;
 
 use App\Application;
@@ -32,50 +21,30 @@ use App\Middleware\JsonInputMiddleware;
 use App\Middleware\LoginWithPlinMiddleware;
 use App\Middleware\PlinChinMiddleware;
 use App\Middleware\SessionAdminOnlyMiddleware;
+use App\Test\TestSuite\TestCase;
 
 /**
  * ApplicationTest class
  */
-class ApplicationTest extends IntegrationTestCase
+class ApplicationTest extends TestCase
 {
+    use IntegrationTestTrait;
 
     /**
-     * testBootstrap
+     * Test bootstrap in production.
      *
      * @return void
      */
     public function testBootstrap()
     {
-        $app = new Application(dirname(dirname(__DIR__)) . '/config');
+        Configure::write('debug', false);
+        $app = new Application(dirname(__DIR__, 2) . '/config');
         $app->bootstrap();
         $plugins = $app->getPlugins();
 
-        $this->assertCount(3, $plugins);
-
-        $this->assertFalse($plugins->has('DebugKit'), 'plugins has DebugKit?');
         $this->assertTrue($plugins->has('Authentication'), 'plugins has Authentication?');
         $this->assertTrue($plugins->has('Authorization'), 'plugins has Authorization?');
         $this->assertTrue($plugins->has('Migrations'), 'plugins has Migrations?');
-    }
-
-    /**
-     * testBootstrapPluginWitoutHalt
-     *
-     * @return void
-     */
-    public function testBootstrapPluginWitoutHalt()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $app = $this->getMockBuilder(Application::class)
-            ->setConstructorArgs([dirname(dirname(__DIR__)) . '/config'])
-            ->setMethods(['addPlugin'])
-            ->getMock();
-
-        $app->method('addPlugin')
-            ->will($this->throwException(new InvalidArgumentException('test exception.')));
-
-        $app->bootstrap();
     }
 
     /**
@@ -85,8 +54,10 @@ class ApplicationTest extends IntegrationTestCase
      */
     public function testMiddleware()
     {
-        $app = new Application(dirname(dirname(__DIR__)) . '/config');
-        $middleware = $app->middleware(new MiddlewareQueue());
+        $app = new Application(dirname(__DIR__, 2) . '/config');
+        $middleware = new MiddlewareQueue();
+
+        $middleware = $app->middleware($middleware);
 
         $this->assertInstanceOf(CorsMiddleware::class, $middleware->current());
         $middleware->seek(1);

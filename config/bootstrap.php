@@ -16,26 +16,25 @@ declare(strict_types=1);
  */
 
 /*
+ * This file is loaded by your src/Application.php bootstrap method.
+ * Feel free to extend/extract parts of the bootstrap process into your own files
+ * to suit your needs/preferences.
+ */
+
+/*
  * Configure paths required to find CakePHP + general filepath constants
  */
 require __DIR__ . DIRECTORY_SEPARATOR . 'paths.php';
 
 /*
- * Bootstrap CakePHP.
- *
- * Does the various bits of setup that CakePHP needs to do.
- * This includes:
- *
- * - Registering the CakePHP autoloader.
- * - Setting the default application paths.
+ * Bootstrap CakePHP
+ * Currently all this does is initialize the router (without loading your routes)
  */
 require CORE_PATH . 'config' . DS . 'bootstrap.php';
 
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
-use Cake\Database\Type\StringType;
-use Cake\Database\TypeFactory;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\ErrorTrap;
 use Cake\Error\ExceptionTrap;
@@ -47,12 +46,38 @@ use Cake\Routing\Router;
 use Cake\Utility\Security;
 
 /*
- * Read configuration file and inject configuration into various
- * CakePHP classes.
+ * Load global functions for collections, translations, debugging etc.
+ */
+require CAKE . 'functions.php';
+
+/*
+ * See https://github.com/josegonzalez/php-dotenv for API details.
  *
- * By default there is only one configuration file. It is often a good
- * idea to create multiple configuration files, and separate the configuration
- * that changes from configuration that does not. This makes deployment simpler.
+ * Uncomment block of code below if you want to use `.env` file during development.
+ * You should copy `config/.env.example` to `config/.env` and set/modify the
+ * variables as required.
+ *
+ * The purpose of the .env file is to emulate the presence of the environment
+ * variables like they would be present in production.
+ *
+ * If you use .env files, be careful to not commit them to source control to avoid
+ * security risks. See https://github.com/josegonzalez/php-dotenv#general-security-information
+ * for more information for recommended practices.
+*/
+// if (!env('APP_NAME') && file_exists(CONFIG . '.env')) {
+//     $dotenv = new \josegonzalez\Dotenv\Loader([CONFIG . '.env']);
+//     $dotenv->parse()
+//         ->putenv()
+//         ->toEnv()
+//         ->toServer();
+// }
+
+/*
+ * Initializes default Config store and loads the main configuration file (app.php)
+ *
+ * CakePHP contains 2 configuration files after project creation:
+ * - `config/app.php` for the default application configuration.
+ * - `config/app_local.php` for environment specific configuration.
  */
 try {
     Configure::config('default', new PhpConfig());
@@ -70,19 +95,16 @@ if (file_exists(CONFIG . 'app_local.php')) {
 }
 
 /*
- * When debug = true the metadata cache should only last
- * for a short time.
+ * When debug = true the metadata cache should only last for a short time.
  */
 if (Configure::read('debug')) {
     Configure::write('Cache._cake_model_.duration', '+2 minutes');
-    Configure::write('Cache._cake_core_.duration', '+2 minutes');
-    // disable router cache during development
-    Configure::write('Cache._cake_routes_.duration', '+2 seconds');
+    Configure::write('Cache._cake_translations_.duration', '+2 minutes');
 }
 
 /*
  * Set the default server timezone. Using UTC makes time calculations / conversions easier.
- * Check http://php.net/manual/en/timezones.php for list of valid timezone strings.
+ * Check https://php.net/manual/en/timezones.php for list of valid timezone strings.
  */
 date_default_timezone_set(Configure::read('App.defaultTimezone'));
 
@@ -104,16 +126,26 @@ ini_set('intl.default_locale', Configure::read('App.defaultLocale'));
 (new ExceptionTrap(Configure::read('Error')))->register();
 
 /*
- * Include the CLI bootstrap overrides.
+ * CLI/Command specific configuration.
  */
-$isCli = PHP_SAPI === 'cli';
-if ($isCli) {
-    require CONFIG . 'bootstrap_cli.php';
+if (PHP_SAPI === 'cli') {
+    // Set the fullBaseUrl to allow URLs to be generated in commands.
+    // This is useful when sending email from commands.
+    // Configure::write('App.fullBaseUrl', php_uname('n'));
+
+    // Set logs to different files so they don't have permission conflicts.
+    if (Configure::check('Log.debug')) {
+        Configure::write('Log.debug.file', 'cli-debug');
+    }
+    if (Configure::check('Log.error')) {
+        Configure::write('Log.error.file', 'cli-error');
+    }
 }
 
 /*
  * Set the full base URL.
  * This URL is used as the base of all absolute links.
+ * Can be very useful for CLI/Commandline applications.
  */
 $fullBaseUrl = Configure::read('App.fullBaseUrl');
 if (!$fullBaseUrl) {
@@ -123,7 +155,7 @@ if (!$fullBaseUrl) {
      * you can enable `$trustProxy` to rely on the `X-Forwarded-Proto`
      * header to determine whether to generate URLs using `https`.
      *
-     * See also https://book.cakephp.org/4/en/controllers/request-response.html#trusting-proxy-headers
+     * See also https://book.cakephp.org/5/en/controllers/request-response.html#trusting-proxy-headers
      */
     $trustProxy = false;
 
@@ -133,7 +165,7 @@ if (!$fullBaseUrl) {
     }
 
     $httpHost = env('HTTP_HOST');
-    if (isset($httpHost)) {
+    if ($httpHost) {
         $fullBaseUrl = 'http' . $s . '://' . $httpHost;
     }
     unset($httpHost, $s);
@@ -143,6 +175,10 @@ if ($fullBaseUrl) {
 }
 unset($fullBaseUrl);
 
+/*
+ * Apply the loaded configuration settings to their respective systems.
+ * This will also remove the loaded config data from memory.
+ */
 Cache::setConfig(Configure::consume('Cache'));
 ConnectionManager::setConfig(Configure::consume('Datasources'));
 TransportFactory::setConfig(Configure::consume('EmailTransport'));
@@ -153,42 +189,29 @@ Security::setSalt(Configure::consume('Security.salt'));
 /*
  * You can enable default locale format parsing by adding calls
  * to `useLocaleParser()`. This enables the automatic conversion of
- * locale specific date formats. For details see
- * @link https://book.cakephp.org/4/en/core-libraries/internationalization-and-localization.html#parsing-localized-datetime-data
+ * locale specific date formats when processing request data. For details see
+ * @link https://book.cakephp.org/5/en/core-libraries/internationalization-and-localization.html#parsing-localized-datetime-data
  */
-// \Cake\Database\TypeFactory::build('time')
-//    ->useLocaleParser();
-// \Cake\Database\TypeFactory::build('date')
-//    ->useLocaleParser();
-// \Cake\Database\TypeFactory::build('datetime')
-//    ->useLocaleParser();
-// \Cake\Database\TypeFactory::build('timestamp')
-//    ->useLocaleParser();
-// \Cake\Database\TypeFactory::build('datetimefractional')
-//    ->useLocaleParser();
-// \Cake\Database\TypeFactory::build('timestampfractional')
-//    ->useLocaleParser();
-// \Cake\Database\TypeFactory::build('datetimetimezone')
-//    ->useLocaleParser();
-// \Cake\Database\TypeFactory::build('timestamptimezone')
-//    ->useLocaleParser();
-
-// There is no time-specific type in Cake
-TypeFactory::map('time', StringType::class);
+// \Cake\Database\TypeFactory::build('time')->useLocaleParser();
+// \Cake\Database\TypeFactory::build('date')->useLocaleParser();
+// \Cake\Database\TypeFactory::build('datetime')->useLocaleParser();
+// \Cake\Database\TypeFactory::build('timestamp')->useLocaleParser();
+// \Cake\Database\TypeFactory::build('datetimefractional')->useLocaleParser();
+// \Cake\Database\TypeFactory::build('timestampfractional')->useLocaleParser();
+// \Cake\Database\TypeFactory::build('datetimetimezone')->useLocaleParser();
+// \Cake\Database\TypeFactory::build('timestamptimezone')->useLocaleParser();
 
 /*
  * Custom Inflector rules, can be set to correctly pluralize or singularize
  * table, model, controller names or whatever other string is passed to the
  * inflection functions.
  */
-//Inflector::rules('plural', ['/^(inflect)or$/i' => '\1ables']);
-//Inflector::rules('irregular', ['red' => 'redlings']);
-//Inflector::rules('uninflected', ['dontinflectme']);
+// \Cake\Utility\Inflector::rules('plural', ['/^(inflect)or$/i' => '\1ables']);
+// \Cake\Utility\Inflector::rules('irregular', ['red' => 'redlings']);
+// \Cake\Utility\Inflector::rules('uninflected', ['dontinflectme']);
 
-/**
- * More friendly formating of date/time in json output.
- */
-use Cake\I18n\FrozenDate;
-use Cake\I18n\FrozenTime;
-FrozenDate::setJsonEncodeFormat('yyyy-MM-dd');
-FrozenTime::setJsonEncodeFormat('yyyy-MM-dd HH:mm:ss');
+// set a custom date and time format
+// see https://book.cakephp.org/5/en/core-libraries/time.html#setting-the-default-locale-and-format-string
+// and https://unicode-org.github.io/icu/userguide/format_parse/datetime/#datetime-format-syntax
+\Cake\I18n\Date::setToStringFormat('yyyy-MM-dd');
+\Cake\I18n\Time::setToStringFormat('yyyy-MM-dd HH:mm:ss');

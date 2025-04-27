@@ -11,7 +11,7 @@ use App\Model\Entity\AppEntity;
 class IndexRelationComponent
     extends Component
 {
-    protected $components = ['Authorization'];
+    protected array $components = ['Authorization'];
 
     public function action(AppEntity $parent, Query $query, string $authAction = 'view'): void
     {

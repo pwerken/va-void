@@ -14,7 +14,7 @@ class EntityPolicyResolver
     /**
      * Used by the RequestAuthorizationMiddleware.
      */
-    public function getPolicy($resource)
+    public function getPolicy(mixed $resource): mixed
     {
         if (!($resource instanceof EntityInterface)) {
             throw new MissingPolicyException($resource);

@@ -6,6 +6,7 @@ namespace App\Model\Table;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Database\Type\DateTimeType;
 use Cake\Datasource\EntityInterface;
+use Cake\ORM\Locator\LocatorInterface;
 use Cake\ORM\TableRegistry;
 
 use App\Model\Entity\History;
@@ -13,6 +14,8 @@ use App\Model\Entity\History;
 class HistoryTable
     extends AppTable
 {
+    private LocatorInterface $locator;
+
     public function initialize(array $config): void
     {
         parent::initialize($config);
@@ -30,6 +33,8 @@ class HistoryTable
             ->setConditions(['History.entity' => 'AttributesItem']);
         $this->belongsTo('Items')->setForeignKey('key2')
             ->setConditions(['History.entity LIKE' => '%sItem']);
+
+        $this->locator = TableRegistry::getTableLocator();
     }
 
     public function logChange(EntityInterface $entity)
@@ -102,10 +107,14 @@ class HistoryTable
             default:            $entity = '';           break;
             }
 
-            $result = TableRegistry::get($tbl)->find()
+            $result = $this->locator->get($tbl)->find()
                 ->select($select)->where($where)
                 ->order(['modified' => 'DESC'])->enableHydration(false)->all();
+
             foreach($result as $row) {
+                if($select['key1'] == $select['key2']) {
+                    $row['key2'] = null;
+                }
                 if(is_null($row['name']) && $tbl == 'Players') {
                     $name = [$row['first_name'], $row['insertion'], $row['last_name']];
                     $row['name'] = implode(' ', array_filter($name));
@@ -193,7 +202,7 @@ class HistoryTable
 
     private function getPlayerHistory($plin)
     {
-        $entity = TableRegistry::get('Players')->find()
+        $entity = $this->locator->get('Players')->find()
             ->where(['id' => $plin])
             ->first();
 
@@ -212,7 +221,7 @@ class HistoryTable
 
     private function getCharacterHistory($plin, $chin)
     {
-        $entity = TableRegistry::get('Characters')->findWithContain()
+        $entity = $this->locator->get('Characters')->findWithContain()
             ->where(['Characters.player_id' => $plin])
             ->where(['Characters.chin' => $chin])
             ->first();
@@ -243,7 +252,7 @@ class HistoryTable
 
     private function getConditionHistory($coin)
     {
-        $entity = TableRegistry::get('Conditions')->findWithContain()
+        $entity = $this->locator->get('Conditions')->findWithContain()
             ->where(['Conditions.id' => $coin])
             ->first();
 
@@ -270,7 +279,7 @@ class HistoryTable
 
     private function getPowerHistory($poin)
     {
-        $entity = TableRegistry::get('Powers')->findWithContain()
+        $entity = $this->locator->get('Powers')->findWithContain()
             ->where(['Powers.id' => $poin])
             ->first();
 
@@ -297,7 +306,7 @@ class HistoryTable
 
     private function getItemHistory($itin)
     {
-        $entity = TableRegistry::get('Items')->findWithContain()
+        $entity = $this->locator->get('Items')->findWithContain()
             ->where(['Items.id' => $itin])
             ->first();
 

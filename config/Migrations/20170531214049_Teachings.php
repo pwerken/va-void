@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
+
 use App\Migrations\AppMigration;
 
 class Teachings extends AppMigration
 {
-    public function up()
+    public function up(): void
     {
-
         $this->table('teachings', ['id' => false, 'primary_key' => ['student_id']])
             ->addColumn('student_id', 'integer', [
                 'default' => null,
@@ -114,7 +115,7 @@ class Teachings extends AppMigration
             ->update();
     }
 
-    public function down()
+    public function down(): void
     {
         $this->table('teachings')
             ->dropForeignKey(
@@ -136,4 +137,3 @@ class Teachings extends AppMigration
         $this->dropTable('teachings');
     }
 }
-

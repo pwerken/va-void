@@ -6,7 +6,7 @@ namespace App\Model\Table;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 
@@ -45,36 +45,38 @@ abstract class AppTable
 
     public function beforeDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
-        TableRegistry::get('History')->logDeletion($entity);
+        TableRegistry::getTableLocator()->get('History')->logDeletion($entity);
     }
 
-    public function beforeFind(EventInterface $event, Query $query, ArrayObject $options, bool $primary): Query
+    public function beforeFind(EventInterface $event, SelectQuery $query, ArrayObject $options, bool $primary): void
     {
         if($query->clause('limit') == 1)
-            return $query;
+            return;
 
         foreach($this->orderBy() as $field => $ord) {
             $f = $this->aliasField($field);
-            $query->order([$this->aliasField($field) => $ord]);
+            $query->orderBy([$this->aliasField($field) => $ord]);
         }
 
-        if(!is_array($this->getPrimaryKey()))
-            return $query;
+        if(!is_array($this->getPrimaryKey())) {
+            $event->setResult($query);
+            return;
+        }
 
         $query->sql();  // force evaluation of internal state/objects
         foreach($query->clause('join') as $join) {
             if(!$this->hasAssociation($join['table']))
                 continue;
 
-            $table = TableRegistry::get($join['table']);
+            $table = TableRegistry::getTableLocator()->get($join['table']);
             $table->setAlias($join['alias']);
 
             foreach($table->orderBy() as $field => $ord) {
-                $query->order([$table->aliasField($field) => $ord]);
+                $query->orderBy([$table->aliasField($field) => $ord]);
             }
         }
 
-        return $query;
+        $event->setResult($query);
     }
 
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
@@ -123,18 +125,18 @@ abstract class AppTable
             return;
         }
 
-        TableRegistry::get('History')->logChange($entity);
+        TableRegistry::getTableLocator()->get('History')->logChange($entity);
     }
 
     public function getWithContain($id)
     {
-        return $this->get($id, ['contain' => $this->contain()]);
+        return $this->get($id, contain: $this->contain());
     }
 
-    public function findWithContain(Query $query = null, array $options = []): Query
+    public function findWithContain(?SelectQuery $query = null, mixed ...$args): SelectQuery
     {
         if(is_null($query))
-            $query = $this->find('all', $options);
+            $query = $this->find('all', ...$args);
 
         $contain = $this->contain();
         if(!empty($contain))
@@ -155,7 +157,7 @@ abstract class AppTable
 
     protected function touchEntity($model, $id): void
     {
-        $table = TableRegistry::get($model);
+        $table = TableRegistry::getTableLocator()->get($model);
         $entity = $table->get($id);
         $table->touch($entity);
         $table->save($entity);

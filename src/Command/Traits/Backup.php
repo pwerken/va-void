@@ -4,8 +4,9 @@ declare(strict_types=1);
 namespace App\Command\Traits;
 
 use Cake\Core\Configure;
-use Cake\Filesystem\Folder;
 use Cake\Utility\Hash;
+
+use DirectoryIterator;
 
 trait Backup
 {
@@ -34,16 +35,22 @@ trait Backup
 
     protected function getBackupFiles()
     {
-        $files = (new Folder($this->config('target')))->find('.+\.sql');
-        sort($files);
+        $list = [];
+        $path = $this->config('target');
 
-        return collection($files)
-            ->map(function ($file) {
-                $fullpath = $this->config('target') . $file;
-                $datetime = date('Y-m-d H:i:s', filemtime($fullpath));
-                return [ $file, filesize($fullpath), $datetime ];
-            })
-            ->toList();
+        foreach(new DirectoryIterator($path) as $fileInfo) {
+            if($fileInfo->isDot())
+                continue;
+            if(strcmp($fileInfo->getExtension(), 'sql') !== 0)
+                continue;
+
+            $filename = $fileInfo->getFilename();
+            $filesize = $fileInfo->getSize();
+            $datetime = date('Y-m-d H:i:s', $fileInfo->getMTime());
+            $list[] =   [ $filename, $filesize, $datetime ];
+        }
+        sort($list);
+        return $list;
     }
 
     protected function storeAuth($conn, $app)
