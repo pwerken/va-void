@@ -49,7 +49,7 @@ class DropDataTables extends AbstractMigration
     {
         $this->_restoreLookupTable('believes', 'belief_id', 'belief');
         $this->_restoreLookupTable('groups', 'group_id', 'group');
-        $this->_restoreLookupTable('world', 'world_id', 'world');
+        $this->_restoreLookupTable('worlds', 'world_id', 'world');
     }
 
     protected function _restoreLookupTable($lookupTable, $reference, $name)
