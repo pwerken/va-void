@@ -1,48 +1,24 @@
 <?php
 declare(strict_types=1);
 
-use App\Migrations\AppMigration;
+use App\Migrations\Migration;
 
-class Audits extends AppMigration
+class Audits extends Migration
 {
     public function up(): void
     {
         $this->table('audits')
-            ->addColumn('entity', 'string', [
-                'default' => null,
-                'limit' => 255,
-                'null' => false,
-            ])
-            ->addColumn('key1', 'integer', [
-                'default' => null,
-                'limit' => 11,
-                'null' => false,
-            ])
-            ->addColumn('key2', 'integer', [
-                'default' => null,
-                'limit' => 11,
-                'null' => true,
-            ])
-            ->addColumn('data', 'text', [
-                'default' => null,
-                'limit' => null,
-                'null' => true,
-            ])
-            ->addColumn('modified', 'datetime', [
-                'default' => null,
-                'limit' => null,
-                'null' => true,
-            ])
-            ->addColumn('modifier_id', 'integer', [
-                'default' => null,
-                'limit' => 11,
-                'null' => true,
-            ])
+            ->addColumnString('entity')
+            ->addColumnInteger('key1')
+            ->addColumnInteger('key2', true)
+            ->addColumnText('data', true)
+            ->addColumnDateTime('modified')
+            ->addColumnInteger('modifier_id', true)
             ->create();
     }
 
     public function down(): void
     {
-        $this->dropTable('audits');
+        $this->table('audits')->drop()->update();
     }
 }

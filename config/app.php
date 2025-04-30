@@ -1,5 +1,9 @@
 <?php
 
+use App\Authentication\UnauthenticatedException;
+use App\Error\ApiExceptionRenderer;
+use App\Error\ErrorLogger;
+use App\Error\Exception\LoginFailedException;
 use Cake\Cache\Engine\FileEngine;
 use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
@@ -8,11 +12,6 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\MailTransport;
 use Cake\Routing\Exception\MissingRouteException;
-
-use App\Authentication\UnauthenticatedException;
-use App\Error\ApiExceptionRenderer;
-use App\Error\AppErrorLogger;
-use App\Error\LoginFailedException;
 
 return [
     /*
@@ -115,7 +114,7 @@ return [
      * BackupShell configuration
      */
     'Backups' => [
-        'target' => ROOT .DS . 'backups' . DS,
+        'target' => ROOT . DS . 'backups' . DS,
         'mysql' => '/usr/bin/mysql',
         'mysqldump' => '/usr/bin/mysqldump',
     ],
@@ -208,7 +207,7 @@ return [
             MissingRouteException::class,
             RecordNotFoundException::class,
         ],
-        'logger' => AppErrorLogger::class,
+        'logger' => ErrorLogger::class,
         'log' => true,
         'trace' => true,
         'ignoredDeprecationPaths' => [],

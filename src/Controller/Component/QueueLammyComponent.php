@@ -5,8 +5,7 @@ namespace App\Controller\Component;
 
 use Cake\Controller\Component;
 
-class QueueLammyComponent
-	extends Component
+class QueueLammyComponent extends Component
 {
     public function action(int|array $id): void
     {
@@ -17,7 +16,7 @@ class QueueLammyComponent
         $table = $controller->fetchTable('Lammies');
         $lammy = $table->newEmptyEntity();
         $lammy->set('target', $obj);
-		$table->saveOrFail($lammy);
+        $table->saveOrFail($lammy);
 
         $controller->set('_serialize', 1);
     }

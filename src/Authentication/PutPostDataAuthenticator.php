@@ -12,8 +12,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
  *
  * Authenticates an identity based on the PUT or POST data of the request.
  */
-class PutPostDataAuthenticator
-    extends FormAuthenticator
+class PutPostDataAuthenticator extends FormAuthenticator
 {
     /**
      * Checks the fields to ensure they are supplied.

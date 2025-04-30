@@ -1,14 +1,13 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
-use Cake\Database\Expression\QueryExpression;
 use Cake\ORM\TableRegistry;
 
-class Item
-    extends AppEntity
+class Item extends Entity
 {
-
-    public function __construct($properties = [], $options = [])
+    public function __construct(array $properties = [], array $options = [])
     {
         parent::__construct($properties, $options);
 
@@ -17,21 +16,21 @@ class Item
         $this->setHidden(['character_id'], true);
     }
 
-    protected function _getPlin()
+    protected function _getPlin(): ?int
     {
-        return @$this->character->player_id;
+        return $this->get('character')?->player_id;
     }
 
-    protected function _getChin()
+    protected function _getChin(): ?int
     {
-        return @$this->character->chin;
+        return $this->get('character')?->chin;
     }
 
-    public function codes()
+    public function codes(): array
     {
         $seed = $this->id;
         $attr = [];
-        foreach($this->attributes as $relation) {
+        foreach ($this->get('attributes') as $relation) {
             $attribute = $relation->attribute;
             $seed *= $attribute->id;
             $attr[] = $attribute->code;
@@ -42,9 +41,9 @@ class Item
 
         $key = -1;
         $output = [];
-        foreach($attr as $key => $val)
+        foreach ($attr as $key => $val) {
             $output[$order[$key]] = $val;
-
+        }
         $key++;
 
         $table = TableRegistry::getTableLocator()->get('Attributes');
@@ -54,7 +53,7 @@ class Item
                     ->order(['id' => 'ASC'])
                     ->toArray()[0]['max'];
 
-        for( ; $key < 12; $key++) {
+        for (; $key < 12; $key++) {
             $code = $table->find()->enableHydration(false)
                     ->select(['code'])
                     ->where(['category LIKE' => 'random'])
@@ -63,21 +62,22 @@ class Item
                     ->toArray()[0]['code'];
             $output[$order[$key]] = $code;
         }
+
         return $output;
     }
 
-    private function randomOrder()
+    private function randomOrder(): array
     {
         $order = $taken = [];
-        for($i = 11; $i >= 0; $i--) {
+        for ($i = 11; $i >= 0; $i--) {
             $x = mt_rand(0, $i);
-            while(isset($taken[$x]))
+            while (isset($taken[$x])) {
                 $x++;
-
+            }
             $taken[$x] = true;
             $order[] = $x;
         }
+
         return $order;
     }
-
 }

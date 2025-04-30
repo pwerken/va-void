@@ -1,26 +1,26 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Lammy;
 
-class ConditionLammy
-	extends CharactersConditionLammy
+class ConditionLammy extends CharactersConditionLammy
 {
+    public function draw(int $side, ?array $data = null): void
+    {
+        $data = [];
+        $data['type'] = 'Condition';
+        $data['key'] = 'COIN';
+        $data['id'] = $this->entity->id;
+        $data['name'] = $this->entity->name;
+        $data['text'] = $this->entity->player_text;
+        $data['plin'] = null;
+        $data['char'] = null;
+        $data['expiry'] = null;
 
-	public function draw($side, $data = NULL)
-	{
-		$data = [];
-		$data['type'] = 'Condition';
-		$data['key']  = 'COIN';
-		$data['id']   = $this->entity->id;
-		$data['name'] = $this->entity->name;
-		$data['text'] = $this->entity->player_text;
-		$data['plin'] = NULL;
-		$data['char'] = NULL;
-		$data['expiry'] = NULL;
+        parent::draw($side, $data);
+    }
 
-		parent::draw($side, $data);
-	}
-
-    protected function _drawFront($data)
+    protected function _drawFront(array $data): void
     {
         parent::_drawFront($data);
 

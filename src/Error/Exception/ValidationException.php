@@ -8,10 +8,9 @@ use Cake\Http\Exception\BadRequestException;
 use Cake\Utility\Hash;
 use Throwable;
 
-class ValidationException
-    extends BadRequestException
+class ValidationException extends BadRequestException
 {
-    private $_validationErrors = [];
+    private array $_validationErrors = [];
 
     public function __construct(EntityInterface $entity, int $code = 422, ?Throwable $previous = null)
     {
@@ -21,7 +20,7 @@ class ValidationException
         $count = count($flat);
 
         if ($count == 1) {
-            $message = "A validation error occurred";
+            $message = 'A validation error occurred';
         } else {
             $message = "{$count} validation errors occurred";
         }

@@ -3,17 +3,15 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Command\Traits\PrintLammiesTrait;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 
-use App\Command\Traits\PrintLammies;
-
-class QueueDoubleCommand
-    extends Command
+class QueueDoubleCommand extends Command
 {
-    use PrintLammies;
+    use PrintLammiesTrait;
 
     protected ?string $defaultTable = 'Lammies';
 
@@ -25,13 +23,16 @@ class QueueDoubleCommand
     public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         $parser->setDescription('Create a PDF for double-sided printing.');
-        $parser->addArgument('id',
-                    [ 'help' => 'ID of the last queued lammy to include.'
-                    , 'required' => true
-                    ]);
+        $parser->addArgument(
+            'id',
+            [ 'help' => 'ID of the last queued lammy to include.'
+                    , 'required' => true,
+            ],
+        );
 
         $parser->removeOption('quiet');
         $parser->removeOption('verbose');
+
         return $parser;
     }
 
@@ -39,7 +40,7 @@ class QueueDoubleCommand
     {
         $pdf = $this->createPdf((int)$args->getArgument('id'), true);
 
-        if(isset($pdf)) {
+        if (isset($pdf)) {
             $io->out($pdf);
         }
 

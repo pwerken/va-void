@@ -5,16 +5,16 @@ namespace App\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
 
-class ManatypesFixture
-	extends TestFixture
+class ManatypesFixture extends TestFixture
 {
-	public function init(): void
-	{
-		$this->records =
-			[	[ 'id' => 1
-				, 'name' => 'Mana'
-				]
-			];
-		parent::init();
-	}
+    public function init(): void
+    {
+        $this->records = [
+            [
+                'id' => 1,
+                'name' => 'Mana',
+            ],
+        ];
+        parent::init();
+    }
 }

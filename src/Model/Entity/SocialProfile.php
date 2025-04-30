@@ -3,12 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
-
-class SocialProfile
-    extends AppEntity
+class SocialProfile extends Entity
 {
-    public function __construct($properties = [], $options = [])
+    public function __construct(array $properties = [], array $options = [])
     {
         parent::__construct($properties, $options);
 
@@ -17,8 +14,8 @@ class SocialProfile
         $this->setHidden(['identifier'], true);
     }
 
-    public function getUrl()
+    public function getUrl(): string
     {
-        return '/players/'.$this->user_id.'/socials/'.$this->id;
+        return '/players/' . $this->get('user_id') . '/socials/' . $this->id;
     }
 }

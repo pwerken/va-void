@@ -1,4 +1,5 @@
 <?php
+
 use Migrations\AbstractSeed;
 
 /**
@@ -22,47 +23,47 @@ class FactionsSeed extends AbstractSeed
             [
                 'id' => '1',
                 'name' => '-',
-                'modified' => NULL,
+                'modified' => null,
             ],
             [
                 'id' => '2',
                 'name' => 'Gargoyle',
-                'modified' => NULL,
+                'modified' => null,
             ],
             [
                 'id' => '3',
                 'name' => 'Wyvern',
-                'modified' => NULL,
+                'modified' => null,
             ],
             [
                 'id' => '4',
                 'name' => 'Phoenix',
-                'modified' => NULL,
+                'modified' => null,
             ],
             [
                 'id' => '5',
                 'name' => 'Leviathan',
-                'modified' => NULL,
+                'modified' => null,
             ],
             [
                 'id' => '6',
                 'name' => 'Ent',
-                'modified' => NULL,
+                'modified' => null,
             ],
             [
                 'id' => '7',
                 'name' => 'Unicorn',
-                'modified' => NULL,
+                'modified' => null,
             ],
             [
                 'id' => '8',
                 'name' => 'Naga',
-                'modified' => NULL,
+                'modified' => null,
             ],
             [
                 'id' => '9',
                 'name' => 'Metal',
-                'modified' => NULL,
+                'modified' => null,
             ],
         ];
 

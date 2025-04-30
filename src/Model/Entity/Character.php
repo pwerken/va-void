@@ -1,20 +1,22 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
-class Character
-    extends AppEntity
+class Character extends Entity
 {
+    protected array $_defaults = [
+        'xp' => 15,
+        'status' => 'inactive',
+        'belief' => '-',
+        'group' => '-',
+        'faction_id' => 1,
+        'world' => '-',
+    ];
 
-    protected $_defaults =
-            [ 'xp'          => 15
-            , 'status'      => 'inactive'
-            , 'belief'      => '-'
-            , 'group'       => '-'
-            , 'faction_id'  => 1
-            , 'world'       => '-'
-            ];
+    protected ?Faction $faction_object = null;
 
-    public function __construct($properties = [], $options = [])
+    public function __construct(array $properties = [], array $options = [])
     {
         parent::__construct($properties, $options);
 
@@ -29,29 +31,31 @@ class Character
     public static function soulpathValues(): array
     {
         static $data = null;
-        if(is_null($data))
+        if (is_null($data)) {
             $data = ['BO', 'LI', 'LU', 'MA', 'MO', 'NO', 'NY', 'RA', 'SO', 'TA'];
+        }
+
         return $data;
     }
 
     public static function statusValues(): array
     {
         static $data = null;
-        if(is_null($data))
+        if (is_null($data)) {
             $data = ['dead', 'inactive', 'active'];
+        }
+
         return $data;
     }
 
     public function getUrl(): string
     {
-        return '/'.$this->getBaseUrl().'/'.$this->player_id.'/'.$this->chin;
+        return '/' . $this->getBaseUrl() . '/' . $this->get('player_id') . '/' . $this->get('chin');
     }
 
     protected function _getFaction(): ?string
     {
-        if (is_null($this->faction_object))
-            return null;
-        return $this->faction_object->name;
+        return $this->faction_object?->name;
     }
 
     protected function _setBelief(mixed $belief): mixed

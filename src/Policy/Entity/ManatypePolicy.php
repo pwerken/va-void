@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace App\Policy\Entity;
 
+use App\Model\Entity\Manatype;
 use Authorization\IdentityInterface as User;
 
-use App\Model\Entity\Manatype;
-
-class ManatypePolicy
-    extends AppEntityPolicy
+class ManatypePolicy extends EntityPolicy
 {
     public function __construct()
     {

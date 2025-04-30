@@ -1,22 +1,22 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
+use Cake\ORM\Entity as CakeEntity;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 
-abstract class AppEntity
-    extends Entity
+abstract class Entity extends CakeEntity
 {
+    protected array $_defaults = [ ];
+    protected array $_compact = [ 'id', 'name' ];
 
-    protected $_defaults = [ ];
-    protected $_compact  = [ 'id', 'name' ];
-
-    public function __construct($properties = [], $options = [])
+    public function __construct(array $properties = [], array $options = [])
     {
         parent::__construct($properties, $options);
 
-        if($this->isNew()) {
+        if ($this->isNew()) {
             $this->patch($this->_defaults, ['guard' => false, 'asOriginal' => true]);
         }
     }
@@ -26,40 +26,44 @@ abstract class AppEntity
         if (empty($value) && array_key_exists($name, $this->_defaults)) {
             return $this->_defaults[$name];
         }
+
         return $value;
     }
 
     public function getClass(): string
     {
-        $class = get_class($this);
+        $class = $this::class;
+
         return substr($class, strrpos($class, '\\') + 1);
     }
 
-    protected function getBaseUrl()
+    protected function getBaseUrl(): string
     {
         return strtolower(Inflector::pluralize($this->getClass()));
     }
 
-    protected function getRelationUrl($first, $second, $fallback)
+    protected function getRelationUrl(string $first, string $second, ?Entity $fallback): string
     {
-        $a = $this->$first  ?: $fallback;
-        $b = $this->$second ?: $fallback;
-        return $a->getUrl().$b->getUrl();
-    }
-    public function getUrl()
-    {
-        return '/'.$this->getBaseUrl().'/'.$this->id;
+        $a = $this->$first ?? $fallback;
+        $b = $this->$second ?? $fallback;
+
+        return $a->getUrl() . $b->getUrl();
     }
 
-    public function refresh()
+    public function getUrl(): string
+    {
+        return '/' . $this->getBaseUrl() . '/' . $this->id;
+    }
+
+    public function refresh(): self
     {
         $name = Inflector::pluralize($this->getClass());
         $table = TableRegistry::getTableLocator()->get($name);
         $query = $table->find('withContain');
 
         $keys = $table->getPrimaryKey();
-        if(is_array($keys)) {
-            foreach($keys as $i => $key) {
+        if (is_array($keys)) {
+            foreach ($keys as $key) {
                 $field = current($query->aliasField($key));
                 $query->where([$field => $this->$key]);
             }
@@ -67,12 +71,13 @@ abstract class AppEntity
             $field = current($query->aliasField($keys));
             $query->where([$field => $this->$keys]);
         }
+
         return $query->first();
     }
 
-    public function setCompact($properties, $merge = false)
+    public function setCompact(array $properties, bool $merge = false): static
     {
-        if($merge === false) {
+        if (!$merge) {
             $this->_compact = $properties;
 
             return $this;
@@ -84,7 +89,7 @@ abstract class AppEntity
         return $this;
     }
 
-    public function getCompact()
+    public function getCompact(): array
     {
         return $this->_compact;
     }

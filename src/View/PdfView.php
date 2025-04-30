@@ -9,37 +9,38 @@ use RPDF\Rpdf;
 
 class PdfView extends View
 {
-    private static int $M_TOP = 8; // paper margins
-    private static int $M_SIDE = 29;
+    // paper margins
+    private static float $M_TOP = 8;
+    private static float $M_SIDE = 29;
 
-    private static int $P_HORZ = 2; // padding between lammmies
-    private static int $P_VERT = 2;
+    // padding between lammies
+    private static float $P_HORZ = 2;
+    private static float $P_VERT = 2;
 
-    private static int $LAMMIES_Y = 6; // nr's of lammies that fit on one page
+    // nr of rows that fit on one page
+    private static int $LAMMIES_Y = 6;
 
+    /**
+     * Renders the lammies as a pdf, ready for printing.
+     */
     public function render(?string $template = null, string|false|null $layout = null): string
     {
         $lammies = [];
-        $todo = [];
-        foreach ($this->get($this->get('viewVar')) as $key => $entity) {
+        foreach ($this->get($this->get('viewVar')) as $entity) {
             $lammy = $entity->lammy;
-            if (is_null($lammy)) {
-                continue;
+            if (!is_null($lammy)) {
+                $lammies[] = $lammy;
             }
-
-            $lammy->printedBy($entity->creator_id);
-            $lammies[$key] = $lammy;
-            $todo[] = [$key, $lammy->sides()];
         }
 
-        if (empty($todo)) {
+        if (empty($lammies)) {
             return '';
         }
 
         if (!$this->get('double')) {
-            $layout = $this->makeLayout1P($todo);
+            $layout = $this->makeLayout1P($lammies);
         } else {
-            $layout = $this->makeLayout2P($todo);
+            $layout = $this->makeLayout2P($lammies);
         }
 
         $pdf = new Rpdf('P', 'mm', 'A4');
@@ -47,81 +48,97 @@ class PdfView extends View
         $pdf->SetTitle('Lammies!');
         $pdf->SetAutoPageBreak(false);
 
-        $pages = count($layout);
-        for ($page = 0; $page < $pages; $page++) {
+        foreach ($layout as $page) {
             $pdf->addPage();
-            foreach ($layout[$page] as $row => $rowdata) {
-                $y = self::row2y($row);
-                foreach ($rowdata as $col => $item) {
-                    [$key, $side] = $item;
-                    if (!isset($key)) {
-                        continue;
-                    }
-                    $x = self::col2x($col);
-                    $lammies[$key]->preDraw($pdf, $x, $y);
-                    $lammies[$key]->draw($side);
+            foreach ($page as $row => $columns) {
+                foreach ($columns as $col => [$lammy, $side]) {
+                    $lammy->preDraw($pdf, self::col2x($col), self::row2y($row));
+                    $lammy->draw($side);
                 }
             }
         }
 
         $this->setLayout('pdf');
         $this->response = $this->response->withType('pdf');
+
         return $pdf->Output('s');
     }
 
-    private function makeLayout1P(array $todo): array
+    /**
+     * Make a layout of the lammies that need to be printed.
+     * This method makes layout intended for single-sided printing.
+     *
+     * It places the front and back side of a lammy on the same row.
+     *
+     * The return type is: $layout[$page][$row][$column] = [$lammy, $side]
+     *
+     * @param list<\App\Lammy\LammyCard> $lammies
+     * @return array<int, array<int, array<int, array{\App\Lammy\LammyCard, int} >>>
+     */
+    private function makeLayout1P(array $lammies): array
     {
         $layout = [];
+
         $page = 0;
         $row = 0;
         $col = 0;
-        foreach ($todo as [$key, $sides]) {
+        foreach ($lammies as $lammy) {
+            $sides = $lammy->sides();
             $space = 2 * (self::$LAMMIES_Y - $row) - $col;
             if ($space < $sides) {
-                // not enough space left
-                // fill current page with blanks
-                for (; $row < self::$LAMMIES_Y; $row++) {
-                    for (; $col < 2; $col++) {
-                        $layout[$page][$row][$col] = [null, 1];
-                    }
-                    $col = 0;
-                }
-                $row = 0;
+                // not enough space left, start on next page
                 $page++;
-            }
-            if ($col == 1) { // starting in 2nd column, try to fill it
-                $add = $sides % 2 == 1 ? [$key, --$sides] : [null, 1];
-                $layout[$page][$row][$col] = $add;
+                $row = 0;
                 $col = 0;
+            }
+            if ($col == 1) {
+                // starting in 2nd column
+                if ($sides % 2 == 1) {
+                    // try to fill it with a single sided lammy
+                    $layout[$page][$row][$col] = [$lammy, --$sides];
+                }
                 $row++;
+                $col = 0;
             }
             for ($i = 0; $i < $sides; $i++) {
-                $layout[$page][$row][$col] = [$key, $i];
+                $layout[$page][$row][$col] = [$lammy, $i];
                 if ($col == 0) {
                     $col++;
                     continue;
                 }
-                $col = 0;
                 $row++;
+                $col = 0;
             }
         }
 
         return $layout;
     }
 
-    private function makeLayout2P(array $todo): array
+    /**
+     * Make a layout of the lammies that need to be printed.
+     * This method makes layout intended for double sided printing.
+     *
+     * It places the back side of the lammy in the mirrored column of the next
+     * page.
+     *
+     * The return type is: $layout[$page][$row][$column] = [$lammy, $side]
+     *
+     * @param list<\App\Lammy\LammyCard> $lammies
+     * @return array<int, array<int, array<int, array{\App\Lammy\LammyCard, int} >>>
+     */
+    private function makeLayout2P(array $lammies): array
     {
         $layout = [];
         $col = 0;
         $row = 0;
         $page = 0;
-        foreach ($todo as [$key, $sides]) {
+        foreach ($lammies as $lammy) {
+            $sides = $lammy->sides();
             for ($i = 0; $i < $sides; $i++) {
-                $layout[$page][$row][$col] = [$key, $i];
-                if (++$i >= $sides) {
-                    $key = null;
+                $layout[$page][$row][$col] = [$lammy, $i];
+                if (++$i < $sides) {
+                    $layout[$page + 1][$row][1 - $col] = [$lammy, $i];
                 }
-                $layout[$page + 1][$row][1 - $col] = [$key, $i];
                 if (++$col >= 2) {
                     $col = 0;
                     if (++$row >= self::$LAMMIES_Y) {
@@ -135,12 +152,24 @@ class PdfView extends View
         return $layout;
     }
 
-    private static function col2x(int $col): int
+    /**
+     * Convert column number (0 or 1) to x position on the page in mm.
+     *
+     * @param int $column
+     * @return float
+     */
+    private static function col2x(int $column): float
     {
-        return self::$M_SIDE + (LammyCard::$WIDTH + self::$P_HORZ) * $col;
+        return self::$M_SIDE + (LammyCard::$WIDTH + self::$P_HORZ) * $column;
     }
 
-    private static function row2y(int $row): int
+    /**
+     * Convert row number (0..) to y position on the page in mm.
+     *
+     * @param int $row
+     * @return float
+     */
+    private static function row2y(int $row): float
     {
         return self::$M_TOP + (LammyCard::$HEIGHT + self::$P_VERT) * $row;
     }

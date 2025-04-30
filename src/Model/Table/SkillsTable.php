@@ -3,10 +3,13 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\RulesChecker;
 
-class SkillsTable
-    extends AppTable
+/**
+ * @property \App\Model\Table\CharactersSkillsTable $CharactersSkills;
+ */
+class SkillsTable extends Table
 {
     public function initialize(array $config): void
     {
@@ -24,13 +27,14 @@ class SkillsTable
         return $rules;
     }
 
-    public function ruleNoCharacters($entity, $options)
+    public function ruleNoCharacters(EntityInterface $entity, array $options): bool
     {
         $query = $this->CharactersSkills->find();
         $query->where(['skill_id' => $entity->id]);
 
-        if($query->count() > 0) {
+        if ($query->count() > 0) {
             $entity->setError('characters', $this->consistencyError);
+
             return false;
         }
 

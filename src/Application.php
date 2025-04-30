@@ -16,6 +16,14 @@ declare(strict_types=1);
  */
 namespace App;
 
+use App\Authentication\AuthenticationService;
+use App\Authorization\AuthorizationService;
+use App\Middleware\BodyParserMiddleware;
+use App\Middleware\CorsMiddleware;
+use App\Middleware\JsonInputMiddleware;
+use App\Middleware\LoginWithPlinMiddleware;
+use App\Middleware\PlinChinMiddleware;
+use App\Middleware\SessionAdminOnlyMiddleware;
 use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Middleware\RequestAuthorizationMiddleware;
@@ -23,21 +31,11 @@ use Cake\Core\Configure;
 use Cake\Core\ContainerInterface;
 use Cake\Datasource\FactoryLocator;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
-use Cake\Event\EventManager;
 use Cake\Http\BaseApplication;
-use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\ORM\Locator\TableLocator;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
-
-use App\Authentication\AppAuthenticationService;
-use App\Authorization\AppAuthorizationService;
-use App\Middleware\CorsMiddleware;
-use App\Middleware\JsonInputMiddleware;
-use App\Middleware\LoginWithPlinMiddleware;
-use App\Middleware\PlinChinMiddleware;
-use App\Middleware\SessionAdminOnlyMiddleware;
 
 /**
  * Application setup class.
@@ -47,8 +45,7 @@ use App\Middleware\SessionAdminOnlyMiddleware;
  *
  * @extends \Cake\Http\BaseApplication<\App\Application>
  */
-class Application
-    extends BaseApplication
+class Application extends BaseApplication
 {
     /**
      * Load all the application configuration and bootstrap logic.
@@ -121,15 +118,14 @@ class Application
 
             // Add the AuthenticationMiddleware.
             // It should be after routing and body parser.
-            ->add(new AuthenticationMiddleware(new AppAuthenticationService()))
+            ->add(new AuthenticationMiddleware(new AuthenticationService()))
 
             // Add the AuthorizationMiddleware.
             // It should be after routing and body parser.
-            ->add(new AuthorizationMiddleware(new AppAuthorizationService()))
+            ->add(new AuthorizationMiddleware(new AuthorizationService()))
 
             // Perform ControllerPolicy canAccess authorization check.
-            ->add(new RequestAuthorizationMiddleware())
-            ;
+            ->add(new RequestAuthorizationMiddleware());
 
         return $middlewareQueue;
     }

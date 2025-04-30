@@ -22,14 +22,14 @@ class AuthorizeHelper extends Helper
      *
      * @var \Authorization\IdentityInterface|null
      */
-    protected $identity;
+    protected ?IdentityInterface $identity = null;
 
     /**
      * Authorization Object
      *
      * @var \Authorization\AuthorizationServiceInterface|null
      */
-    protected $authorize;
+    protected ?AuthorizationServiceInterface $authorize = null;
 
     /**
      * Constructor hook method.
@@ -104,7 +104,6 @@ class AuthorizeHelper extends Helper
     /**
      * Gets the identity itself
      *
-     * @param string|null $key Key of something you want to get from the identity data
      * @return \Authorization\IdentityInterface
      */
     public function getIdentity(): IdentityInterface

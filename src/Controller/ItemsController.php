@@ -3,15 +3,32 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Traits\AddTrait;
+use App\Controller\Traits\DeleteTrait;
+use App\Controller\Traits\EditTrait;
+use App\Controller\Traits\ViewTrait;
 use Cake\Utility\Inflector;
 
-class ItemsController
-    extends AppController
+/**
+ * @property \App\Controller\Component\QueueLammyComponent $QueueLammy
+ * @property \App\Model\Table\ItemsTable $Items;
+ */
+class ItemsController extends Controller
 {
-    use \App\Controller\Traits\View;     // GET /items/{itin}
-    use \App\Controller\Traits\Delete;   // DELETE /items/{itin}
+    use ViewTrait; // GET /items/{itin}
+    use DeleteTrait; // DELETE /items/{itin}
 
-    // GET /items
+    use AddTrait {
+        add as addFromTrait;
+    }
+
+    use EditTrait {
+        edit as editFromTrait;
+    }
+
+    /**
+     * GET /items
+     */
     public function index(): void
     {
         $query = $this->Items->find()
@@ -24,12 +41,14 @@ class ItemsController
                     ->select('Characters.chin')
                     ->select('Characters.name')
                     ->select('Characters.status')
-                    ->leftJoin(['Characters' => 'characters'],
-                            ['Characters.id = Items.character_id']);
+                    ->leftJoin(
+                        ['Characters' => 'characters'],
+                        ['Characters.id = Items.character_id'],
+                    );
         $this->Authorization->applyScope($query);
 
         $hasParent = isset($this->parent);
-        if($hasParent) {
+        if ($hasParent) {
             $a = Inflector::camelize($this->parent->getSource());
             $key = $this->Items->getAssociation($a)->getForeignKey();
             $value = $this->parent->id;
@@ -39,59 +58,70 @@ class ItemsController
         }
 
         $content = [];
-        foreach($this->doRawQuery($query) as $row) {
-            $char = NULL;
-            if(!is_null($row[4]) && !$hasParent) {
-                $char = [ 'class' => 'Character'
-                        , 'url' => '/characters/'.$row[5].'/'.$row[6]
-                        , 'plin' => (int)$row[4]
-                        , 'chin' => (int)$row[5]
-                        , 'name' => $row[6]
-                        , 'status' => $row[7]
-                        ];
-            }
-            $contentEntry = [ 'class' => 'Item'
-                , 'url' => '/items/'.$row[0]
-                , 'itin' => (int)$row[0]
-                , 'name' => $row[1]
-                , 'expiry' => $row[2]
-                , 'character' => $char
-                , 'deprecated' => (boolean)$row[3]
+        foreach ($this->doRawQuery($query) as $row) {
+            $char = null;
+            if (!is_null($row[4]) && !$hasParent) {
+                $char = [
+                    'class' => 'Character',
+                    'url' => '/characters/' . $row[5] . '/' . $row[6],
+                    'plin' => (int)$row[4],
+                    'chin' => (int)$row[5],
+                    'name' => $row[6],
+                    'status' => $row[7],
                 ];
-            if($hasParent) {
+            }
+            $contentEntry = [
+                'class' => 'Item',
+                'url' => '/items/' . $row[0],
+                'itin' => (int)$row[0],
+                'name' => $row[1],
+                'expiry' => $row[2],
+                'character' => $char,
+                'deprecated' => (bool)$row[3],
+            ];
+            if ($hasParent) {
                 unset($contentEntry['character']);
             }
             $content[] = $contentEntry;
         }
 
-        $this->set('_serialize',
-            [ 'class' => 'List'
-            , 'url' => rtrim($this->request->getPath(), '/')
-            , 'list' => $content
-            ]);
+        $this->set('_serialize', [
+            'class' => 'List',
+            'url' => rtrim($this->request->getPath(), '/'),
+            'list' => $content,
+        ]);
     }
 
-    // PUT /items
+    /**
+     * PUT /items
+     */
     public function add(): void
     {
         $this->setCharacterId();
-        $this->Add->action();
+        $this->addFromTrait();
     }
 
-    // PUT /items/{itin}
+    /**
+     * PUT /items/{itin}
+     */
     public function edit(int $itin): void
     {
         $this->setCharacterId();
-        $this->Edit->action($itin);
+        $this->editFromTrait($itin);
     }
 
-    // POST /items/{itin}/print
+    /**
+     * POST /items/{itin}/print
+     */
     public function queue(int $itin): void
     {
+        $this->loadComponent('QueueLammy');
         $this->QueueLammy->action($itin);
     }
 
-    // GET /characters/{plin}/{chin}/items
+    /**
+     * GET /characters/{plin}/{chin}/items
+     */
     public function charactersIndex(int $char_id): void
     {
         $this->parent = $this->fetchTable('Characters')->get($char_id);
@@ -100,14 +130,17 @@ class ItemsController
         $this->index();
     }
 
-    protected function setCharacterId()
+    /**
+     * Helper to convert posted plin/chin to character_id.
+     */
+    protected function setCharacterId(): void
     {
         $plin = $this->request->getData('plin');
         $chin = $this->request->getData('chin');
         $this->request = $this->request->withoutData('plin');
         $this->request = $this->request->withoutData('chin');
 
-        if($plin || $chin) {
+        if ($plin || $chin) {
             $characters = $this->fetchTable('Characters');
             $char = $characters->findByPlayerIdAndChin($plin, $chin)->first();
             $char_id = $char ? $char->id : -1;

@@ -3,15 +3,22 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Traits\EditTrait;
+use App\Controller\Traits\ViewTrait;
 use Cake\Utility\Inflector;
 
-class CharactersController
-    extends AppController
+/**
+ * @property \App\Controller\Component\AddComponent $Add
+ * @property \App\Model\Table\CharactersTable $Characters;
+ */
+class CharactersController extends Controller
 {
-    use \App\Controller\Traits\View; // GET /characters/{plin}/{chin}
-    use \App\Controller\Traits\Edit; // PUT /characters/{plin}/{chin}
+    use ViewTrait; // GET /characters/{plin}/{chin}
+    use EditTrait; // PUT /characters/{plin}/{chin}
 
-    // GET /characters
+    /**
+     * GET /characters
+     */
     public function index(): void
     {
         $query = $this->Characters->find()
@@ -22,7 +29,7 @@ class CharactersController
                     ->select('Characters.status');
         $this->Authorization->applyScope($query);
 
-        if(isset($this->parent)) {
+        if (isset($this->parent)) {
             $this->Authorization->authorize($this->parent, 'charactersIndex');
 
             $a = Inflector::camelize($this->parent->getSource());
@@ -34,35 +41,40 @@ class CharactersController
         }
 
         $content = [];
-        foreach($this->doRawQuery($query) as $row) {
-            $content[] =
-                [ 'class' => 'Character'
-                , 'url' => '/characters/'.$row[0].'/'.$row[1]
-                , 'plin' => (int)$row[0]
-                , 'chin' => (int)$row[1]
-                , 'name' => $row[2]
-                , 'status' => $row[3]
-                ];
+        foreach ($this->doRawQuery($query) as $row) {
+            $content[] = [
+                'class' => 'Character',
+                'url' => '/characters/' . $row[0] . '/' . $row[1],
+                'plin' => (int)$row[0],
+                'chin' => (int)$row[1],
+                'name' => $row[2],
+                'status' => $row[3],
+            ];
         }
 
-        $this->set('_serialize',
-            [ 'class' => 'List'
-            , 'url' => rtrim($this->request->getPath(), '/')
-            , 'list' => $content
-            ]);
+        $this->set('_serialize', [
+            'class' => 'List',
+            'url' => rtrim($this->request->getPath(), '/'),
+            'list' => $content,
+        ]);
     }
 
-    // PUT /players/{plin}/characters
+    /**
+     * PUT /players/{plin}/characters
+     */
     public function add(int $plin): void
     {
         $request = $this->getRequest();
         $request = $request->withData('plin', $plin);
         $this->setRequest($request);
 
+        $this->loadComponent('Add');
         $this->Add->action();
     }
 
-    // POST /characters/{plin}/{chin}/print
+    /**
+     * POST /characters/{plin}/{chin}/print
+     */
     public function queue(int $char_id): void
     {
         $char = $this->Characters->getWithContain($char_id);
@@ -74,23 +86,22 @@ class CharactersController
         $table->saveOrFail($lammy);
         $count = 1;
 
-        if(array_key_exists('all', $this->getRequest()->getData()))
-        {
-            foreach($char->powers as $power) {
+        if (array_key_exists('all', $this->getRequest()->getData())) {
+            foreach ($char->powers as $power) {
                 $lammy = $table->newEmptyEntity();
                 $lammy->set('target', $power);
                 $table->saveOrFail($lammy);
                 $count++;
             }
 
-            foreach($char->conditions as $condition) {
+            foreach ($char->conditions as $condition) {
                 $lammy = $table->newEmptyEntity();
                 $lammy->set('target', $condition);
                 $table->saveOrFail($lammy);
                 $count++;
             }
 
-            foreach($char->items as $item) {
+            foreach ($char->items as $item) {
                 $lammy = $table->newEmptyEntity();
                 $lammy->set('target', $item);
                 $table->saveOrFail($lammy);
@@ -101,21 +112,27 @@ class CharactersController
         $this->set('_serialize', $count);
     }
 
-    // GET /factions/{id}/characters
+    /**
+     * GET /factions/{id}/characters
+     */
     public function factionsIndex(int $faction_id): void
     {
         $this->parent = $this->fetchTable('Factions')->get($faction_id);
         $this->index();
     }
 
-    // GET /players/{plin}/characters
+    /**
+     * GET /players/{plin}/characters
+     */
     public function playersIndex(int $plin): void
     {
         $this->parent = $this->fetchTable('Players')->get($plin);
         $this->index();
     }
 
-    // GET /skills/{id}/characters
+    /**
+     * GET /skills/{id}/characters
+     */
     public function skillsIndex(int $skill_id): void
     {
         $this->parent = $this->fetchTable('Skills')->get($skill_id);

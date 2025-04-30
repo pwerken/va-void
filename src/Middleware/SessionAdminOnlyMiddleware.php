@@ -8,13 +8,12 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
-class SessionAdminOnlyMiddleware
-    implements MiddlewareInterface
+class SessionAdminOnlyMiddleware implements MiddlewareInterface
 {
     public function process(Request $request, RequestHandler $handler): Response
     {
         $isAdminComp = $request->getParam('controller') === 'Admin';
-        if(!$isAdminComp) {
+        if (!$isAdminComp) {
             $request->getSession()->destroy();
         }
 

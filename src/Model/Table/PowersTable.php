@@ -3,10 +3,13 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\RulesChecker;
 
-class PowersTable
-    extends AppTable
+/**
+ * @property \App\Model\Table\CharactersPowersTable $CharactersPowers;
+ */
+class PowersTable extends Table
 {
     public function initialize(array $config): void
     {
@@ -22,13 +25,14 @@ class PowersTable
         return $rules;
     }
 
-    public function ruleNoCharacters($entity, $options)
+    public function ruleNoCharacters(EntityInterface $entity, array $options): bool
     {
         $query = $this->CharactersPowers->find();
         $query->where(['power_id' => $entity->id]);
 
-        if($query->count() > 0) {
+        if ($query->count() > 0) {
             $entity->setError('characters', $this->consistencyError);
+
             return false;
         }
 

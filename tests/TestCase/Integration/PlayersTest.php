@@ -5,10 +5,8 @@ namespace App\Test\TestCase\Integration;
 
 use App\Test\TestSuite\AuthIntegrationTestCase;
 
-class PlayersTest
-    extends AuthIntegrationTestCase
+class PlayersTest extends AuthIntegrationTestCase
 {
-
     public function getFixtures(): array
     {
         return [
@@ -96,7 +94,7 @@ class PlayersTest
         $this->assertGet('/players/99/socials', 404);
     }
 
-    public function testGetAsReadonly($asReadOnly = True)
+    public function testGetAsReadonly($asReadOnly = true)
     {
         if ($asReadOnly) {
             $this->withAuthReadOnly();
@@ -121,18 +119,18 @@ class PlayersTest
     public function testGetAsReferee()
     {
         $this->withAuthReadOnly();
-        $this->testGetAsReadonly(False);
+        $this->testGetAsReadonly(false);
     }
 
     public function testGetAsInfobalie()
     {
         $this->withAuthInfobalie();
-        $this->testGetAsReadonly(False);
+        $this->testGetAsReadonly(false);
     }
 
     public function testGetAsSuper()
     {
         $this->withAuthSuper();
-        $this->testGetAsReadonly(False);
+        $this->testGetAsReadonly(false);
     }
 }

@@ -5,8 +5,7 @@ namespace App\Model\Validation;
 
 use App\Model\Entity\Player;
 
-class PlayerValidator
-    extends AppValidator
+class PlayerValidator extends Validator
 {
     public function __construct()
     {

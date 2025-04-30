@@ -3,13 +3,15 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
 
-class CharactersSkillsTable
-    extends AppTable
+/**
+ * @property \App\Model\Table\CharactersTable $Characters;
+ * @property \App\Model\Table\SkillsTable $Skills;
+ */
+class CharactersSkillsTable extends Table
 {
     public function initialize(array $config): void
     {
@@ -21,12 +23,12 @@ class CharactersSkillsTable
         $this->belongsTo('Skills');
     }
 
-    public function afterDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    public function afterDelete(EventInterface $event, EntityInterface $entity, array $options): void
     {
         $this->touchEntity('Characters', $entity->character_id);
     }
 
-    public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    public function afterSave(EventInterface $event, EntityInterface $entity, array $options): void
     {
         $this->touchEntity('Characters', $entity->character_id);
     }
@@ -44,22 +46,24 @@ class CharactersSkillsTable
         return $rules;
     }
 
-    public function disallowDeprecated($entity, $options)
+    public function disallowDeprecated(EntityInterface $entity, array $options): bool
     {
         $skill = $this->Skills->get($entity->skill_id);
-        if($skill->deprecated) {
+        if ($skill->deprecated) {
             $entity->setError('skill_id', ['deprecated' => 'Skill is deprecated']);
+
             return false;
         }
 
         return true;
     }
 
-    public function limitTimesToMax($entity, $options)
+    public function limitTimesToMax(EntityInterface $entity, array $options): bool
     {
         $skill = $this->Skills->get($entity->skill_id);
-        if($entity->times > $skill->times_max) {
+        if ($entity->times > $skill->times_max) {
             $entity->setError('times', ['limit' => 'Value exceeds skills times_max']);
+
             return false;
         }
 

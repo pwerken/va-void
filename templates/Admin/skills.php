@@ -2,53 +2,52 @@
 <?php
 
 echo $this->Form->create();
-echo "Select one or more skills:";
+echo 'Select one or more skills:';
 echo $this->Form->select('skills', $skills, ['multiple' => true]);
 echo $this->Form->button('Select characters');
-echo "&nbsp;<strong>Found ".count($characters)."</strong>";
+echo '&nbsp;<strong>Found ' . count($characters) . '</strong>';
 echo $this->Form->end();
 
-if(count($characters) == 0) {
-	return;
+if (count($characters) == 0) {
+    return;
 }
 
 ?>
 <table>
 <tr>
-	<th>PLIN</th>
-	<th>Character Name</th>
-	<th>State</th>
-	<th>Last Modified</th>
+    <th>PLIN</th>
+    <th>Character Name</th>
+    <th>State</th>
+    <th>Last Modified</th>
 <?php
-	foreach($this->request->getData('skills') as $s) {
-		echo "\t<th>".$skills[$s]."</th>\n";
-	}
+foreach ($this->request->getData('skills') as $s) {
+    echo "\t<th>" . $skills[$s] . "</th>\n";
+}
 ?>
 </tr>
 <?php
 
-foreach($characters as $c)
-{
-	$link = '/admin/history/character/'.$c['player_id'].'/'.$c['chin'];
-?>
+foreach ($characters as $c) {
+    $link = '/admin/history/character/' . $c['player_id'] . '/' . $c['chin'];
+    ?>
 <tr>
-	<td><?php echo $c['player_id'].'-'.$c['chin']; ?></td>
-	<td><?php echo $this->Html->link($c['name'], $link); ?></td>
-	<td><?php echo $c['status']; ?></td>
-	<td><?php echo $c['modified']->i18nFormat('yyyy-MM-dd HH:mm:ss'); ?></td>
-<?php
-	foreach($this->request->getData('skills') as $s) {
-		echo "\t<td>";
-		if(isset($c['_matchingData'][$s])) {
-			echo $c['_matchingData'][$s] . 'x';
-		} else {
-			echo '&nbsp;';
-		}
-		echo "</td>\n";
-	}
-?>
+    <td><?php echo $c['player_id'] . '-' . $c['chin']; ?></td>
+    <td><?php echo $this->Html->link($c['name'], $link); ?></td>
+    <td><?php echo $c['status']; ?></td>
+    <td><?php echo $c['modified']->i18nFormat('yyyy-MM-dd HH:mm:ss'); ?></td>
+    <?php
+    foreach ($this->request->getData('skills') as $s) {
+        echo "\t<td>";
+        if (isset($c['_matchingData'][$s])) {
+            echo $c['_matchingData'][$s] . 'x';
+        } else {
+            echo '&nbsp;';
+        }
+        echo "</td>\n";
+    }
+    ?>
 </tr>
-<?php
+    <?php
 }
 ?>
 </table>

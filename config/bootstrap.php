@@ -38,7 +38,8 @@ use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\ErrorTrap;
 use Cake\Error\ExceptionTrap;
-use Cake\Http\ServerRequest;
+use Cake\I18n\Date;
+use Cake\I18n\Time;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
@@ -82,7 +83,7 @@ require CAKE . 'functions.php';
 try {
     Configure::config('default', new PhpConfig());
     Configure::load('app', 'default', false);
-} catch (\Exception $e) {
+} catch (Exception $e) {
     exit($e->getMessage() . "\n");
 }
 
@@ -213,5 +214,5 @@ Security::setSalt(Configure::consume('Security.salt'));
 // set a custom date and time format
 // see https://book.cakephp.org/5/en/core-libraries/time.html#setting-the-default-locale-and-format-string
 // and https://unicode-org.github.io/icu/userguide/format_parse/datetime/#datetime-format-syntax
-\Cake\I18n\Date::setToStringFormat('yyyy-MM-dd');
-\Cake\I18n\Time::setToStringFormat('yyyy-MM-dd HH:mm:ss');
+Date::setToStringFormat('yyyy-MM-dd');
+Time::setToStringFormat('yyyy-MM-dd HH:mm:ss');

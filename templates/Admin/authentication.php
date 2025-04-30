@@ -1,5 +1,4 @@
 <?php
-use App\Model\Entity\Player;
 use Cake\ORM\TableRegistry;
 
 $inputStyle = 'width:5em;display:inline-block;margin-right:1rem;';
@@ -19,7 +18,7 @@ $noPlins = $profiles->find()
 <p>
 There are <?=$total?> social media logins stored.
 </p>
-<?php if($noPlins->count() > 0): ?>
+<?php if ($noPlins->count() > 0) : ?>
 <p>
 With <b><?=$noPlins->count()?></b> social media login(s) where the provided
 email did <b>not</b> match a known player's email.<br/>
@@ -28,28 +27,27 @@ email adres (via voidwalker).</br>
 Or by linking the specific login below to a specific plin.
 </p>
 
-<?php foreach($noPlins as $noPlin):
-
-    $id = $noPlin['id'];
-?>
-<?=$this->Form->create(null, ['inputDefaults' => ['label' => false, 'div' => false]]); ?>
-<?=$this->Form->input('social', ['type' => 'hidden', 'value' => $id]); ?>
-<?=$this->Form->input('plin', ['type' => 'text', 'value' => '', 'style' => $inputStyle]); ?>
-<?=$this->Form->button("Link#$id"); ?>
+    <?php foreach ($noPlins as $noPlin) :
+        $id = $noPlin['id'];
+        ?>
+        <?=$this->Form->create(null, ['inputDefaults' => ['label' => false, 'div' => false]]); ?>
+        <?=$this->Form->input('social', ['type' => 'hidden', 'value' => $id]); ?>
+        <?=$this->Form->input('plin', ['type' => 'text', 'value' => '', 'style' => $inputStyle]); ?>
+        <?=$this->Form->button("Link#$id"); ?>
 &nbsp;
-<?=$this->Form->button("Delete#$id", ['name' => 'delete']); ?>
+        <?=$this->Form->button("Delete#$id", ['name' => 'delete']); ?>
 &nbsp;
-<?=$noPlin['modified']->i18nFormat('yyyy-MM-dd HH:mm:ss')?>
+        <?=$noPlin['modified']->i18nFormat('yyyy-MM-dd HH:mm:ss')?>
 &nbsp;
-<?=$noPlin['email'] ?? '<i>null</i>'?>
+        <?=$noPlin['email'] ?? '<i>null</i>'?>
 &nbsp;
 (<?=$noPlin['provider']?> -
-<?=$noPlin['full_name'] ?? $noPlin['username'] ?? '<i>null</i>'?>)
+        <?=$noPlin['full_name'] ?? $noPlin['username'] ?? '<i>null</i>'?>)
 &nbsp;
-<?=$this->Form->end(); ?>
-<?php endforeach;
-?>
-<?php else: ?>
+        <?=$this->Form->end(); ?>
+    <?php endforeach;
+    ?>
+<?php else : ?>
 <p>
 All social media logins have an associated plin.
 </p>

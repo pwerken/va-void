@@ -9,8 +9,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
-class PlinChinMiddleware
-    implements MiddlewareInterface
+class PlinChinMiddleware implements MiddlewareInterface
 {
     public function process(Request $request, RequestHandler $handler): Response
     {
@@ -21,7 +20,7 @@ class PlinChinMiddleware
         $hasPlinChin |= strcmp(substr($action, 0, 10), 'characters') == 0;
 
         $pass = $request->getParam('pass');
-        if($hasPlinChin && count($pass) >= 2) {
+        if ($hasPlinChin && count($pass) >= 2) {
             $table = TableRegistry::getTableLocator()->get('Characters');
             $char = $table->plinChin($pass[0], $pass[1])->id;
             $request = $request->withParam('character_id', $char);
@@ -29,13 +28,14 @@ class PlinChinMiddleware
             array_shift($pass);
             $pass[0] = $char;
         }
-        foreach($pass as $key => $value) {
-            if(is_numeric($value)) {
+        foreach ($pass as $key => $value) {
+            if (is_numeric($value)) {
                 $pass[$key] = (int)$value;
             }
         }
 
         $request = $request->withParam('pass', $pass);
+
         return $handler->handle($request);
     }
 }

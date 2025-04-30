@@ -1,52 +1,53 @@
 <?php
 declare(strict_types=1);
 
-use App\Migrations\AppMigration;
+use App\Migrations\Migration;
 
-class AddDeprecatedIndicator extends AppMigration
+class AddDeprecatedIndicator extends Migration
 {
     public function up(): void
     {
         $this->table('conditions')
-            ->addColumn('deprecated', 'boolean',
+            ->addColumn(
+                'deprecated',
+                'boolean',
                 [ 'default' => false
                 , 'limit' => null
                 , 'null' => false
-                , 'after' => 'notes'
-                ])
-            ->save();
+                , 'after' => 'notes',
+                ],
+            )
+            ->update();
 
         $this->table('powers')
-            ->addColumn('deprecated', 'boolean',
+            ->addColumn(
+                'deprecated',
+                'boolean',
                 [ 'default' => false
                 , 'limit' => null
                 , 'null' => false
-                , 'after' => 'notes'
-                ])
-            ->save();
+                , 'after' => 'notes',
+                ],
+            )
+            ->update();
 
         $this->table('items')
-            ->addColumn('deprecated', 'boolean',
+            ->addColumn(
+                'deprecated',
+                'boolean',
                 [ 'default' => false
                 , 'limit' => null
                 , 'null' => false
-                , 'after' => 'expiry'
-                ])
-            ->save();
+                , 'after' => 'expiry',
+                ],
+            )
+            ->update();
     }
 
     public function down(): void
     {
-        $this->table('conditions')
-            ->removeColumn('deprecated')
-            ->save();
-
-        $this->table('powers')
-            ->removeColumn('deprecated')
-            ->save();
-
-        $this->table('items')
-            ->removeColumn('deprecated')
-            ->save();
+        $this->table('conditions')->removeColumn('deprecated')->update();
+        $this->table('powers')->removeColumn('deprecated')->update();
+        $this->table('items')->removeColumn('deprecated')->update();
     }
 }

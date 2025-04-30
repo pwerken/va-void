@@ -1,58 +1,76 @@
 <?php
 declare(strict_types=1);
 
-use App\Migrations\AppMigration;
+use App\Migrations\Migration;
 
-class AddCreatedCreator extends AppMigration
+class AddCreatedCreator extends Migration
 {
     public function up(): void
     {
         $this->table('items')
-            ->addColumn('created', 'datetime',
+            ->addColumn(
+                'created',
+                'datetime',
                 [ 'default' => null
                 , 'limit' => null
                 , 'null' => true
-                , 'after' => 'deprecated'
-                ])
-            ->addColumn('creator_id', 'integer',
+                , 'after' => 'deprecated',
+                ],
+            )
+            ->addColumn(
+                'creator_id',
+                'integer',
                 [ 'default' => null
                 , 'limit' => null
                 , 'length' => 11
                 , 'null' => true
-                , 'after' => 'created'
-                ])
+                , 'after' => 'created',
+                ],
+            )
             ->save();
 
         $this->table('conditions')
-            ->addColumn('created', 'datetime',
+            ->addColumn(
+                'created',
+                'datetime',
                 [ 'default' => null
                 , 'limit' => null
                 , 'null' => true
-                , 'after' => 'deprecated'
-                ])
-            ->addColumn('creator_id', 'integer',
+                , 'after' => 'deprecated',
+                ],
+            )
+            ->addColumn(
+                'creator_id',
+                'integer',
                 [ 'default' => null
                 , 'limit' => null
                 , 'length' => 11
                 , 'null' => true
-                , 'after' => 'created'
-                ])
+                , 'after' => 'created',
+                ],
+            )
             ->save();
 
         $this->table('powers')
-            ->addColumn('created', 'datetime',
+            ->addColumn(
+                'created',
+                'datetime',
                 [ 'default' => null
                 , 'limit' => null
                 , 'null' => true
-                , 'after' => 'deprecated'
-                ])
-            ->addColumn('creator_id', 'integer',
+                , 'after' => 'deprecated',
+                ],
+            )
+            ->addColumn(
+                'creator_id',
+                'integer',
                 [ 'default' => null
                 , 'limit' => null
                 , 'length' => 11
                 , 'null' => true
-                , 'after' => 'created'
-                ])
+                , 'after' => 'created',
+                ],
+            )
             ->save();
 
         // set initial created/creator_field based on modified/modifier_id
@@ -86,26 +104,26 @@ class AddCreatedCreator extends AppMigration
 
         // try to improve on created/creator_id based on historical data
         $query = $this->getQueryBuilder('select')
-                    ->select(function($query) {
+                    ->select(function ($query) {
                         return ['min' => $query->func()->min('id')];
                     })
                     ->select(['entity', 'key1', 'modified', 'modifier_id'])
                     ->from('history')
                     ->group(['entity', 'key1', 'key2'])
-                    ->having(function($exp, $query) {
-                        $or = $exp->or(['modified IS NOT' => NULL]);
-                        $or->add(['modifier_id IS NOT' => NULL]);
+                    ->having(function ($exp, $query) {
+                        $or = $exp->or(['modified IS NOT' => null]);
+                        $or->add(['modifier_id IS NOT' => null]);
                         $list = $exp->in('entity', ['item', 'condition', 'power']);
+
                         return $exp->and([$or, $list]);
                     });
-        foreach($query->execute() as $row)
-        {
-            $query = $this->getQueryBuilder('update')
-                        ->update(strtolower($row['entity'].'s'))
-                        ->set('created', $row['modified'])
-                        ->set('creator_id', $row['modifier_id'])
-                        ->where(['id' => $row['key1']])
-                        ->execute();
+        foreach ($query->execute() as $row) {
+            $this->getQueryBuilder('update')
+                ->update(strtolower($row['entity'] . 's'))
+                ->set('created', $row['modified'])
+                ->set('creator_id', $row['modifier_id'])
+                ->where(['id' => $row['key1']])
+                ->execute();
         }
     }
 
@@ -114,16 +132,16 @@ class AddCreatedCreator extends AppMigration
         $this->table('conditions')
             ->removeColumn('created')
             ->removeColumn('creator_id')
-            ->save();
+            ->update();
 
         $this->table('powers')
             ->removeColumn('created')
             ->removeColumn('creator_id')
-            ->save();
+            ->update();
 
         $this->table('items')
             ->removeColumn('created')
             ->removeColumn('creator_id')
-            ->save();
+            ->update();
     }
 }

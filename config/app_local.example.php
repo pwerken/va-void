@@ -117,12 +117,12 @@ return [
             'applicationSecret' => '',
         ],
 # https://developers.facebook.com/docs/facebook-login/web
-       'facebook' => [
+        'facebook' => [
             'applicationId' => '',
             'applicationSecret' => '',
         ],
 # https://console.developers.google.com/
-       'google' => [
+        'google' => [
             'applicationId' => '',
             'applicationSecret' => '',
         ],

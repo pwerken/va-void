@@ -3,14 +3,23 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-class PowersController
-    extends AppController
-{
-    use \App\Controller\Traits\Add;      // PUT /powers
-    use \App\Controller\Traits\View;     // GET /powers/{poin}
-    use \App\Controller\Traits\Edit;     // PUT /powers/{poin}
+use App\Controller\Traits\AddTrait;
+use App\Controller\Traits\EditTrait;
+use App\Controller\Traits\ViewTrait;
 
-    // GET /powers
+/**
+ * @property \App\Controller\Component\QueueLammyComponent $QueueLammy
+ * @property \App\Model\Table\PowersTable $Powers;
+ */
+class PowersController extends Controller
+{
+    use AddTrait; // PUT /powers
+    use ViewTrait; // GET /powers/{poin}
+    use EditTrait; // PUT /powers/{poin}
+
+    /**
+     * GET /powers
+     */
     public function index(): void
     {
         $query = $this->Powers->find()
@@ -21,36 +30,40 @@ class PowersController
         $this->Authorization->applyScope($query);
 
         $content = [];
-        foreach($this->doRawQuery($query) as $row) {
-            $content[] = [ 'class' => 'Power'
-                , 'url' => '/powers/'.$row[0]
-                , 'poin' => (int)$row[0]
-                , 'name' => $row[1]
-                , 'deprecated' => (boolean)$row[2]
-                ];
+        foreach ($this->doRawQuery($query) as $row) {
+            $content[] = [
+                'class' => 'Power',
+                'url' => '/powers/' . $row[0],
+                'poin' => (int)$row[0],
+                'name' => $row[1],
+                'deprecated' => (bool)$row[2],
+            ];
         }
 
-        $this->set('_serialize',
-            [ 'class' => 'List'
-            , 'url' => rtrim($this->request->getPath(), '/')
-            , 'list' => $content
-            ]);
+        $this->set('_serialize', [
+            'class' => 'List',
+            'url' => rtrim($this->request->getPath(), '/'),
+            'list' => $content,
+        ]);
     }
 
-    // POST /powers/{poin}/print
+    /**
+     * POST /powers/{poin}/print
+     */
     public function queue(int $poin): void
     {
-        if(array_key_exists('all', $this->getRequest()->getData())) {
+        $this->loadComponent('QueueLammy');
+
+        if (array_key_exists('all', $this->getRequest()->getData())) {
             $power = $this->fetchTable()->getWithContain($poin);
             $table = $this->fetchTable('Lammies');
-            foreach($power->characters as $character) {
+            foreach ($power->characters as $character) {
                 $lammy = $table->newEmptyEntity();
                 $lammy->set('target', $character);
                 $table->saveOrFail($lammy);
             }
-            return;
+        } else {
+            $this->QueueLammy->action($poin);
         }
-
-        $this->QueueLammy->action($poin);
     }
 }

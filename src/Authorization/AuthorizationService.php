@@ -3,19 +3,11 @@ declare(strict_types=1);
 
 namespace App\Authorization;
 
-use Authorization\AuthorizationService;
-use Authorization\Policy\OrmResolver;
+use Authorization\AuthorizationService as BaseAuthorizationService;
 use Authorization\Policy\ResolverCollection;
 
-class AppAuthorizationService
-    extends AuthorizationService
+class AuthorizationService extends BaseAuthorizationService
 {
-    /**
-     * Constructor
-     *
-     * @param \Authorization\Policy\ResolverInterface $resolver Authorization
-     * policy resolver.
-     */
     public function __construct()
     {
         $collection = new ResolverCollection();

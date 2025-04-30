@@ -9,49 +9,48 @@ use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\ResultSet;
-use Cake\ORM\RulesChecker;
-use Cake\Validation\Validator;
 
-class LammiesTable
-    extends AppTable
+class LammiesTable extends Table
 {
-    public function beforeDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
-    {
-    }
-
     public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
     }
 
-    public function findLastInQueue(SelectQuery $query, array $options = [])
+    public function beforeDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    {
+    }
+
+    public function findLastInQueue(SelectQuery $query, array $options = []): SelectQuery
     {
         $query = $this->findQueued($query, $options);
-        $query->order(["Lammies.id" => "DESC"]);
+        $query->order(['Lammies.id' => 'DESC']);
         $query->limit(1);
+
         return $query;
     }
 
-    public function findQueued(SelectQuery $query, array $options = [])
+    public function findQueued(SelectQuery $query, array $options = []): SelectQuery
     {
         $query = $this->findWithContain($query, $options);
-
-        $query->where(function(QueryExpression $exp) {
-            return $exp->or(["status LIKE" => "Queued"])
-                        ->eq("status", "Printing");
+        $query->where(function (QueryExpression $exp) {
+            return $exp->or(['status LIKE' => 'Queued'])
+                        ->eq('status', 'Printing');
         });
+
         return $query;
     }
 
-    public function findPrinting(SelectQuery $query, array $options = [])
+    public function findPrinting(SelectQuery $query, array $options = []): SelectQuery
     {
         $query = $this->findWithContain($query, $options);
-        $query->where(["status LIKE" => "Printing"]);
+        $query->where(['status LIKE' => 'Printing']);
+
         return $query;
     }
 
-    public function setStatuses(ResultSet $set, $status)
+    public function setStatuses(ResultSet $set, string $status): void
     {
-        foreach($set as $lammy) {
+        foreach ($set as $lammy) {
             $lammy->status = (is_null($lammy->lammy) ? 'Failed' : $status);
             $this->save($lammy);
         }

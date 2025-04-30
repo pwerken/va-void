@@ -3,12 +3,18 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-class ManatypesController
-    extends AppController
-{
-    use \App\Controller\Traits\View; // GET /manatypes/{id}
+use App\Controller\Traits\ViewTrait;
 
-    // GET /manatypes
+/**
+ * @property \App\Model\Table\ManatypesTable $Manatypes;
+ */
+class ManatypesController extends Controller
+{
+    use ViewTrait; // GET /manatypes/{id}
+
+    /**
+     * GET /manatypes
+     */
     public function index(): void
     {
         $query = $this->Manatypes->find()

@@ -1,39 +1,40 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Integration;
 
 use App\Test\TestSuite\AuthIntegrationTestCase;
 
-class BasicLoginTest
-	extends AuthIntegrationTestCase
+class BasicLoginTest extends AuthIntegrationTestCase
 {
-	public function testWithoutAuth()
-	{
-		$this->withoutAuth();
-		$this->assertNull($this->token, 'JWT Token set?');
-	}
+    public function testWithoutAuth()
+    {
+        $this->withoutAuth();
+        $this->assertNull($this->token, 'JWT Token set?');
+    }
 
-	public function testWithAuthPlayer()
-	{
-		$this->withAuthPlayer();
-	}
+    public function testWithAuthPlayer()
+    {
+        $this->withAuthPlayer();
+    }
 
-	public function testWithAuthReadOnly()
-	{
-		$this->withAuthReadOnly();
-	}
+    public function testWithAuthReadOnly()
+    {
+        $this->withAuthReadOnly();
+    }
 
-	public function testWithAuthReferee()
-	{
-		$this->withAuthReferee();
-	}
+    public function testWithAuthReferee()
+    {
+        $this->withAuthReferee();
+    }
 
-	public function testWithAuthInfobalie()
-	{
-		$this->withAuthInfobalie();
-	}
+    public function testWithAuthInfobalie()
+    {
+        $this->withAuthInfobalie();
+    }
 
-	public function testWithAuthSuper()
-	{
-		$this->withAuthSuper();
-	}
+    public function testWithAuthSuper()
+    {
+        $this->withAuthSuper();
+    }
 }

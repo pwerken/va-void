@@ -3,10 +3,17 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-class AttributesItemsController
-    extends AppController
+/**
+ * @property \App\Controller\Component\AddComponent $Add
+ * @property \App\Controller\Component\DeleteComponent $Delete
+ * @property \App\Controller\Component\ViewComponent $View
+ * @property \App\Model\Table\AttributesItemsTable $AttributesItems;
+ */
+class AttributesItemsController extends Controller
 {
-    // GET /attributes/{id}/items
+    /**
+     * GET /attributes/{id}/items
+     */
     public function attributesIndex(int $id): void
     {
         $this->parent = $this->fetchTable('Attributes')->get($id);
@@ -18,7 +25,9 @@ class AttributesItemsController
         $this->set('_serialize', $query->all());
     }
 
-    // GET /items/{itin}/attributes
+    /**
+     * GET /items/{itin}/attributes
+     */
     public function itemsIndex(int $itin): void
     {
         $this->parent = $this->fetchTable('Items')->get($itin);
@@ -30,28 +39,37 @@ class AttributesItemsController
         $this->set('_serialize', $query->all());
     }
 
-    // PUT /items/{itin}/attributes
+    /**
+     * PUT /items/{itin}/attributes
+     */
     public function itemsAdd(int $itin): void
     {
         $request = $this->getRequest();
         $request = $request->withData('item_id', $itin);
         $this->setRequest($request);
 
+        $this->loadComponent('Add');
         $this->Add->action();
     }
 
-    // GET /items/{itin}/attributes/{id}
+    /**
+     * GET /items/{itin}/attributes/{id}
+     */
     public function itemsView(int $itin, int $id): void
     {
         $parent = $this->fetchTable('Items')->get($itin);
         $this->Authorization->authorize($parent, 'view');
 
+        $this->loadComponent('View');
         $this->View->action([$id, $itin], false);
     }
 
-    // DELETE /items/{itin}/attributes/{id}
+    /**
+     * DELETE /items/{itin}/attributes/{id}
+     */
     public function itemsDelete(int $itin, int $id): void
     {
+        $this->loadComponent('Delete');
         $this->Delete->action([$id, $itin]);
     }
 }

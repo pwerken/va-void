@@ -8,13 +8,9 @@ use SocialConnect\Common\Entity\User;
 use SocialConnect\OAuth2\Provider\GitLab;
 use SocialConnect\Provider\AccessTokenInterface;
 
-class GitLabProvider
-    extends GitLab
+class GitLabProvider extends GitLab
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getIdentity(AccessTokenInterface $accessToken)
+    public function getIdentity(AccessTokenInterface $accessToken): User
     {
         $response = $this->request('GET', 'user', [], $accessToken);
 

@@ -8,8 +8,7 @@ use Authorization\Policy\ResolverInterface;
 use Cake\Core\App;
 use Cake\Datasource\EntityInterface;
 
-class EntityPolicyResolver
-    implements ResolverInterface
+class EntityPolicyResolver implements ResolverInterface
 {
     /**
      * Used by the RequestAuthorizationMiddleware.

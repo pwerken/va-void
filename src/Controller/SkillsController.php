@@ -3,12 +3,18 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-class SkillsController
-    extends AppController
-{
-    use \App\Controller\Traits\View;     // GET /skills/{id}
+use App\Controller\Traits\ViewTrait;
 
-    // GET /skills
+/**
+ * @property \App\Model\Table\SkillsTable $Skills
+ */
+class SkillsController extends Controller
+{
+    use ViewTrait; // GET /skills/{id}
+
+    /**
+     * GET /skills
+     */
     public function index(): void
     {
         $query = $this->Skills->findWithContain();

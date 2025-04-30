@@ -3,24 +3,19 @@ declare(strict_types=1);
 
 namespace App\Controller\Component;
 
+use App\Model\Entity\Entity;
 use Cake\Controller\Component;
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 
-use App\Model\Entity\AppEntity;
-
-class IndexRelationComponent
-    extends Component
+class IndexRelationComponent extends Component
 {
-    protected array $components = ['Authorization'];
-
-    public function action(AppEntity $parent, Query $query, string $authAction = 'view'): void
+    public function action(Entity $parent, SelectQuery $query, string $authAction = 'view'): void
     {
-        $this->Authorization->authorize($parent, $authAction);
-
-        $objs = $query->all();
-
         $controller = $this->getController();
+
+        $controller->Authorization->authorize($parent, $authAction);
+
         $controller->set('parent', $parent);
-        $controller->set('_serialize', $objs);
+        $controller->set('_serialize', $query->all());
     }
 }

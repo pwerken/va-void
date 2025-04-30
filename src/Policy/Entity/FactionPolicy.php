@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace App\Policy\Entity;
 
+use App\Model\Entity\Faction;
 use Authorization\IdentityInterface as User;
 
-use App\Model\Entity\Faction;
-
-class FactionPolicy
-    extends AppEntityPolicy
+class FactionPolicy extends EntityPolicy
 {
     public function __construct()
     {

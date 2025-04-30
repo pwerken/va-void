@@ -5,43 +5,44 @@ namespace App\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
 
-class CharactersFixture
-	extends TestFixture
+class CharactersFixture extends TestFixture
 {
-	public function init(): void
-	{
-		$this->records =
-			[	[ 'id' => 1
-				, 'player_id' => 1
-				, 'chin' => 1
-				, 'name' => 'Sir Killalot'
-				, 'xp' => 15.0
-				, 'faction_id' => 1
-				, 'belief' => '-'
-				, 'group' => '-'
-				, 'world' => '-'
-				, 'soulpath' => ''
-				, 'status' => 'Active'
-				, 'comments' => ''
-				, 'modified' => NULL
-				, 'modifier_id' => NULL
-				]
-			,	[ 'id' => 2
-				, 'player_id' => 2
-				, 'chin' => 1
-				, 'name' => 'Mathilda'
-				, 'xp' => 15.0
-				, 'faction_id' => 2
-				, 'belief' => 'Self'
-				, 'group' => 'The Gang'
-				, 'world' => 'Home'
-				, 'soulpath' => 'MO'
-				, 'status' => 'Active'
-				, 'comments' => ''
-				, 'modified' => NULL
-				, 'modifier_id' => NULL
-				]
-			];
-		parent::init();
-	}
+    public function init(): void
+    {
+        $this->records = [
+            [
+                'id' => 1,
+                'player_id' => 1,
+                'chin' => 1,
+                'name' => 'Sir Killalot',
+                'xp' => 15.0,
+                'faction_id' => 1,
+                'belief' => '-',
+                'group' => '-',
+                'world' => '-',
+                'soulpath' => '',
+                'status' => 'Active',
+                'comments' => '',
+                'modified' => null,
+                'modifier_id' => null,
+            ],
+            [
+                'id' => 2,
+                'player_id' => 2,
+                'chin' => 1,
+                'name' => 'Mathilda',
+                'xp' => 15.0,
+                'faction_id' => 2,
+                'belief' => 'Self',
+                'group' => 'The Gang',
+                'world' => 'Home',
+                'soulpath' => 'MO',
+                'status' => 'Active',
+                'comments' => '',
+                'modified' => null,
+                'modifier_id' => null,
+            ],
+        ];
+        parent::init();
+    }
 }

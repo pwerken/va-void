@@ -5,8 +5,7 @@ namespace App\Model\Table;
 
 use Cake\ORM\RulesChecker;
 
-class EventsTable
-    extends AppTable
+class EventsTable extends Table
 {
     public function buildRules(RulesChecker $rules): RulesChecker
     {

@@ -1,31 +1,36 @@
 <?php
 
-use Cake\Routing\Router;
 
 $cakeDescription = 'VOID-API';
 
 $role = $user?->get('role');
 
 $nav = [];
-switch($role) {
-case 'Super':
-case 'Event Control':
-case 'Infobalie':
-	$nav['/admin/migrations'] = 'Database Migrations';
-	$nav['/admin/backups'] = 'Database Backups';
-case 'Referee':
-	$nav['/admin/authentication'] = 'Authentication';
-case 'Read-only':
-	$nav['/admin/authorization'] = 'Authorization';
-	$nav['/admin/history'] = 'Entity History';
-	$nav['/admin/printing'] = 'Printing Queue';
-	$nav['/admin/skills'] = 'Skill~Player Lookup';
-case 'Player':
-	$nav['/admin/password'] = 'Authentication - Legacy';
-	$nav['/admin/routes'] = 'Configured Routes';
-default:
-	$nav['/admin/checks'] = 'Check Configuration';
-	asort($nav);
+switch ($role) {
+    case 'Super':
+        // intentional fall-through
+    case 'Event Control':
+        // intentional fall-through
+    case 'Infobalie':
+        $nav['/admin/migrations'] = 'Database Migrations';
+        $nav['/admin/backups'] = 'Database Backups';
+        // intentional fall-through
+    case 'Referee':
+        $nav['/admin/authentication'] = 'Authentication';
+        // intentional fall-through
+    case 'Read-only':
+        $nav['/admin/authorization'] = 'Authorization';
+        $nav['/admin/history'] = 'Entity History';
+        $nav['/admin/printing'] = 'Printing Queue';
+        $nav['/admin/skills'] = 'Skill~Player Lookup';
+        // intentional fall-through
+    case 'Player':
+        $nav['/admin/password'] = 'Authentication - Legacy';
+        $nav['/admin/routes'] = 'Configured Routes';
+        // intentional fall-through
+    default:
+        $nav['/admin/checks'] = 'Check Configuration';
+        asort($nav);
 }
 
 ?>
@@ -51,37 +56,36 @@ default:
     <nav class="top-bar expanded" data-topbar role="navigation">
         <ul class="title-area large-3 medium-4 columns">
             <li class="name">
-				<h1><?= $this->Html->link($cakeDescription, '/') ?></h1>
+                <h1><?= $this->Html->link($cakeDescription, '/') ?></h1>
             </li>
         </ul>
         <div class="top-bar-section">
             <ul class="right">
-<?php if(!isset($user)) : ?>
-				<li><?= $this->Html->link('LOGIN', '/admin') ?></li>
-<?php else:
-				$descr = $user['full_name'].' ('.$user['role'].')';
-				$link = '/players/'.$user['id'];
-?>
-				<li><?= $this->Html->link($descr, '/admin'); ?></li>
-				<li><?= $this->Html->link('LOGOUT', '/admin/logout') ?></li>
+<?php if (!isset($user)) : ?>
+                <li><?= $this->Html->link('LOGIN', '/admin') ?></li>
+<?php else :
+                $descr = $user['full_name'] . ' (' . $user['role'] . ')';
+    ?>
+                <li><?= $this->Html->link($descr, '/admin'); ?></li>
+                <li><?= $this->Html->link('LOGOUT', '/admin/logout') ?></li>
 <?php endif ?>
             </ul>
         </div>
     </nav>
     <?= $this->Flash->render() ?>
     <div class="container clearfix">
-		<nav class="large-3 medium-4 columns" id="actions-sidebar">
-			<ul class="side-nav">
-				<li class="heading"><?= $this->Html->link('Administrator ', '/admin') ?></li>
-<?php foreach($nav as $url => $descr) : ?>
-				<li><?= $this->Html->link($descr, $url) ?></il>
+        <nav class="large-3 medium-4 columns" id="actions-sidebar">
+            <ul class="side-nav">
+                <li class="heading"><?= $this->Html->link('Administrator ', '/admin') ?></li>
+<?php foreach ($nav as $url => $descr) : ?>
+                <li><?= $this->Html->link($descr, $url) ?></il>
 <?php endforeach; ?>
-			</ul>
-		</nav>
-		<div class="large-9 medium-8 columns content">
+            </ul>
+        </nav>
+        <div class="large-9 medium-8 columns content">
 <?= $this->fetch('content') ?>
-		</div>
-	</div>
+        </div>
+    </div>
     <footer>
     </footer>
 </body>

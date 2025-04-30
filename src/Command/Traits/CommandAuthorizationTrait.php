@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace App\Command\Traits;
 
+use App\Model\Entity\Player;
 use Cake\Http\ServerRequest;
 use Cake\Routing\Router;
 
-use App\Model\Entity\Player;
-
-trait CommandAuthorization
+trait CommandAuthorizationTrait
 {
     public function initialize(): void
     {

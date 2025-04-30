@@ -8,10 +8,9 @@ use App\Utility\CheckConfig;
 <div class="checks">
 <?php
 
-foreach(CheckConfig::installation() as $msg => $success):
-
+foreach (CheckConfig::installation() as $msg => $success) :
     $class = $success ? 'success' : 'problem';
-?>
-	<p class="<?=$class?>"><?=$msg?>
+    ?>
+    <p class="<?=$class?>"><?=$msg?>
 <?php endforeach; ?>
 </div>

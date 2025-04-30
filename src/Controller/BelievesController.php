@@ -3,12 +3,15 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-class BelievesController
-    extends AppController
-{
-    use \App\Controller\Traits\CharacterFieldListing;
+use App\Controller\Traits\CharacterFieldListingTrait;
 
-    // GET /believes
+class BelievesController extends Controller
+{
+    use CharacterFieldListingTrait;
+
+    /**
+     * GET /believes
+     */
     public function index(): void
     {
         $this->_createListing('belief', 'Belief');

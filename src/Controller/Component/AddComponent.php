@@ -3,30 +3,26 @@ declare(strict_types=1);
 
 namespace App\Controller\Component;
 
+use App\Error\Exception\ValidationException;
 use Cake\Controller\Component;
 
-use App\Error\Exception\ValidationException;
-
-class AddComponent
-    extends Component
+class AddComponent extends Component
 {
-    protected array $components = ['Authorization'];
-
     public function action(bool $checkAuthorize = true): void
     {
         $controller = $this->getController();
         $model = $controller->fetchTable();
 
         $obj = $model->newEmptyEntity();
-        if($checkAuthorize) {
-            $this->Authorization->authorize($obj, 'add');
+        if ($checkAuthorize) {
+            $controller->Authorization->authorize($obj, 'add');
         }
-        $this->Authorization->applyScope($obj, 'accesible');
+        $controller->Authorization->applyScope($obj, 'accesible');
 
         $data = $controller->getRequest()->getData();
         $obj = $model->patchEntity($obj, $data, ['associated' => []]);
 
-        if(!$model->save($obj, ['checkExisting' => false])) {
+        if (!$model->save($obj, ['checkExisting' => false])) {
             throw new ValidationException($obj);
         }
 

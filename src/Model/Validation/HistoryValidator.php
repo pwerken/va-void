@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Validation;
 
-class HistoryValidator
-    extends AppValidator
+class HistoryValidator extends Validator
 {
     public function __construct()
     {

@@ -1,11 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
-class CharactersCondition
-    extends AppEntity
+class CharactersCondition extends Entity
 {
-
-    public function __construct($properties = [], $options = [])
+    public function __construct(array $properties = [], array $options = [])
     {
         parent::__construct($properties, $options);
 
@@ -13,7 +13,7 @@ class CharactersCondition
         $this->setHidden(['character_id', 'condition_id'], true);
     }
 
-    public function getUrl($parent = null)
+    public function getUrl(?Entity $parent = null): string
     {
         return $this->getRelationUrl('character', 'condition', $parent);
     }

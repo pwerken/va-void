@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Validation;
 
-class EventValidator
-    extends AppValidator
+class EventValidator extends Validator
 {
     public function __construct()
     {

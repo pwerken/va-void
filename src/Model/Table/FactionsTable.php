@@ -3,10 +3,13 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\RulesChecker;
 
-class FactionsTable
-    extends AppTable
+/**
+ * @property \App\Model\Table\CharactersTable $Characters;
+ */
+class FactionsTable extends Table
 {
     public function initialize(array $config): void
     {
@@ -24,13 +27,14 @@ class FactionsTable
         return $rules;
     }
 
-    public function ruleNoCharacters($entity, $options)
+    public function ruleNoCharacters(EntityInterface $entity, array $options): bool
     {
         $query = $this->Characters->find();
         $query->where(['faction_id' => $entity->id]);
 
-        if($query->count() > 0) {
+        if ($query->count() > 0) {
             $entity->setError('characters', $this->consistencyError);
+
             return false;
         }
 

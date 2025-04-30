@@ -1,8 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
-class Condition
-    extends AppEntity
+class Condition extends Entity
 {
-    protected $_compact  = [ 'id', 'name', 'deprecated' ];
+    protected array $_compact = [ 'id', 'name', 'deprecated' ];
 }

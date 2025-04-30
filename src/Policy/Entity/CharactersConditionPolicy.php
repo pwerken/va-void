@@ -3,13 +3,11 @@ declare(strict_types=1);
 
 namespace App\Policy\Entity;
 
-use RuntimeException;
-use Authorization\IdentityInterface as User;
-
 use App\Model\Entity\CharactersCondition;
+use Authorization\IdentityInterface as User;
+use RuntimeException;
 
-class CharactersConditionPolicy
-    extends AppEntityPolicy
+class CharactersConditionPolicy extends EntityPolicy
 {
     public function canAdd(User $identity, CharactersCondition $obj): bool
     {

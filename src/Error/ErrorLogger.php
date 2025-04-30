@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace App\Error;
 
-use Cake\Error\ErrorLogger;
+use Cake\Error\ErrorLogger as CakeErrorLogger;
 use Psr\Http\Message\ServerRequestInterface;
 
-class AppErrorLogger extends ErrorLogger
+class ErrorLogger extends CakeErrorLogger
 {
     /**
      * Get the request context for an error/exception trace.

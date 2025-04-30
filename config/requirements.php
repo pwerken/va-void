@@ -37,7 +37,7 @@ if (!extension_loaded('intl')) {
 if (version_compare(INTL_ICU_VERSION, '50.1', '<')) {
     trigger_error(
         'ICU >= 50.1 is needed to use CakePHP. Please update the `libicu` package of your system.' . PHP_EOL,
-        E_USER_ERROR
+        E_USER_ERROR,
     );
 }
 

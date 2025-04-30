@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace App\Policy\Entity;
 
+use App\Model\Entity\Skill;
 use Authorization\IdentityInterface as User;
 
-use App\Model\Entity\Skill;
-
-class SkillPolicy
-    extends AppEntityPolicy
+class SkillPolicy extends EntityPolicy
 {
     public function canView(User $identity, Skill $obj): bool
     {

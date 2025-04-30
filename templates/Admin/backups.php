@@ -7,18 +7,18 @@ server.</p>
 
 <table>
 <tr>
-	<th>Filename</th>
-	<th>Size</th>
-	<th>Datetime</th>
+    <th>Filename</th>
+    <th>Size</th>
+    <th>Datetime</th>
 </tr>
 <?php
 foreach ($backups as $backup) :
-	list($file, $size, $date) = $backup;
-?>
+    [$file, $size, $date] = $backup;
+    ?>
 <tr>
-	<td><?= $file ?></td>
-	<td><?= $size ?></td>
-	<td><?= $date ?></td>
+    <td><?= $file ?></td>
+    <td><?= $size ?></td>
+    <td><?= $date ?></td>
 </tr>
 <?php endforeach; ?>
 </table>

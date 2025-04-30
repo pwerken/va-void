@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace App\Policy\Controller;
 
-class RootControllerPolicy
-    extends AppControllerPolicy
+class RootControllerPolicy extends ControllerPolicy
 {
     // GET /
-    public function root(): bool
+    public function index(): bool
     {
         return true;
     }

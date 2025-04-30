@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Utility;
 
-use RuntimeException;
-
-use App\Utility\SkillNameGroup;
 use App\Test\TestSuite\TestCase;
+use App\Utility\SkillNameGroup;
+use RuntimeException;
 
 class SkillNameGroupTest extends TestCase
 {
@@ -52,7 +51,7 @@ class SkillNameGroupTest extends TestCase
         $validcases[] = ['d D (d) (4)', ['d', 'D', '(d)', '4']];
         $validcases[] = ['eeee IV (5)', ['eeee', 'IV', '', '5']];
 
-        foreach($validcases as [$input, $expected]) {
+        foreach ($validcases as [$input, $expected]) {
             $this->assertEquals($expected, call_user_func($method, $input));
         }
 
@@ -60,7 +59,7 @@ class SkillNameGroupTest extends TestCase
         $errorcases[] = 'ambidexterity';
         $errorcases[] = 'lifeforce B';
 
-        foreach($errorcases as $input) {
+        foreach ($errorcases as $input) {
             $msg = "No exception caught with \"$input\"";
             $e = $this->catchException($method, [$input], $msg);
 

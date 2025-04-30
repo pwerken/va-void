@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace App\Policy\Entity;
 
+use App\Model\Entity\AttributesItem;
 use Authorization\IdentityInterface as User;
 
-use App\Model\Entity\AttributesItem;
-
-class AttributesItemPolicy
-    extends AppEntityPolicy
+class AttributesItemPolicy extends EntityPolicy
 {
     public function canItemsAdd(User $identity, AttributesItem $obj): bool
     {

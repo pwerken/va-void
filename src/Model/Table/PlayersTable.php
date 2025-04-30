@@ -4,12 +4,15 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use ArrayObject;
+use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
 use Cake\Routing\Router;
 
-class PlayersTable
-    extends AppTable
+/**
+ * @property \App\Model\Table\CharactersTable $Characters;
+ */
+class PlayersTable extends Table
 {
     public function initialize(array $config): void
     {
@@ -23,7 +26,7 @@ class PlayersTable
 
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
-        if(isset($data['plin'])) {
+        if (isset($data['plin'])) {
             $data['id'] = $data['plin'];
             unset($data['plin']);
         }
@@ -42,35 +45,36 @@ class PlayersTable
         return $rules;
     }
 
-    public function ruleAuthCheck($entity, $options)
+    public function ruleAuthCheck(EntityInterface $entity, array $options): bool
     {
-        if(!$entity->isDirty('role')) {
+        if (!$entity->isDirty('role')) {
             return true;
         }
 
         $user = Router::getRequest()->getAttribute('identity');
-        if(!$user->hasAuth($entity->getOriginal('role'))) {
-            $entity->setError('role', ['authorization' =>
-                'Cannot demote user with more authorization than you']);
+        if (!$user->hasAuth($entity->getOriginal('role'))) {
+            $entity->setError('role', ['authorization' => 'Cannot demote user with more authorization than you']);
+
             return false;
         }
 
-        if(!$user->hasAuth($entity->get('role'))) {
-            $entity->setError('role', ['authorization' =>
-                'Cannot promote user above your own authorization']);
+        if (!$user->hasAuth($entity->get('role'))) {
+            $entity->setError('role', ['authorization' => 'Cannot promote user above your own authorization']);
+
             return false;
         }
 
         return true;
     }
 
-    public function ruleNoCharacters($entity, $options)
+    public function ruleNoCharacters(EntityInterface $entity, array $options): bool
     {
         $query = $this->Characters->find();
         $query->where(['player_id' => $entity->id]);
 
-        if($query->count() > 0) {
+        if ($query->count() > 0) {
             $entity->setError('characters', $this->consistencyError);
+
             return false;
         }
 

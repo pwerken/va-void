@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace App\Policy\Controller;
 
-class AdminControllerPolicy
-    extends AppControllerPolicy
+class AdminControllerPolicy extends ControllerPolicy
 {
     public function index(): bool
     {

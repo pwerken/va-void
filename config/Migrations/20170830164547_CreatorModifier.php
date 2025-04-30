@@ -1,150 +1,34 @@
 <?php
 declare(strict_types=1);
 
-use App\Migrations\AppMigration;
+use App\Migrations\Migration;
 
-class CreatorModifier extends AppMigration
+class CreatorModifier extends Migration
 {
     public function up(): void
     {
+        $this->tableAddModifiedColumnAfter('attributes_items', 'item_id');
+        $this->tableAddModifiedColumnAfter('characters_conditions', 'expiry');
+        $this->tableAddModifiedColumnAfter('characters_powers', 'expiry');
+        $this->tableAddModifiedColumnAfter('characters_skills', 'skill_id');
+        $this->tableAddModifiedColumnAfter('characters_spells', 'level');
 
-        $this->table('attributes_items')
-            ->addColumn('modified', 'datetime', [
-                'after' => 'item_id',
-                'default' => null,
-                'length' => null,
-                'null' => true,
-            ])
-            ->addColumn('modifier_id', 'integer', [
-                'after' => 'modified',
-                'default' => null,
-                'length' => 11,
-                'null' => true,
-            ])
-            ->update();
-
-        $this->table('believes')
-            ->addColumn('modifier_id', 'integer', [
-                'after' => 'modified',
-                'default' => null,
-                'length' => 11,
-                'null' => true,
-            ])
-            ->update();
-
-        $this->table('characters')
-            ->addColumn('modifier_id', 'integer', [
-                'after' => 'modified',
-                'default' => null,
-                'length' => 11,
-                'null' => true,
-            ])
-            ->update();
-
-        $this->table('characters_conditions')
-            ->addColumn('modified', 'datetime', [
-                'after' => 'expiry',
-                'default' => null,
-                'length' => null,
-                'null' => true,
-            ])
-            ->addColumn('modifier_id', 'integer', [
-                'after' => 'modified',
-                'default' => null,
-                'length' => 11,
-                'null' => true,
-            ])
-            ->update();
-
-        $this->table('characters_powers')
-            ->addColumn('modified', 'datetime', [
-                'after' => 'expiry',
-                'default' => null,
-                'length' => null,
-                'null' => true,
-            ])
-            ->addColumn('modifier_id', 'integer', [
-                'after' => 'modified',
-                'default' => null,
-                'length' => 11,
-                'null' => true,
-            ])
-            ->update();
-
-        $this->table('characters_skills')
-            ->addColumn('modified', 'datetime', [
-                'after' => 'skill_id',
-                'default' => null,
-                'length' => null,
-                'null' => true,
-            ])
-            ->addColumn('modifier_id', 'integer', [
-                'after' => 'modified',
-                'default' => null,
-                'length' => 11,
-                'null' => true,
-            ])
-            ->update();
-
-        $this->table('characters_spells')
-            ->addColumn('modified', 'datetime', [
-                'after' => 'level',
-                'default' => null,
-                'length' => null,
-                'null' => true,
-            ])
-            ->addColumn('modifier_id', 'integer', [
-                'after' => 'modified',
-                'default' => null,
-                'length' => 11,
-                'null' => true,
-            ])
-            ->update();
-
-        $this->table('conditions')
-            ->addColumn('modifier_id', 'integer', [
-                'after' => 'modified',
-                'default' => null,
-                'length' => 11,
-                'null' => true,
-            ])
-            ->update();
-
-        $this->table('events')
-            ->addColumn('modifier_id', 'integer', [
-                'after' => 'modified',
-                'default' => null,
-                'length' => 11,
-                'null' => true,
-            ])
-            ->update();
-
-        $this->table('factions')
-            ->addColumn('modifier_id', 'integer', [
-                'after' => 'modified',
-                'default' => null,
-                'length' => 11,
-                'null' => true,
-            ])
-            ->update();
-
-        $this->table('groups')
-            ->addColumn('modifier_id', 'integer', [
-                'after' => 'modified',
-                'default' => null,
-                'length' => 11,
-                'null' => true,
-            ])
-            ->update();
-
-        $this->table('items')
-            ->addColumn('modifier_id', 'integer', [
-                'after' => 'modified',
-                'default' => null,
-                'length' => 11,
-                'null' => true,
-            ])
-            ->update();
+        $this->tableAddModifierColumnAfter('attributes_items');
+        $this->tableAddModifierColumnAfter('believes');
+        $this->tableAddModifierColumnAfter('characters');
+        $this->tableAddModifierColumnAfter('characters_conditions');
+        $this->tableAddModifierColumnAfter('characters_powers');
+        $this->tableAddModifierColumnAfter('characters_skills');
+        $this->tableAddModifierColumnAfter('characters_spells');
+        $this->tableAddModifierColumnAfter('conditions');
+        $this->tableAddModifierColumnAfter('events');
+        $this->tableAddModifierColumnAfter('factions');
+        $this->tableAddModifierColumnAfter('groups');
+        $this->tableAddModifierColumnAfter('items');
+        $this->tableAddModifierColumnAfter('players');
+        $this->tableAddModifierColumnAfter('powers');
+        $this->tableAddModifierColumnAfter('teachings');
+        $this->tableAddModifierColumnAfter('worlds');
 
         $this->table('lammies')
             ->addColumn('creator_id', 'integer', [
@@ -154,118 +38,57 @@ class CreatorModifier extends AppMigration
                 'null' => true,
             ])
             ->update();
+    }
 
-        $this->table('players')
-            ->addColumn('modifier_id', 'integer', [
-                'after' => 'modified',
-                'default' => null,
-                'length' => 11,
-                'null' => true,
-            ])
-            ->update();
+    public function down(): void
+    {
+        $this->table('attributes_items')->removeColumn('modified')->update();
+        $this->table('characters_conditions')->removeColumn('modified')->update();
+        $this->table('characters_powers')->removeColumn('modified')->update();
+        $this->table('characters_skills')->removeColumn('modified')->update();
+        $this->table('characters_spells')->removeColumn('modified')->update();
 
-        $this->table('powers')
-            ->addColumn('modifier_id', 'integer', [
-                'after' => 'modified',
-                'default' => null,
-                'length' => 11,
-                'null' => true,
-            ])
-            ->update();
+        $this->table('attributes_items')->removeColumn('modifier_id')->update();
+        $this->table('believes')->removeColumn('modifier_id')->update();
+        $this->table('characters')->removeColumn('modifier_id')->update();
+        $this->table('characters_conditions')->removeColumn('modifier_id')->update();
+        $this->table('characters_powers')->removeColumn('modifier_id')->update();
+        $this->table('characters_skills')->removeColumn('modifier_id')->update();
+        $this->table('characters_spells')->removeColumn('modifier_id')->update();
+        $this->table('conditions')->removeColumn('modifier_id')->update();
+        $this->table('events')->removeColumn('modifier_id')->update();
+        $this->table('factions')->removeColumn('modifier_id')->update();
+        $this->table('groups')->removeColumn('modifier_id')->update();
+        $this->table('items')->removeColumn('modifier_id')->update();
+        $this->table('players')->removeColumn('modifier_id')->update();
+        $this->table('powers')->removeColumn('modifier_id') ->update();
+        $this->table('teachings')->removeColumn('modifier_id')->update();
+        $this->table('worlds')->removeColumn('modifier_id')->update();
 
-        $this->table('teachings')
-            ->addColumn('modifier_id', 'integer', [
-                'after' => 'modified',
-                'default' => null,
-                'length' => 11,
-                'null' => true,
-            ])
-            ->update();
+        $this->table('lammies')->removeColumn('creator_id')->update();
+    }
 
-        $this->table('worlds')
-            ->addColumn('modifier_id', 'integer', [
-                'after' => 'modified',
+    protected function tableAddModifiedColumnAfter(string $table, string $column): void
+    {
+        $this->table($table)
+            ->addColumn('modified', 'datetime', [
+                'after' => $column,
                 'default' => null,
-                'length' => 11,
+                'length' => null,
                 'null' => true,
             ])
             ->update();
     }
 
-    public function down(): void
+    protected function tableAddModifierColumnAfter(string $table, string $column = 'modified'): void
     {
-
-        $this->table('attributes_items')
-            ->removeColumn('modified')
-            ->removeColumn('modifier_id')
-            ->update();
-
-        $this->table('believes')
-            ->removeColumn('modifier_id')
-            ->update();
-
-        $this->table('characters')
-            ->removeColumn('modifier_id')
-            ->update();
-
-        $this->table('characters_conditions')
-            ->removeColumn('modified')
-            ->removeColumn('modifier_id')
-            ->update();
-
-        $this->table('characters_powers')
-            ->removeColumn('modified')
-            ->removeColumn('modifier_id')
-            ->update();
-
-        $this->table('characters_skills')
-            ->removeColumn('modified')
-            ->removeColumn('modifier_id')
-            ->update();
-
-        $this->table('characters_spells')
-            ->removeColumn('modified')
-            ->removeColumn('modifier_id')
-            ->update();
-
-        $this->table('conditions')
-            ->removeColumn('modifier_id')
-            ->update();
-
-        $this->table('events')
-            ->removeColumn('modifier_id')
-            ->update();
-
-        $this->table('factions')
-            ->removeColumn('modifier_id')
-            ->update();
-
-        $this->table('groups')
-            ->removeColumn('modifier_id')
-            ->update();
-
-        $this->table('items')
-            ->removeColumn('modifier_id')
-            ->update();
-
-        $this->table('lammies')
-            ->removeColumn('creator_id')
-            ->update();
-
-        $this->table('players')
-            ->removeColumn('modifier_id')
-            ->update();
-
-        $this->table('powers')
-            ->removeColumn('modifier_id')
-            ->update();
-
-        $this->table('teachings')
-            ->removeColumn('modifier_id')
-            ->update();
-
-        $this->table('worlds')
-            ->removeColumn('modifier_id')
+        $this->table($table)
+            ->addColumn('modifier_id', 'integer', [
+                'after' => $column,
+                'default' => null,
+                'length' => 11,
+                'null' => true,
+            ])
             ->update();
     }
 }

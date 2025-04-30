@@ -3,15 +3,24 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-class EventsController
-    extends AppController
-{
-    use \App\Controller\Traits\Add;      // PUT /events
-    use \App\Controller\Traits\View;     // GET /events/{id}
-    use \App\Controller\Traits\Edit;     // PUT /events/{id}
-    use \App\Controller\Traits\Delete;   // DELETE /events/{id}
+use App\Controller\Traits\AddTrait;
+use App\Controller\Traits\DeleteTrait;
+use App\Controller\Traits\EditTrait;
+use App\Controller\Traits\ViewTrait;
 
-    // GET /events
+/**
+ * @property \App\Model\Table\EventsTable $Events;
+ */
+class EventsController extends Controller
+{
+    use AddTrait; // PUT /events
+    use ViewTrait; // GET /events/{id}
+    use EditTrait; // PUT /events/{id}
+    use DeleteTrait; // DELETE /events/{id}
+
+    /**
+     * GET /events
+     */
     public function index(): void
     {
         $query = $this->Events->find();

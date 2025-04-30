@@ -1,11 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
-class CharactersPower
-    extends AppEntity
+class CharactersPower extends Entity
 {
-
-    public function __construct($properties = [], $options = [])
+    public function __construct(array $properties = [], array $options = [])
     {
         parent::__construct($properties, $options);
 
@@ -13,7 +13,7 @@ class CharactersPower
         $this->setHidden(['character_id', 'power_id'], true);
     }
 
-    public function getUrl($parent = null)
+    public function getUrl(?Entity $parent = null): string
     {
         return $this->getRelationUrl('character', 'power', $parent);
     }

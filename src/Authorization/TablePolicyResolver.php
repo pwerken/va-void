@@ -8,9 +8,9 @@ use Authorization\Policy\ResolverInterface;
 use Cake\Core\App;
 use Cake\ORM\Query;
 use Cake\ORM\Table;
+use RuntimeException;
 
-class TablePolicyResolver
-    implements ResolverInterface
+class TablePolicyResolver implements ResolverInterface
 {
     /**
      * Used by the RequestAuthorizationMiddleware.

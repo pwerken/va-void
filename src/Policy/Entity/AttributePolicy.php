@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace App\Policy\Entity;
 
+use App\Model\Entity\Attribute;
 use Authorization\IdentityInterface as User;
 
-use App\Model\Entity\Attribute;
-
-class AttributePolicy
-    extends AppEntityPolicy
+class AttributePolicy extends EntityPolicy
 {
     public function __construct()
     {

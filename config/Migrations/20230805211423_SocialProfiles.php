@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use App\Migrations\AppMigration;
+use App\Migrations\Migration;
 
-class SocialProfiles extends AppMigration
+class SocialProfiles extends Migration
 {
     public function up(): void
     {
@@ -18,57 +18,21 @@ class SocialProfiles extends AppMigration
             ->update();
 
         $this->table('social_profiles')
-            ->addColumn('user_id', 'integer', [
-                'default' => null,
-                'limit' => 11,
-                'null' => true,
-            ])
-            ->addColumn('provider', 'string', [
-                'default' => null,
-                'limit' => 255,
-                'null' => false,
-            ])
-            ->addColumn('identifier', 'string', [
-                'default' => null,
-                'limit' => 255,
-                'null' => false,
-            ])
-            ->addColumn('username', 'string', [
-                'default' => null,
-                'limit' => 255,
-                'null' => true,
-            ])
-            ->addColumn('full_name', 'string', [
-                'default' => null,
-                'limit' => 255,
-                'null' => true,
-            ])
-            ->addColumn('email', 'string', [
-                'default' => null,
-                'limit' => 255,
-                'null' => true,
-            ])
-            ->addColumn('created', 'datetime', [
-                'default' => null,
-                'null' => true,
-            ])
-            ->addColumn('modified', 'datetime', [
-                'default' => null,
-                'null' => true,
-            ])
-            ->addIndex(
-                [
-                    'user_id',
-                ]
-            )
+            ->addColumnInteger('user_id', true)
+            ->addColumnString('provider')
+            ->addColumnString('identifier')
+            ->addColumnString('username', true)
+            ->addColumnString('full_name', true)
+            ->addColumnString('email', true)
+            ->addColumnDateTime('created')
+            ->addColumnDateTime('modified')
+            ->addIndex(['user_id'])
             ->create();
     }
 
     public function down(): void
     {
-        $this->table('social_profiles')
-            ->drop()
-            ->save();
+        $this->table('social_profiles')->drop()->update();
 
         $this->table('players')
             ->removeIndex('email')

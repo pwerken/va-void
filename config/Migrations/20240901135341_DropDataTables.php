@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-use App\Migrations\AppMigration;
+use App\Migrations\Migration;
 
-class DropDataTables extends AppMigration
+class DropDataTables extends Migration
 {
     public function up(): void
     {
-        $this->_removeLookupTable('believes', 'belief_id', 'belief');
-        $this->_removeLookupTable('groups', 'group_id', 'group');
-        $this->_removeLookupTable('worlds', 'world_id', 'world');
+        $this->removeLookupTable('believes', 'belief_id', 'belief');
+        $this->removeLookupTable('groups', 'group_id', 'group');
+        $this->removeLookupTable('worlds', 'world_id', 'world');
     }
 
-    protected function _removeLookupTable($lookupTable, $reference, $name)
+    protected function removeLookupTable(string $lookupTable, string $reference, string $name): void
     {
         $this->table('characters')
             ->addColumn($name, 'string', [
@@ -22,37 +22,37 @@ class DropDataTables extends AppMigration
                 'after' => $reference,
             ])
             ->addIndex([$name])
-            ->save();
+            ->update();
 
         // fill text field
         $subQuery = $this->getQueryBuilder('select')
-                    ->select("`name`")
+                    ->select('`name`')
                     ->from("`$lookupTable`")
                     ->where(["`id` = `characters`.`$reference`"]);
-        $query = $this->getQueryBuilder('update')
-                    ->update("`characters`")
-                    ->set(["`$name`" => $subQuery])
-                    ->execute();
+        $this->getQueryBuilder('update')
+            ->update('`characters`')
+            ->set(["`$name`" => $subQuery])
+            ->execute();
 
         // drop foreign key fields
         $this->table('characters')
             ->dropForeignKey($reference)
             ->removeIndex($reference)
             ->removeColumn($reference)
-            ->save();
+            ->update();
 
         // drop lookup tables
-        $this->table($lookupTable)->drop()->save();
+        $this->table($lookupTable)->drop()->update();
     }
 
     public function down(): void
     {
-        $this->_restoreLookupTable('believes', 'belief_id', 'belief');
-        $this->_restoreLookupTable('groups', 'group_id', 'group');
-        $this->_restoreLookupTable('worlds', 'world_id', 'world');
+        $this->restoreLookupTable('believes', 'belief_id', 'belief');
+        $this->restoreLookupTable('groups', 'group_id', 'group');
+        $this->restoreLookupTable('worlds', 'world_id', 'world');
     }
 
-    protected function _restoreLookupTable($lookupTable, $reference, $name)
+    protected function restoreLookupTable(string $lookupTable, string $reference, string $name): void
     {
         $this->table($lookupTable)
             ->addColumn('name', 'string', [
@@ -60,38 +60,42 @@ class DropDataTables extends AppMigration
                 'limit' => 255,
                 'null' => false,
             ])
-            ->addColumn('modified', 'datetime',
+            ->addColumn(
+                'modified',
+                'datetime',
                 [ 'default' => null
                 , 'limit' => null
-                , 'null' => true
-                ])
-            ->addColumn('modifier_id', 'integer',
+                , 'null' => true,
+                ],
+            )
+            ->addColumn(
+                'modifier_id',
+                'integer',
                 [ 'default' => null
                 , 'limit' => null
                 , 'length' => 11
-                , 'null' => true
-                ])
-            ->addIndex( [ 'name' ])
+                , 'null' => true,
+                ],
+            )
+            ->addIndex([ 'name' ])
             ->create();
 
         // fill lookup tables
         $subQuery = $this->getQueryBuilder('select')
                     ->select([$name])
                     ->distinct([$name])
-                    ->from("characters")
+                    ->from('characters')
                     ->orderAsc($name);
-        $query = $this->getQueryBuilder('insert')
-                    ->insert(["name"])
-                    ->into($lookupTable)
-                    ->values($subQuery)
-                    ->execute();
-
-        $default_id = 1;
+        $this->getQueryBuilder('insert')
+            ->insert(['name'])
+            ->into($lookupTable)
+            ->values($subQuery)
+            ->execute();
 
         // re-add foreign key fields
         $this->table('characters')
             ->addColumn($reference, 'integer', [
-                'default' => null,
+                'default' => 1,
                 'limit' => 11,
                 'null' => false,
                 'after' => $name,
@@ -100,25 +104,26 @@ class DropDataTables extends AppMigration
         $this->table('characters')
             ->addForeignKey(
                 $reference,
-                $lookupTable, 'id',
-                [ 'update' => 'CASCADE', 'delete' => 'RESTRICT' ]
+                $lookupTable,
+                'id',
+                [ 'update' => 'CASCADE', 'delete' => 'RESTRICT' ],
             )
             ->update();
 
         // set foreign key fields
         $subQuery = $this->getQueryBuilder('select')
-                    ->select("id")
+                    ->select('id')
                     ->from($lookupTable)
                     ->where(["name = characters.$name"]);
-        $query = $this->getQueryBuilder('update')
-                    ->update('characters')
-                    ->set([$reference => $subQuery])
-                    ->execute();
+        $this->getQueryBuilder('update')
+            ->update('characters')
+            ->set([$reference => $subQuery])
+            ->execute();
 
         // drop text fields
         $this->table('characters')
             ->removeIndex($name)
             ->removeColumn($name)
-            ->save();
+            ->update();
     }
 }

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Error\Exception\LoginFailedException;
+use App\Model\Entity\Player;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Routing\Router;
@@ -10,11 +12,10 @@ use Cake\Utility\Security;
 use Firebase\JWT\JWT;
 use SocialConnect\OAuth2\AccessToken;
 
-use App\Error\LoginFailedException;
-use App\Model\Entity\Player;
-
-class AuthController
-    extends AppController
+/**
+ * @property \App\Controller\Component\SocialAuthComponent $SocialAuth;
+ */
+class AuthController extends Controller
 {
     public function initialize(): void
     {
@@ -30,9 +31,11 @@ class AuthController
         ]);
     }
 
-    // GET  /auth/login (refresh JWT)
-    // PUT  /auth/login (new JWT)
-    // POST /auth/login (new JWT)
+    /**
+     * GET /auth/login (refresh JWT)
+     * PUT /auth/login (new JWT)
+     * POST /auth/login (new JWT)
+     */
     public function login(): void
     {
         $result = $this->Authentication->getResult();
@@ -44,77 +47,37 @@ class AuthController
         $this->set('_serialize', $this->_jwt($user));
     }
 
-    // GET /auth/logout
+    /**
+     * GET /auth/logout
+     */
     public function logout(): void
     {
         $this->Authentication->logout();
     }
 
-    // GET  /auth/social
+    /**
+     * GET /auth/social
+     */
     public function socialListing(): void
     {
         $result = [];
         $result['class'] = 'List';
-        $result['url'] = Router::url(
-            [ 'controller' => 'Auth'
-            , 'action' => 'socialListing'
-            ]);
+        $result['url'] = Router::url([
+            'controller' => 'Auth',
+            'action' => 'socialListing',
+        ]);
         $result['list'] = [];
 
-        foreach($this->SocialAuth->getProviders() as $provider)
-        {
+        foreach ($this->SocialAuth->getProviders() as $provider) {
             $result['list'][] = $this->_social($provider);
         }
 
         $this->set('_serialize', $result);
     }
 
-    // GET  /auth/social/{provider}?code=...&redirect_uri=...
-    // GET  /auth/social/{provider}?token=...
-    public function socialLogin(string $provider): void
-    {
-        $providers = $this->SocialAuth->getProviders();
-        if(!in_array($provider, $providers)) {
-            throw new NotFoundException();
-        }
-
-        $token = $this->request->getQuery('token');
-        if($token) {
-            $obj = new AccessToken(['access_token' => $token]);
-            $user = $this->SocialAuth->accountFromToken($provider, $obj);
-        }
-        else {
-            $code = $this->request->getQuery('code');
-            if(!$code) {
-                throw new BadRequestException('Missing "code" query parameter');
-            }
-            $redirectUri = $this->request->getQuery('redirect_uri');
-            if(!$redirectUri) {
-                throw new BadRequestException('Missing "redirect_uri" query parameter');
-            }
-            $user = $this->SocialAuth->loginWithCode($provider, $code, $redirectUri);
-        }
-        $this->set('_serialize', $this->_jwt($user));
-    }
-
-    protected function _jwt(Player|array $user): array
-    {
-        if($user instanceOf Player) {
-            $user = $user->toArray();
-        }
-
-        return  [ 'class' => 'Auth'
-                , 'token' => JWT::encode(
-                    [ 'sub' => $user['id']
-                    , 'exp' =>  time() + 60*60*24*7
-                    , 'name' => $user['full_name']
-                    , 'role' => $user['role']
-                    ], Security::getSalt(), 'HS256')
-                , 'player' => '/players/'.$user['id']
-                , 'plin' => $user['id']
-                ];
-    }
-
+    /**
+     * Information block for a single social provider.
+     */
     protected function _social(string $provider): array
     {
         $auth = $this->SocialAuth->authUrl($provider);
@@ -123,14 +86,65 @@ class AuthController
         $result = [];
         $result['class'] = 'SocialLogin';
         $result['name'] = $provider;
-        $result['url'] = Router::url(
-            [ 'controller' => 'Auth'
-            , 'action' => 'socialLogin'
-            , $provider
-            , '?' => ['code' => 'CODE', 'redirect_uri' => 'CALLBACK']
-            ]);
+        $result['url'] = Router::url([
+            'controller' => 'Auth',
+            'action' => 'socialLogin',
+            $provider,
+            '?' => ['code' => 'CODE', 'redirect_uri' => 'CALLBACK'],
+        ]);
         $result['authUri'] = $auth;
 
         return $result;
+    }
+
+    /**
+     * GET /auth/social/{provider}?code=...&redirect_uri=...
+     * GET /auth/social/{provider}?token=...
+     */
+    public function socialLogin(string $provider): void
+    {
+        $providers = $this->SocialAuth->getProviders();
+        if (!in_array($provider, $providers)) {
+            throw new NotFoundException();
+        }
+
+        $token = $this->request->getQuery('token');
+        if ($token) {
+            $obj = new AccessToken(['access_token' => $token]);
+            $user = $this->SocialAuth->accountFromToken($provider, $obj);
+        } else {
+            $code = $this->request->getQuery('code');
+            if (!$code) {
+                throw new BadRequestException('Missing "code" query parameter');
+            }
+            $redirectUri = $this->request->getQuery('redirect_uri');
+            if (!$redirectUri) {
+                throw new BadRequestException('Missing "redirect_uri" query parameter');
+            }
+            $user = $this->SocialAuth->loginWithCode($provider, $code, $redirectUri);
+        }
+        $this->set('_serialize', $this->_jwt($user));
+    }
+
+    /**
+     * Generate JWT response.
+     */
+    protected function _jwt(Player|array $user): array
+    {
+        if ($user instanceof Player) {
+            $user = $user->toArray();
+        }
+
+        return [
+            'class' => 'Auth',
+            'token' => JWT::encode([
+                    'sub' => $user['id'],
+                    'exp' => time() + 60 * 60 * 24 * 7,
+                    'name' => $user['full_name'],
+                    'role' => $user['role'],
+                ], Security::getSalt(), 'HS256'),
+            'player' => '/players/' . $user['id'],
+            'plin' => $user['id'],
+        ];
     }
 }

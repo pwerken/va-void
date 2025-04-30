@@ -14,8 +14,7 @@ class TestCase extends CakeTestCase
     {
         try {
             call_user_func_array($func, $args);
-        }
-        catch (Throwable $t) {
+        } catch (Throwable $t) {
             return $t;
         }
         $this->fail($msg ?? 'No exception was caught');

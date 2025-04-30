@@ -3,15 +3,13 @@ declare(strict_types=1);
 
 namespace App\Policy\Entity;
 
+use App\Model\Entity\Condition;
+use App\Model\Entity\Entity;
 use Authorization\IdentityInterface as User;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\Query;
 
-use App\Model\Entity\AppEntity;
-use App\Model\Entity\Condition;
-
-class ConditionPolicy
-    extends AppEntityPolicy
+class ConditionPolicy extends EntityPolicy
 {
     use LocatorAwareTrait;
 
@@ -44,17 +42,19 @@ class ConditionPolicy
         return $this->canAdd($identity, $obj);
     }
 
-    protected function hasRoleUser(int $plin, AppEntity $obj): bool
+    protected function hasRoleUser(int $plin, Entity $obj): bool
     {
         $coin = $obj->id;
 
         $query = $this->getTableLocator()->get('Characters')->find();
         $query->where(['Characters.player_id' => $plin]);
-        $query->matching('CharactersConditions',
+        $query->matching(
+            'CharactersConditions',
             function (Query $query) use ($coin) {
                 return $query->where(['CharactersConditions.condition_id' => $coin]);
-            }
+            },
         );
+
         return $query->count() > 0;
     }
 }

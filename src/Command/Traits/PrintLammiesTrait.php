@@ -5,7 +5,7 @@ namespace App\Command\Traits;
 
 use App\View\PdfView;
 
-trait PrintLammies
+trait PrintLammiesTrait
 {
     protected function createPdf(int $id, bool $double): ?string
     {
@@ -14,8 +14,9 @@ trait PrintLammies
                         ->where(['Lammies.id <=' => $id])
                         ->all();
 
-        if($lammies->count() == 0)
+        if ($lammies->count() == 0) {
             return null;
+        }
 
         $this->fetchTable()->setStatuses($lammies, 'Printing');
 

@@ -3,13 +3,11 @@ declare(strict_types=1);
 
 namespace App\Policy\Entity;
 
+use App\Model\Entity\Entity;
+use App\Model\Entity\SocialProfile;
 use Authorization\IdentityInterface as User;
 
-use App\Model\Entity\AppEntity;
-use App\Model\Entity\SocialProfile;
-
-class SocialProfilePolicy
-    extends AppEntityPolicy
+class SocialProfilePolicy extends EntityPolicy
 {
     public function __construct()
     {
@@ -38,7 +36,7 @@ class SocialProfilePolicy
         return $this->hasAuth(['infobalie', 'user'], $obj);
     }
 
-    protected function hasRoleUser(int $plin, AppEntity $obj): bool
+    protected function hasRoleUser(int $plin, Entity $obj): bool
     {
         return $obj->get('user_id') == $plin;
     }

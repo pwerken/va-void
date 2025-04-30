@@ -3,18 +3,6 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase;
 
-use Authentication\Middleware\AuthenticationMiddleware;
-use Authorization\Middleware\AuthorizationMiddleware;
-use Authorization\Middleware\RequestAuthorizationMiddleware;
-use Cake\Core\Configure;
-use Cake\Error\Middleware\ErrorHandlerMiddleware;
-use Cake\Http\MiddlewareQueue;
-use Cake\Http\Middleware\BodyParserMiddleware;
-use Cake\Routing\Middleware\AssetMiddleware;
-use Cake\Routing\Middleware\RoutingMiddleware;
-use Cake\TestSuite\IntegrationTestTrait;
-use InvalidArgumentException;
-
 use App\Application;
 use App\Middleware\CorsMiddleware;
 use App\Middleware\JsonInputMiddleware;
@@ -22,6 +10,16 @@ use App\Middleware\LoginWithPlinMiddleware;
 use App\Middleware\PlinChinMiddleware;
 use App\Middleware\SessionAdminOnlyMiddleware;
 use App\Test\TestSuite\TestCase;
+use Authentication\Middleware\AuthenticationMiddleware;
+use Authorization\Middleware\AuthorizationMiddleware;
+use Authorization\Middleware\RequestAuthorizationMiddleware;
+use Cake\Core\Configure;
+use Cake\Error\Middleware\ErrorHandlerMiddleware;
+use Cake\Http\Middleware\BodyParserMiddleware;
+use Cake\Http\MiddlewareQueue;
+use Cake\Routing\Middleware\AssetMiddleware;
+use Cake\Routing\Middleware\RoutingMiddleware;
+use Cake\TestSuite\IntegrationTestTrait;
 
 /**
  * ApplicationTest class

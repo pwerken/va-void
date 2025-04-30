@@ -1,33 +1,21 @@
 <?php
 declare(strict_types=1);
 
-use App\Migrations\AppMigration;
+use App\Migrations\Migration;
 
-class Events extends AppMigration
+class Events extends Migration
 {
     public function up(): void
     {
         $this->table('events')
-            ->addColumn('name', 'string', [
-                'default' => null,
-                'limit' => 255,
-                'null' => false,
-            ])
-            ->addColumn('modified', 'datetime', [
-                'default' => null,
-                'limit' => null,
-                'null' => true,
-            ])
-            ->addIndex(
-                [
-                    'name',
-                ]
-            )
+            ->addColumnString('name')
+            ->addColumnDateTime('modified')
+            ->addIndex(['name'])
             ->create();
     }
 
     public function down(): void
     {
-        $this->dropTable('events');
+        $this->table('events')->drop()->update();
     }
 }

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-use App\Migrations\AppMigration;
+use App\Migrations\Migration;
 
-class SkillMultipleTimes extends AppMigration
+class SkillMultipleTimes extends Migration
 {
     public function up(): void
     {
        // add columns
-       $this->table('characters_skills')
+        $this->table('characters_skills')
            ->addColumn('times', 'integer', [
                'after' => 'skill_id',
                'default' => 1,
@@ -16,7 +16,7 @@ class SkillMultipleTimes extends AppMigration
                'null' => false,
            ])
            ->update();
-       $this->table('skills')
+        $this->table('skills')
            ->addColumn('times_max', 'integer', [
                'after' => 'cost',
                'default' => 1,
@@ -29,17 +29,16 @@ class SkillMultipleTimes extends AppMigration
         $query = $this->getQueryBuilder('select')
                     ->select('*')
                     ->from('skills')
-                    ->where(['name LIKE' => '% (%x)', 'deprecated' => False]);
+                    ->where(['name LIKE' => '% (%x)', 'deprecated' => false]);
 
-        $mapping = [];  // the times > 1 list of skill to modify
-        $base = [];     // the 'base' times=1 skills to map to
-        foreach($query->execute() as $row)
-        {
+        $mapping = []; // the times > 1 list of skill to modify
+        $base = []; // the 'base' times=1 skills to map to
+        foreach ($query->execute() as $row) {
             preg_match('/^(.*) \\((.*)x\\)$/', $row['name'], $matches);
             $name = $matches[1];
             $times = (int)$matches[2];
 
-            if($times > 1) {
+            if ($times > 1) {
                 // these we need to convert, we do that later...
                 $mapping[$row['id']] = ['name' => $name, 'times' => $times];
                 continue;
@@ -55,9 +54,10 @@ class SkillMultipleTimes extends AppMigration
         }
 
         // make sure $base[] is complete
-        foreach($mapping as $skill) {
-            if(isset($base[$skill['name']]))
+        foreach ($mapping as $skill) {
+            if (isset($base[$skill['name']])) {
                 continue;
+            }
 
             $result = $this->getQueryBuilder('select')
                         ->select('id')
@@ -68,7 +68,7 @@ class SkillMultipleTimes extends AppMigration
         }
 
         // do the converting...
-        foreach($mapping as $key => $skill) {
+        foreach ($mapping as $key => $skill) {
             $replace_id = $base[$skill['name']];
 
             $query = $this->getQueryBuilder('update')
@@ -88,7 +88,7 @@ class SkillMultipleTimes extends AppMigration
                         ->select('*')
                         ->from('characters_skills')
                         ->where(['skill_id' => $key]);
-            foreach($query as $row) {
+            foreach ($query as $row) {
                 $current = [];
                 $current['entity'] = 'CharactersSkill';
                 $current['key1'] = $row['character_id'];
@@ -98,7 +98,7 @@ class SkillMultipleTimes extends AppMigration
                 $current['modifier_id'] = $row['modifier_id'];
 
                 $delete = $current;
-                $delete['data'] = NULL;
+                $delete['data'] = null;
                 $delete['modified'] = $this->now();
                 $delete['modifier_id'] = -2;
 
@@ -130,7 +130,7 @@ class SkillMultipleTimes extends AppMigration
                         ->where(['character_id' => $row['character_id']
                             , 'skill_id' => $replace_id])
                         ->execute();
-                if($query->count() > 0) {
+                if ($query->count() > 0) {
                     // if it does, add to existing skill
                     $existing = $query->fetch();
                     $times = $existing[0] + $skill['times'];
@@ -155,13 +155,8 @@ class SkillMultipleTimes extends AppMigration
     public function down(): void
     {
         // NOT converting multiples back to seperate skill entries...
-
         // drop columns
-        $this->table('characters_skills')
-            ->removeColumn('times')
-            ->update();
-        $this->table('skills')
-            ->removeColumn('times_max')
-            ->update();
+        $this->table('characters_skills')->removeColumn('times')->update();
+        $this->table('skills')->removeColumn('times_max')->update();
     }
 }

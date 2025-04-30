@@ -3,15 +3,13 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Utility\CheckConfig;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 
-use App\Utility\CheckConfig;
-
-class AdminChecksCommand
-    extends Command
+class AdminChecksCommand extends Command
 {
     public static function defaultName(): string
     {
@@ -24,6 +22,7 @@ class AdminChecksCommand
 
         $parser->removeOption('quiet');
         $parser->removeOption('verbose');
+
         return $parser;
     }
 
@@ -32,8 +31,8 @@ class AdminChecksCommand
         $checks = CheckConfig::installation();
 
         $hasError = false;
-        foreach($checks as $check => $ok) {
-            if($ok) {
+        foreach ($checks as $check => $ok) {
+            if ($ok) {
                 $io->out($check);
                 continue;
             }
@@ -41,7 +40,7 @@ class AdminChecksCommand
             $hasError = true;
         }
 
-        if($hasError) {
+        if ($hasError) {
             $this->abort();
         }
 

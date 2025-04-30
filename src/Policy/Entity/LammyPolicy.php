@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace App\Policy\Entity;
 
+use App\Model\Entity\Lammy;
 use Authorization\IdentityInterface as User;
 
-use App\Model\Entity\Lammy;
-
-class LammyPolicy
-    extends AppEntityPolicy
+class LammyPolicy extends EntityPolicy
 {
     public function __construct()
     {
@@ -17,22 +15,22 @@ class LammyPolicy
         $this->showFieldAuth('characters', ['read-only']);
     }
 
-    public function canAdd(User $identity, Lammy $obj)
+    public function canAdd(User $identity, Lammy $obj): bool
     {
         return $this->hasAuth(['super'], $obj);
     }
 
-    public function canView(User $identity, Lammy $obj)
+    public function canView(User $identity, Lammy $obj): bool
     {
         return $this->hasAuth(['read-only'], $obj);
     }
 
-    public function canEdit(User $identity, Lammy $obj)
+    public function canEdit(User $identity, Lammy $obj): bool
     {
         return $this->canAdd($identity, $obj);
     }
 
-    public function canDelete(User $identity, Lammy $obj)
+    public function canDelete(User $identity, Lammy $obj): bool
     {
         return $this->canAdd($identity, $obj);
     }

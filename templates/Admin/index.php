@@ -3,35 +3,42 @@ declare(strict_types=1);
 
 ?>
 <h3>VA - VOID</h2>
-<a href="http://www.the-vortex.nl">Vortex Adventures</a> - <b>V</b>ortex <b>O</b>nline <b>I</b>ncharacter <b>D</b>atabase
+<a href="http://www.the-vortex.nl">Vortex Adventures</a>
+-
+<b>V</b>ortex <b>O</b>nline <b>I</b>ncharacter <b>D</b>atabase
 
 <hr>
 <?php
 
-if(isset($user)) {
-	echo "<p>Logged in as: ".$user['full_name']."<br/>";
-	echo "With auth level: ".$user['role']."</p>";
-	echo $this->Html->link(__('Click here to logout.'), '/admin/logout');
-	return;
+if (isset($user)) {
+    echo '<p>Logged in as: ' . $user['full_name'] . '<br/>';
+    echo 'With auth level: ' . $user['role'] . '</p>';
+    echo $this->Html->link(__('Click here to logout.'), '/admin/logout');
+
+    return;
 }
 
 ?>
 <h3>Login with:</h3>
 <?php
-foreach($socials as $social)
-{
-    $img = $this->Html->image("social-auth/$social.svg",
+foreach ($socials as $social) {
+    $img = $this->Html->image(
+        "social-auth/$social.svg",
         [ 'alt' => $social, 'class' => 'action-link'
-        , 'style' => 'width: 64px; height: 64px; margin: 16px;' ]);
-    echo $this->Form->postLink($img,
+        ,
+        'style' => 'width: 64px; height: 64px; margin: 16px;' ],
+    );
+    echo $this->Form->postLink(
+        $img,
         [ 'prefix' => false
         , 'controller' => 'Admin'
         , 'action' => 'social'
-        , $social
+        , $social,
         ],
         [ 'escape' => false
-        , 'data' => ['redirect' => $redirect]
-        ]);
+        , 'data' => ['redirect' => $redirect],
+        ],
+    );
 }
 ?>
 <br/>
@@ -39,9 +46,9 @@ foreach($socials as $social)
 <hr>
 <?= $this->Form->create(); ?>
     <h3>Legacy password:</h3>
-	<?=$this->Form->control('id', ['label' => 'Plin', 'type' => 'text']); ?>
-	<?=$this->Form->control('password', ['type'=>'password']); ?>
-	<?=$this->Form->button(__('Login')); ?>
+    <?=$this->Form->control('id', ['label' => 'Plin', 'type' => 'text']); ?>
+    <?=$this->Form->control('password', ['type' => 'password']); ?>
+    <?=$this->Form->button(__('Login')); ?>
 <br/>
 <em>Requires that a password is set for your VOID account.</em>
 <?= $this->Form->end(); ?>

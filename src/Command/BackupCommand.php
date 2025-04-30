@@ -3,23 +3,22 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Command\Traits\BackupTrait;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 
-use App\Command\Traits\Backup;
-
-class BackupCommand
-    extends Command
+class BackupCommand extends Command
 {
-    use Backup;
+    use BackupTrait;
 
     public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         $parser->setDescription('List database backups.');
         $parser->removeOption('quiet');
         $parser->removeOption('verbose');
+
         return $parser;
     }
 

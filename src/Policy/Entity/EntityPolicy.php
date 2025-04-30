@@ -3,15 +3,12 @@ declare(strict_types=1);
 
 namespace App\Policy\Entity;
 
+use App\Model\Entity\Entity;
+use App\Policy\Policy;
 use Authorization\IdentityInterface as User;
 use Authorization\Policy\BeforePolicyInterface;
 
-use App\Model\Entity\AppEntity;
-use App\Policy\AppPolicy;
-
-abstract class AppEntityPolicy
-    extends AppPolicy
-    implements BeforePolicyInterface
+abstract class EntityPolicy extends Policy implements BeforePolicyInterface
 {
     private array $showFieldAuth = [];
     private array $editFieldAuth = [];
@@ -28,28 +25,27 @@ abstract class AppEntityPolicy
     public function before(?User $identity, mixed $resource, string $action): null
     {
         $this->setIdentity($identity);
+
         return null;
     }
 
-    public function scopeAccesible(User $identity, AppEntity $obj): void
+    public function scopeAccesible(User $identity, Entity $obj): void
     {
         $this->setIdentity($identity);
 
         $audit_fields = ['created', 'creator_id', 'modified', 'modifier_id'];
         $obj->setAccess($audit_fields, false);
 
-        foreach($this->editFieldAuth as $field => $access)
-        {
+        foreach ($this->editFieldAuth as $field => $access) {
             $obj->setAccess($field, $this->hasAuth($access, $obj));
         }
     }
 
-    public function scopeVisible(User $identity, AppEntity $obj): void
+    public function scopeVisible(User $identity, Entity $obj): void
     {
         $this->setIdentity($identity);
 
-        foreach($this->showFieldAuth as $field => $access)
-        {
+        foreach ($this->showFieldAuth as $field => $access) {
             if ($this->hasAuth($access, $obj)) {
                 continue;
             }

@@ -3,18 +3,16 @@ declare(strict_types=1);
 
 namespace App\Controller\Component;
 
+use App\Model\Entity\SocialProfile;
 use Cake\Controller\Component;
 use Cake\Mailer\Mailer;
 use Cake\Routing\Router;
 
-use App\Model\Entity\SocialProfile;
-
-class MailerComponent
-    extends Component
+class MailerComponent extends Component
 {
     public function socialLogin(SocialProfile $profile): void
     {
-        if(!$profile->isNew() || $profile->user_id) {
+        if (!$profile->isNew() || $profile->user_id) {
             return;
         }
 
@@ -27,7 +25,7 @@ class MailerComponent
         $mailer
             ->setReplyTo($email)
             ->setSubject('Social login has no associated plin')
-            ->deliver( <<<MESSAGE
+            ->deliver(<<<MESSAGE
 Social login attempt with new email adres.
  from: $provider
  user: $user

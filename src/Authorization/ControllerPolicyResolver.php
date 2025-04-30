@@ -8,8 +8,7 @@ use Authorization\Policy\ResolverInterface;
 use Cake\Core\App;
 use Cake\Http\ServerRequest;
 
-class ControllerPolicyResolver
-    implements ResolverInterface
+class ControllerPolicyResolver implements ResolverInterface
 {
     /**
      * Used by the RequestAuthorizationMiddleware.
@@ -21,7 +20,7 @@ class ControllerPolicyResolver
             throw new MissingPolicyException($resource);
         }
 
-        $name = $resource->getParam('controller').'Controller';
+        $name = $resource->getParam('controller') . 'Controller';
 
         $policyClass = App::className($name, 'Policy/Controller', 'Policy');
         if ($policyClass === null) {

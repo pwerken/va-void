@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Validation;
 
-class CharactersPowerValidator
-    extends AppValidator
+class CharactersPowerValidator extends Validator
 {
     public function __construct()
     {

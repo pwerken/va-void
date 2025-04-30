@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
-class AttributesItem
-    extends AppEntity
+class AttributesItem extends Entity
 {
-    public function __construct($properties = [], $options = [])
+    public function __construct(array $properties = [], array $options = [])
     {
         parent::__construct($properties, $options);
 
@@ -12,7 +13,7 @@ class AttributesItem
         $this->setHidden(['attribute_id', 'item_id'], true);
     }
 
-    public function getUrl($parent = null)
+    public function getUrl(?Entity $parent = null): string
     {
         return $this->getRelationUrl('item', 'attribute', $parent);
     }

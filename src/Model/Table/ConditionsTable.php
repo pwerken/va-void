@@ -3,10 +3,13 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\RulesChecker;
 
-class ConditionsTable
-    extends AppTable
+/**
+ * @property \App\Model\Table\CharactersConditionsTable $CharactersConditions;
+ */
+class ConditionsTable extends Table
 {
     public function initialize(array $config): void
     {
@@ -18,16 +21,18 @@ class ConditionsTable
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->addDelete([$this, 'ruleNoCharacters']);
+
         return $rules;
     }
 
-    public function ruleNoCharacters($entity, $options)
+    public function ruleNoCharacters(EntityInterface $entity, array $options): bool
     {
         $query = $this->CharactersConditions->find();
         $query->where(['condition_id' => $entity->id]);
 
-        if($query->count() > 0) {
+        if ($query->count() > 0) {
             $entity->setError('characters', $this->consistencyError);
+
             return false;
         }
 

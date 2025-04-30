@@ -6,8 +6,7 @@ namespace App\Model\Table;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 
-class TeachingsTable
-    extends AppTable
+class TeachingsTable extends Table
 {
     public function initialize(array $config): void
     {
@@ -59,20 +58,21 @@ class TeachingsTable
     {
         $rules->add($rules->existsIn('student_id', 'Student'));
         $rules->add($rules->existsIn('teacher_id', 'Teacher'));
-        $rules->add($rules->existsIn('skill_id',   'Skills'));
+        $rules->add($rules->existsIn('skill_id', 'Skills'));
         $rules->add($rules->existsIn('started_id', 'Started'));
         $rules->add($rules->existsIn('updated_id', 'Updated'));
 
         return $rules;
     }
 
-    public function findStudent($plin, $chin)
+    public function findStudent(int $plin, int $chin): mixed
     {
         $query = $this->find('all', contain: ['Student']);
         $query->select(['Teachings.student_id']);
         $query->where(['Student.player_id =' => $plin, 'Student.chin = ' => $chin]);
         $query->limit(1);
         $query->enableHydration(false);
+
         return $query->first();
     }
 

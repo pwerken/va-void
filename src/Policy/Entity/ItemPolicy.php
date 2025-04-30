@@ -3,14 +3,12 @@ declare(strict_types=1);
 
 namespace App\Policy\Entity;
 
+use App\Model\Entity\Entity;
+use App\Model\Entity\Item;
 use Authorization\IdentityInterface as User;
 use Cake\ORM\Locator\LocatorAwareTrait;
 
-use App\Model\Entity\AppEntity;
-use App\Model\Entity\Item;
-
-class ItemPolicy
-    extends AppEntityPolicy
+class ItemPolicy extends EntityPolicy
 {
     use LocatorAwareTrait;
 
@@ -28,7 +26,7 @@ class ItemPolicy
         return $this->hasAuth(['referee'], $obj);
     }
 
-    public function canView(User $identity, Item $obj)
+    public function canView(User $identity, Item $obj): bool
     {
         return $this->hasAuth(['read-only', 'user'], $obj);
     }
@@ -43,13 +41,15 @@ class ItemPolicy
         return $this->canAdd($identity, $obj);
     }
 
-    protected function hasRoleUser(int $plin, AppEntity $obj): bool
+    protected function hasRoleUser(int $plin, Entity $obj): bool
     {
-        $char_id = $obj->character_id;
-        if ($char_id === null)
+        $char_id = $obj->get('character_id');
+        if ($char_id === null) {
             return false;
+        }
 
         $char = $this->getTableLocator()->get('Characters')->get($char_id);
-        return $char->player_id == $plin;
+
+        return $char->get('player_id') == $plin;
     }
 }

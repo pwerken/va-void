@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Validation;
 
-class FactionValidator
-    extends AppValidator
+class FactionValidator extends Validator
 {
     public function __construct()
     {

@@ -3,12 +3,18 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-class AttributesController
-    extends AppController
-{
-    use \App\Controller\Traits\View; // GET /attributes/{id}
+use App\Controller\Traits\ViewTrait;
 
-    // GET /attributes
+/**
+ * @property \App\Model\Table\AttributesTable $Attributes;
+ */
+class AttributesController extends Controller
+{
+    use ViewTrait; // GET /attributes/{id}
+
+    /**
+     * GET /attributes
+     */
     public function index(): void
     {
         $query = $this->Attributes->find()

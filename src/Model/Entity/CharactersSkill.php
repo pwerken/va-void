@@ -1,11 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
-class CharactersSkill
-    extends AppEntity
+class CharactersSkill extends Entity
 {
-
-    public function __construct($properties = [], $options = [])
+    public function __construct(array $properties = [], array $options = [])
     {
         parent::__construct($properties, $options);
 
@@ -13,25 +13,29 @@ class CharactersSkill
         $this->setHidden(['character_id', 'skill_id'], true);
     }
 
-    public function getUrl($parent = null)
+    public function getUrl(?Entity $parent = null): string
     {
         return $this->getRelationUrl('character', 'skill', $parent);
     }
 
-    public function printableName()
+    public function printableName(): string
     {
-        $name = $this->skill->name;
-        if($this->times > 1) {
-            $name .= ' x' . $this->times;
+        $skill = $this->get('skill');
+
+        $name = $skill->name;
+        $times = $this->get('times');
+        if ($times > 1) {
+            $name .= ' x' . $times;
         }
-        if($this->skill->loresheet && $this->skill->blanks) {
+        if ($skill->loresheet && $skill->blanks) {
             $name .= ' (lore & blanks)';
-        } elseif($this->skill->loresheet) {
+        } elseif ($skill->loresheet) {
             $name .= ' (lore)';
-        } elseif($this->skill->blanks) {
+        } elseif ($skill->blanks) {
             $name .= ' (blanks)';
         }
-        $name .= ' (' . ($this->times * $this->skill->cost) . ')';
+        $name .= ' (' . ($times * $skill->cost) . ')';
+
         return $name;
     }
 }

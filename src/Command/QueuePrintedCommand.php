@@ -7,12 +7,8 @@ use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
-use Cake\Filesystem\File;
 
-use App\View\PdfView;
-
-class QueuePrintedCommand
-    extends Command
+class QueuePrintedCommand extends Command
 {
     protected ?string $defaultTable = 'Lammies';
 
@@ -24,13 +20,16 @@ class QueuePrintedCommand
     public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         $parser->setDescription('Mark queued lammies as printed.');
-        $parser->addArgument('id',
-                    [ 'help' => 'ID of last queued lammy to include.'
-                    , 'required' => true
-                    ]);
+        $parser->addArgument(
+            'id',
+            [ 'help' => 'ID of last queued lammy to include.'
+                    , 'required' => true,
+            ],
+        );
 
         $parser->removeOption('quiet');
         $parser->removeOption('verbose');
+
         return $parser;
     }
 
@@ -42,7 +41,7 @@ class QueuePrintedCommand
                         ->where(['Lammies.id <=' => $id])
                         ->all();
 
-        $this->Lammies->setStatuses($lammies, 'Printed');
+        $this->fetchTable()->setStatuses($lammies, 'Printed');
 
         $io->out($lammies->count());
 

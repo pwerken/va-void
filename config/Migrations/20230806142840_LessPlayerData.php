@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use App\Migrations\AppMigration;
+use App\Migrations\Migration;
 
-class LessPlayerData extends AppMigration
+class LessPlayerData extends Migration
 {
     public function up(): void
     {

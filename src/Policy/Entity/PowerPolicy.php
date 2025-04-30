@@ -3,15 +3,13 @@ declare(strict_types=1);
 
 namespace App\Policy\Entity;
 
+use App\Model\Entity\Entity;
+use App\Model\Entity\Power;
 use Authorization\IdentityInterface as User;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\Query;
 
-use App\Model\Entity\AppEntity;
-use App\Model\Entity\Power;
-
-class PowerPolicy
-    extends AppEntityPolicy
+class PowerPolicy extends EntityPolicy
 {
     use LocatorAwareTrait;
 
@@ -44,17 +42,19 @@ class PowerPolicy
         return $this->canAdd($identity, $obj);
     }
 
-    protected function hasRoleUser(int $plin, AppEntity $obj): bool
+    protected function hasRoleUser(int $plin, Entity $obj): bool
     {
         $poin = $obj->id;
 
         $query = $this->getTableLocator()->get('Characters')->find();
         $query->where(['Characters.player_id' => $plin]);
-        $query->matching('CharactersPowers',
+        $query->matching(
+            'CharactersPowers',
             function (Query $query) use ($poin) {
                 return $query->where(['CharactersPowers.power_id' => $poin]);
-            }
+            },
         );
+
         return $query->count() > 0;
     }
 }

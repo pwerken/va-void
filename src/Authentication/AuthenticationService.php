@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace App\Authentication;
 
-use Authentication\AuthenticationService;
+use App\Model\Entity\Player;
+use Authentication\AuthenticationService as BaseAuthenticationService;
 use Authentication\Authenticator\JwtAuthenticator;
 use Authentication\Authenticator\SessionAuthenticator;
 use Authentication\Identifier\AbstractIdentifier;
@@ -11,19 +12,10 @@ use Authentication\Identifier\JwtSubjectIdentifier;
 use Authentication\Identifier\PasswordIdentifier;
 use Authentication\Identifier\Resolver\OrmResolver;
 use Cake\Routing\Router;
-use Cake\Http\ServerRequest;
-Use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
-use App\Model\Entity\Player;
-
-class AppAuthenticationService
-    extends AuthenticationService
+class AuthenticationService extends BaseAuthenticationService
 {
-    /**
-     * Constructor
-     *
-     * @param array $config Configuration options.
-     */
     public function __construct(array $config = [])
     {
         $config['identityClass'] = Player::class;
@@ -36,7 +28,7 @@ class AppAuthenticationService
         ];
         $resolver = [
             'className' => OrmResolver::class,
-            'userModel' => 'Players'
+            'userModel' => 'Players',
         ];
 
         // Load the authenticators. Session should be first.
@@ -58,7 +50,7 @@ class AppAuthenticationService
 
         // Load identifiers
         $this->loadIdentifier(JwtSubjectIdentifier::class, [
-            'resolver' => $resolver
+            'resolver' => $resolver,
         ]);
         $this->loadIdentifier(PasswordIdentifier::class, [
             'fields' => $fields,
@@ -74,8 +66,9 @@ class AppAuthenticationService
      */
     public function getUnauthenticatedRedirectUrl(ServerRequestInterface $request): ?string
     {
-        if($request->getParam('controller') != 'Admin')
-            return NULL;
+        if ($request->getParam('controller') != 'Admin') {
+            return null;
+        }
 
         $this->setConfig('queryParam', 'redirect');
         $this->setConfig('unauthenticatedRedirect', Router::url('/admin'));

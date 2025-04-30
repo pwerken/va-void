@@ -3,14 +3,22 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-class LammiesController
-    extends AppController
-{
-    use \App\Controller\Traits\View;     // GET /lammies/{id}
-    use \App\Controller\Traits\Edit;     // PUT /lammies/{id}
-    use \App\Controller\Traits\Delete;   // DELETE /lammies/{id}
+use App\Controller\Traits\DeleteTrait;
+use App\Controller\Traits\EditTrait;
+use App\Controller\Traits\ViewTrait;
 
-    // GET /lammies
+/**
+ * @property \App\Model\Table\LammiesTable $Lammies;
+ */
+class LammiesController extends Controller
+{
+    use ViewTrait; // GET /lammies/{id}
+    use EditTrait; // PUT /lammies/{id}
+    use DeleteTrait; // DELETE /lammies/{id}
+
+    /**
+     * GET /lammies
+     */
     public function index(): void
     {
         $query = $this->Lammies->find()
@@ -22,27 +30,29 @@ class LammiesController
                     ->select('Lammies.key2')
                     ->select('Lammies.modified');
         $content = [];
-        foreach($this->doRawQuery($query) as $row) {
-            $content[] =
-                [ 'class' => 'Lammy'
-                , 'url' => '/lammies/'.$row[0]
-                , 'status' => $row[1]
-                , 'entity' => $row[2]
-                , 'key1' => (int)$row[3]
-                , 'key2' => (int)$row[4]
-                , 'modified' => $row[5]
-                ];
+        foreach ($this->doRawQuery($query) as $row) {
+            $content[] = [
+                'class' => 'Lammy',
+                'url' => '/lammies/' . $row[0],
+                'status' => $row[1],
+                'entity' => $row[2],
+                'key1' => (int)$row[3],
+                'key2' => (int)$row[4],
+                'modified' => $row[5],
+            ];
         }
 
-        $this->set('_serialize',
-            [ 'class' => 'List'
-            , 'url' => rtrim($this->request->getPath(), '/')
-            , 'list' => $content
-            ]);
+        $this->set('_serialize', [
+            'class' => 'List',
+            'url' => rtrim($this->request->getPath(), '/'),
+            'list' => $content,
+        ]);
     }
 
-    // GET /lammies/queue
-    // returns the ID of the last item in the queue
+    /**
+     * GET /lammies/queue
+     * returns the ID of the last item in the queue
+     */
     public function queue(): void
     {
         $last = $this->Lammies
@@ -54,30 +64,37 @@ class LammiesController
         $this->set('_serialize', $last_id);
     }
 
-    // POST /lammies/single
-    // change lammy status to printing
-    // returns PDF for single-sided printing
+    /**
+     * POST /lammies/single
+     * change lammy status to printing
+     * returns PDF for single-sided printing
+     */
     public function pdfSingle(): void
     {
         $max_id = key($this->getRequest()->getData()) ?? 0;
         $this->pdfOutput($max_id, false);
     }
 
-    // POST /lammies/double
-    // change lammy status to printing
-    // returns PDF for double-sided printing
+    /**
+     * POST /lammies/double
+     * change lammy status to printing
+     * returns PDF for double-sided printing
+     */
     public function pdfDouble(): void
     {
         $max_id = key($this->getRequest()->getData()) ?? 0;
         $this->pdfOutput($max_id, true);
     }
 
-    // POST /lammies/printed
-    // change lammy status to printed
+    /**
+     * POST /lammies/printed
+     * change lammy status to printed
+     */
     public function printed(): void
     {
         $max_id = key($this->getRequest()->getData()) ?? 0;
-        $lammies = $this->Lammies->find('Printing')
+        $lammies = $this->Lammies
+                    ->find('Printing')
                     ->where(['Lammies.id <=' => $max_id])
                     ->all();
         $this->Lammies->setStatuses($lammies, 'Printed');
@@ -85,9 +102,13 @@ class LammiesController
         $this->set('_serialize', count($lammies));
     }
 
-    private function pdfOutput(int $max_id, ?bool $double = false)
+    /**
+     * returns PDF for printing
+     */
+    private function pdfOutput(int $max_id, ?bool $double = false): void
     {
-        $lammies = $this->Lammies->find('Queued')
+        $lammies = $this->Lammies
+                    ->find('Queued')
                     ->where(['Lammies.id <=' => $max_id])
                     ->all();
 

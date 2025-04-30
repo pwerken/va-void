@@ -8,8 +8,7 @@ use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 
-class QueueCommand
-    extends Command
+class QueueCommand extends Command
 {
     protected ?string $defaultTable = 'Lammies';
 
@@ -19,16 +18,16 @@ class QueueCommand
                             . 'or 0 if everything is printed.');
         $parser->removeOption('quiet');
         $parser->removeOption('verbose');
+
         return $parser;
     }
 
     public function execute(Arguments $args, ConsoleIo $io): int
     {
         $result = $this->fetchTable()->find('lastInQueue')->all();
-        if($result->count() == 0) {
+        if ($result->count() == 0) {
             $io->out(0);
-        }
-        else {
+        } else {
             $io->out($result->first()->id);
         }
 

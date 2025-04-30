@@ -5,8 +5,7 @@ namespace App\Model\Validation;
 
 use App\Model\Entity\Character;
 
-class CharacterValidator
-    extends AppValidator
+class CharacterValidator extends Validator
 {
     public function __construct()
     {
