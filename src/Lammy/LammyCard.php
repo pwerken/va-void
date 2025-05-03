@@ -166,6 +166,43 @@ abstract class LammyCard
         $this->pdf->SetXY($this->xPos, $this->yPos);
     }
 
+    protected function textarea(float $x, float $y, float $w, float $h, string $text): void
+    {
+        $text = mb_convert_encoding($text, 'ISO-8859-1', 'UTF-8');
+
+        preg_match_all('/\s*[^\s]+/', $text, $matches);
+        $matches = $matches[0];
+
+        $l = 0;
+        $outputlines = [];
+        $outputlines[0] = '';
+        $spaceonline = $w - .75;
+        foreach ($matches as $lines) {
+            $words = preg_split('/\n/', $lines);
+            foreach ($words as $i => $word) {
+                $length = $this->pdf->GetStringWidth($word);
+
+                if ($i > 0 || $length > $spaceonline) {
+                    $spaceonline = $w - .75;
+                    $outputlines[++$l] = '';
+
+                    $word = ltrim($word);
+                    $length = $this->pdf->GetStringWidth($word);
+                }
+                $outputlines[$l] .= $word;
+                $spaceonline -= $length;
+            }
+        }
+        $lineheigth = $this->size / 2;
+        foreach ($outputlines as $i => $line) {
+            $offset = $i * $lineheigth;
+            if ($offset + $lineheigth > $h) {
+                break;
+            }
+            $this->text($x, $y + $offset, $w, 'L', $line);
+        }
+    }
+
     protected function textblock(float $x, float $y, float $w, string $align, string $text, int $border = 0): void
     {
         $text = mb_convert_encoding($text, 'ISO-8859-1', 'UTF-8');

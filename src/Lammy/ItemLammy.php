@@ -51,7 +51,7 @@ class ItemLammy extends LammyCard
         $this->text(57.5, 5, 10, 'R', $this->entity->id);
 
         $this->font(8);
-        $this->textblock(12, 15, 60, 'L', $this->entity->description);
+        $this->textarea(12, 15, 60, 24, $this->entity->description);
 
         $this->font(8, 'B');
         $this->text(12, 10, 60, 'L', $this->entity->name);
@@ -73,7 +73,7 @@ class ItemLammy extends LammyCard
         $this->pdf->SetTextColor(0);
         $this->square(8, 5, 72, 42);
         $this->font(6);
-        $this->textblock(8, 7, 64, 'L', $this->entity->player_text);
+        $this->textarea(8, 7, 64, 37, $this->entity->player_text);
 
         if (!is_null($this->entity->character)) {
             $char_id = $this->entity->character->player_id

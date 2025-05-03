@@ -56,7 +56,7 @@ class CharactersConditionLammy extends LammyCard
 
         $this->font(11, 'B');
         $this->text(57.5, 5, 60, 'L', $data['id']);
-        $this->textblock(12, 13, 60, 'L', $data['name']);
+        $this->textarea(12, 13, 60, 17, $data['name']);
         $this->text(12, 28, 44, 'L', $data['plin']);
         $this->text(12, 33, 44, 'L', $data['char']);
         $this->text(12, 38, 44, 'L', $data['expiry']);
@@ -69,6 +69,6 @@ class CharactersConditionLammy extends LammyCard
         $this->pdf->SetTextColor(0);
         $this->square(8, 5, 72, 42);
         $this->font(6);
-        $this->textblock(8, 7, 64, 'L', $data['text']);
+        $this->textarea(8, 7, 64, 37, $data['text']);
     }
 }
