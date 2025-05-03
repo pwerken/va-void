@@ -4,6 +4,7 @@ use App\Authentication\UnauthenticatedException;
 use App\Error\ApiExceptionRenderer;
 use App\Error\ErrorLogger;
 use App\Error\Exception\LoginFailedException;
+use Authorization\Exception\ForbiddenException;
 use Cake\Cache\Engine\FileEngine;
 use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
@@ -201,11 +202,12 @@ return [
         'errorLevel' => E_ALL & ~E_USER_DEPRECATED & ~E_DEPRECATED,
         'exceptionRenderer' => ApiExceptionRenderer::class,
         'skipLog' => [
+            ForbiddenException::class,
             LoginFailedException::class,
-            UnauthenticatedException::class,
-            NotFoundException::class,
             MissingRouteException::class,
+            NotFoundException::class,
             RecordNotFoundException::class,
+            UnauthenticatedException::class,
         ],
         'logger' => ErrorLogger::class,
         'log' => true,
