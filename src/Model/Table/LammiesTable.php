@@ -23,7 +23,7 @@ class LammiesTable extends Table
     public function findLastInQueue(SelectQuery $query, array $options = []): SelectQuery
     {
         $query = $this->findQueued($query, $options);
-        $query->order(['Lammies.id' => 'DESC']);
+        $query->orderBy(['Lammies.id' => 'DESC']);
         $query->limit(1);
 
         return $query;

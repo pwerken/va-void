@@ -71,8 +71,7 @@ class LammiesController extends Controller
      */
     public function pdfSingle(): void
     {
-        $max_id = key($this->getRequest()->getData()) ?? 0;
-        $this->pdfOutput($max_id, false);
+        $this->pdfOutput($this->intFromBody(), false);
     }
 
     /**
@@ -82,8 +81,7 @@ class LammiesController extends Controller
      */
     public function pdfDouble(): void
     {
-        $max_id = key($this->getRequest()->getData()) ?? 0;
-        $this->pdfOutput($max_id, true);
+        $this->pdfOutput($this->intFromBody(), true);
     }
 
     /**
@@ -92,10 +90,9 @@ class LammiesController extends Controller
      */
     public function printed(): void
     {
-        $max_id = key($this->getRequest()->getData()) ?? 0;
         $lammies = $this->Lammies
                     ->find('Printing')
-                    ->where(['Lammies.id <=' => $max_id])
+                    ->where(['Lammies.id <=' => $this->intFromBody()])
                     ->all();
         $this->Lammies->setStatuses($lammies, 'Printed');
 
@@ -118,5 +115,12 @@ class LammiesController extends Controller
         $this->set('viewVar', 'lammies');
         $this->set('lammies', $lammies);
         $this->set('double', $double);
+    }
+
+    private function intFromBody(): int
+    {
+        $body_string = (string)$this->getRequest()->getBody();
+
+        return (int)$body_string;
     }
 }

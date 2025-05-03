@@ -385,35 +385,35 @@ class GettersTest extends AuthIntegrationTestCase
         $this->assertGet('/events/99', 404);
     }
 
-#   public function testLammies()
-#   {
-#       $this->withoutAuth();
-#       $this->assertGet('/lammies', 401);
-#       $this->assertGet('/lammies/99', 401);
-#       $this->assertGet('/lammies/queue', 401);
-#
-#       $this->withAuthPlayer();
-#       $this->assertGet('/lammies', 403);
-#       $this->assertGet('/lammies/1', 403);
-#       $this->assertGet('/lammies/99', 403);
-#       $this->assertGet('/lammies/queue', 403);
-#
-#       $this->withAuthReadOnly();
-#       $this->assertGet('/lammies');
-#       $this->assertGet('/lammies/1');
-#       $this->assertGet('/lammies/99', 404);
-#       $this->assertGet('/lammies/queue', 403);
-#
-#       $this->withAuthReferee();
-#       $this->assertGet('/lammies');
-#       $this->assertGet('/lammies/1');
-#       $this->assertGet('/lammies/99', 404);
-#       $this->assertGet('/lammies/queue');
-#
-#       $this->withAuthInfobalie();
-#       $this->assertGet('/lammies');
-#       $this->assertGet('/lammies/1');
-#       $this->assertGet('/lammies/99', 404);
-#       $this->assertGet('/lammies/queue');
-#   }
+    public function testLammies()
+    {
+        $this->withoutAuth();
+        $this->assertGet('/lammies', 401);
+        $this->assertGet('/lammies/99', 401);
+        $this->assertGet('/lammies/queue', 401);
+
+        $this->withAuthPlayer();
+        $this->assertGet('/lammies', 403);
+        $this->assertGet('/lammies/1', 403);
+        $this->assertGet('/lammies/99', 403);
+        $this->assertGet('/lammies/queue', 403);
+
+        $this->withAuthReadOnly();
+        $this->assertGet('/lammies');
+        $this->assertGet('/lammies/1');
+        $this->assertGet('/lammies/99', 404);
+        $this->assertGet('/lammies/queue', 403);
+
+        $this->withAuthReferee();
+        $this->assertGet('/lammies');
+        $this->assertGet('/lammies/1');
+        $this->assertGet('/lammies/99', 404);
+        $this->assertGet('/lammies/queue', 403);
+
+        $this->withAuthInfobalie();
+        $this->assertGet('/lammies');
+        $this->assertGet('/lammies/1');
+        $this->assertGet('/lammies/99', 404);
+        $this->assertGet('/lammies/queue');
+    }
 }

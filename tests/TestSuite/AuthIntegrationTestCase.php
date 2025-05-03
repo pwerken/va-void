@@ -28,7 +28,7 @@ class AuthIntegrationTestCase extends TestCase
         return $this->jsonBody();
     }
 
-    public function assertPost(string $url, array $data = [], int $code = 200, string $message = '')
+    public function assertPost(string $url, array|string $data = '', int $code = 200, string $message = '')
     {
         $this->setConfigRequest();
         $this->post($url, $data);
