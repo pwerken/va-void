@@ -74,6 +74,9 @@ foreach ($list as $cur) {
     if (!is_null($related)) {
         $related = '<strong>' . $related . '</strong> ';
     }
+    if (is_null($related)) {
+        $related = '<em>(removed)</em> ';
+    }
 
     $prefix = "<span$bgcolor><samp>"
         . str_pad($cur->modifiedString(), 19, '_', STR_PAD_BOTH) . ' '
