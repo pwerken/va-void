@@ -30,7 +30,7 @@ foreach ($socials as $social) {
     );
     echo $this->Form->postLink(
         $img,
-        [ 'prefix' => false
+        [ 'prefix' => 'Admin'
         , 'controller' => 'Admin'
         , 'action' => 'social'
         , $social,

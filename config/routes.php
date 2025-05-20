@@ -54,16 +54,18 @@ return function (RouteBuilder $routes): void {
     $defaults['action'] = 'cors';
     $routes->connect('/*', $defaults);
 
-    /**
-     *  Admin pages
-     */
-    $defaults = [];
-    $defaults['_method'] = ['GET', 'POST'];
-    $defaults['controller'] = 'Admin';
-    $defaults['action'] = 'index';
-    $routes->connect('/admin', $defaults);
-    unset($defaults['action']);
-    $routes->connect('/admin/{action}/*', $defaults);
+    $routes->prefix('Admin', function (RouteBuilder $routes) {
+        /**
+         *  Admin pages
+         */
+        $defaults = [];
+        $defaults['_method'] = ['GET', 'POST'];
+        $defaults['controller'] = 'Admin';
+        $defaults['action'] = 'index';
+        $routes->connect('/', $defaults);
+        unset($defaults['action']);
+        $routes->connect('/{action}/*', $defaults);
+    });
 
     /**
      *  Authentication related URIs

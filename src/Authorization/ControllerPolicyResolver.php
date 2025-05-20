@@ -21,8 +21,14 @@ class ControllerPolicyResolver implements ResolverInterface
         }
 
         $name = $resource->getParam('controller') . 'Controller';
+        $type = 'Policy/Controller';
 
-        $policyClass = App::className($name, 'Policy/Controller', 'Policy');
+        $prefix = $resource->getParam('prefix');
+        if (!empty($prefix)) {
+            $type .= '/' . $prefix;
+        }
+
+        $policyClass = App::className($name, $type, 'Policy');
         if ($policyClass === null) {
             throw new MissingPolicyException($name);
         }

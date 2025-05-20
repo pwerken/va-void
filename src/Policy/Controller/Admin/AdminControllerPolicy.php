@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Policy\Controller;
+namespace App\Policy\Controller\Admin;
+
+use App\Policy\Controller\ControllerPolicy;
 
 class AdminControllerPolicy extends ControllerPolicy
 {
