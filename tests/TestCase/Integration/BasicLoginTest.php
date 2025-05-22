@@ -7,6 +7,10 @@ use App\Test\TestSuite\AuthIntegrationTestCase;
 
 class BasicLoginTest extends AuthIntegrationTestCase
 {
+    public array $fixtures = [
+        'app.Players',
+    ];
+
     public function testWithoutAuth()
     {
         $this->withoutAuth();

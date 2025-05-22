@@ -7,25 +7,6 @@ use App\Test\TestSuite\AuthIntegrationTestCase;
 
 class LammiesTest extends AuthIntegrationTestCase
 {
-    public array $fixtures = [
-        'app.Attributes',
-        'app.AttributesItems',
-        'app.Characters',
-        'app.CharactersConditions',
-        'app.CharactersPowers',
-        'app.CharactersSkills',
-        'app.Conditions',
-        'app.Events',
-        'app.Factions',
-        'app.Items',
-        'app.Lammies',
-        'app.Manatypes',
-        'app.Players',
-        'app.Powers',
-        'app.Skills',
-        'app.Teachings',
-    ];
-
     public function testWhoCanPrint()
     {
         $this->withoutAuth();

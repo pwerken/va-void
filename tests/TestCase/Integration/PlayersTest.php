@@ -7,13 +7,10 @@ use App\Test\TestSuite\AuthIntegrationTestCase;
 
 class PlayersTest extends AuthIntegrationTestCase
 {
-    public function getFixtures(): array
-    {
-        return [
-            'app.Players',
-            'app.Characters',
-        ];
-    }
+    public array $fixtures = [
+        'app.Characters',
+        'app.Players',
+    ];
 
     public function checkList($url, $size)
     {

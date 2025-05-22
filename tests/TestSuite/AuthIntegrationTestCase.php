@@ -9,7 +9,24 @@ class AuthIntegrationTestCase extends TestCase
 {
     use IntegrationTestTrait;
 
-    public array $fixtures = [ 'app.Players' ];
+    public array $fixtures = [
+        'app.Attributes',
+        'app.AttributesItems',
+        'app.Characters',
+        'app.CharactersConditions',
+        'app.CharactersPowers',
+        'app.CharactersSkills',
+        'app.Conditions',
+        'app.Events',
+        'app.Factions',
+        'app.Items',
+        'app.Lammies',
+        'app.Manatypes',
+        'app.Players',
+        'app.Powers',
+        'app.Skills',
+        'app.Teachings',
+    ];
 
     protected $token = null;
 
