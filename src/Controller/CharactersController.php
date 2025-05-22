@@ -86,7 +86,7 @@ class CharactersController extends Controller
         $table->saveOrFail($lammy);
         $count = 1;
 
-        if ('all' === (string)$this->getRequest()->getBody()) {
+        if ((string)$this->getRequest()->getBody() === 'all') {
             foreach ($char->powers as $power) {
                 $lammy = $table->newEmptyEntity();
                 $lammy->set('target', $power);

@@ -54,7 +54,7 @@ class ConditionsController extends Controller
      */
     public function queue(int $coin): void
     {
-        if (array_key_exists('all', $this->getRequest()->getData())) {
+        if ((string)$this->getRequest()->getBody() === 'all') {
             $condition = $this->fetchTable()->getWithContain($coin);
             $table = $this->fetchTable('Lammies');
             foreach ($condition->characters as $character) {
@@ -63,9 +63,12 @@ class ConditionsController extends Controller
                 $table->saveOrFail($lammy);
             }
 
+            $this->set('_serialize', count($condition->characters));
+
             return;
         }
         $this->loadComponent('QueueLammy');
         $this->QueueLammy->action($coin);
+        $this->set('_serialize', 1);
     }
 }

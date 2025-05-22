@@ -52,9 +52,7 @@ class PowersController extends Controller
      */
     public function queue(int $poin): void
     {
-        $this->loadComponent('QueueLammy');
-
-        if (array_key_exists('all', $this->getRequest()->getData())) {
+        if ((string)$this->getRequest()->getBody() === 'all') {
             $power = $this->fetchTable()->getWithContain($poin);
             $table = $this->fetchTable('Lammies');
             foreach ($power->characters as $character) {
@@ -62,8 +60,14 @@ class PowersController extends Controller
                 $lammy->set('target', $character);
                 $table->saveOrFail($lammy);
             }
-        } else {
-            $this->QueueLammy->action($poin);
+
+            $this->set('_serialize', count($power->characters));
+
+            return;
         }
+
+        $this->loadComponent('QueueLammy');
+        $this->QueueLammy->action($poin);
+        $this->set('_serialize', 1);
     }
 }

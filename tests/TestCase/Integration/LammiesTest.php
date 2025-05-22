@@ -190,20 +190,28 @@ class LammiesTest extends AuthIntegrationTestCase
         $this->assertPost('/characters/1/1/print', 'all');
         $this->assertEquals(4, $this->jsonBody());
 
-        // double check queue size
-        $this->assertEquals(13, $this->assertGet('/lammies/queue'));
+# FIXME expand fixture data: conditon with multiple characters
+        $this->assertPost('/conditions/1/print', 'all');
+        $this->assertEquals(1, $this->jsonBody());
+
+# FIXME expand fixture data: power with multiple characters
+        $this->assertPost('/powers/1/print', 'all');
+        $this->assertEquals(1, $this->jsonBody());
+
+        // double check total queue size
+        $this->assertEquals(15, $this->assertGet('/lammies/queue'));
 
         // check pdf response (magic bytes only)
-        $this->assertPost('/lammies/single', '13');
+        $this->assertPost('/lammies/single', '15');
         $pdf = (string)$this->_response->getBody();
         $this->assertEquals('%PDF', substr($pdf, 0, 4));
-        $this->assertPost('/lammies/double', '13');
+        $this->assertPost('/lammies/double', '15');
         $pdf = (string)$this->_response->getBody();
         $this->assertEquals('%PDF', substr($pdf, 0, 4));
 
         // mark all as printed
-        $this->assertPost('/lammies/printed', '13');
-        $this->assertEquals(13, $this->jsonBody());
+        $this->assertPost('/lammies/printed', '15');
+        $this->assertEquals(15, $this->jsonBody());
 
         // check queue is empty again
         $this->assertEquals(0, $this->assertGet('/lammies/queue'));
