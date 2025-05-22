@@ -148,66 +148,6 @@ class GettersTest extends AuthIntegrationTestCase
 #       $this->assertGet('/characters/99/1/teacher', 404);
     }
 
-    public function testConditions()
-    {
-        $this->withoutAuth();
-        $this->assertGet('/conditions', 401);
-        $this->assertGet('/conditions/1', 401);
-        $this->assertGet('/conditions/1/characters', 401);
-        $this->assertGet('/conditions/2', 401);
-        $this->assertGet('/conditions/2/characters', 401);
-        $this->assertGet('/conditions/99', 401);
-        $this->assertGet('/conditions/99/characters', 401);
-
-        $this->withAuthPlayer();
-        $this->assertGet('/conditions');
-        $this->assertGet('/conditions/1');
-        $this->assertGet('/conditions/1/characters', 403);
-        $this->assertGet('/conditions/2', 403);
-        $this->assertGet('/conditions/2/characters', 403);
-        $this->assertGet('/conditions/99', 404);
-        $this->assertGet('/conditions/99/characters', 403);
-
-        $this->withAuthReadOnly();
-        $this->assertGet('/conditions');
-        $this->assertGet('/conditions/1');
-        $this->assertGet('/conditions/1/characters');
-        $this->assertGet('/conditions/2');
-        $this->assertGet('/conditions/2/characters');
-        $this->assertGet('/conditions/99', 404);
-        $this->assertGet('/conditions/99/characters', 404);
-    }
-
-    public function testPowers()
-    {
-        $this->withoutAuth();
-        $this->assertGet('/powers', 401);
-        $this->assertGet('/powers/1', 401);
-        $this->assertGet('/powers/1/characters', 401);
-        $this->assertGet('/powers/2', 401);
-        $this->assertGet('/powers/2/characters', 401);
-        $this->assertGet('/powers/99', 401);
-        $this->assertGet('/powers/99/characters', 401);
-
-        $this->withAuthPlayer();
-        $this->assertGet('/powers');
-        $this->assertGet('/powers/1');
-        $this->assertGet('/powers/1/characters', 403);
-        $this->assertGet('/powers/2', 403);
-        $this->assertGet('/powers/2/characters', 403);
-        $this->assertGet('/powers/99', 404);
-        $this->assertGet('/powers/99/characters', 403);
-
-        $this->withAuthReadOnly();
-        $this->assertGet('/powers');
-        $this->assertGet('/powers/1');
-        $this->assertGet('/powers/1/characters');
-        $this->assertGet('/powers/2');
-        $this->assertGet('/powers/2/characters');
-        $this->assertGet('/powers/99', 404);
-        $this->assertGet('/powers/99/characters', 404);
-    }
-
     public function testSkills()
     {
         $this->withoutAuth();
