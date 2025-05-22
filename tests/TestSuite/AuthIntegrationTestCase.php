@@ -30,7 +30,7 @@ class AuthIntegrationTestCase extends TestCase
 
     protected $token = null;
 
-    public function assertArrayKeyValue(string $key, $value, array $array, string $message = '')
+    public function assertArrayKeyValue(string $key, mixed $value, array $array, string $message = '')
     {
         $this->assertArrayHasKey($key, $array, $message);
         $this->assertEquals($value, $array[$key], $message);
@@ -66,6 +66,8 @@ class AuthIntegrationTestCase extends TestCase
         $this->setConfigRequest();
         $this->put($url, json_encode($data));
         $this->assertResponseCode($code, $message);
+
+        return $this->jsonBody();
     }
 
     public function assertDelete(string $url, int $code = 200, string $message = '')
