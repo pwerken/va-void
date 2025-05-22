@@ -28,13 +28,13 @@ class AuthIntegrationTestCase extends TestCase
         'app.Teachings',
     ];
 
-    protected $token = null;
+    protected ?string $token = null;
 
-    public function assertArrayKeyValue(string $key, mixed $value, array $array, string $message = '')
-    {
-        $this->assertArrayHasKey($key, $array, $message);
-        $this->assertEquals($value, $array[$key], $message);
-    }
+    protected static int $PLIN_PLAYER = 1;
+    protected static int $PLIN_READONLY = 2;
+    protected static int $PLIN_REFEREE = 3;
+    protected static int $PLIN_INFOBALIE = 4;
+    protected static int $PLIN_SUPER = 5;
 
     public function assertGet(string $url, int $code = 200, string $message = '')
     {
@@ -91,6 +91,16 @@ class AuthIntegrationTestCase extends TestCase
         $this->assertResponseCode($code, $message);
     }
 
+    public function assertErrorsResponse(string $url, array $response): array
+    {
+        $this->assertArrayKeyValue('class', 'Error', $response);
+        $this->assertArrayKeyValue('code', 422, $response);
+        $this->assertArrayKeyValue('url', $url, $response);
+        $this->assertArrayHasKey('errors', $response);
+
+        return $response['errors'];
+    }
+
     protected function jsonBody(?string $field = null)
     {
         $data = json_decode((string)$this->_response->getBody(), true);
@@ -110,27 +120,27 @@ class AuthIntegrationTestCase extends TestCase
 
     protected function withAuthPlayer()
     {
-        return $this->loginAs(1);
+        return $this->loginAs(self::$PLIN_PLAYER);
     }
 
     protected function withAuthReadOnly()
     {
-        return $this->loginAs(2);
+        return $this->loginAs(self::$PLIN_READONLY);
     }
 
     protected function withAuthReferee()
     {
-        return $this->loginAs(3);
+        return $this->loginAs(self::$PLIN_REFEREE);
     }
 
     protected function withAuthInfobalie()
     {
-        return $this->loginAs(4);
+        return $this->loginAs(self::$PLIN_INFOBALIE);
     }
 
     protected function withAuthSuper()
     {
-        return $this->loginAs(5);
+        return $this->loginAs(self::$PLIN_SUPER);
     }
 
     private function loginAs(int $id)
