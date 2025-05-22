@@ -47,9 +47,11 @@ class AuthIntegrationTestCase extends TestCase
 
     public function assertPost(string $url, array|string $data = '', int $code = 200, string $message = '')
     {
-        $this->setConfigRequest();
+        $this->setConfigRequest('application/x-www-form-urlencoded');
         $this->post($url, $data);
         $this->assertResponseCode($code, $message);
+
+        return $this->jsonBody();
     }
 
     public function assertPatch(string $url, array $data = [], int $code = 200, string $message = '')
@@ -146,23 +148,25 @@ class AuthIntegrationTestCase extends TestCase
         return $id;
     }
 
-    private function setConfigRequest()
+    private function setConfigRequest(string $content = 'application/json')
     {
-        $this->configRequest([
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-            ],
-        ]);
-
         if ($this->token !== null) {
             $this->configRequest([
                 'headers' => [
                     'Accept' => 'application/json',
-                    'Content-Type' => 'application/json',
+                    'Content-Type' => $content,
                     'Authorization' => 'Bearer ' . $this->token,
                 ],
             ]);
+
+            return;
         }
+
+        $this->configRequest([
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => $content,
+            ],
+        ]);
     }
 }
