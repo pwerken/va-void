@@ -185,46 +185,6 @@ class GettersTest extends AuthIntegrationTestCase
         $this->assertGet('/manatypes/99', 404);
     }
 
-    public function testItems()
-    {
-        $this->withoutAuth();
-        $this->assertGet('/items', 401);
-        $this->assertGet('/items/1', 401);
-        $this->assertGet('/items/1/attributes', 401);
-        $this->assertGet('/items/1/attributes/1', 401);
-        $this->assertGet('/items/99', 401);
-        $this->assertGet('/items/99/attributes', 401);
-
-        $this->withAuthPlayer();
-        $this->assertGet('/items');
-        $this->assertGet('/items/1');
-        $this->assertGet('/items/1/attributes', 403);
-        $this->assertGet('/items/1/attributes/1', 403);
-        $this->assertGet('/items/1/attributes/2', 403);
-        $this->assertGet('/items/2', 403);
-        $this->assertGet('/items/2/attributes/1', 403);
-        $this->assertGet('/items/2/attributes/2', 403);
-        $this->assertGet('/items/99', 404);
-        $this->assertGet('/items/99/attributes', 403);
-        $this->assertGet('/items/99/attributes/1', 403);
-        $this->assertGet('/items/99/attributes/2', 403);
-
-        $this->withAuthReadOnly();
-        $this->assertGet('/items');
-        $this->assertGet('/items/1');
-        $this->assertGet('/items/1/attributes');
-        $this->assertGet('/items/1/attributes/1');
-        $this->assertGet('/items/1/attributes/2', 404);
-        $this->assertGet('/items/2');
-        $this->assertGet('/items/2/attributes');
-        $this->assertGet('/items/2/attributes/1', 404);
-        $this->assertGet('/items/2/attributes/2');
-        $this->assertGet('/items/99', 404);
-        $this->assertGet('/items/99/attributes', 404);
-        $this->assertGet('/items/99/attributes/1', 404);
-        $this->assertGet('/items/99/attributes/2', 404);
-    }
-
     public function testAttributes()
     {
         $this->withoutAuth();

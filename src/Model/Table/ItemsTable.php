@@ -66,7 +66,7 @@ class ItemsTable extends Table
 
             $newID = $query->first()['id'] + 1;
             if ($newID < $max || $max < 0) {
-                return $newID;
+                return (string)$newID;
             }
         }
 
