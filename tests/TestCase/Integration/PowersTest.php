@@ -47,12 +47,54 @@ class PowersTest extends AuthIntegrationTestCase
         $this->assertPut('/powers/1', [], 403);
         $this->assertPut('/powers/2', [], 403);
         $this->assertPut('/powers/99', [], 403);
+
+        $this->withAuthReferee();
+        $this->assertGet('/powers');
+        $this->assertGet('/powers/1');
+        $this->assertGet('/powers/1/characters');
+        $this->assertGet('/powers/2');
+        $this->assertGet('/powers/2/characters');
+        $this->assertGet('/powers/99', 404);
+        $this->assertGet('/powers/99/characters', 404);
+        $this->assertPut('/powers', [], 422);
+        $this->assertPut('/powers/1', []);
+        $this->assertPut('/powers/2', []);
+        $this->assertPut('/powers/99', [], 404);
     }
 
-    public function testAddPower()
+    public function testAddPowerMinimal()
     {
-        $this->withAuthReferee();
+        $input = [
+# required fields:
+            'name' => 'power name',
+            'player_text' => 'player explenation',
+        ];
 
+        $expected = [
+            'class' => 'Power',
+            'url' => '/powers/3',
+            'poin' => 3,
+            'name' => $input['name'],
+            'player_text' => $input['player_text'],
+            'referee_notes' => null,
+            'notes' => null,
+            'deprecated' => false,
+            'modifier_id' => self::$PLIN_REFEREE,
+            'creator_id' => self::$PLIN_REFEREE,
+        ];
+
+        $this->withAuthReferee();
+        $actual = $this->assertPut('/powers', $input, 201);
+
+        foreach ($expected as $key => $value) {
+            $this->assertArrayKeyValue($key, $value, $actual);
+        }
+        $this->assertDateTimeNow($actual['modified']);
+        $this->assertDateTimeNow($actual['created']);
+    }
+
+    public function testAddPowerComplete()
+    {
         $input = [
 # required fields:
             'name' => 'power name',
@@ -60,7 +102,7 @@ class PowersTest extends AuthIntegrationTestCase
 # optional fields:
             'referee_notes' => 'hidden referee details',
             'notes' => 'infobalie notes',
-            'deprecated' => false,
+            'deprecated' => true,
 # ignored fields:
             'poin' => 66,
             'modifier_id' => 9,
@@ -81,6 +123,7 @@ class PowersTest extends AuthIntegrationTestCase
             'creator_id' => self::$PLIN_REFEREE,
         ];
 
+        $this->withAuthReferee();
         $actual = $this->assertPut('/powers', $input, 201);
 
         foreach ($expected as $key => $value) {
@@ -95,8 +138,8 @@ class PowersTest extends AuthIntegrationTestCase
     public function testRequiredFieldsValidation()
     {
         $this->withAuthReferee();
-
         $response = $this->assertPut('/powers', [], 422);
+
         $errors = $this->assertErrorsResponse('/powers', $response);
 
         # expected fields with validation errors:

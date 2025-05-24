@@ -47,12 +47,54 @@ class ConditionsTest extends AuthIntegrationTestCase
         $this->assertPut('/conditions/1', [], 403);
         $this->assertPut('/conditions/2', [], 403);
         $this->assertPut('/conditions/99', [], 403);
+
+        $this->withAuthReferee();
+        $this->assertGet('/conditions');
+        $this->assertGet('/conditions/1');
+        $this->assertGet('/conditions/1/characters');
+        $this->assertGet('/conditions/2');
+        $this->assertGet('/conditions/2/characters');
+        $this->assertGet('/conditions/99', 404);
+        $this->assertGet('/conditions/99/characters', 404);
+        $this->assertPut('/conditions', [], 422);
+        $this->assertPut('/conditions/1', []);
+        $this->assertPut('/conditions/2', []);
+        $this->assertPut('/conditions/99', [], 404);
     }
 
-    public function testAddCondition()
+    public function testAddConditionMinimal()
     {
-        $this->withAuthReferee();
+        $input = [
+# required fields:
+            'name' => 'condition name',
+            'player_text' => 'player explenation',
+        ];
 
+        $expected = [
+            'class' => 'Condition',
+            'url' => '/conditions/3',
+            'coin' => 3,
+            'name' => $input['name'],
+            'player_text' => $input['player_text'],
+            'referee_notes' => null,
+            'notes' => null,
+            'deprecated' => false,
+            'modifier_id' => self::$PLIN_REFEREE,
+            'creator_id' => self::$PLIN_REFEREE,
+        ];
+
+        $this->withAuthReferee();
+        $actual = $this->assertPut('/conditions', $input, 201);
+
+        foreach ($expected as $key => $value) {
+            $this->assertArrayKeyValue($key, $value, $actual);
+        }
+        $this->assertDateTimeNow($actual['modified']);
+        $this->assertDateTimeNow($actual['created']);
+    }
+
+    public function testAddConditionComplete()
+    {
         $input = [
 # required fields:
             'name' => 'condition name',
@@ -60,7 +102,7 @@ class ConditionsTest extends AuthIntegrationTestCase
 # optional fields:
             'referee_notes' => 'hidden referee details',
             'notes' => 'infobalie notes',
-            'deprecated' => false,
+            'deprecated' => true,
 # ignored fields:
             'coin' => 66,
             'modifier_id' => 9,
@@ -81,6 +123,7 @@ class ConditionsTest extends AuthIntegrationTestCase
             'creator_id' => self::$PLIN_REFEREE,
         ];
 
+        $this->withAuthReferee();
         $actual = $this->assertPut('/conditions', $input, 201);
 
         foreach ($expected as $key => $value) {
@@ -95,8 +138,8 @@ class ConditionsTest extends AuthIntegrationTestCase
     public function testRequiredFieldsValidation()
     {
         $this->withAuthReferee();
-
         $response = $this->assertPut('/conditions', [], 422);
+
         $errors = $this->assertErrorsResponse('/conditions', $response);
 
         # expected fields with validation errors:

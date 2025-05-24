@@ -54,28 +54,80 @@ class ItemsTest extends AuthIntegrationTestCase
         $this->assertPut('/items', [], 403);
         $this->assertPut('/items/1', [], 403);
         $this->assertPut('/items/99', [], 403);
+
+        $this->withAuthReferee();
+        $this->assertGet('/items');
+        $this->assertGet('/items/1');
+        $this->assertGet('/items/1/attributes');
+        $this->assertGet('/items/1/attributes/1');
+        $this->assertGet('/items/1/attributes/2', 404);
+        $this->assertGet('/items/2');
+        $this->assertGet('/items/2/attributes');
+        $this->assertGet('/items/2/attributes/1', 404);
+        $this->assertGet('/items/2/attributes/2');
+        $this->assertGet('/items/99', 404);
+        $this->assertGet('/items/99/attributes', 404);
+        $this->assertGet('/items/99/attributes/1', 404);
+        $this->assertGet('/items/99/attributes/2', 404);
+        $this->assertPut('/items', [], 422);
+        $this->assertPut('/items/1', []);
+        $this->assertPut('/items/99', [], 404);
     }
 
-    public function testAddItem()
+    public function testAddItemMinimal()
     {
-        $this->withAuthReferee();
+        $input = [
+# only required fields:
+            'name' => 'item name',
+            'description' => 'item description',
+            'player_text' => 'player explanation',
+        ];
 
+        $expected = [
+            'class' => 'Item',
+            'url' => '/items/3',
+            'itin' => 3,
+            'name' => $input['name'],
+            'description' => $input['description'],
+            'player_text' => $input['player_text'],
+            'referee_notes' => null,
+            'notes' => null,
+            'expiry' => null,
+            'deprecated' => false,
+            'plin' => null,
+            'chin' => null,
+            'modifier_id' => self::$PLIN_REFEREE,
+            'creator_id' => self::$PLIN_REFEREE,
+        ];
+
+        $this->withAuthReferee();
+        $actual = $this->assertPut('/items', $input, 201);
+
+        foreach ($expected as $key => $value) {
+            $this->assertArrayKeyValue($key, $value, $actual);
+        }
+        $this->assertDateTimeNow($actual['modified']);
+        $this->assertDateTimeNow($actual['created']);
+    }
+
+    public function testAddItemComplete()
+    {
         $input = [
 # required fields:
             'name' => 'item name',
             'description' => 'item description',
-            'player_text' => 'player explenation',
+            'player_text' => 'player explanation',
 # optional fields:
             'referee_notes' => 'hidden referee details',
             'notes' => 'infobalie notes',
             'expiry' => '2026-06-01',
-            'deprecated' => false,
-            'plin' => 1,
-            'chin' => 1,
+            'deprecated' => true,
+            'plin' => '1',
+            'chin' => '1',
 # ignored fields:
-            'itin' => 66,
-            'modifier_id' => 9,
-            'creator_id' => 9,
+            'itin' => '66',
+            'modifier_id' => '9',
+            'creator_id' => '9',
             'ignored' => 'ignored',
         ];
 
@@ -96,6 +148,7 @@ class ItemsTest extends AuthIntegrationTestCase
             'creator_id' => self::$PLIN_REFEREE,
         ];
 
+        $this->withAuthReferee();
         $actual = $this->assertPut('/items', $input, 201);
 
         foreach ($expected as $key => $value) {
@@ -110,8 +163,8 @@ class ItemsTest extends AuthIntegrationTestCase
     public function testRequiredFieldsValidation()
     {
         $this->withAuthReferee();
-
         $response = $this->assertPut('/items', [], 422);
+
         $errors = $this->assertErrorsResponse('/items', $response);
 
         # expected fields with validation errors:
