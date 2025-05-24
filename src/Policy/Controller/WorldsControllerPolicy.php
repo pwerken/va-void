@@ -5,7 +5,9 @@ namespace App\Policy\Controller;
 
 class WorldsControllerPolicy extends ControllerPolicy
 {
-    // GET /worlds
+    /**
+     * GET /worlds
+     */
     public function index(): bool
     {
         return $this->hasAuth('player');

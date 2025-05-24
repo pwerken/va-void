@@ -5,7 +5,9 @@ namespace App\Policy\Controller;
 
 class BelievesControllerPolicy extends ControllerPolicy
 {
-    // GET /believes
+    /**
+     * GET /believes
+     */
     public function index(): bool
     {
         return $this->hasAuth('player');

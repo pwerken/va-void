@@ -5,42 +5,49 @@ namespace App\Policy\Controller;
 
 class ConditionsControllerPolicy extends ControllerPolicy
 {
-    // GET /conditions
-
+    /**
+     * GET /conditions
+     */
     public function index(): bool
     {
         return $this->hasAuth('player');
     }
 
-    // PUT /conditions
-
+    /**
+     * PUT /conditions
+     */
     public function add(): bool
     {
         return $this->hasAuth('referee');
     }
 
-    // GET /conditions/:coin
-
+    /**
+     * GET /conditions/{coin}
+     */
     public function view(): bool
     {
         return $this->index();
     }
 
-    // PUT /conditions/:coin
-
+    /**
+     * PUT /conditions/{coin}
+     */
     public function edit(): bool
     {
         return $this->add();
     }
 
-    // DELETE /conditions/:coin
-
+    /**
+     * DELETE /conditions/{coin}
+     */
     public function delete(): bool
     {
         return $this->hasAuth('super');
     }
 
-    // POST /conditions/:coin/print
+    /**
+     * POST /conditions/{coin}/print
+     */
     public function queue(): bool
     {
         return $this->hasAuth('referee');

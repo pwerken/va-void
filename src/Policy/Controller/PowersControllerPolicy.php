@@ -5,42 +5,49 @@ namespace App\Policy\Controller;
 
 class PowersControllerPolicy extends ControllerPolicy
 {
-    // GET /powers
-
+    /**
+     * GET /powers
+     */
     public function index(): bool
     {
         return $this->hasAuth('player');
     }
 
-    // PUT /powers
-
+    /**
+     * PUT /powers
+     */
     public function add(): bool
     {
         return $this->hasAuth('referee');
     }
 
-    // GET /powers/:poin
-
+    /**
+     * GET /powers/{poin}
+     */
     public function view(): bool
     {
         return $this->index();
     }
 
-    // PUT /powers/:poin
-
+    /**
+     * PUT /powers/{poin}
+     */
     public function edit(): bool
     {
         return $this->add();
     }
 
-    // DELETE /powers/:poin
-
+    /**
+     * DELETE /powers/{poin}
+     */
     public function delete(): bool
     {
         return $this->hasAuth('super');
     }
 
-    // POST /powers/:poin/print
+    /**
+     * POST /powers/{poin}/print
+     */
     public function queue(): bool
     {
         return $this->hasAuth('referee');

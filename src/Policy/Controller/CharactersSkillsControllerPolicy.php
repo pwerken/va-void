@@ -5,42 +5,49 @@ namespace App\Policy\Controller;
 
 class CharactersSkillsControllerPolicy extends ControllerPolicy
 {
-    // GET /characters/:plin/:chin/skills
-
+    /**
+     * GET /characters/{plin}/{chin}/skills
+     */
     public function charactersIndex(): bool
     {
         return $this->hasAuth('player');
     }
 
-    // PUT /characters/:plin/:chin/skills
-
+    /**
+     * PUT /characters/{plin}/{chin}/skills
+     */
     public function charactersAdd(): bool
     {
         return $this->hasAuth('referee');
     }
 
-    // GET /characters/:plin/:chin/skills/:id
-
+    /**
+     * GET /characters/{plin}/{chin}/skills/{id}
+     */
     public function charactersView(): bool
     {
         return $this->charactersIndex();
     }
 
-    // PUT /characters/:plin/:chin/skills/:id
-
+    /**
+     * PUT /characters/{plin}/{chin}/skills/{id}
+     */
     public function charactersEdit(): bool
     {
         return $this->charactersAdd();
     }
 
-    // DELETE /characters/:plin/:chin/skills/:id
-
+    /**
+     * DELETE /characters/{plin}/{chin}/skills/{id}
+     */
     public function charactersDelete(): bool
     {
         return $this->charactersAdd();
     }
 
-    // GET /skills/:id/characters
+    /**
+     * GET /skills/{id}/characters
+     */
     public function skillsIndex(): bool
     {
         return $this->hasAuth('read-only');

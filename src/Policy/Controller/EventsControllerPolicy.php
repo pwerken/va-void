@@ -5,35 +5,41 @@ namespace App\Policy\Controller;
 
 class EventsControllerPolicy extends ControllerPolicy
 {
-    // GET /events
-
+    /**
+     * GET /events
+     */
     public function index(): bool
     {
         return $this->hasAuth('player');
     }
 
-    // PUT /events
-
+    /**
+     * PUT /events
+     */
     public function add(): bool
     {
         return $this->hasAuth('super');
     }
 
-    // GET /events/:id
-
+    /**
+     * GET /events/{id}
+     */
     public function view(): bool
     {
         return $this->index();
     }
 
-    // PUT /events/:id
-
+    /**
+     * PUT /events/{id}
+     */
     public function edit(): bool
     {
         return $this->add();
     }
 
-    // DELETE /events/:id
+    /**
+     * DELETE /events/{id}
+     */
     public function delete(): bool
     {
         return $this->add();

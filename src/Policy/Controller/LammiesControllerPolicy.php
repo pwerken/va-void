@@ -5,55 +5,73 @@ namespace App\Policy\Controller;
 
 class LammiesControllerPolicy extends ControllerPolicy
 {
-    // GET /lammies
+    /**
+     * GET /lammies
+     */
     public function index(): bool
     {
         return $this->hasAuth('read-only');
     }
 
-    // PUT /lammies
+    /**
+     * PUT /lammies
+     */
     public function add(): bool
     {
         return $this->hasAuth('super');
     }
 
-    // GET /lammies/:id
+    /**
+     * GET /lammies/{id}
+     */
     public function view(): bool
     {
         return $this->index();
     }
 
-    // PUT /lammies/:id
+    /**
+     * PUT /lammies/{id}
+     */
     public function edit(): bool
     {
         return $this->add();
     }
 
-    // DELETE /lammies/:id
+    /**
+     * DELETE /lammies/{id}
+     */
     public function delete(): bool
     {
         return $this->add();
     }
 
-    // GET /lammies/queue
+    /**
+     * GET /lammies/queue
+     */
     public function queue(): bool
     {
         return $this->hasAuth('infobalie');
     }
 
-    // POST /lammies/printed
+    /**
+     * POST /lammies/printed
+     */
     public function printed(): bool
     {
         return $this->queue();
     }
 
-    // POST /lammies/single
+    /**
+     * POST /lammies/single
+     */
     public function pdfSingle(): bool
     {
         return $this->queue();
     }
 
-    // POST /lammies/double
+    /**
+     * POST /lammies/double
+     */
     public function pdfDouble(): bool
     {
         return $this->queue();

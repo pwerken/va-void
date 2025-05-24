@@ -5,13 +5,17 @@ namespace App\Policy\Controller;
 
 class RootControllerPolicy extends ControllerPolicy
 {
-    // GET /
+    /**
+     * GET /
+     */
     public function index(): bool
     {
         return true;
     }
 
-    // OPTIONS /*
+    /**
+     * OPTIONS /*
+     */
     public function cors(): bool
     {
         return true;

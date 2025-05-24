@@ -5,7 +5,9 @@ namespace App\Policy\Controller;
 
 class GroupsControllerPolicy extends ControllerPolicy
 {
-    // GET /groups
+    /**
+     * GET /groups
+     */
     public function index(): bool
     {
         return $this->hasAuth('player');

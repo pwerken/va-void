@@ -5,35 +5,41 @@ namespace App\Policy\Controller;
 
 class AttributesControllerPolicy extends ControllerPolicy
 {
-    // GET /attributes
-
+    /**
+     * GET /attributes
+     */
     public function index(): bool
     {
         return $this->hasAuth('read-only');
     }
 
-    // PUT /attributes
-
+    /**
+     * PUT /attributes
+     */
     public function add(): bool
     {
         return false; //$this->hasAuth('super');
     }
 
-    // GET /attributes/:id
-
+    /**
+     * GET /attributes/:id
+     */
     public function view(): bool
     {
         return $this->index();
     }
 
-    // PUT /attributes/:id
-
+    /**
+     * PUT /attributes/:id
+     */
     public function edit(): bool
     {
         return $this->add();
     }
 
-    // DELETE /attributes/;id
+    /**
+     * DELETE /attributes/;id
+     */
     public function delete(): bool
     {
         return $this->add();

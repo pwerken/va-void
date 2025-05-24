@@ -5,35 +5,41 @@ namespace App\Policy\Controller;
 
 class SkillsControllerPolicy extends ControllerPolicy
 {
-    // GET /skills
-
+    /**
+     * GET /skills
+     */
     public function index(): bool
     {
         return $this->hasAuth('player');
     }
 
-    // PUT /skills
-
+    /**
+     * PUT /skills
+     */
     public function add(): bool
     {
         return false; //$this->hasAuth('super');
     }
 
-    // GET /skills/:id
-
+    /**
+     * GET /skills/{id}
+     */
     public function view(): bool
     {
         return $this->index();
     }
 
-    // PUT /skills/:id
-
+    /**
+     * PUT /skills/{id}
+     */
     public function edit(): bool
     {
         return $this->add();
     }
 
-    // DELETE /skills/:id
+    /**
+     * DELETE /skills/{id}
+     */
     public function delete(): bool
     {
         return $this->add();

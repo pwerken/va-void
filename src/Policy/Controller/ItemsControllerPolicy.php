@@ -5,49 +5,57 @@ namespace App\Policy\Controller;
 
 class ItemsControllerPolicy extends ControllerPolicy
 {
-    // GET /items
-
+    /**
+     * GET /items
+     */
     public function index(): bool
     {
         return $this->hasAuth('player');
     }
 
-    // PUT /items
-
+    /**
+     * PUT /items
+     */
     public function add(): bool
     {
         return $this->hasAuth('referee');
     }
 
-    // GET /items/:itin
-
+    /**
+     * GET /items/{itin}
+     */
     public function view(): bool
     {
         return $this->index();
     }
 
-    // PUT /items/:itin
-
+    /**
+     * PUT /items/{itin}
+     */
     public function edit(): bool
     {
         return $this->add();
     }
 
-    // DELETE /items/:itin
-
+    /**
+     * DELETE /items/{itin}
+     */
     public function delete(): bool
     {
         return $this->hasAuth('super');
     }
 
-    // POST /items/:itin/print
-
+    /**
+     * POST /items/{itin}/print
+     */
     public function queue(): bool
     {
         return $this->hasAuth('referee');
     }
 
-    // GET /character/:plin/:chin/items
+    /**
+     * GET /character/{plin}/{chin}/items
+     */
     public function charactersIndex(): bool
     {
         return $this->hasAuth('player');

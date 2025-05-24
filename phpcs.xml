@@ -2,7 +2,9 @@
 <ruleset name="App">
     <config name="installed_paths" value="../../cakephp/cakephp-codesniffer"/>
 
-    <rule ref="CakePHP"/>
+    <rule ref="CakePHP">
+		<exclude name="CakePHP.Commenting.FunctionComment.Missing"/>
+	</rule>
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint">
         <exclude-pattern>*/src/Controller/*</exclude-pattern>
     </rule>
