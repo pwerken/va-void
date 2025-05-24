@@ -58,7 +58,9 @@ class CharactersTable extends Table
             }
         }
 
-        $data['faction_id'] = $this->nameToId('Factions', @$data['faction']);
+        if (isset($data['faction'])) {
+            $data['faction_id'] = $this->nameToId('Factions', $data['faction']);
+        }
 
         parent::beforeMarshal($event, $data, $options);
     }
@@ -202,7 +204,7 @@ class CharactersTable extends Table
         return ['player_id' => 'ASC', 'chin' => 'DESC'];
     }
 
-    protected function nameToId(string $model, ?string $name): int
+    protected function nameToId(string $model, string $name): int
     {
         if (empty($name)) {
             $name = '-';

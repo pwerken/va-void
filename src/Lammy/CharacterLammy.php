@@ -61,6 +61,12 @@ class CharacterLammy extends LammyCard
         $data = [];
         $data['xp'] = 0;
         $data['mana'] = [];
+        $data['mana']['Elemental'] = 0;
+        $data['mana']['Elemental Ritual'] = 0;
+        $data['mana']['Spiritual'] = 0;
+        $data['mana']['Spiritual Ritual'] = 0;
+        $data['mana']['Inspiration'] = 0;
+        $data['mana']['Willpower'] = 0;
         $data['skills'] = [];
 
         foreach ($this->entity->skills as $relation) {
@@ -80,6 +86,7 @@ class CharacterLammy extends LammyCard
             }
             $data['mana'][$mana] += $times * $skill->mana_amount;
         }
+
         $data['skills'] = SkillNameGroup::group($data['skills']);
 
         $this->cardBack('Skills');
@@ -91,35 +98,31 @@ class CharacterLammy extends LammyCard
         $this->font(6);
         $this->pdf->SetTextColor(0);
 
-        // skills
         $this->textarea(8, 7, 64, 31, implode(', ', $data['skills']));
 
-        // xp
         $this->text(56, 37.7, 16, 'C', 'Experience');
         $this->text(56, 40.7, 16, 'C', $data['xp'] . ' / ' . $this->entity->xp);
 
         $g = 159;
-
-        // mana
-        $this->pdf->SetTextColor(@$data['mana']['Elemental'] ? 0 : $g);
+        $this->pdf->SetTextColor($data['mana']['Elemental'] > 0 ? 0 : $g);
         $this->text(8, 37.7, 13, 'R', 'Elemental:');
-        $this->text(20, 37.7, 5, 'C', @$data['mana']['Elemental'] ?: '0');
-        $this->pdf->SetTextColor(@$data['mana']['Elemental Ritual'] ? 0 : $g);
+        $this->text(20, 37.7, 5, 'C', $data['mana']['Elemental']);
+        $this->pdf->SetTextColor($data['mana']['Elemental Ritual'] > 0 ? 0 : $g);
         $this->text(8, 40.7, 13, 'R', 'Elem.Rit.:');
-        $this->text(20, 40.7, 5, 'C', @$data['mana']['Elemental Ritual'] ?: '0');
+        $this->text(20, 40.7, 5, 'C', $data['mana']['Elemental Ritual']);
 
-        $this->pdf->SetTextColor(@$data['mana']['Spiritual'] ? 0 : $g);
+        $this->pdf->SetTextColor($data['mana']['Spiritual'] > 0 ? 0 : $g);
         $this->text(24, 37.7, 13, 'R', 'Spiritual:');
-        $this->text(36, 37.7, 5, 'C', @$data['mana']['Spiritual'] ?: '0');
-        $this->pdf->SetTextColor(@$data['mana']['Spiritual Ritual'] ? 0 : $g);
+        $this->text(36, 37.7, 5, 'C', $data['mana']['Spiritual']);
+        $this->pdf->SetTextColor($data['mana']['Spiritual Ritual'] > 0 ? 0 : $g);
         $this->text(24, 40.7, 13, 'R', 'Spir.Rit.:');
-        $this->text(36, 40.7, 5, 'C', @$data['mana']['Spiritual Ritual'] ?: '0');
+        $this->text(36, 40.7, 5, 'C', $data['mana']['Spiritual Ritual']);
 
-        $this->pdf->SetTextColor(@$data['mana']['Inspiration'] ? 0 : $g);
+        $this->pdf->SetTextColor($data['mana']['Inspiration'] > 0 ? 0 : $g);
         $this->text(39, 37.7, 13, 'R', 'Inspiration:');
-        $this->text(51, 37.7, 5, 'C', @$data['mana']['Inspiration'] ?: '0');
-        $this->pdf->SetTextColor(@$data['mana']['Willpower'] ? 0 : $g);
+        $this->text(51, 37.7, 5, 'C', $data['mana']['Inspiration']);
+        $this->pdf->SetTextColor($data['mana']['Willpower'] > 0 ? 0 : $g);
         $this->text(39, 40.7, 13, 'R', 'Willpower:');
-        $this->text(51, 40.7, 5, 'C', @$data['mana']['Willpower'] ?: '0');
+        $this->text(51, 40.7, 5, 'C', $data['mana']['Willpower']);
     }
 }

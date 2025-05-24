@@ -31,9 +31,12 @@ class History extends CakeEntity
             unset($data[$field]);
         }
         $history->set('modified', $data['modified']);
-        $history->set('modifier_id', @$data['modifier_id']);
         unset($data['modified']);
-        unset($data['modifier_id']);
+
+        if (isset($data['modifier_id'])) {
+            $history->set('modifier_id', $data['modifier_id']);
+            unset($data['modifier_id']);
+        }
 
         if ($history->get('entity') == 'SocialProfile') {
             $history->set('key12', $data['user_id']);

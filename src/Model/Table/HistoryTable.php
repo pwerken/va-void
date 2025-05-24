@@ -206,11 +206,15 @@ class HistoryTable extends Table
                 $row['key2'] = $data['chin'];
             }
 
-            if (is_null(@$data['name']) && $obj->entity == 'Player') {
-                $name = [$data['first_name'], $data['insertion'], $data['last_name']];
-                $row['name'] = implode(' ', array_filter($name));
+            if (isset($data['name'])) {
+                if (is_null($data['name']) && $obj->entity == 'Player') {
+                    $name = [$data['first_name'], $data['insertion'], $data['last_name']];
+                    $row['name'] = implode(' ', array_filter($name));
+                } else {
+                    $row['name'] = $data['name'];
+                }
             } else {
-                $row['name'] = @$data['name'];
+                $row['name'] = null;
             }
             $list[] = $row;
         }
