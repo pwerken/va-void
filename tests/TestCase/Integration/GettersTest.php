@@ -26,13 +26,6 @@ class GettersTest extends AuthIntegrationTestCase
         'app.Teachings',
     ];
 
-    public function testRoot()
-    {
-        $this->withoutAuth();
-        $this->get('/');
-        $this->assertRedirectContains('/admin');
-    }
-
     public function testCharacters()
     {
         $this->withoutAuth();

@@ -46,6 +46,7 @@ use Cake\Routing\RouteBuilder;
 return function (RouteBuilder $routes): void {
 
     $defaults = [];
+    $defaults['_method'] = 'GET';
     $defaults['controller'] = 'Root';
     $defaults['action'] = 'index';
     $routes->connect('/', $defaults);
