@@ -52,21 +52,11 @@ class WhoWhenBehavior extends Behavior
 
     protected function when(): DateTime
     {
-        static $when = null;
-        if (is_null($when)) {
-            $when = new DateTime();
-        }
-
-        return $when;
+        return new DateTime();
     }
 
     protected function who(): int
     {
-        static $who = null;
-        if (is_null($who)) {
-            $who = Router::getRequest()->getAttribute('identity')->id;
-        }
-
-        return $who;
+        return Router::getRequest()->getAttribute('identity')->id;
     }
 }

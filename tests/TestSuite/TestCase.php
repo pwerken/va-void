@@ -11,6 +11,8 @@ use Throwable;
 
 class TestCase extends CakeTestCase
 {
+    protected ?DateTime $now = null;
+
     public function catchException(Closure $func, ?array $args = [], ?string $message = null): Throwable
     {
         try {
@@ -60,10 +62,7 @@ class TestCase extends CakeTestCase
 
     public function assertDateTimeNow(string $actual): void
     {
-        static $now = null;
-        if (is_null($now)) {
-            $now = DateTime::now('UTC');
-        }
-        $this->assertDateTime($now, $actual);
+        $this->assertNotNull($this->now);
+        $this->assertDateTime($this->now, $actual);
     }
 }

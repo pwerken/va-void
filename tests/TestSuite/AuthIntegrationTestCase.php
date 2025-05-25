@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestSuite;
 
+use Cake\I18n\DateTime;
 use Cake\TestSuite\IntegrationTestTrait;
 
 class AuthIntegrationTestCase extends TestCase
@@ -39,6 +40,7 @@ class AuthIntegrationTestCase extends TestCase
     public function assertGet(string $url, int $code = 200, string $message = '')
     {
         $this->setConfigRequest();
+        $this->now = null;
         $this->get($url);
         $this->assertResponseCode($code, $message);
 
@@ -48,6 +50,7 @@ class AuthIntegrationTestCase extends TestCase
     public function assertPost(string $url, array|string $data = '', int $code = 200, string $message = '')
     {
         $this->setConfigRequest('application/x-www-form-urlencoded');
+        $this->now = new DateTime('UTC');
         $this->post($url, $data);
         $this->assertResponseCode($code, $message);
 
@@ -57,6 +60,7 @@ class AuthIntegrationTestCase extends TestCase
     public function assertPatch(string $url, array $data = [], int $code = 200, string $message = '')
     {
         $this->setConfigRequest();
+        $this->now = new DateTime('UTC');
         $this->patch($url, json_encode($data));
         $this->assertResponseCode($code, $message);
     }
@@ -64,6 +68,7 @@ class AuthIntegrationTestCase extends TestCase
     public function assertPut(string $url, array $data = [], int $code = 200, string $message = '')
     {
         $this->setConfigRequest();
+        $this->now = new DateTime('UTC');
         $this->put($url, json_encode($data));
         $this->assertResponseCode($code, $message);
 
@@ -73,6 +78,7 @@ class AuthIntegrationTestCase extends TestCase
     public function assertDelete(string $url, int $code = 200, string $message = '')
     {
         $this->setConfigRequest();
+        $this->now = new DateTime('UTC');
         $this->delete($url);
         $this->assertResponseCode($code, $message);
     }
@@ -80,6 +86,7 @@ class AuthIntegrationTestCase extends TestCase
     public function assertHead(string $url, int $code = 200, string $message = '')
     {
         $this->setConfigRequest();
+        $this->now = null;
         $this->head($url);
         $this->assertResponseCode($code, $message);
     }
@@ -87,6 +94,7 @@ class AuthIntegrationTestCase extends TestCase
     public function assertOptions(string $url, int $code = 200, string $message = '')
     {
         $this->setConfigRequest();
+        $this->now = null;
         $this->options($url);
         $this->assertResponseCode($code, $message);
     }
