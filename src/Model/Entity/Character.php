@@ -75,6 +75,6 @@ class Character extends Entity
 
     protected function _setXp(mixed $xp): mixed
     {
-        return str_replace(',', '.', $xp);
+        return str_replace(',', '.', (string)$xp);
     }
 }
