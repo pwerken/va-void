@@ -12,9 +12,8 @@ class Character extends Entity
         'group' => '-',
         'faction_id' => 1,
         'world' => '-',
+        'soulpath' => '',
     ];
-
-    protected ?Faction $faction_object = null;
 
     public function __construct(array $properties = [], array $options = [])
     {
@@ -55,7 +54,7 @@ class Character extends Entity
 
     protected function _getFaction(): ?string
     {
-        return $this->faction_object?->name;
+        return $this->get('faction_object')?->name;
     }
 
     protected function _setBelief(mixed $belief): mixed
