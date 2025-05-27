@@ -19,6 +19,13 @@ class CharactersConditionsFixture extends TestFixture
             ],
             [
                 'character_id' => 2,
+                'condition_id' => 1,
+                'expiry' => null,
+                'modified' => null,
+                'modifier_id' => null,
+            ],
+            [
+                'character_id' => 2,
                 'condition_id' => 2,
                 'expiry' => null,
                 'modified' => null,

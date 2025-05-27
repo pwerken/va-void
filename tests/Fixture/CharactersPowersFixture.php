@@ -19,6 +19,13 @@ class CharactersPowersFixture extends TestFixture
             ],
             [
                 'character_id' => 2,
+                'power_id' => 1,
+                'expiry' => null,
+                'modified' => null,
+                'modifier_id' => null,
+            ],
+            [
+                'character_id' => 2,
                 'power_id' => 2,
                 'expiry' => null,
                 'modified' => null,

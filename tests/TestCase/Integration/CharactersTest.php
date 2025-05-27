@@ -163,10 +163,10 @@ class CharactersTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/2/1');
         $this->assertGet('/characters/2/1/items');
         $this->assertGet('/characters/2/1/conditions');
-        $this->assertGet('/characters/2/1/conditions/1', 404);
+        $this->assertGet('/characters/2/1/conditions/1');
         $this->assertGet('/characters/2/1/conditions/2');
         $this->assertGet('/characters/2/1/powers');
-        $this->assertGet('/characters/2/1/powers/1', 404);
+        $this->assertGet('/characters/2/1/powers/1');
         $this->assertGet('/characters/2/1/powers/2');
         $this->assertGet('/characters/2/1/skills');
         $this->assertGet('/characters/2/1/skills/1', 404);
