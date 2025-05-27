@@ -28,7 +28,7 @@ $format_v = function ($k, $v) {
     }
 
     if ($k !== 'character_id') {
-        return $v;
+        return nl2br($v);
     }
 
     $char = TableRegistry::getTableLocator()->get('Characters')->get($v);
