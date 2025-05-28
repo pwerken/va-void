@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
-class PlinChinMiddleware implements MiddlewareInterface
+class CharacterIdNotNullMiddleware implements MiddlewareInterface
 {
     public function process(Request $request, RequestHandler $handler): Response
     {
@@ -20,21 +21,9 @@ class PlinChinMiddleware implements MiddlewareInterface
         $hasPlinChin |= strcmp(substr($action, 0, 10), 'characters') == 0;
 
         $pass = $request->getParam('pass');
-        if ($hasPlinChin && count($pass) >= 2) {
-            $table = TableRegistry::getTableLocator()->get('Characters');
-            $char = $table->findByPlayerIdAndChin($pass[0], $pass[1])->first()?->id;
-            $request = $request->withParam('character_id', $char);
-
-            array_shift($pass);
-            $pass[0] = $char;
+        if ($hasPlinChin && count($pass) > 0 && is_null($pass[0])) {
+            throw new NotFoundException();
         }
-        foreach ($pass as $key => $value) {
-            if (is_numeric($value)) {
-                $pass[$key] = (int)$value;
-            }
-        }
-
-        $request = $request->withParam('pass', $pass);
 
         return $handler->handle($request);
     }

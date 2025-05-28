@@ -19,6 +19,7 @@ namespace App;
 use App\Authentication\AuthenticationService;
 use App\Authorization\AuthorizationService;
 use App\Middleware\BodyParserMiddleware;
+use App\Middleware\CharacterIdNotNullMiddleware;
 use App\Middleware\CorsMiddleware;
 use App\Middleware\JsonInputMiddleware;
 use App\Middleware\LoginWithPlinMiddleware;
@@ -32,6 +33,7 @@ use Cake\Core\ContainerInterface;
 use Cake\Datasource\FactoryLocator;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
+use Cake\Http\Exception\NotFoundException;
 use Cake\Http\MiddlewareQueue;
 use Cake\ORM\Locator\TableLocator;
 use Cake\Routing\Middleware\AssetMiddleware;
@@ -92,7 +94,7 @@ class Application extends BaseApplication
             // See https://github.com/CakeDC/cakephp-cached-routing
             ->add(new RoutingMiddleware($this))
 
-            // Convert url's :plin/:chin to :character_id
+            // Try to convert url's {plin}/{chin} to {character_id}
             ->add(new PlinChinMiddleware())
 
             // Force PUT/POST to 'Content-Type: application/json'
@@ -125,7 +127,10 @@ class Application extends BaseApplication
             ->add(new AuthorizationMiddleware(new AuthorizationService()))
 
             // Perform ControllerPolicy canAccess authorization check.
-            ->add(new RequestAuthorizationMiddleware());
+            ->add(new RequestAuthorizationMiddleware())
+
+            // Throw 404 if the ealier converted {plin}/{chin} returned null.
+            ->add(new CharacterIdNotNullMiddleware());
 
         return $middlewareQueue;
     }

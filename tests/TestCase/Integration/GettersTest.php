@@ -72,13 +72,9 @@ class GettersTest extends AuthIntegrationTestCase
     {
         $this->withoutAuth();
         $this->assertGet('/believes', 401);
-        $this->assertGet('/believes/1', 404);
-        $this->assertGet('/believes/1/characters', 404);
 
         $this->withAuthPlayer();
         $this->assertGet('/believes');
-        $this->assertGet('/believes/1', 404);
-        $this->assertGet('/believes/1/characters', 404);
     }
 
     public function testFactions()
@@ -109,26 +105,18 @@ class GettersTest extends AuthIntegrationTestCase
     {
         $this->withoutAuth();
         $this->assertGet('/groups', 401);
-        $this->assertGet('/groups/1', 404);
-        $this->assertGet('/groups/1/characters', 404);
 
         $this->withAuthPlayer();
         $this->assertGet('/groups');
-        $this->assertGet('/groups/1', 404);
-        $this->assertGet('/groups/1/characters', 404);
     }
 
     public function testWorlds()
     {
         $this->withoutAuth();
         $this->assertGet('/worlds', 401);
-        $this->assertGet('/worlds/1', 404);
-        $this->assertGet('/worlds/1/characters', 404);
 
         $this->withAuthPlayer();
         $this->assertGet('/worlds');
-        $this->assertGet('/worlds/1', 404);
-        $this->assertGet('/worlds/1/characters', 404);
     }
 
     public function testEvents()

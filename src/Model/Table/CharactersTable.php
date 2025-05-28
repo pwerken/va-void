@@ -36,11 +36,6 @@ class CharactersTable extends Table
                 ->setForeignKey('student_id')->setProperty('teacher');
     }
 
-    public function plinChin(int|string $plin, int|string $chin): Character
-    {
-        return $this->findByPlayerIdAndChin($plin, $chin)->firstOrFail();
-    }
-
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
         if (isset($data['plin'])) {
