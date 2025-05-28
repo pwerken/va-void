@@ -41,9 +41,9 @@ class ItemPolicy extends EntityPolicy
         return $this->canAdd($identity, $obj);
     }
 
-    protected function hasRoleUser(int $plin, Entity $obj): bool
+    protected function hasRoleUser(int $plin, ?Entity $obj): bool
     {
-        $char_id = $obj->get('character_id');
+        $char_id = $obj?->get('character_id');
         if ($char_id === null) {
             return false;
         }

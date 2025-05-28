@@ -10,7 +10,7 @@ class PlayersSocialsControllerPolicy extends ControllerPolicy
      */
     public function playersIndex(): bool
     {
-        return $this->hasAuth('player');
+        return $this->hasAuth(['user', 'infobalie']);
     }
 
     /**
@@ -26,7 +26,7 @@ class PlayersSocialsControllerPolicy extends ControllerPolicy
      */
     public function playersView(): bool
     {
-        return $this->hasAuth('player');
+        return $this->playersIndex();
     }
 
     /**
@@ -42,6 +42,6 @@ class PlayersSocialsControllerPolicy extends ControllerPolicy
      */
     public function playersDelete(): bool
     {
-        return $this->hasAuth('player');
+        return $this->playersIndex();
     }
 }

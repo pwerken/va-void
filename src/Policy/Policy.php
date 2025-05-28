@@ -27,9 +27,6 @@ abstract class Policy
 
         foreach ($roles as $role) {
             if (strcasecmp($role, 'user') == 0) {
-                if (is_null($obj)) {
-                    continue;
-                }
                 $plin = (int)$this->identity->getIdentifier();
                 if ($this->hasRoleUser($plin, $obj)) {
                     return true;
@@ -42,7 +39,7 @@ abstract class Policy
         return false;
     }
 
-    protected function hasRoleUser(int $plin, Entity $obj): bool
+    protected function hasRoleUser(int $plin, ?Entity $obj): bool
     {
         return false;
     }

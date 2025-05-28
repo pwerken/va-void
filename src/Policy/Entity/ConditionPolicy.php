@@ -42,8 +42,12 @@ class ConditionPolicy extends EntityPolicy
         return $this->canAdd($identity, $obj);
     }
 
-    protected function hasRoleUser(int $plin, Entity $obj): bool
+    protected function hasRoleUser(int $plin, ?Entity $obj): bool
     {
+        if ($obj === null) {
+            return false;
+        }
+
         $coin = $obj->id;
 
         $query = $this->getTableLocator()->get('Characters')->find();

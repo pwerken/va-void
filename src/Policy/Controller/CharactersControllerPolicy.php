@@ -26,7 +26,7 @@ class CharactersControllerPolicy extends ControllerPolicy
      */
     public function view(): bool
     {
-        return $this->index();
+        return $this->hasAuth(['user', 'read-only']);
     }
 
     /**
@@ -58,7 +58,7 @@ class CharactersControllerPolicy extends ControllerPolicy
      */
     public function playersIndex(): bool
     {
-        return $this->hasAuth('player');
+        return $this->view();
     }
 
     /**

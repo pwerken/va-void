@@ -81,8 +81,8 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertGet('/players/2/characters', 403);
         $this->assertGet('/players/2/socials', 403);
         $this->assertGet('/players/99', 404);
-        $this->assertGet('/players/99/characters', 404);
-        $this->assertGet('/players/99/socials', 404);
+        $this->assertGet('/players/99/characters', 403);
+        $this->assertGet('/players/99/socials', 403);
         $this->assertPut('/players', [], 403);
         $this->assertPut('/players/1', []);
         $this->assertPut('/players/1/characters', [], 403);

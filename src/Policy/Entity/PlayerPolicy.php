@@ -45,8 +45,8 @@ class PlayerPolicy extends EntityPolicy
         return $this->hasAuth(['read-only', 'user'], $obj);
     }
 
-    protected function hasRoleUser(int $plin, Entity $obj): bool
+    protected function hasRoleUser(int $plin, ?Entity $obj): bool
     {
-        return $obj->get('id') == $plin;
+        return $obj?->get('id') == $plin;
     }
 }

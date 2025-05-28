@@ -58,6 +58,6 @@ class ItemsControllerPolicy extends ControllerPolicy
      */
     public function charactersIndex(): bool
     {
-        return $this->hasAuth('player');
+        return $this->hasAuth(['user', 'read-only']);
     }
 }

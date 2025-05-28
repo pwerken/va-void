@@ -36,8 +36,8 @@ class SocialProfilePolicy extends EntityPolicy
         return $this->hasAuth(['infobalie', 'user'], $obj);
     }
 
-    protected function hasRoleUser(int $plin, Entity $obj): bool
+    protected function hasRoleUser(int $plin, ?Entity $obj): bool
     {
-        return $obj->get('user_id') == $plin;
+        return $obj?->get('user_id') == $plin;
     }
 }

@@ -118,17 +118,17 @@ class CharactersTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/2/1/skills/2', 403);
 #       $this->assertGet('/characters/2/1/students', 403);
 #       $this->assertGet('/characters/2/1/teacher', 403);
-        $this->assertGet('/characters/99', 404);
-        $this->assertGet('/characters/99/1', 404);
-        $this->assertGet('/characters/99/1/items', 404);
-        $this->assertGet('/characters/99/1/conditions', 404);
-        $this->assertGet('/characters/99/1/conditions/1', 404);
-        $this->assertGet('/characters/99/1/powers', 404);
-        $this->assertGet('/characters/99/1/powers/1', 404);
-        $this->assertGet('/characters/99/1/skills', 404);
-        $this->assertGet('/characters/99/1/skills/1', 404);
-#       $this->assertGet('/characters/99/1/students', 404);
-#       $this->assertGet('/characters/99/1/teacher', 404);
+        $this->assertGet('/characters/99', 403);
+        $this->assertGet('/characters/99/1', 403);
+        $this->assertGet('/characters/99/1/items', 403);
+        $this->assertGet('/characters/99/1/conditions', 403);
+        $this->assertGet('/characters/99/1/conditions/1', 403);
+        $this->assertGet('/characters/99/1/powers', 403);
+        $this->assertGet('/characters/99/1/powers/1', 403);
+        $this->assertGet('/characters/99/1/skills', 403);
+        $this->assertGet('/characters/99/1/skills/1', 403);
+#       $this->assertGet('/characters/99/1/students', 403);
+#       $this->assertGet('/characters/99/1/teacher', 403);
 
         $this->withAuthReadOnly();
         $this->assertGet('/characters');

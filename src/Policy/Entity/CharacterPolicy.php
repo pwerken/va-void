@@ -37,8 +37,8 @@ class CharacterPolicy extends EntityPolicy
         return $this->canAdd($identity, $obj);
     }
 
-    protected function hasRoleUser(int $plin, Entity $obj): bool
+    protected function hasRoleUser(int $plin, ?Entity $obj): bool
     {
-        return $obj->get('player_id') == $plin;
+        return $obj?->get('player_id') == $plin;
     }
 }
