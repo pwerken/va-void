@@ -23,7 +23,7 @@ class EntityPolicyResolver implements ResolverInterface
         $name = substr($name, strrpos($name, '\\') + 1);
 
         $policyClass = App::className($name, 'Policy/Entity', 'Policy');
-        if ($policyClass === null) {
+        if (is_null($policyClass)) {
             throw new MissingPolicyException($name);
         }
 

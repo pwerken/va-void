@@ -44,7 +44,7 @@ class PowerPolicy extends EntityPolicy
 
     protected function hasRoleUser(int $plin, ?Entity $obj): bool
     {
-        if ($obj === null) {
+        if (is_null($obj)) {
             return false;
         }
 

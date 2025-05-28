@@ -29,7 +29,7 @@ class ControllerPolicyResolver implements ResolverInterface
         }
 
         $policyClass = App::className($name, $type, 'Policy');
-        if ($policyClass === null) {
+        if (is_null($policyClass)) {
             throw new MissingPolicyException($name);
         }
 

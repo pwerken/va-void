@@ -18,11 +18,10 @@ class TablePolicyResolver implements ResolverInterface
     public function getPolicy(mixed $resource): mixed
     {
         if ($resource instanceof Query) {
-            $repo = $resource->getRepository();
-            if ($repo === null) {
+            $resource = $resource->getRepository();
+            if (is_null($resource)) {
                 throw new RuntimeException('No repository set for the query.');
             }
-            $resource = $repo;
         }
         if (!($resource instanceof Table)) {
             throw new MissingPolicyException($resource);
@@ -32,7 +31,7 @@ class TablePolicyResolver implements ResolverInterface
         $name = substr($name, strrpos($name, '\\') + 1);
 
         $policyClass = App::className($name, 'Policy/Table', 'Policy');
-        if ($policyClass === null) {
+        if (is_null($policyClass)) {
             throw new MissingPolicyException($name);
         }
 

@@ -8,13 +8,10 @@ use Migrations\AbstractMigration;
 
 class Migration extends AbstractMigration
 {
-    protected string $now;
+    protected ?string $now = null;
 
     public function table(string $tableName, array $options = []): Table
     {
-        if ($this->autoId === false) {
-            $options['id'] = false;
-        }
         $table = new Table($tableName, $options, $this->getAdapter());
         $this->tables[] = $table;
 
@@ -34,7 +31,7 @@ class Migration extends AbstractMigration
 
     protected function now(): string
     {
-        if ($this->now === null) {
+        if (is_null($this->now)) {
             $now = new DateTime();
             $this->now = $now->toDateTimeString();
         }

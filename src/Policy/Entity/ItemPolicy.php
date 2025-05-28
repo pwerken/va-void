@@ -44,7 +44,7 @@ class ItemPolicy extends EntityPolicy
     protected function hasRoleUser(int $plin, ?Entity $obj): bool
     {
         $char_id = $obj?->get('character_id');
-        if ($char_id === null) {
+        if (is_null($char_id)) {
             return false;
         }
 
