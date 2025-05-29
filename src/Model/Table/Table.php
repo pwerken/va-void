@@ -5,6 +5,7 @@ namespace App\Model\Table;
 
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\EventInterface;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table as CakeTable;
@@ -130,6 +131,15 @@ abstract class Table extends CakeTable
     public function beforeDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
         TableRegistry::getTableLocator()->get('History')->logDeletion($entity);
+    }
+
+    public function getMaybe(int|array $id): ?EntityInterface
+    {
+        try {
+            return $this->get($id);
+        } catch (RecordNotFoundException $e) {
+            return null;
+        }
     }
 
     public function getWithContain(int|array $id): EntityInterface

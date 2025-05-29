@@ -78,7 +78,7 @@ class AdminAuthCommand extends Command
     protected function authPlayer(ConsoleIo $io, ?string $plin, ?string $role): int
     {
         $table = $this->fetchTable();
-        $player = $table->findById($plin)->first();
+        $player = $table->getMaybe($plin);
         if (is_null($player) || strcmp((string)$player->id, $plin)) {
             $this->abort(sprintf('No player found with plin `%s`.', $plin));
         }

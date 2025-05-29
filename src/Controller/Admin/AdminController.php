@@ -152,7 +152,7 @@ class AdminController extends CakeController
         }
 
         $profiles = $this->fetchTable('SocialProfiles');
-        $login = $profiles->findById($social)->first();
+        $login = $profiles->getMaybe($social);
         if (is_null($login)) {
             $this->Flash->error("SocialProfile#$social not found ?!");
 
@@ -172,7 +172,7 @@ class AdminController extends CakeController
 
         // link $plin to $social profile
         $players = $this->fetchTable('Players');
-        $player = $players->findById($plin)->first();
+        $player = $players->getMaybe($plin);
         if (is_null($player)) {
             $this->Flash->error("Player#$plin not found");
 
@@ -200,7 +200,7 @@ class AdminController extends CakeController
         $pass = $this->request->getData('password');
 
         $players = $this->fetchTable('Players');
-        $player = $players->findById($plin)->first();
+        $player = $players->getMaybe($plin);
         if (is_null($player)) {
             $this->Flash->error("Player#$plin not found");
 
@@ -247,7 +247,7 @@ class AdminController extends CakeController
         $role = $this->request->getData('role');
 
         $players = $this->fetchTable('Players');
-        $player = $players->findById($plin)->first();
+        $player = $players->getMaybe($plin);
         if (is_null($player)) {
             $this->Flash->error("Player#$plin not found");
 

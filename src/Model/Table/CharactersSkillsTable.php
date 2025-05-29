@@ -49,8 +49,8 @@ class CharactersSkillsTable extends Table
 
     public function disallowDeprecated(EntityInterface $entity, array $options): bool
     {
-        $skill = $this->Skills->get($entity->skill_id);
-        if ($skill->deprecated) {
+        $skill = $this->Skills->getMaybe($entity->skill_id);
+        if ($skill && $skill->deprecated) {
             $entity->setError('skill_id', ['deprecated' => 'Skill is deprecated']);
 
             return false;
@@ -61,8 +61,8 @@ class CharactersSkillsTable extends Table
 
     public function limitTimesToMax(EntityInterface $entity, array $options): bool
     {
-        $skill = $this->Skills->get($entity->skill_id);
-        if ($entity->times > $skill->times_max) {
+        $skill = $this->Skills->getMaybe($entity->skill_id);
+        if ($skill && $entity->times > $skill->times_max) {
             $entity->setError('times', ['limit' => 'Value exceeds skills times_max']);
 
             return false;
