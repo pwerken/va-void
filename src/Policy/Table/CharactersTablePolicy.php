@@ -18,27 +18,12 @@ class CharactersTablePolicy extends Policy
         }
     }
 
-    public function scopeBelievesIndex(User $identity, Query $query): void
-    {
-        $this->scopeIndex($identity, $query);
-    }
-
     public function scopeFactionsIndex(User $identity, Query $query): void
     {
         $this->scopeIndex($identity, $query);
     }
 
-    public function scopeGroupsIndex(User $identity, Query $query): void
-    {
-        $this->scopeIndex($identity, $query);
-    }
-
     public function scopePlayersIndex(User $identity, Query $query): void
-    {
-        $this->scopeIndex($identity, $query);
-    }
-
-    public function scopeWorldsIndex(User $identity, Query $query): void
     {
         $this->scopeIndex($identity, $query);
     }

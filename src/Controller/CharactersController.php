@@ -129,13 +129,4 @@ class CharactersController extends Controller
         $this->parent = $this->fetchTable('Players')->get($plin);
         $this->index();
     }
-
-    /**
-     * GET /skills/{id}/characters
-     */
-    public function skillsIndex(int $skill_id): void
-    {
-        $this->parent = $this->fetchTable('Skills')->get($skill_id);
-        $this->index();
-    }
 }
