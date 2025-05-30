@@ -4,13 +4,13 @@ use App\Authentication\UnauthenticatedException;
 use App\Error\ApiExceptionRenderer;
 use App\Error\ErrorLogger;
 use App\Error\Exception\LoginFailedException;
+use App\Error\FileLog;
 use Authorization\Exception\ForbiddenException;
 use Cake\Cache\Engine\FileEngine;
 use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Exception\NotFoundException;
-use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\MailTransport;
 use Cake\Routing\Exception\MissingRouteException;
 

@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use Cake\Log\Log;
 use Migrations\TestSuite\Migrator;
 
 /**
@@ -19,3 +20,7 @@ require dirname(__DIR__) . '/config/bootstrap.php';
 // from the migration history in files.
 $migrator = new Migrator();
 $migrator->run();
+
+// force log rotation
+Log::engine('debug')->logrotate();
+Log::engine('error')->logrotate();
