@@ -21,4 +21,13 @@ class RootTest extends AuthIntegrationTestCase
         $this->assertOptions('/doesnotexist');
         $this->assertOptions('/players');
     }
+
+    public function testDoesNotExist()
+    {
+        $this->withoutAuth();
+        $this->assertGet('/doesNotExist', 404);
+        $this->assertPut('/doesNotExist', [], 404);
+        $this->assertPost('/doesNotExist', [], 404);
+        $this->assertDelete('/doesNotExist', 404);
+    }
 }

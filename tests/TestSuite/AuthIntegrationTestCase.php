@@ -75,7 +75,7 @@ class AuthIntegrationTestCase extends TestCase
         return $this->jsonBody();
     }
 
-    public function assertDelete(string $url, int $code = 200, string $message = '')
+    public function assertDelete(string $url, int $code = 204, string $message = '')
     {
         $this->setConfigRequest();
         $this->now = new DateTime('UTC');

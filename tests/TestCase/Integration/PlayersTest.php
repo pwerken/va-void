@@ -124,6 +124,20 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertPut('/players/99/characters', [], 422); // FIXME -> 404
     }
 
+    public function testRequiredFieldsValidation()
+    {
+        $this->withAuthInfobalie();
+        $response = $this->assertPut('/players', [], 422);
+
+        $errors = $this->assertErrorsResponse('/players', $response);
+
+        # expected fields with validation errors:
+        $this->assertCount(3, $errors);
+        $this->assertArrayHasKey('id', $errors); // FIXME? -> plin
+        $this->assertArrayHasKey('first_name', $errors);
+        $this->assertArrayHasKey('last_name', $errors);
+    }
+
     public function testAddPlayerMinimal()
     {
         $input = [
@@ -164,6 +178,8 @@ class PlayersTest extends AuthIntegrationTestCase
 # optional fields:
             'insertion' => 'insertion',
             'email' => 'email@example.com',
+            'password' => 'secret',
+            'role' => 'Read-only',
 # ignored fields:
             'modifier_id' => '99',
             'ignored' => 'ignored',
@@ -173,6 +189,8 @@ class PlayersTest extends AuthIntegrationTestCase
             'class' => 'Player',
             'url' => '/players/10',
             'plin' => 10,
+            'role' => $input['role'],
+            'password' => (bool)$input['password'],
             'first_name' => $input['first_name'],
             'insertion' => $input['insertion'],
             'last_name' => $input['last_name'],
@@ -192,18 +210,104 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertArrayNotHasKey('ignored', $actual);
     }
 
-    public function testRequiredFieldsValidation()
+    public function testEditOwnPlayer()
     {
-        $this->withAuthInfobalie();
-        $response = $this->assertPut('/players', [], 422);
+        $input = [
+# disallowed fields:
+            'plin' => 50,
+# required fields:
+            'first_name' => 'first',
+            'last_name' => 'last',
+# optional fields:
+            'insertion' => 'insertion',
+            'email' => 'email@example.com',
+            'password' => 'secret',
+# ignored fields:
+            'role' => 'Read-only',
+            'modifier_id' => '99',
+            'ignored' => 'ignored',
+        ];
 
-        $errors = $this->assertErrorsResponse('/players', $response);
+        $this->withAuthPlayer();
+        $actual = $this->assertPut('/players/1', $input, 422);
 
+        $errors = $this->assertErrorsResponse('/players/1', $actual);
         # expected fields with validation errors:
-        $this->assertCount(3, $errors);
+        $this->assertCount(1, $errors);
         $this->assertArrayHasKey('id', $errors); // FIXME? -> plin
-        $this->assertArrayHasKey('first_name', $errors);
-        $this->assertArrayHasKey('last_name', $errors);
+
+        unset($input['plin']);
+        $expected = [
+            'class' => 'Player',
+            'url' => '/players/1',
+            'plin' => 1,
+            'role' => 'Player',
+            'password' => (bool)$input['password'],
+            'first_name' => $input['first_name'],
+            'insertion' => $input['insertion'],
+            'last_name' => $input['last_name'],
+            'full_name' => $input['first_name'] . ' ' . $input['insertion'] . ' ' . $input['last_name'],
+            'email' => $input['email'],
+        ];
+
+        $actual = $this->assertPut('/players/1', $input);
+
+        foreach ($expected as $key => $value) {
+            $this->assertArrayKeyValue($key, $value, $actual);
+        }
+        $this->assertDateTimeNow($actual['modified']);
+        $this->assertArrayNotHasKey('modifier_id', $actual);
+        $this->assertArrayNotHasKey('ignored', $actual);
+    }
+
+    public function testEditPlayer()
+    {
+        $input = [
+# disallowed fields:
+            'plin' => 50,
+# required fields:
+            'first_name' => 'first',
+            'last_name' => 'last',
+# optional fields:
+            'insertion' => 'insertion',
+            'email' => 'email@example.com',
+            'password' => 'secret',
+            'role' => 'Read-only',
+# ignored fields:
+            'modifier_id' => '99',
+            'ignored' => 'ignored',
+        ];
+
+        $this->withAuthInfobalie();
+        $actual = $this->assertPut('/players/1', $input, 422);
+
+        $errors = $this->assertErrorsResponse('/players/1', $actual);
+        # expected fields with validation errors:
+        $this->assertCount(1, $errors);
+        $this->assertArrayHasKey('id', $errors); // FIXME? -> plin
+
+        unset($input['plin']);
+        $expected = [
+            'class' => 'Player',
+            'url' => '/players/1',
+            'plin' => 1,
+            'role' => $input['role'],
+            'password' => (bool)$input['password'],
+            'first_name' => $input['first_name'],
+            'insertion' => $input['insertion'],
+            'last_name' => $input['last_name'],
+            'full_name' => $input['first_name'] . ' ' . $input['insertion'] . ' ' . $input['last_name'],
+            'email' => $input['email'],
+            'modifier_id' => self::$PLIN_INFOBALIE,
+        ];
+
+        $actual = $this->assertPut('/players/1', $input);
+
+        foreach ($expected as $key => $value) {
+            $this->assertArrayKeyValue($key, $value, $actual);
+        }
+        $this->assertDateTimeNow($actual['modified']);
+        $this->assertArrayNotHasKey('ignored', $actual);
     }
 
     public function testGetIndexAsPlayer()
