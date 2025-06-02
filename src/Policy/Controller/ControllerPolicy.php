@@ -10,7 +10,7 @@ use Authorization\IdentityInterface as User;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\ServerRequest;
 
-class ControllerPolicy extends Policy
+abstract class ControllerPolicy extends Policy
 {
     private ?ServerRequest $request;
 
