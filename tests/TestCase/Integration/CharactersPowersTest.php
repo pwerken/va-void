@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Integration;
 
+use App\Test\Fixture\TestAccount;
 use App\Test\TestSuite\AuthIntegrationTestCase;
 
 class CharactersPowersTest extends AuthIntegrationTestCase
@@ -158,7 +159,7 @@ class CharactersPowersTest extends AuthIntegrationTestCase
             'class' => 'CharactersPower',
             'url' => '/characters/1/1/powers/2',
             'expiry' => null,
-            'modifier_id' => self::$PLIN_REFEREE,
+            'modifier_id' => TestAccount::Referee->value,
         ];
 
         $this->withAuthReferee();
@@ -182,7 +183,7 @@ class CharactersPowersTest extends AuthIntegrationTestCase
             'class' => 'CharactersPower',
             'url' => '/characters/1/1/powers/2',
             'expiry' => $input['expiry'],
-            'modifier_id' => self::$PLIN_REFEREE,
+            'modifier_id' => TestAccount::Referee->value,
         ];
 
         $this->withAuthReferee();
@@ -205,7 +206,7 @@ class CharactersPowersTest extends AuthIntegrationTestCase
             'class' => 'CharactersPower',
             'url' => '/characters/1/1/powers/1',
             'expiry' => $input['expiry'],
-            'modifier_id' => self::$PLIN_REFEREE,
+            'modifier_id' => TestAccount::Referee->value,
         ];
 
         $this->withAuthReferee();

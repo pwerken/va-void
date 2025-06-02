@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Integration;
 
+use App\Test\Fixture\TestAccount;
 use App\Test\TestSuite\AuthIntegrationTestCase;
 
 class CharactersTest extends AuthIntegrationTestCase
@@ -115,7 +116,7 @@ class CharactersTest extends AuthIntegrationTestCase
             'status' => 'inactive',
             'referee_notes' => null,
             'notes' => null,
-            'modifier_id' => self::$PLIN_REFEREE,
+            'modifier_id' => TestAccount::Referee->value,
         ];
 
         $this->withAuthReferee();
@@ -164,7 +165,7 @@ class CharactersTest extends AuthIntegrationTestCase
             'status' => $input['status'],
             'referee_notes' => $input['referee_notes'],
             'notes' => $input['notes'],
-            'modifier_id' => self::$PLIN_REFEREE,
+            'modifier_id' => TestAccount::Referee->value,
         ];
 
         $this->withAuthReferee();
@@ -225,7 +226,7 @@ class CharactersTest extends AuthIntegrationTestCase
             'status' => $input['status'],
             'referee_notes' => $input['referee_notes'],
             'notes' => $input['notes'],
-            'modifier_id' => self::$PLIN_REFEREE,
+            'modifier_id' => TestAccount::Referee->value,
         ];
 
         $actual = $this->assertPut('/characters/1/1', $input);

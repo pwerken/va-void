@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Integration;
 
+use App\Test\Fixture\TestAccount;
 use App\Test\TestSuite\AuthIntegrationTestCase;
 
 class ConditionsTest extends AuthIntegrationTestCase
@@ -79,8 +80,8 @@ class ConditionsTest extends AuthIntegrationTestCase
             'referee_notes' => null,
             'notes' => null,
             'deprecated' => false,
-            'modifier_id' => self::$PLIN_REFEREE,
-            'creator_id' => self::$PLIN_REFEREE,
+            'modifier_id' => TestAccount::Referee->value,
+            'creator_id' => TestAccount::Referee->value,
         ];
 
         $this->withAuthReferee();
@@ -119,8 +120,8 @@ class ConditionsTest extends AuthIntegrationTestCase
             'referee_notes' => $input['referee_notes'],
             'notes' => $input['notes'],
             'deprecated' => $input['deprecated'],
-            'modifier_id' => self::$PLIN_REFEREE,
-            'creator_id' => self::$PLIN_REFEREE,
+            'modifier_id' => TestAccount::Referee->value,
+            'creator_id' => TestAccount::Referee->value,
         ];
 
         $this->withAuthReferee();

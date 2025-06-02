@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Integration;
 
+use App\Test\Fixture\TestAccount;
 use App\Test\TestSuite\AuthIntegrationTestCase;
 
 class ItemsTest extends AuthIntegrationTestCase
@@ -96,8 +97,8 @@ class ItemsTest extends AuthIntegrationTestCase
             'deprecated' => false,
             'plin' => null,
             'chin' => null,
-            'modifier_id' => self::$PLIN_REFEREE,
-            'creator_id' => self::$PLIN_REFEREE,
+            'modifier_id' => TestAccount::Referee->value,
+            'creator_id' => TestAccount::Referee->value,
         ];
 
         $this->withAuthReferee();
@@ -144,8 +145,8 @@ class ItemsTest extends AuthIntegrationTestCase
             'deprecated' => $input['deprecated'],
             'plin' => $input['plin'],
             'chin' => $input['chin'],
-            'modifier_id' => self::$PLIN_REFEREE,
-            'creator_id' => self::$PLIN_REFEREE,
+            'modifier_id' => TestAccount::Referee->value,
+            'creator_id' => TestAccount::Referee->value,
         ];
 
         $this->withAuthReferee();

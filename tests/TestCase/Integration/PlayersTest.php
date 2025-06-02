@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Integration;
 
+use App\Test\Fixture\TestAccount;
 use App\Test\TestSuite\AuthIntegrationTestCase;
 
 class PlayersTest extends AuthIntegrationTestCase
@@ -156,7 +157,7 @@ class PlayersTest extends AuthIntegrationTestCase
             'last_name' => $input['last_name'],
             'full_name' => $input['first_name'] . ' ' . $input['last_name'],
             'email' => null,
-            'modifier_id' => self::$PLIN_INFOBALIE,
+            'modifier_id' => TestAccount::Infobalie->value,
         ];
 
         $this->withAuthInfobalie();
@@ -196,7 +197,7 @@ class PlayersTest extends AuthIntegrationTestCase
             'last_name' => $input['last_name'],
             'full_name' => $input['first_name'] . ' ' . $input['insertion'] . ' ' . $input['last_name'],
             'email' => $input['email'],
-            'modifier_id' => self::$PLIN_INFOBALIE,
+            'modifier_id' => TestAccount::Infobalie->value,
         ];
 
         $this->withAuthInfobalie();
@@ -298,7 +299,7 @@ class PlayersTest extends AuthIntegrationTestCase
             'last_name' => $input['last_name'],
             'full_name' => $input['first_name'] . ' ' . $input['insertion'] . ' ' . $input['last_name'],
             'email' => $input['email'],
-            'modifier_id' => self::$PLIN_INFOBALIE,
+            'modifier_id' => TestAccount::Infobalie->value,
         ];
 
         $actual = $this->assertPut('/players/1', $input);

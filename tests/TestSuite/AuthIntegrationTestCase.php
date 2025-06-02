@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestSuite;
 
+use App\Test\Fixture\TestAccount;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\IntegrationTestTrait;
 
@@ -30,73 +31,64 @@ class AuthIntegrationTestCase extends TestCase
     ];
 
     protected ?string $token = null;
+    protected ?TestAccount $account = null;
 
-    protected static int $PLIN_PLAYER = 1;
-    protected static int $PLIN_READONLY = 2;
-    protected static int $PLIN_REFEREE = 3;
-    protected static int $PLIN_INFOBALIE = 4;
-    protected static int $PLIN_SUPER = 5;
-
-    public function assertGet(string $url, int $code = 200, string $message = '')
+    public function assertGet(string $url, int $code = 200)
     {
-        $this->setConfigRequest();
-        $this->now = null;
-        $this->get($url);
-        $this->assertResponseCode($code, $message);
-
-        return $this->jsonBody();
+        return $this->_assertRequest($url, 'GET', $code);
     }
 
-    public function assertPost(string $url, array|string $data = '', int $code = 200, string $message = '')
+    public function assertPost(string $url, array|string $data = [], int $code = 200)
     {
-        $this->setConfigRequest('application/x-www-form-urlencoded');
-        $this->now = new DateTime('UTC');
-        $this->post($url, $data);
-        $this->assertResponseCode($code, $message);
-
-        return $this->jsonBody();
+        return $this->_assertRequest($url, 'POST', $code, $data);
     }
 
-    public function assertPatch(string $url, array $data = [], int $code = 200, string $message = '')
+    public function assertPatch(string $url, array|string $data = [], int $code = 200)
     {
-        $this->setConfigRequest();
-        $this->now = new DateTime('UTC');
-        $this->patch($url, json_encode($data));
-        $this->assertResponseCode($code, $message);
+        return $this->_assertRequest($url, 'PATCH', $code, json_encode($data));
     }
 
-    public function assertPut(string $url, array $data = [], int $code = 200, string $message = '')
+    public function assertPut(string $url, array|string $data = [], int $code = 200)
     {
-        $this->setConfigRequest();
-        $this->now = new DateTime('UTC');
-        $this->put($url, json_encode($data));
-        $this->assertResponseCode($code, $message);
-
-        return $this->jsonBody();
+        return $this->_assertRequest($url, 'PUT', $code, json_encode($data));
     }
 
-    public function assertDelete(string $url, int $code = 204, string $message = '')
+    public function assertDelete(string $url, int $code = 204)
     {
-        $this->setConfigRequest();
-        $this->now = new DateTime('UTC');
-        $this->delete($url);
-        $this->assertResponseCode($code, $message);
+        return $this->_assertRequest($url, 'DELETE', $code);
     }
 
-    public function assertHead(string $url, int $code = 200, string $message = '')
+    public function assertHead(string $url, int $code = 200)
     {
-        $this->setConfigRequest();
-        $this->now = null;
-        $this->head($url);
-        $this->assertResponseCode($code, $message);
+        return $this->_assertRequest($url, 'HEAD', $code);
     }
 
-    public function assertOptions(string $url, int $code = 200, string $message = '')
+    public function assertOptions(string $url, int $code = 200)
     {
-        $this->setConfigRequest();
-        $this->now = null;
-        $this->options($url);
+        return $this->_assertRequest($url, 'OPTIONS', $code);
+    }
+
+    protected function _assertRequest(string $url, string $method, int $code, array|string $data = [])
+    {
+        switch ($method) {
+            case 'POST':
+            case 'DELETE':
+            case 'PATCH':
+            case 'PUT':
+                $this->now = new DateTime('UTC');
+                break;
+            default:
+                $this->now = null;
+        }
+
+        $name = $this->account?->name ?? 'Unauthenticated';
+        $message = "Failed `$method` request on url `$url` with authorization `$name`";
+
+        $this->setConfigRequest($method == 'POST');
+        $this->_sendRequest($url, $method, $data);
         $this->assertResponseCode($code, $message);
+
+        return json_decode((string)$this->_response->getBody(), true);
     }
 
     public function assertErrorsResponse(string $url, array $response): array
@@ -121,72 +113,63 @@ class AuthIntegrationTestCase extends TestCase
         return $data[$field];
     }
 
-    protected function withoutAuth()
+    protected function withoutAuth(): void
     {
         $this->token = null;
+        $this->account = null;
     }
 
-    protected function withAuthPlayer()
+    protected function withAuthPlayer(): void
     {
-        return $this->loginAs(self::$PLIN_PLAYER);
+        $this->loginAs(TestAccount::Player);
     }
 
-    protected function withAuthReadOnly()
+    protected function withAuthReadOnly(): void
     {
-        return $this->loginAs(self::$PLIN_READONLY);
+        $this->loginAs(TestAccount::ReadOnly);
     }
 
-    protected function withAuthReferee()
+    protected function withAuthReferee(): void
     {
-        return $this->loginAs(self::$PLIN_REFEREE);
+        $this->loginAs(TestAccount::Referee);
     }
 
-    protected function withAuthInfobalie()
+    protected function withAuthInfobalie(): void
     {
-        return $this->loginAs(self::$PLIN_INFOBALIE);
+        $this->loginAs(TestAccount::Infobalie);
     }
 
-    protected function withAuthSuper()
+    protected function withAuthSuper(): void
     {
-        return $this->loginAs(self::$PLIN_SUPER);
+        $this->loginAs(TestAccount::Super);
     }
 
-    private function loginAs(int $id)
+    private function loginAs(TestAccount $account): void
     {
         $this->withoutAuth();
+        $this->account = $account;
 
-        $this->assertPut(
+        $response = $this->assertPut(
             '/auth/login',
-            ['id' => $id, 'password' => 'password'],
-            200,
-            'authentication succesful?',
+            ['id' => $account->value, 'password' => 'password'],
         );
 
-        $this->token = $this->jsonBody('token');
-        $this->assertNotNull($this->token, 'JWT Token set?');
-
-        return $id;
+        $this->assertArrayHasKey('token', $response);
+        $this->token = $response['token'];
+        $this->assertNotNull($this->token, 'Failed asserting that JWT Token is set after login.');
     }
 
-    private function setConfigRequest(string $content = 'application/json')
+    private function setConfigRequest(bool $isPost): void
     {
-        if ($this->token !== null) {
-            $this->configRequest([
-                'headers' => [
-                    'Accept' => 'application/json',
-                    'Content-Type' => $content,
-                    'Authorization' => 'Bearer ' . $this->token,
-                ],
-            ]);
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => ($isPost ? 'application/x-www-form-urlencoded' : 'application/json'),
+        ];
 
-            return;
+        if ($this->token !== null) {
+            $headers['Authorization'] = 'Bearer ' . $this->token;
         }
 
-        $this->configRequest([
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => $content,
-            ],
-        ]);
+        $this->configRequest(['headers' => $headers]);
     }
 }

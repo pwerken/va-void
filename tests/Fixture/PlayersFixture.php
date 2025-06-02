@@ -15,7 +15,7 @@ class PlayersFixture extends TestFixture
 
         $this->records = [
             [
-                'id' => 1,
+                'id' => TestAccount::Player->value,
                 'role' => 'Player',
                 'password' => $password,
                 'first_name' => 'Player',
@@ -27,7 +27,7 @@ class PlayersFixture extends TestFixture
                 'modifier_id' => null,
             ],
             [
-                'id' => 2,
+                'id' => TestAccount::ReadOnly->value,
                 'role' => 'Read-only',
                 'password' => $password,
                 'first_name' => 'Read',
@@ -39,7 +39,7 @@ class PlayersFixture extends TestFixture
                 'modifier_id' => 5,
             ],
             [
-                'id' => 3,
+                'id' => TestAccount::Referee->value,
                 'role' => 'Referee',
                 'password' => $password,
                 'first_name' => 'Centrale',
@@ -51,7 +51,7 @@ class PlayersFixture extends TestFixture
                 'modifier_id' => 5,
             ],
             [
-                'id' => 4,
+                'id' => TestAccount::Infobalie->value,
                 'role' => 'Infobalie',
                 'password' => $password,
                 'first_name' => 'In',
@@ -63,7 +63,7 @@ class PlayersFixture extends TestFixture
                 'modifier_id' => 1,
             ],
             [
-                'id' => 5,
+                'id' => TestAccount::Super->value,
                 'role' => 'Super',
                 'password' => $password,
                 'first_name' => 'Super',

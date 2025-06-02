@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Integration;
 
+use App\Test\Fixture\TestAccount;
 use App\Test\TestSuite\AuthIntegrationTestCase;
 
 class CharactersSkillsTest extends AuthIntegrationTestCase
@@ -155,7 +156,7 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
             'class' => 'CharactersSkill',
             'url' => '/characters/1/1/skills/2',
             'times' => 1,
-            'modifier_id' => self::$PLIN_REFEREE,
+            'modifier_id' => TestAccount::Referee->value,
         ];
 
         $this->withAuthReferee();
@@ -179,7 +180,7 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
             'class' => 'CharactersSkill',
             'url' => '/characters/1/1/skills/2',
             'times' => $input['times'],
-            'modifier_id' => self::$PLIN_REFEREE,
+            'modifier_id' => TestAccount::Referee->value,
         ];
 
         $this->withAuthReferee();
@@ -202,7 +203,7 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
             'class' => 'CharactersSkill',
             'url' => '/characters/1/1/skills/1',
             'times' => $input['times'],
-            'modifier_id' => self::$PLIN_REFEREE,
+            'modifier_id' => TestAccount::Referee->value,
         ];
 
         $this->withAuthReferee();
