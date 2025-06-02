@@ -34,10 +34,4 @@
             <file>src/Console/Installer.php</file>
         </exclude>
     </source>
-
-	<coverage>
-		<report>
-			<html outputDirectory="webroot/coverage" />
-		</report>
-	</coverage>
 </phpunit>

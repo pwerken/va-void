@@ -56,7 +56,10 @@
         "cs-check": "phpcs --colors -p src/ templates/ tests/",
         "cs-fix": "phpcbf --colors -p src/ templates/ tests/",
         "stan": "phpstan analyse",
-        "test": "phpunit --colors=always --no-coverage",
-        "test:coverage": "@php -dxdebug.mode=coverage ./vendor/bin/phpunit --colors=always"
+        "test": "phpunit --colors=always",
+        "test:coverage": [
+            "@putenv XDEBUG_MODE=coverage",
+            "@test --coverage-html webroot/coverage"
+        ]
     }
 }
