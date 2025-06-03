@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\TestCase\Integration;
+namespace App\Test\ApiTest;
 
 use App\Test\Fixture\TestAccount;
 use App\Test\TestSuite\AuthIntegrationTestCase;
 
 class CharactersConditionsTest extends AuthIntegrationTestCase
 {
-    public function testAuthorizationGet()
+    public function testAuthorizationGet(): void
     {
         $this->withoutAuth();
         $this->assertGet('/characters/1/1/conditions', 401);
@@ -56,7 +56,7 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/99/1/conditions/2', 404);
     }
 
-    public function testAuthorizationPut()
+    public function testAuthorizationPut(): void
     {
         $this->withoutAuth();
         $this->assertPut('/characters/1/1/conditions', [], 401);
@@ -101,7 +101,7 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertPut('/characters/99/1/conditions/2', [], 403);
     }
 
-    public function testAuthorizationDelete()
+    public function testAuthorizationDelete(): void
     {
         $this->withoutAuth();
         $this->assertDelete('/characters/1/1/conditions/1', 401);
@@ -134,7 +134,7 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertDelete('/characters/99/1/conditions/2', 403);
     }
 
-    public function testRequiredFieldsValidation()
+    public function testRequiredFieldsValidation(): void
     {
         $url = '/characters/1/1/conditions';
 
@@ -148,7 +148,7 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertArrayHasKey('condition_id', $errors);
     }
 
-    public function testAddCharactersConditionMinimal()
+    public function testAddCharactersConditionMinimal(): void
     {
         $input = [
 # required fields:
@@ -171,7 +171,7 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
-    public function testAddCharactersConditionComplete()
+    public function testAddCharactersConditionComplete(): void
     {
         $input = [
 # required fields:
@@ -195,7 +195,7 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
-    public function testEditCharactersCondition()
+    public function testEditCharactersCondition(): void
     {
         $input = [
 # optional fields:
@@ -218,7 +218,7 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
-    public function testDeleteCharacterSkill()
+    public function testDeleteCharacterSkill(): void
     {
         $this->withAuthReferee();
         $this->assertGet('/characters/1/1/conditions/1');

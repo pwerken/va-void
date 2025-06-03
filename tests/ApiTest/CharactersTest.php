@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\TestCase\Integration;
+namespace App\Test\ApiTest;
 
 use App\Test\Fixture\TestAccount;
 use App\Test\TestSuite\AuthIntegrationTestCase;
 
 class CharactersTest extends AuthIntegrationTestCase
 {
-    public function testAuthorization()
+    public function testAuthorization(): void
     {
         $this->withoutAuth();
         $this->assertGet('/characters', 401);
@@ -81,7 +81,7 @@ class CharactersTest extends AuthIntegrationTestCase
 #       $this->assertGet('/characters/99/1/teacher', 404);
     }
 
-    public function testRequiredFieldsValidation()
+    public function testRequiredFieldsValidation(): void
     {
         $url = '/players/1/characters';
 
@@ -94,7 +94,7 @@ class CharactersTest extends AuthIntegrationTestCase
         $this->assertArrayHasKey('name', $errors);
     }
 
-    public function testAddCharacterMinimal()
+    public function testAddCharacterMinimal(): void
     {
         $input = [
 # required fields:
@@ -128,7 +128,7 @@ class CharactersTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
-    public function testAddCharacterComplete()
+    public function testAddCharacterComplete(): void
     {
         $input = [
 # required fields:
@@ -177,7 +177,7 @@ class CharactersTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
-    public function testEditCharacter()
+    public function testEditCharacter(): void
     {
         $input = [
 # disallowed fields:

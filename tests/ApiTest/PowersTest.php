@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\TestCase\Integration;
+namespace App\Test\ApiTest;
 
 use App\Test\Fixture\TestAccount;
 use App\Test\TestSuite\AuthIntegrationTestCase;
 
 class PowersTest extends AuthIntegrationTestCase
 {
-    public function testAuthorization()
+    public function testAuthorization(): void
     {
         $this->withoutAuth();
         $this->assertGet('/powers', 401);
@@ -63,7 +63,7 @@ class PowersTest extends AuthIntegrationTestCase
         $this->assertPut('/powers/99', [], 404);
     }
 
-    public function testAddPowerMinimal()
+    public function testAddPowerMinimal(): void
     {
         $input = [
 # required fields:
@@ -94,7 +94,7 @@ class PowersTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['created']);
     }
 
-    public function testAddPowerComplete()
+    public function testAddPowerComplete(): void
     {
         $input = [
 # required fields:
@@ -136,7 +136,7 @@ class PowersTest extends AuthIntegrationTestCase
         $this->assertArrayNotHasKey('ignored', $actual);
     }
 
-    public function testRequiredFieldsValidation()
+    public function testRequiredFieldsValidation(): void
     {
         $this->withAuthReferee();
         $response = $this->assertPut('/powers', [], 422);

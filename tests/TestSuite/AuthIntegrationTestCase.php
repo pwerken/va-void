@@ -11,27 +11,30 @@ class AuthIntegrationTestCase extends TestCase
 {
     use IntegrationTestTrait;
 
-    public array $fixtures = [
-        'app.Attributes',
-        'app.AttributesItems',
-        'app.Characters',
-        'app.CharactersConditions',
-        'app.CharactersPowers',
-        'app.CharactersSkills',
-        'app.Conditions',
-        'app.Events',
-        'app.Factions',
-        'app.Items',
-        'app.Lammies',
-        'app.Manatypes',
-        'app.Players',
-        'app.Powers',
-        'app.Skills',
-        'app.Teachings',
-    ];
-
     protected ?string $token = null;
     protected ?TestAccount $account = null;
+
+    public function getFixtures(): array
+    {
+        return [
+            'app.Attributes',
+            'app.AttributesItems',
+            'app.Characters',
+            'app.CharactersConditions',
+            'app.CharactersPowers',
+            'app.CharactersSkills',
+            'app.Conditions',
+            'app.Events',
+            'app.Factions',
+            'app.Items',
+            'app.Lammies',
+            'app.Manatypes',
+            'app.Players',
+            'app.Powers',
+            'app.Skills',
+            'app.Teachings',
+        ];
+    }
 
     public function assertGet(string $url, int $code = 200)
     {
@@ -101,18 +104,6 @@ class AuthIntegrationTestCase extends TestCase
         return $response['errors'];
     }
 
-    protected function jsonBody(?string $field = null)
-    {
-        $data = json_decode((string)$this->_response->getBody(), true);
-        if (is_null($field)) {
-            return $data;
-        }
-
-        $this->assertArrayHasKey($field, $data);
-
-        return $data[$field];
-    }
-
     protected function withoutAuth(): void
     {
         $this->token = null;
@@ -156,7 +147,7 @@ class AuthIntegrationTestCase extends TestCase
 
         $this->assertArrayHasKey('token', $response);
         $this->token = $response['token'];
-        $this->assertNotNull($this->token, 'Failed asserting that JWT Token is set after login.');
+        $this->assertNotNull($this->token, 'Failed asserting that JWT is set after login.');
     }
 
     private function setConfigRequest(bool $isPost): void

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\TestCase\Integration;
+namespace App\Test\ApiTest;
 
 use App\Test\Fixture\TestAccount;
 use App\Test\TestSuite\AuthIntegrationTestCase;
 
 class PlayersTest extends AuthIntegrationTestCase
 {
-    public function checkList($url, $size)
+    public function checkList($url, $size): array
     {
         $data = $this->assertGet($url);
 
@@ -21,7 +21,7 @@ class PlayersTest extends AuthIntegrationTestCase
         return $data['list'];
     }
 
-    public function checkPlayerCompact($id, $data)
+    public function checkPlayerCompact($id, $data): void
     {
         $ref = $this->fetchTable('players')->get($id);
 
@@ -32,7 +32,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertArrayKeyValue('full_name', $ref->full_name, $data);
     }
 
-    public function checkPlayer($url, $id)
+    public function checkPlayer($url, $id): void
     {
         $ref = $this->fetchTable('players')->get($id);
 
@@ -56,7 +56,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertArrayHasKey('socials', $data);
     }
 
-    public function testAuthorization()
+    public function testAuthorization(): void
     {
         $this->withoutAuth();
         $this->assertGet('/players', 401);
@@ -125,7 +125,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertPut('/players/99/characters', [], 422); // FIXME -> 404
     }
 
-    public function testRequiredFieldsValidation()
+    public function testRequiredFieldsValidation(): void
     {
         $this->withAuthInfobalie();
         $response = $this->assertPut('/players', [], 422);
@@ -139,7 +139,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertArrayHasKey('last_name', $errors);
     }
 
-    public function testAddPlayerMinimal()
+    public function testAddPlayerMinimal(): void
     {
         $input = [
 # only required fields:
@@ -169,7 +169,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
-    public function testAddPlayerComplete()
+    public function testAddPlayerComplete(): void
     {
         $input = [
 # required fields:
@@ -211,7 +211,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertArrayNotHasKey('ignored', $actual);
     }
 
-    public function testEditOwnPlayer()
+    public function testEditOwnPlayer(): void
     {
         $input = [
 # disallowed fields:
@@ -261,7 +261,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertArrayNotHasKey('ignored', $actual);
     }
 
-    public function testEditPlayer()
+    public function testEditPlayer(): void
     {
         $input = [
 # disallowed fields:
@@ -311,7 +311,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertArrayNotHasKey('ignored', $actual);
     }
 
-    public function testGetIndexAsPlayer()
+    public function testGetIndexAsPlayer(): void
     {
         $this->withAuthPlayer();
 
@@ -321,7 +321,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->checkPlayer('/players/1', 1);
     }
 
-    public function testGetIndexAsReadonly($asReadOnly = true)
+    public function testGetIndexAsReadonly($asReadOnly = true): void
     {
         if ($asReadOnly) {
             $this->withAuthReadOnly();

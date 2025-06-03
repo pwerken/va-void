@@ -20,7 +20,7 @@ class TestCase extends CakeTestCase
         } catch (Throwable $t) {
             return $t;
         }
-        $this->fail($message ?? 'No exception was caught');
+        $this->fail($message ?? 'Failed asserting that an exception is thrown.');
     }
 
     public function protectedStaticMethod(string $class, string $method): Closure
@@ -39,12 +39,7 @@ class TestCase extends CakeTestCase
     {
         $this->assertArrayHasKey($key, $actual);
 
-        $message = sprintf(
-            'Failed to assert array key `%s` with value `%s` matches expected `%s`',
-            print_r($key, true),
-            print_r($actual[$key], true),
-            print_r($value, true),
-        );
+        $message = sprintf('Failed assert on value of array[ `%s` ].', print_r($key, true));
         $this->assertEquals($value, $actual[$key], $message);
     }
 

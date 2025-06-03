@@ -14,6 +14,7 @@
     <!-- Add any additional test suites you want to run here -->
     <testsuites>
         <testsuite name="app">
+            <directory>tests/ApiTest/</directory>
             <directory>tests/TestCase/</directory>
         </testsuite>
         <!-- Add plugin test suites here. -->

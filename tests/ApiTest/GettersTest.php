@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\TestCase\Integration;
+namespace App\Test\ApiTest;
 
 use App\Test\TestSuite\AuthIntegrationTestCase;
 
 class GettersTest extends AuthIntegrationTestCase
 {
-    public function testSkills()
+    public function testSkills(): void
     {
         $this->withoutAuth();
         $this->assertGet('/skills', 401);
@@ -31,7 +31,7 @@ class GettersTest extends AuthIntegrationTestCase
         $this->assertGet('/skills/99/characters', 404);
     }
 
-    public function testManatypes()
+    public function testManatypes(): void
     {
         $this->withoutAuth();
         $this->assertGet('/manatypes', 401);
@@ -44,7 +44,7 @@ class GettersTest extends AuthIntegrationTestCase
         $this->assertGet('/manatypes/99', 404);
     }
 
-    public function testAttributes()
+    public function testAttributes(): void
     {
         $this->withoutAuth();
         $this->assertGet('/attributes', 401);
@@ -68,7 +68,7 @@ class GettersTest extends AuthIntegrationTestCase
         $this->assertGet('/attributes/99/items', 404);
     }
 
-    public function testBelieves()
+    public function testBelieves(): void
     {
         $this->withoutAuth();
         $this->assertGet('/believes', 401);
@@ -77,7 +77,7 @@ class GettersTest extends AuthIntegrationTestCase
         $this->assertGet('/believes');
     }
 
-    public function testFactions()
+    public function testFactions(): void
     {
         $this->withoutAuth();
         $this->assertGet('/factions', 401);
@@ -101,7 +101,7 @@ class GettersTest extends AuthIntegrationTestCase
         $this->assertGet('/factions/99/characters', 404);
     }
 
-    public function testGroups()
+    public function testGroups(): void
     {
         $this->withoutAuth();
         $this->assertGet('/groups', 401);
@@ -110,7 +110,7 @@ class GettersTest extends AuthIntegrationTestCase
         $this->assertGet('/groups');
     }
 
-    public function testWorlds()
+    public function testWorlds(): void
     {
         $this->withoutAuth();
         $this->assertGet('/worlds', 401);
@@ -119,7 +119,7 @@ class GettersTest extends AuthIntegrationTestCase
         $this->assertGet('/worlds');
     }
 
-    public function testEvents()
+    public function testEvents(): void
     {
         $this->withoutAuth();
         $this->assertGet('/events', 401);

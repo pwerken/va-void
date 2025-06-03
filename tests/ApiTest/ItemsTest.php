@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\TestCase\Integration;
+namespace App\Test\ApiTest;
 
 use App\Test\Fixture\TestAccount;
 use App\Test\TestSuite\AuthIntegrationTestCase;
 
 class ItemsTest extends AuthIntegrationTestCase
 {
-    public function testAuthorization()
+    public function testAuthorization(): void
     {
         $this->withoutAuth();
         $this->assertGet('/items', 401);
@@ -75,7 +75,7 @@ class ItemsTest extends AuthIntegrationTestCase
         $this->assertPut('/items/99', [], 404);
     }
 
-    public function testAddItemMinimal()
+    public function testAddItemMinimal(): void
     {
         $input = [
 # only required fields:
@@ -111,7 +111,7 @@ class ItemsTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['created']);
     }
 
-    public function testAddItemComplete()
+    public function testAddItemComplete(): void
     {
         $input = [
 # required fields:
@@ -161,7 +161,7 @@ class ItemsTest extends AuthIntegrationTestCase
         $this->assertArrayNotHasKey('ignored', $actual);
     }
 
-    public function testRequiredFieldsValidation()
+    public function testRequiredFieldsValidation(): void
     {
         $this->withAuthReferee();
         $response = $this->assertPut('/items', [], 422);

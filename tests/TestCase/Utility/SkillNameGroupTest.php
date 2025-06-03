@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Utility;
 
 use App\Test\TestSuite\TestCase;
 use App\Utility\SkillNameGroup;
+use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
 
 class SkillNameGroupTest extends TestCase
@@ -40,31 +41,41 @@ class SkillNameGroupTest extends TestCase
         $this->assertEquals($expected, SkillNameGroup::group($input));
     }
 
-    public function testSplitter()
+    public static function validSplitterCases(): array
+    {
+        return [
+            ['aaaaaaa (1)', ['aaaaaaa', '', '', '1']],
+            ['bbbbb B (2)', ['bbbbb', 'B', '', '2']],
+            ['ccc C C (3)', ['ccc C', 'C', '', '3']],
+            ['d D (d) (4)', ['d', 'D', '(d)', '4']],
+            ['eeee IV (5)', ['eeee', 'IV', '', '5']],
+        ];
+    }
+
+    #[DataProvider('validSplitterCases')]
+    public function testSplitter(string $input, array $expected): void
+    {
+        $method = $this->protectedStaticMethod(SkillNameGroup::class, 'splitter');
+        $this->assertEquals($expected, call_user_func($method, $input));
+    }
+
+    public static function invalidSplitterCases(): array
+    {
+        return [
+            ['ambidexterity'],
+            ['lifeforce B'],
+        ];
+    }
+
+    #[DataProvider('invalidSplitterCases')]
+    public function testSplitterException(string $input): void
     {
         $method = $this->protectedStaticMethod(SkillNameGroup::class, 'splitter');
 
-        $validcases = [];
-        $validcases[] = ['aaaaaaa (1)', ['aaaaaaa', '', '', '1']];
-        $validcases[] = ['bbbbb B (2)', ['bbbbb', 'B', '', '2']];
-        $validcases[] = ['ccc C C (3)', ['ccc C', 'C', '', '3']];
-        $validcases[] = ['d D (d) (4)', ['d', 'D', '(d)', '4']];
-        $validcases[] = ['eeee IV (5)', ['eeee', 'IV', '', '5']];
+        $msg = 'Failed asserting an exception is thrown by SkillNameGroup::splitter(..).';
+        $e = $this->catchException($method, [$input], $msg);
 
-        foreach ($validcases as [$input, $expected]) {
-            $this->assertEquals($expected, call_user_func($method, $input));
-        }
-
-        $errorcases = [];
-        $errorcases[] = 'ambidexterity';
-        $errorcases[] = 'lifeforce B';
-
-        foreach ($errorcases as $input) {
-            $msg = "No exception caught with \"$input\"";
-            $e = $this->catchException($method, [$input], $msg);
-
-            $msg = "Wrong exception caught with \"$input\"";
-            $this->assertInstanceOf(RuntimeException::class, $e, $msg);
-        }
+        $msg = 'Wrong exception thrown by SkillNameGroup::splitter(..).';
+        $this->assertInstanceOf(RuntimeException::class, $e, $msg);
     }
 }
