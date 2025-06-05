@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Test\ApiTest;
 
-use App\Test\Fixture\TestAccount;
 use App\Test\TestSuite\AuthIntegrationTestCase;
 
 class AuthTest extends AuthIntegrationTestCase
@@ -44,5 +43,27 @@ class AuthTest extends AuthIntegrationTestCase
         $this->assertArrayKeyValue('code', $code, $response);
         $this->assertArrayKeyValue('url', $url, $response);
         $this->assertArrayKeyValue('message', $message, $response);
+    }
+
+    public function testSocialListing(): void
+    {
+        $url = '/auth/social';
+
+        $this->withoutAuth();
+        $response = $this->assertGet($url);
+
+        $this->assertArrayKeyValue('class', 'List', $response);
+        $this->assertArrayKeyValue('url', $url, $response);
+        $this->assertArrayHasKey('list', $response);
+
+        $list = $response['list'];
+        $this->assertCount(3, $list);
+
+        foreach ($list as $socialLogin) {
+            $this->assertArrayKeyValue('class', 'SocialLogin', $socialLogin);
+            $this->assertArrayHasKey('name', $socialLogin);
+            $this->assertArrayHasKey('url', $socialLogin);
+            $this->assertArrayHasKey('authUri', $socialLogin);
+        }
     }
 }
