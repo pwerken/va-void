@@ -19,7 +19,7 @@ class MailerComponent extends Component
         $provider = $profile['provider'];
         $user = $profile['username'] ?? $profile['full_name'];
         $email = $profile['email'];
-        $auth = Router::pathUrl('Admin::authentication', [], true);
+        $auth = Router::url('/admin/authentication', true);
 
         $mailer = new Mailer('default');
         $mailer

@@ -8,7 +8,7 @@ foreach ($roles as $role) {
 
 $style = ['style' => 'display: inline-block; width: auto; margin-right: 1rem'];
 
-echo '<h3>Authorisation</h3>';
+echo '<h3>Authorization</h3>';
 echo $this->Form->create();
 echo 'Plin: ';
 echo $this->Form->text('plin', $style);

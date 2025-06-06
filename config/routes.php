@@ -22,28 +22,11 @@
  */
 
 use Cake\Routing\RouteBuilder;
+use Cake\Routing\Route\InflectedRoute;
 
-/**
- * The default class to use for all routes
- *
- * The following route classes are supplied with CakePHP and are appropriate
- * to set as the default:
- *
- * - Route
- * - InflectedRoute
- * - DashedRoute
- *
- * If no call is made to `Router::defaultRouteClass()`, the class used is
- * `Route` (`Cake\Routing\Route\Route`)
- *
- * Note that `Route` does not do any inflections on URLs which will result in
- * inconsistently cased URLs when used with `:plugin`, `:controller` and
- * `:action` markers.
- *
- * Cache: Routes are cached to improve performance, check the RoutingMiddleware
- * constructor in your `src/Application.php` file to change this behavior.
- */
 return function (RouteBuilder $routes): void {
+
+    $routes->setRouteClass(InflectedRoute::class);
 
     $defaults = [];
     $defaults['_method'] = 'GET';
@@ -61,11 +44,12 @@ return function (RouteBuilder $routes): void {
          */
         $defaults = [];
         $defaults['_method'] = ['GET', 'POST'];
-        $defaults['controller'] = 'Admin';
+        $defaults['controller'] = 'Root';
         $defaults['action'] = 'index';
         $routes->connect('/', $defaults);
-        unset($defaults['action']);
-        $routes->connect('/{action}/*', $defaults);
+
+        unset($defaults['controller']);
+        $routes->connect('/{controller}/*', $defaults);
     });
 
     /**

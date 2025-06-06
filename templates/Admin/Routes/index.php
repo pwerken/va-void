@@ -35,11 +35,17 @@ foreach ($routes as $route) {
         $prefix = $route->defaults['prefix'] . '\\';
     }
 
+    $controller = '{controller}';
+    if (isset($route->defaults['controller'])) {
+        $controller = $route->defaults['controller'];
+    }
+
     $action = '{action}';
     if (isset($route->defaults['action'])) {
         $action = $route->defaults['action'];
     }
-    $function = $prefix . $route->defaults['controller'] . '&rarr;' . $action;
+
+    $function = $prefix . $controller . '&rarr;' . $action;
 
     $pass = [];
     if (array_key_exists('pass', $route->options)) {

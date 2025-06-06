@@ -30,11 +30,7 @@ foreach ($socials as $social) {
     );
     echo $this->Form->postLink(
         $img,
-        [ 'prefix' => 'Admin'
-        , 'controller' => 'Admin'
-        , 'action' => 'social'
-        , $social,
-        ],
+        '/admin/social/' . $social,
         [ 'escape' => false
         , 'data' => ['redirect' => $redirect],
         ],

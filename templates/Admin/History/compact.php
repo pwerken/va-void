@@ -28,6 +28,10 @@ $format_v = function ($k, $v) {
     }
 
     if ($k !== 'character_id') {
+        if (empty($v)) {
+            $v = '(removed)';
+        }
+
         return nl2br($v);
     }
 
@@ -68,14 +72,15 @@ foreach ($list as $cur) {
     }
 
     $related = $cur->relation();
-    if (is_null($related) && isset($data['name'])) {
-        $related = $data['name'];
+    if (is_null($related)) {
+        if (isset($data['name'])) {
+            $related = $data['name'];
+        } else {
+            $related = '<em>(removed)</em>';
+        }
     }
     if (!is_null($related)) {
         $related = '<strong>' . $related . '</strong> ';
-    }
-    if (is_null($related)) {
-        $related = '<em>(removed)</em> ';
     }
 
     $prefix = "<span$bgcolor><samp>"
