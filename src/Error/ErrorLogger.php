@@ -20,7 +20,7 @@ class ErrorLogger extends CakeErrorLogger
 
         $body = $request->getParsedBody();
         if ($body) {
-            $message .= "\nRequest data: " . print_r($body, true);
+            $message .= "\nRequest data: " . var_export($body, true);
         }
 
         return $message;

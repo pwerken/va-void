@@ -1,7 +1,7 @@
 ToDo-list:
  - Error handling
    - [ ] check error responses on failed social authentication
-   - [ ] uniform error messages (when debug=false ?)
+   - [X] uniform error messages (when debug=false ?)
          i.e. 404 should always be "Not found"
  - Datastructure cleanup:
    - [x] condition/power/item: add 'deprecated' property

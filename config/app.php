@@ -6,6 +6,7 @@ use App\Error\ErrorLogger;
 use App\Error\Exception\LoginFailedException;
 use App\Error\FileLog;
 use Authorization\Exception\ForbiddenException;
+use Authorization\Policy\Exception\MissingPolicyException;
 use Cake\Cache\Engine\FileEngine;
 use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
@@ -204,6 +205,7 @@ return [
         'skipLog' => [
             ForbiddenException::class,
             LoginFailedException::class,
+            MissingPolicyException::class,
             MissingRouteException::class,
             NotFoundException::class,
             RecordNotFoundException::class,

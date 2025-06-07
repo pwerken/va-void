@@ -5,10 +5,12 @@ namespace App\Error;
 
 use App\Error\Exception\ValidationException;
 use App\Utility\Json;
+use Authorization\Policy\Exception\MissingPolicyException;
 use Cake\Core\Configure;
-use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Error\Debugger;
 use Cake\Error\Renderer\WebExceptionRenderer;
 use Psr\Http\Message\ResponseInterface;
+use Throwable;
 
 class ApiExceptionRenderer extends WebExceptionRenderer
 {
@@ -16,13 +18,6 @@ class ApiExceptionRenderer extends WebExceptionRenderer
     {
         $exception = $this->error;
         $code = $this->getHttpCode($exception);
-
-        if ($exception instanceof RecordNotFoundException) {
-            $code = 404;
-        }
-        if (!is_numeric($code) || $code < 100 || $code > 599) {
-            $code = 500;
-        }
 
         $response = $this->controller->getResponse();
         $response = $response->withStatus($code);
@@ -36,7 +31,7 @@ class ApiExceptionRenderer extends WebExceptionRenderer
         $data['class'] = 'Error';
         $data['code'] = $code;
         $data['url'] = $this->controller->getRequest()->getRequestTarget();
-        $data['message'] = $exception->getMessage();
+        $data['message'] = $this->_message($exception, $code);
         $data['errors'] = $errors;
         if (Configure::read('debug')) {
             $first = [];
@@ -57,21 +52,40 @@ class ApiExceptionRenderer extends WebExceptionRenderer
         return $response;
     }
 
+    protected function getHttpCode(Throwable $exception): int
+    {
+        if ($exception instanceof MissingPolicyException) {
+            return 404;
+        }
+
+        return parent::getHttpCode($exception);
+    }
+
+    protected function _message(Throwable $exception, int $code): string
+    {
+        if (!Configure::read('debug')) {
+            if ($code < 500) {
+                return 'Not Found';
+            } else {
+                return 'An Internal Error Has Occurred';
+            }
+        }
+
+        return $exception->getMessage();
+    }
+
     /**
      * Convert stacktrace line info into an actual line/string.
      */
     private function traceLine(array $data): string
     {
         if (!isset($data['file'])) {
-            $str = '[internal function]: ';
+            $str = '[internal function]';
         } else {
-            $str = $data['file'] . '(' . $data['line'] . '): ';
+            $str = Debugger::trimPath($data['file']);
         }
-        if (isset($data['class'])) {
-            $str .= $data['class'] . $data['type'];
-        }
-        if (isset($data['function'])) {
-            $str .= $data['function'] . '()';
+        if (isset($data['line'])) {
+            $str .= ':' . $data['line'];
         }
 
         return $str;
