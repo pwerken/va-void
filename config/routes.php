@@ -64,19 +64,9 @@ return function (RouteBuilder $routes): void {
     $defaults = [];
     $defaults['_method'] = 'GET';
     $defaults['controller'] = 'Auth';
-    $defaults['action'] = 'logout';
-    $routes->connect('/auth/logout', $defaults);
-
-    $defaults = [];
-    $defaults['_method'] = 'GET';
-    $defaults['controller'] = 'Auth';
-    $defaults['action'] = 'socialListing';
+    $defaults['action'] = 'social';
     $routes->connect('/auth/social', $defaults);
 
-    $defaults = [];
-    $defaults['_method'] = ['GET'];
-    $defaults['controller'] = 'Auth';
-    $defaults['action'] = 'socialLogin';
     $routeOptions = [];
     $routeOptions['pass'][] = 'provider';
     $routes->connect('/auth/social/{provider}', $defaults, $routeOptions);

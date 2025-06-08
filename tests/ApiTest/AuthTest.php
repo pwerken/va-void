@@ -66,4 +66,13 @@ class AuthTest extends AuthIntegrationTestCase
             $this->assertArrayHasKey('authUri', $socialLogin);
         }
     }
+
+    public function testSocialProvider(): void
+    {
+        $this->assertGet('/auth/social/f00bar', 404); # Not Found
+        $this->assertGet('/auth/social/google', 400); # Bad Request
+        $this->assertGet('/auth/social/google?token=f4k3', 401); # Login Failed
+        $this->assertGet('/auth/social/google?code=f4k3', 400); # Bad Request
+        $this->assertGet('/auth/social/google?code=f4k3&redirect_uri=f00b4r', 401); # Login Failed
+    }
 }

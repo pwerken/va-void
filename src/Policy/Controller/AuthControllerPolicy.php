@@ -16,26 +16,10 @@ class AuthControllerPolicy extends ControllerPolicy
     }
 
     /**
-     * GET /auth/logout
-     */
-    public function logout(): bool
-    {
-        return true;
-    }
-
-    /**
      * GET /auth/social
+     * GET /auth/social/{provider}
      */
-    public function socialListing(): bool
-    {
-        return true;
-    }
-
-    /**
-     * PUT /auth/social/{provider}
-     * POST /auth/social/{provider}
-     */
-    public function socialLogin(): bool
+    public function social(): bool
     {
         return true;
     }

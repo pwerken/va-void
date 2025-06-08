@@ -25,9 +25,7 @@ class AuthController extends Controller
 
         $this->Authentication->allowUnauthenticated([
             'login',
-            'logout',
-            'socialListing',
-            'socialLogin',
+            'social',
         ]);
     }
 
@@ -44,64 +42,55 @@ class AuthController extends Controller
         }
 
         $user = $result->getData();
-        $this->set('_serialize', $this->_jwt($user));
-    }
-
-    /**
-     * GET /auth/logout
-     */
-    public function logout(): void
-    {
-        $this->Authentication->logout();
+        $this->set('_serialize', $this->jwt($user));
     }
 
     /**
      * GET /auth/social
+     * GET /auth/social/{provider}?code=...&redirect_uri=...
+     * GET /auth/social/{provider}?token=...
      */
-    public function socialListing(): void
+    public function social(?string $provider = null): void
+    {
+        if (empty($provider)) {
+            $this->socialListing();
+        } else {
+            $this->socialLogin($provider);
+        }
+    }
+
+    protected function socialListing()
     {
         $result = [];
         $result['class'] = 'List';
         $result['url'] = Router::url([
             'controller' => 'Auth',
-            'action' => 'socialListing',
+            'action' => 'social',
         ]);
         $result['list'] = [];
 
         foreach ($this->SocialAuth->getProviders() as $provider) {
-            $result['list'][] = $this->_social($provider);
+            $auth = $this->SocialAuth->authUrl($provider);
+            $auth = preg_replace('/(\&state)=[^&]*/', '\1=STATE', $auth);
+
+            $item = [];
+            $item['class'] = 'SocialLogin';
+            $item['name'] = $provider;
+            $item['url'] = Router::url([
+                'controller' => 'Auth',
+                'action' => 'social',
+                $provider,
+                '?' => ['code' => 'CODE', 'redirect_uri' => 'CALLBACK'],
+            ]);
+            $item['authUri'] = $auth;
+
+            $result['list'][] = $item;
         }
 
         $this->set('_serialize', $result);
     }
 
-    /**
-     * Information block for a single social provider.
-     */
-    protected function _social(string $provider): array
-    {
-        $auth = $this->SocialAuth->authUrl($provider);
-        $auth = preg_replace('/(\&state)=[^&]*/', '\1=STATE', $auth);
-
-        $result = [];
-        $result['class'] = 'SocialLogin';
-        $result['name'] = $provider;
-        $result['url'] = Router::url([
-            'controller' => 'Auth',
-            'action' => 'socialLogin',
-            $provider,
-            '?' => ['code' => 'CODE', 'redirect_uri' => 'CALLBACK'],
-        ]);
-        $result['authUri'] = $auth;
-
-        return $result;
-    }
-
-    /**
-     * GET /auth/social/{provider}?code=...&redirect_uri=...
-     * GET /auth/social/{provider}?token=...
-     */
-    public function socialLogin(string $provider): void
+    protected function socialLogin(string $provider): void
     {
         $providers = $this->SocialAuth->getProviders();
         if (!in_array($provider, $providers)) {
@@ -112,24 +101,26 @@ class AuthController extends Controller
         if ($token) {
             $obj = new AccessToken(['access_token' => $token]);
             $user = $this->SocialAuth->accountFromToken($provider, $obj);
-        } else {
-            $code = $this->request->getQuery('code');
-            if (!$code) {
-                throw new BadRequestException('Missing "code" query parameter');
-            }
-            $redirectUri = $this->request->getQuery('redirect_uri');
-            if (!$redirectUri) {
-                throw new BadRequestException('Missing "redirect_uri" query parameter');
-            }
-            $user = $this->SocialAuth->loginWithCode($provider, $code, $redirectUri);
+            $this->set('_serialize', $this->jwt($user));
+
+            return;
         }
-        $this->set('_serialize', $this->_jwt($user));
+
+        $code = $this->request->getQuery('code');
+        if (!$code) {
+            throw new BadRequestException('Missing `code` query parameter');
+        }
+
+        $redirectUri = $this->request->getQuery('redirect_uri');
+        if (!$redirectUri) {
+            throw new BadRequestException('Missing `redirect_uri` query parameter');
+        }
+
+        $user = $this->SocialAuth->loginWithCode($provider, $code, $redirectUri);
+        $this->set('_serialize', $this->jwt($user));
     }
 
-    /**
-     * Generate JWT response.
-     */
-    protected function _jwt(Player|array $user): array
+    protected function jwt(Player|array $user): array
     {
         if ($user instanceof Player) {
             $user = $user->toArray();

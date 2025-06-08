@@ -100,8 +100,7 @@ class SocialAuthComponent extends Component
             return $this->accountFromToken($provider, $token);
         } catch (SocialConnectException $e) {
             $this->_logException($e);
-
-            throw new LoginFailedException('Login via ' . $provider . ' failed');
+            throw new LoginFailedException("Login via `{$provider}` failed");
         }
     }
 
@@ -129,7 +128,12 @@ class SocialAuthComponent extends Component
      */
     public function accountFromToken(string $provider, AccessToken $token): Player
     {
-        $identity = $this->_getProvider($provider)->getIdentity($token);
+        try {
+            $identity = $this->_getProvider($provider)->getIdentity($token);
+        } catch (SocialConnectException $e) {
+            $this->_logException($e);
+            throw new LoginFailedException("Login via `{$provider}` failed");
+        }
         if (!$identity->id) {
             throw new SocialConnectException("Provider `{$provider}` returned identity with empty `id` field");
         }
@@ -162,7 +166,10 @@ class SocialAuthComponent extends Component
     protected function _getProvider(string $provider): BaseProvider
     {
         if (is_null($this->_service)) {
-            $this->getController()->getRequest()->getSession()->start();
+            $session = $this->getController()->getRequest()->getSession();
+            if (!$session->started()) {
+                $session->start();
+            }
 
             $httpStack = new HttpStack(
                 new Client(),
