@@ -5,7 +5,7 @@ ToDo-list:
          i.e. 404 should always be "Not found"
  - Datastructure cleanup:
    - [x] condition/power/item: add 'deprecated' property
-   - [ ] add skill.base property
+   - [x] add skill.base property
    - [x] add skill relation 'times' property
    - [x] remove spells
    - [ ] remove attributes and attributes-items
