@@ -8,9 +8,8 @@ class SocialProfiles extends Migration
     public function up(): void
     {
         $this->table('players')
-            ->addColumn('email', 'string', [
+            ->addColumnString('email', [
                 'after' => 'last_name',
-                'default' => null,
                 'limit' => 191,
                 'null' => true,
             ])
@@ -18,12 +17,12 @@ class SocialProfiles extends Migration
             ->update();
 
         $this->table('social_profiles')
-            ->addColumnInteger('user_id', true)
+            ->addColumnInteger('user_id', ['null' => true])
             ->addColumnString('provider')
             ->addColumnString('identifier')
-            ->addColumnString('username', true)
-            ->addColumnString('full_name', true)
-            ->addColumnString('email', true)
+            ->addColumnString('username', ['null' => true])
+            ->addColumnString('full_name', ['null' => true])
+            ->addColumnString('email', ['null' => true])
             ->addColumnDateTime('created')
             ->addColumnDateTime('modified')
             ->addIndex(['user_id'])

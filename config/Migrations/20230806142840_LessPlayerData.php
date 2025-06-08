@@ -16,18 +16,8 @@ class LessPlayerData extends Migration
     public function down(): void
     {
         $this->table('players')
-            ->addColumn('gender', 'string', [
-                'after' => 'email',
-                'default' => null,
-                'limit' => 1,
-                'null' => true,
-            ])
-            ->addColumn('date_of_birth', 'date', [
-                'after' => 'gender',
-                'default' => null,
-                'limit' => null,
-                'null' => true,
-            ])
+            ->addColumnString('gender', ['after' => 'email', 'limit' => 1, 'null' => true])
+            ->addColumnDate('date_of_birth', ['after' => 'gender'])
             ->update();
     }
 }

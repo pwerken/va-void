@@ -8,6 +8,12 @@ use Phinx\Db\Table\Table as TableValue;
 
 class Table extends BaseTable
 {
+    protected array $columnDefaults = [
+        'default' => null,
+        'limit' => null,
+        'null' => false,
+    ];
+
     public function addForeignKey(
         string|array $columns,
         string|TableValue $referencedTable,
@@ -35,81 +41,57 @@ class Table extends BaseTable
         return parent::addForeignKeyWithName($name, $columns, $referencedTable, $referencedColumns, $options);
     }
 
-    public function addColumnBoolean(string $name): static
+    public function addColumnBoolean(string $name, array $options = []): static
     {
         return $this->addColumn(
             $name,
             'boolean',
-            [
-                'default' => null,
-                'limit' => null,
-                'null' => false,
-            ],
+            array_merge($this->columnDefaults, $options),
         );
     }
 
-    public function addColumnDate(string $name): static
+    public function addColumnDate(string $name, array $options = []): static
     {
         return $this->addColumn(
             $name,
             'date',
-            [
-                'default' => null,
-                'limit' => null,
-                'null' => true,
-            ],
+            array_merge($this->columnDefaults, ['null' => true], $options),
         );
     }
 
-    public function addColumnDateTime(string $name): static
+    public function addColumnDateTime(string $name, array $options = []): static
     {
         return $this->addColumn(
             $name,
             'datetime',
-            [
-                'default' => null,
-                'limit' => null,
-                'null' => true,
-            ],
+            array_merge($this->columnDefaults, ['null' => true], $options),
         );
     }
 
-    public function addColumnInteger(string $name, bool $nullable = false): static
+    public function addColumnInteger(string $name, array $options = []): static
     {
         return $this->addColumn(
             $name,
             'integer',
-            [
-                'default' => null,
-                'limit' => 11,
-                'null' => $nullable,
-            ],
+            array_merge($this->columnDefaults, ['limit' => 11], $options),
         );
     }
 
-    public function addColumnString(string $name, bool $nullable = false): static
+    public function addColumnString(string $name, array $options = []): static
     {
         return $this->addColumn(
             $name,
             'string',
-            [
-                'default' => null,
-                'limit' => 255,
-                'null' => $nullable,
-            ],
+            array_merge($this->columnDefaults, ['limit' => 255], $options),
         );
     }
 
-    public function addColumnText(string $name, bool $nullable = false): static
+    public function addColumnText(string $name, array $options = []): static
     {
         return $this->addColumn(
             $name,
             'text',
-            [
-                'default' => null,
-                'limit' => 255,
-                'null' => $nullable,
-            ],
+            $options,
         );
     }
 }

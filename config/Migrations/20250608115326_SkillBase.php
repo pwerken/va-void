@@ -8,12 +8,7 @@ class SkillBase extends Migration
     public function up(): void
     {
         $this->table('skills')
-           ->addColumn('base_max', 'integer', [
-               'after' => 'cost',
-               'default' => 0,
-               'limit' => 11,
-               'null' => false,
-           ])
+           ->addColumnInteger('base_max', ['after' => 'cost', 'default' => 0])
            ->update();
 
         // all skills with sort_order < 110 are base skills

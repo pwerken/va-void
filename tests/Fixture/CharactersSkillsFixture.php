@@ -13,6 +13,7 @@ class CharactersSkillsFixture extends TestFixture
             [
                 'character_id' => 1,
                 'skill_id' => 1,
+                'times' => 1,
                 'modified' => '2018-06-23 14:38:08',
                 'modifier_id' => 1,
             ],

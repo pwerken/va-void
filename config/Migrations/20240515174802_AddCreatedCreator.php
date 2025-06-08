@@ -8,69 +8,18 @@ class AddCreatedCreator extends Migration
     public function up(): void
     {
         $this->table('items')
-            ->addColumn(
-                'created',
-                'datetime',
-                [ 'default' => null
-                , 'limit' => null
-                , 'null' => true
-                , 'after' => 'deprecated',
-                ],
-            )
-            ->addColumn(
-                'creator_id',
-                'integer',
-                [ 'default' => null
-                , 'limit' => null
-                , 'length' => 11
-                , 'null' => true
-                , 'after' => 'created',
-                ],
-            )
+            ->addColumnDateTime('created', ['after' => 'deprecated'])
+            ->addColumnInteger('creator_id', ['after' => 'created', 'null' => true])
             ->save();
 
         $this->table('conditions')
-            ->addColumn(
-                'created',
-                'datetime',
-                [ 'default' => null
-                , 'limit' => null
-                , 'null' => true
-                , 'after' => 'deprecated',
-                ],
-            )
-            ->addColumn(
-                'creator_id',
-                'integer',
-                [ 'default' => null
-                , 'limit' => null
-                , 'length' => 11
-                , 'null' => true
-                , 'after' => 'created',
-                ],
-            )
+            ->addColumnDateTime('created', ['after' => 'deprecated'])
+            ->addColumnInteger('creator_id', ['after' => 'created', 'null' => true])
             ->save();
 
         $this->table('powers')
-            ->addColumn(
-                'created',
-                'datetime',
-                [ 'default' => null
-                , 'limit' => null
-                , 'null' => true
-                , 'after' => 'deprecated',
-                ],
-            )
-            ->addColumn(
-                'creator_id',
-                'integer',
-                [ 'default' => null
-                , 'limit' => null
-                , 'length' => 11
-                , 'null' => true
-                , 'after' => 'created',
-                ],
-            )
+            ->addColumnDateTime('created', ['after' => 'deprecated'])
+            ->addColumnInteger('creator_id', ['after' => 'created', 'null' => true])
             ->save();
 
         // set initial created/creator_field based on modified/modifier_id

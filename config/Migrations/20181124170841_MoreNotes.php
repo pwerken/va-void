@@ -8,42 +8,22 @@ class MoreNotes extends Migration
     public function up(): void
     {
         $this->table('characters')
-            ->addColumn('referee_notes', 'text', [
-                'after' => 'status',
-                'default' => null,
-                'limit' => null,
-                'null' => true,
-            ])
+            ->addColumnText('referee_notes', ['after' => 'status', 'null' => true])
             ->renameColumn('comments', 'notes')
             ->update();
 
         $this->table('items')
-            ->addColumn('referee_notes', 'text', [
-                'after' => 'player_text',
-                'default' => null,
-                'limit' => null,
-                'null' => true,
-            ])
+            ->addColumnText('referee_notes', ['after' => 'player_text', 'null' => true])
             ->renameColumn('cs_text', 'notes')
             ->update();
 
         $this->table('conditions')
-            ->addColumn('referee_notes', 'text', [
-                'after' => 'player_text',
-                'default' => null,
-                'limit' => null,
-                'null' => true,
-            ])
+            ->addColumnText('referee_notes', ['after' => 'player_text', 'null' => true])
             ->renameColumn('cs_text', 'notes')
             ->update();
 
         $this->table('powers')
-            ->addColumn('referee_notes', 'text', [
-                'after' => 'player_text',
-                'default' => null,
-                'limit' => null,
-                'null' => true,
-            ])
+            ->addColumnText('referee_notes', ['after' => 'player_text', 'null' => true])
             ->renameColumn('cs_text', 'notes')
             ->update();
     }

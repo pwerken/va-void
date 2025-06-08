@@ -31,12 +31,7 @@ class CreatorModifier extends Migration
         $this->tableAddModifierColumnAfter('worlds');
 
         $this->table('lammies')
-            ->addColumn('creator_id', 'integer', [
-                'after' => 'created',
-                'default' => null,
-                'length' => 11,
-                'null' => true,
-            ])
+            ->addColumnInteger('creator_id', ['after' => 'created', 'null' => true])
             ->update();
     }
 
@@ -71,24 +66,14 @@ class CreatorModifier extends Migration
     protected function tableAddModifiedColumnAfter(string $table, string $column): void
     {
         $this->table($table)
-            ->addColumn('modified', 'datetime', [
-                'after' => $column,
-                'default' => null,
-                'length' => null,
-                'null' => true,
-            ])
+            ->addColumnDateTime('modified', ['after' => $column])
             ->update();
     }
 
     protected function tableAddModifierColumnAfter(string $table, string $column = 'modified'): void
     {
         $this->table($table)
-            ->addColumn('modifier_id', 'integer', [
-                'after' => $column,
-                'default' => null,
-                'length' => 11,
-                'null' => true,
-            ])
+            ->addColumnInteger('modifier_id', ['after' => $column, 'null' => true])
             ->update();
     }
 }

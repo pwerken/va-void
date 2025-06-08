@@ -8,18 +8,8 @@ class SkillsLoreBlanks extends Migration
     public function up(): void
     {
         $this->table('skills')
-            ->addColumn('loresheet', 'boolean', [
-                'after' => 'mana_amount',
-                'default' => null,
-                'limit' => 1,
-                'null' => false,
-            ])
-            ->addColumn('blanks', 'boolean', [
-                'after' => 'loresheet',
-                'default' => null,
-                'limit' => null,
-                'null' => false,
-            ])
+            ->addColumnBoolean('loresheet', ['after' => 'mana_amount'])
+            ->addColumnBoolean('blanks', ['after' => 'loresheet'])
             ->update();
 
         // fill columns based on skill name

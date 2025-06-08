@@ -9,20 +9,10 @@ class SkillMultipleTimes extends Migration
     {
        // add columns
         $this->table('characters_skills')
-           ->addColumn('times', 'integer', [
-               'after' => 'skill_id',
-               'default' => 1,
-               'limit' => 11,
-               'null' => false,
-           ])
+           ->addColumnInteger('times', ['after' => 'skill_id', 'default' => 1])
            ->update();
         $this->table('skills')
-           ->addColumn('times_max', 'integer', [
-               'after' => 'cost',
-               'default' => 1,
-               'limit' => 11,
-               'null' => false,
-           ])
+           ->addColumnInteger('times_max', ['after' => 'cost', 'default' => 1])
            ->update();
 
         // converting old skills entries that are multiples...

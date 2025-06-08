@@ -8,39 +8,15 @@ class AddDeprecatedIndicator extends Migration
     public function up(): void
     {
         $this->table('conditions')
-            ->addColumn(
-                'deprecated',
-                'boolean',
-                [ 'default' => false
-                , 'limit' => null
-                , 'null' => false
-                , 'after' => 'notes',
-                ],
-            )
+            ->addColumnBoolean('deprecated', [ 'after' => 'notes', 'default' => false])
             ->update();
 
         $this->table('powers')
-            ->addColumn(
-                'deprecated',
-                'boolean',
-                [ 'default' => false
-                , 'limit' => null
-                , 'null' => false
-                , 'after' => 'notes',
-                ],
-            )
+            ->addColumnBoolean('deprecated', [ 'after' => 'notes', 'default' => false])
             ->update();
 
         $this->table('items')
-            ->addColumn(
-                'deprecated',
-                'boolean',
-                [ 'default' => false
-                , 'limit' => null
-                , 'null' => false
-                , 'after' => 'expiry',
-                ],
-            )
+            ->addColumnBoolean('deprecated', [ 'after' => 'expiry', 'default' => false])
             ->update();
     }
 

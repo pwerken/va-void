@@ -81,9 +81,7 @@ class RemoveSpells extends Migration
         $this->relationTable('characters_spells', ['character_id', 'spell_id'])
             ->addColumnInteger('level')
             ->addColumnDateTime('modified')
-            ->addColumnInteger('modifier_id', true)
-            ->addIndex(['character_id'])
-            ->addIndex(['spell_id'])
+            ->addColumnInteger('modifier_id', ['null' => true])
             ->addForeignKey(
                 'character_id',
                 'characters',

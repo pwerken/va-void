@@ -8,9 +8,9 @@ class Initial extends Migration
     public function up(): void
     {
         $this->table('attributes')
-            ->addColumnString('name', true)
-            ->addColumnString('category', true)
-            ->addColumn('code', 'string', ['default' => null, 'limit' => 2, 'null' => false ])
+            ->addColumnString('name', ['null' => true])
+            ->addColumnString('category', ['null' => true])
+            ->addColumnString('code', ['limit' => 2])
             ->addIndex(['category', 'id' ])
             ->create();
 
@@ -25,12 +25,7 @@ class Initial extends Migration
 
         $this->table('characters')
             ->addColumnInteger('player_id')
-            ->addColumn('chin', 'integer', [
-                'default' => '1',
-                'limit' => 2,
-                'null' => false,
-                'signed' => false,
-            ])
+            ->addColumnInteger('chin', ['default' => '1', 'limit' => 2])
             ->addColumnString('name')
             ->addColumn('xp', 'decimal', [
                 'default' => '15.0',
@@ -43,13 +38,9 @@ class Initial extends Migration
             ->addColumnInteger('belief_id')
             ->addColumnInteger('group_id')
             ->addColumnInteger('world_id')
-            ->addColumn('soulpath', 'string', [
-                'default' => null,
-                'limit' => 2,
-                'null' => false,
-            ])
+            ->addColumnString('soulpath', ['limit' => 2])
             ->addColumnString('status')
-            ->addColumnText('comments', true)
+            ->addColumnText('comments', ['null' => true])
             ->addColumnDateTime('modified')
             ->addIndex(['player_id'])
             ->addIndex(['player_id', 'chin'])
@@ -77,7 +68,7 @@ class Initial extends Migration
         $this->table('conditions')
             ->addColumnString('name')
             ->addColumnText('player_text')
-            ->addColumnText('cs_text', true)
+            ->addColumnText('cs_text', ['null' => true])
             ->addColumnDateTime('modified')
             ->create();
 
@@ -95,10 +86,10 @@ class Initial extends Migration
 
         $this->table('items')
             ->addColumnString('name')
-            ->addColumnString('description', true)
-            ->addColumnText('player_text', true)
-            ->addColumnText('cs_text', true)
-            ->addColumnInteger('character_id', true)
+            ->addColumnString('description', ['null' => true])
+            ->addColumnText('player_text', ['null' => true])
+            ->addColumnText('cs_text', ['null' => true])
+            ->addColumnInteger('character_id', ['null' => true])
             ->addColumnDate('expiry')
             ->addColumnDateTime('modified')
             ->addIndex(['character_id'])
@@ -108,7 +99,7 @@ class Initial extends Migration
             ->addColumnString('status')
             ->addColumnString('entity')
             ->addColumnInteger('key1')
-            ->addColumnInteger('key2', true)
+            ->addColumnInteger('key2', ['null' => true])
             ->addColumnDateTime('created')
             ->addColumnDateTime('modified')
             ->addIndex(['status', 'id'])
@@ -120,15 +111,11 @@ class Initial extends Migration
 
         $this->table('players')
             ->addColumnString('role')
-            ->addColumnString('password', true)
-            ->addColumnString('first_name', true)
-            ->addColumnString('insertion', true)
-            ->addColumnString('last_name', true)
-            ->addColumn('gender', 'string', [
-                'default' => null,
-                'limit' => 1,
-                'null' => true,
-            ])
+            ->addColumnString('password', ['null' => true])
+            ->addColumnString('first_name', ['null' => true])
+            ->addColumnString('insertion', ['null' => true])
+            ->addColumnString('last_name', ['null' => true])
+            ->addColumnString('gender', ['limit' => 1, 'null' => true])
             ->addColumnDate('date_of_birth')
             ->addColumnDateTime('modified')
             ->create();
@@ -136,16 +123,16 @@ class Initial extends Migration
         $this->table('powers')
             ->addColumnString('name')
             ->addColumnText('player_text')
-            ->addColumnText('cs_text', true)
+            ->addColumnText('cs_text', ['null' => true])
             ->addColumnDateTime('modified')
             ->create();
 
         $this->table('skills')
             ->addColumnString('name')
             ->addColumnInteger('cost')
-            ->addColumnInteger('manatype_id', true)
-            ->addColumnInteger('mana_amount', true)
-            ->addColumnInteger('sort_order', true)
+            ->addColumnInteger('manatype_id', ['null' => true])
+            ->addColumnInteger('mana_amount', ['null' => true])
+            ->addColumnInteger('sort_order', ['null' => true])
             ->addColumnBoolean('deprecated')
             ->addIndex(['manatype_id'])
             ->addIndex(['sort_order', 'name'])

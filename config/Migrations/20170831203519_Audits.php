@@ -10,10 +10,10 @@ class Audits extends Migration
         $this->table('audits')
             ->addColumnString('entity')
             ->addColumnInteger('key1')
-            ->addColumnInteger('key2', true)
-            ->addColumnText('data', true)
+            ->addColumnInteger('key2', ['null' => true])
+            ->addColumnText('data', ['null' => true])
             ->addColumnDateTime('modified')
-            ->addColumnInteger('modifier_id', true)
+            ->addColumnInteger('modifier_id', ['null' => true])
             ->create();
     }
 

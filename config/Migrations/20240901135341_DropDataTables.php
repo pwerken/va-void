@@ -15,12 +15,7 @@ class DropDataTables extends Migration
     protected function removeLookupTable(string $lookupTable, string $reference, string $name): void
     {
         $this->table('characters')
-            ->addColumn($name, 'string', [
-                'default' => '-',
-                'limit' => 255,
-                'null' => false,
-                'after' => $reference,
-            ])
+            ->addColumnString($name, ['after' => $reference, 'default' => '-'])
             ->addIndex([$name])
             ->update();
 
@@ -55,29 +50,10 @@ class DropDataTables extends Migration
     protected function restoreLookupTable(string $lookupTable, string $reference, string $name): void
     {
         $this->table($lookupTable)
-            ->addColumn('name', 'string', [
-                'default' => null,
-                'limit' => 255,
-                'null' => false,
-            ])
-            ->addColumn(
-                'modified',
-                'datetime',
-                [ 'default' => null
-                , 'limit' => null
-                , 'null' => true,
-                ],
-            )
-            ->addColumn(
-                'modifier_id',
-                'integer',
-                [ 'default' => null
-                , 'limit' => null
-                , 'length' => 11
-                , 'null' => true,
-                ],
-            )
-            ->addIndex([ 'name' ])
+            ->addColumnString('name')
+            ->addColumnDateTime('modified')
+            ->addColumnInteger('modifier_id', ['null' => true])
+            ->addIndex(['name'])
             ->create();
 
         // fill lookup tables
@@ -94,12 +70,7 @@ class DropDataTables extends Migration
 
         // re-add foreign key fields
         $this->table('characters')
-            ->addColumn($reference, 'integer', [
-                'default' => 1,
-                'limit' => 11,
-                'null' => false,
-                'after' => $name,
-            ])
+            ->addColumn($reference, 'integer', ['after' => $name, 'default' => 1])
             ->update();
         $this->table('characters')
             ->addForeignKey(
