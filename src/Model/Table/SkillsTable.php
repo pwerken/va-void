@@ -17,7 +17,7 @@ class SkillsTable extends Table
 
         $this->belongsTo('Manatypes');
 
-        $this->hasMany('CharactersSkills')->setProperty('characters');
+        $this->belongsToManyThrough('Characters', 'CharactersSkills');
     }
 
     public function buildRules(RulesChecker $rules): RulesChecker

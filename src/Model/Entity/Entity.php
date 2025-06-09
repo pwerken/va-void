@@ -42,12 +42,21 @@ abstract class Entity extends CakeEntity
         return strtolower(Inflector::pluralize($this->getClass()));
     }
 
-    protected function getRelationUrl(string $first, string $second, ?Entity $fallback): string
+    protected function getRelationUrl(string $first, string $second, array $objs): string
     {
-        $a = $this->$first ?? $fallback;
-        $b = $this->$second ?? $fallback;
+        $a = $this->{strtolower($first)}?->getUrl();
+        $b = $this->{strtolower($second)}?->getUrl();
 
-        return $a->getUrl() . $b->getUrl();
+        foreach ($objs as $obj) {
+            if ($obj->getClass() === $first) {
+                $a = $obj->getUrl();
+            }
+            if ($obj->getClass() === $second) {
+                $b = $obj->getUrl();
+            }
+        }
+
+        return $a . $b;
     }
 
     public function getUrl(): string

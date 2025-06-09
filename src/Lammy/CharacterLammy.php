@@ -69,12 +69,12 @@ class CharacterLammy extends LammyCard
         $data['mana']['Willpower'] = 0;
         $data['skills'] = [];
 
-        foreach ($this->entity->skills as $relation) {
-            $skill = $relation->skill;
+        foreach ($this->entity->skills as $skill) {
+            $relation = $skill->_joinData;
             $times = $relation->times;
 
             $data['xp'] += $times * $skill->cost;
-            $data['skills'][] = $relation->printableName();
+            $data['skills'][] = $relation->printableName($skill);
 
             if (!isset($skill->manatype)) {
                 continue;

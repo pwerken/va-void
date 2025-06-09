@@ -25,9 +25,9 @@ class CharactersTable extends Table
         $this->belongsTo('Factions')->setProperty('faction_object');
 
         $this->hasMany('Items');
-        $this->hasMany('CharactersConditions')->setProperty('conditions');
-        $this->hasMany('CharactersPowers')->setProperty('powers');
-        $this->hasMany('CharactersSkills')->setProperty('skills');
+        $this->belongsToManyThrough('Conditions', 'CharactersConditions');
+        $this->belongsToManyThrough('Powers', 'CharactersPowers');
+        $this->belongsToManyThrough('Skills', 'CharactersSkills');
 
         $this->hasMany('MyStudents', ['className' => 'Teachings'])
                 ->setForeignKey('teacher_id')->setProperty('students');
@@ -185,9 +185,9 @@ class CharactersTable extends Table
             'Factions',
             'Players',
             'Items',
-            'CharactersConditions.Conditions',
-            'CharactersPowers.Powers',
-            'CharactersSkills.Skills.Manatypes',
+            'Conditions',
+            'Powers',
+            'Skills.Manatypes',
             'MyTeacher' => ['Teacher', 'Student', 'Skills.Manatypes', 'Started', 'Updated'],
             'MyStudents' => ['Teacher', 'Student', 'Skills.Manatypes', 'Started', 'Updated'],
         ];

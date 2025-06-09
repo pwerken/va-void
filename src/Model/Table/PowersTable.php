@@ -15,7 +15,7 @@ class PowersTable extends Table
     {
         parent::initialize($config);
 
-        $this->hasMany('CharactersPowers')->setProperty('characters');
+        $this->belongsToManyThrough('Characters', 'CharactersPowers');
     }
 
     public function buildRules(RulesChecker $rules): RulesChecker
@@ -41,7 +41,7 @@ class PowersTable extends Table
 
     protected function contain(): array
     {
-        return ['CharactersPowers.Characters'];
+        return ['Characters'];
     }
 
     protected function orderBy(): array

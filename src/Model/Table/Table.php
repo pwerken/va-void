@@ -168,6 +168,11 @@ abstract class Table extends CakeTable
         return $query;
     }
 
+    protected function belongsToManyThrough(string $associated, string $linktable): void
+    {
+        $this->belongsToMany($associated, ['through' => $linktable]);
+    }
+
     protected function contain(): array
     {
         return [];

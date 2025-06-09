@@ -15,7 +15,7 @@ class ConditionsTable extends Table
     {
         parent::initialize($config);
 
-        $this->hasMany('CharactersConditions')->setProperty('characters');
+        $this->belongsToManyThrough('Characters', 'CharactersConditions');
     }
 
     public function buildRules(RulesChecker $rules): RulesChecker
@@ -41,7 +41,7 @@ class ConditionsTable extends Table
 
     protected function contain(): array
     {
-        return ['CharactersConditions.Characters'];
+        return ['Characters'];
     }
 
     protected function orderBy(): array
