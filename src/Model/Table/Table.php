@@ -35,28 +35,6 @@ abstract class Table extends CakeTable
         foreach ($this->orderBy() as $field => $ord) {
             $query->orderBy([$this->aliasField($field) => $ord]);
         }
-
-        if (is_array($this->getPrimaryKey())) {
-            $event->setResult($query);
-
-            return;
-        }
-
-        $query->sql(); // force evaluation of internal state/objects
-        foreach ($query->clause('join') as $join) {
-            if (!$this->hasAssociation($join['table'])) {
-                continue;
-            }
-
-            $table = TableRegistry::getTableLocator()->get($join['table']);
-            $table->setAlias($join['alias']);
-
-            foreach ($table->orderBy() as $field => $ord) {
-                $query->orderBy([$table->aliasField($field) => $ord]);
-            }
-        }
-
-        $event->setResult($query);
     }
 
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
@@ -95,7 +73,7 @@ abstract class Table extends CakeTable
 
     public function afterMarshal(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
-        /* disallow modification of primary key field(s) */
+        // disallow modification of primary key field(s)
         if ($entity->isNew()) {
             return;
         }
