@@ -9,19 +9,17 @@ class CharactersSkill extends Entity
     {
         parent::__construct($properties, $options);
 
-        $this->setCompact(['character', 'skill', 'times']);
+        $this->setCompact(['times', 'character', 'skill']);
         $this->setHidden(['character_id', 'skill_id'], true);
     }
 
-    public function getUrl(?Entity $parent = null): string
+    public function getUrl(array $parents = []): string
     {
-        return $this->getRelationUrl('character', 'skill', $parent);
+        return $this->getRelationUrl('character', 'skill', $parents);
     }
 
-    public function printableName(): string
+    public function printableName(Skill $skill): string
     {
-        $skill = $this->get('skill');
-
         $name = $skill->name;
         $times = $this->get('times');
         if ($times > 1) {

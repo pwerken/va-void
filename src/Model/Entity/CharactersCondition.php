@@ -13,8 +13,8 @@ class CharactersCondition extends Entity
         $this->setHidden(['character_id', 'condition_id'], true);
     }
 
-    public function getUrl(?Entity $parent = null): string
+    public function getUrl(array $parents = []): string
     {
-        return $this->getRelationUrl('character', 'condition', $parent);
+        return $this->getRelationUrl('character', 'condition', $parents);
     }
 }

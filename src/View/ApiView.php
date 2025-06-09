@@ -15,7 +15,7 @@ use Cake\View\View;
  */
 class ApiView extends View
 {
-    private array $_aliases = [
+    protected array $aliases = [
         'Character' => ['player_id' => 'plin'],
         'Condition' => ['id' => 'coin'],
         'Item' => ['id' => 'itin'],
@@ -31,110 +31,105 @@ class ApiView extends View
 
     public function render(?string $template = null, string|false|null $layout = null): string
     {
-        $parent = $this->get('parent');
+        $this->response = $this->response->withType('json');
+
         $data = $this->get('_serialize', $this->viewVars);
         if ($data instanceof Entity) {
-            $data = $this->_jsonData($data);
+            $data = $this->jsonEntity($data);
+        } elseif ($data instanceof ResultSet) {
+            $parent = $this->get('parent');
+            $data = $this->jsonArray($data->toArray(), $parent);
         }
-        if ($data instanceof ResultSet) {
-            $data = $this->_jsonList($data->toArray(), $parent);
-        }
-
-        if (isset($parent)) {
-            $result = [];
-            $result['class'] = $data['class'];
-            $result['url'] = $data['url'];
-            $result['parent'] = $this->_jsonCompact($parent);
-            $result['list'] = $data['list'];
-            $data = $result;
-        }
-
-        $this->response = $this->response->withType('json');
 
         return Json::encode($data);
     }
 
-    private function _jsonData(Entity $obj): array
+    protected function jsonEntity(Entity $obj): array
     {
         $class = $obj->getClass();
+
         $result = [];
         $result['class'] = $class;
         $result['url'] = $obj->getUrl();
 
         $this->authorize->applyScope('visible', $obj);
-        foreach ($obj->getVisible() as $key) {
-            $value = $obj->get($key);
+        foreach ($obj->getVisible() as $field) {
+            $value = $obj->get($field);
 
-            $label = Inflector::camelize('label_' . $key);
-            if (method_exists($obj, $label)) {
-                $value = call_user_func([$obj, $label], $value);
-            }
-
-            if (isset($this->_aliases[$class][$key])) {
-                $key = $this->_aliases[$class][$key];
-            }
-
-            if (is_array($value)) {
-                $value = $this->_jsonList($value, $obj, $key);
+            if ($value instanceof Entity) {
+                $value = $this->jsonCompact($value, $obj);
+            } elseif (is_array($value)) {
+                $value = $this->jsonArray($value, $obj, $field);
                 unset($value['parent']);
             } else {
-                $value = $this->_jsonCompact($value, $obj, $obj->getUrl());
+                $label = Inflector::camelize('label_' . $field);
+                if (method_exists($obj, $label)) {
+                    $value = call_user_func([$obj, $label], $value);
+                }
             }
 
-            $result[$key] = $value;
+            if (isset($this->aliases[$class][$field])) {
+                $field = $this->aliases[$class][$field];
+            }
+            $result[$field] = $value;
         }
 
         return $result;
     }
 
-    private function _jsonList(array $list, ?Entity $parent = null, ?string $key = null): array
+    protected function jsonArray(array $list, ?Entity $parent, ?string $key = null): array
     {
         $result = [];
         $result['class'] = 'List';
         $result['url'] = '';
 
-        $parentUrl = null;
-        $remove = '';
         if ($parent) {
-            $parentUrl = $parent->getUrl();
-            $remove = strtolower($parent->getClass());
-            $result['url'] = $parentUrl . '/' . $key;
-            $result['parent'] = $this->_jsonCompact($parent);
+            $result['url'] = $parent->getUrl() . '/' . $key;
+            $result['parent'] = $this->jsonCompact($parent);
         }
 
         $result['list'] = [];
         foreach ($list as $obj) {
-            $value = $this->_jsonCompact($obj, $parent, $parentUrl);
-            unset($value[$remove]);
-            $result['list'][] = $value;
+            if ($obj instanceof Entity) {
+                $result['list'][] = $this->jsonCompact($obj, $parent);
+            } else {
+                $result['list'][] = $obj;
+            }
         }
 
         return $result;
     }
 
-    private function _jsonCompact(mixed $obj, ?Entity $parent = null, ?string $url = null): mixed
+    protected function jsonCompact(Entity $obj, ?Entity $parent = null): mixed
     {
-        if (!($obj instanceof Entity)) {
-            return $obj;
-        }
-
         $class = $obj->getClass();
+        $skip = strtolower($parent?->getClass() ?? '');
 
         $result = [];
         $result['class'] = $class;
-        $result['url'] = $obj->getUrl($parent);
+        $result['url'] = $obj->getUrl([$parent]);
 
-        foreach ($obj->getCompact() as $key) {
-            $value = $this->_jsonCompact($obj->get($key), $obj);
-            if (isset($this->_aliases[$class][$key])) {
-                $key = $this->_aliases[$class][$key];
+        foreach ($obj->getCompact() as $field) {
+            if ($field === $skip) {
+                continue;
             }
-            if (isset($url) && is_array($value) && isset($value['url'])) {
-                if ($url == $value['url']) {
-                    continue;
-                }
+
+            $value = $obj->get($field);
+            if ($value instanceof Entity) {
+                $value = $this->jsonCompact($value, $obj);
             }
-            $result[$key] = $value;
+
+            if (isset($this->aliases[$class][$field])) {
+                $field = $this->aliases[$class][$field];
+            }
+            $result[$field] = $value;
+        }
+
+        // joinData should be in between $parent en $obj
+        if (isset($obj->_joinData)) {
+            $join = $this->jsonCompact($obj->_joinData, $parent);
+            $join[strtolower($class)] = $result;
+            $result = $join;
         }
 
         return $result;

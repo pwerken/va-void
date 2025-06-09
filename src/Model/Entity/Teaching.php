@@ -26,9 +26,9 @@ class Teaching extends Entity
         return $this->get('updated_object')->name;
     }
 
-    public function getUrl(?Entity $fallback = null): string
+    public function getUrl(array $parents = []): string
     {
-        $student = $this->student ?? $fallback;
+        $student = $this->student ?? $parents[0];
 
         return $student->getUrl() . '/teacher';
     }

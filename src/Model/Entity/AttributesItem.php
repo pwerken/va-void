@@ -13,8 +13,8 @@ class AttributesItem extends Entity
         $this->setHidden(['attribute_id', 'item_id'], true);
     }
 
-    public function getUrl(?Entity $parent = null): string
+    public function getUrl(array $parents = []): string
     {
-        return $this->getRelationUrl('item', 'attribute', $parent);
+        return $this->getRelationUrl('item', 'attribute', $parents);
     }
 }
