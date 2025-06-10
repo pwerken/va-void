@@ -14,15 +14,24 @@ class TeachingsTable extends Table
 
         $this->setPrimaryKey('student_id');
 
-        $this->belongsTo('Teacher', ['className' => 'Characters'])
-            ->setForeignKey('teacher_id')->setProperty('teacher');
-        $this->belongsTo('Skills');
-        $this->belongsTo('Student', ['className' => 'Characters'])
-            ->setForeignKey('student_id')->setProperty('student');
-        $this->belongsTo('Started', ['className' => 'Events'])
-            ->setForeignKey('started_id')->setProperty('started_object');
-        $this->belongsTo('Updated', ['className' => 'Events'])
-            ->setForeignKey('updated_id')->setProperty('updated_object');
+        $this->hasOne('Teacher', [
+            'className' => 'Characters',
+            'bindingKey' => 'teacher_id',
+            'foreignKey' => 'id',
+            'propertyName' => 'teacher',
+        ]);
+        $this->hasOne('Student', [
+            'className' => 'Characters',
+            'bindingKey' => 'student_id',
+            'foreignKey' => 'id',
+            'propertyName' => 'student',
+        ]);
+        $this->hasOne('Skill', [
+            'className' => 'Skills',
+            'bindingKey' => 'skill_id',
+            'foreignKey' => 'id',
+            'propertyName' => 'skill',
+        ]);
     }
 
     public function validationDefault(Validator $validator): Validator
@@ -32,8 +41,6 @@ class TeachingsTable extends Table
         $validator->notEmpty('teacher_id');
         $validator->notEmpty('skill_id');
         $validator->notEmpty('xp');
-        $validator->notEmpty('started_id');
-        $validator->notEmpty('updated_id');
 
         // regex for xp validation
         $xp_regex = '/^[0-9]*(?:[.,](?:[05]|[27]5)0*)?$/';
@@ -42,14 +49,10 @@ class TeachingsTable extends Table
         $validator->add('teacher_id', 'valid', ['rule' => 'numeric']);
         $validator->add('xp', 'valid', ['rule' => ['custom', $xp_regex]]);
         $validator->add('skill_id', 'valid', ['rule' => 'numeric']);
-        $validator->add('started_id', 'valid', ['rule' => 'numeric']);
-        $validator->add('updated_id', 'valid', ['rule' => 'numeric']);
 
         $validator->requirePresence('student_id', 'create');
         $validator->requirePresence('teacher_id', 'create');
         $validator->requirePresence('skill_id', 'create');
-        $validator->requirePresence('started_id', 'create');
-        $validator->requirePresence('updated_id', 'create');
 
         return $validator;
     }
@@ -59,8 +62,6 @@ class TeachingsTable extends Table
         $rules->add($rules->existsIn('student_id', 'Student'));
         $rules->add($rules->existsIn('teacher_id', 'Teacher'));
         $rules->add($rules->existsIn('skill_id', 'Skills'));
-        $rules->add($rules->existsIn('started_id', 'Started'));
-        $rules->add($rules->existsIn('updated_id', 'Updated'));
 
         return $rules;
     }
@@ -78,7 +79,7 @@ class TeachingsTable extends Table
 
     protected function contain(): array
     {
-        return ['Student', 'Teacher', 'Skills', 'Started', 'Updated'];
+        return ['Student', 'Teacher', 'Skill.Manatypes'];
     }
 
     protected function orderBy(): array

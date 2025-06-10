@@ -47,7 +47,6 @@ class TeachingLammy extends LammyCard
         $this->text(0, 13, 12, 'R', 'Teacher');
         $this->text(0, 20, 12, 'R', 'Student');
         $this->text(0, 27, 12, 'R', 'Skill Name');
-        $this->text(0, 33, 12, 'R', 'Started');
 
         $this->font(8, 'B');
         $this->text(0, 4, 8, 'C', 'TXP');
@@ -58,20 +57,6 @@ class TeachingLammy extends LammyCard
 
         $this->pdf->SetTextColor(63);
         $this->font(26, 'B');
-
-        [$txp, $xp] = $this->entity->progress();
-        for ($i = 0; $i < 6; $i++) {
-            $x = $i * 8;
-            $this->square($x, 0, 8 + $x, 8);
-            $this->square($x, 37, 8 + $x, 45);
-
-            if ($i < $txp) {
-                $this->text(8 + $x, 4.6, 8, 'C', 'X');
-            }
-            if ($i < $xp) {
-                $this->text(8 + $x, 41.5, 8, 'C', 'X');
-            }
-        }
 
         $this->pdf->SetTextColor(0);
         $this->font(11, 'B');
@@ -86,6 +71,5 @@ class TeachingLammy extends LammyCard
         $this->text(28, 20, 47, 'L', $p->name);
 
         $this->text(12, 27, 60, 'L', $this->entity->skill->name);
-        $this->text(12, 33, 60, 'L', $this->entity->started);
     }
 }

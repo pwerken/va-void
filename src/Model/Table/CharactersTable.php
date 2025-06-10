@@ -29,10 +29,16 @@ class CharactersTable extends Table
         $this->belongsToManyThrough('Powers', 'CharactersPowers');
         $this->belongsToManyThrough('Skills', 'CharactersSkills');
 
-        $this->hasMany('MyStudents', ['className' => 'Teachings'])
-                ->setForeignKey('teacher_id')->setProperty('students');
-        $this->hasOne('MyTeacher', ['className' => 'Teachings'])
-                ->setForeignKey('student_id')->setProperty('teacher');
+        $this->hasOne('MyTeacher', [
+            'className' => 'Teachings',
+            'foreignKey' => 'student_id',
+            'propertyName' => 'teacher',
+        ]);
+        $this->hasMany('MyStudents', [
+            'className' => 'Teachings',
+            'foreignKey' => 'teacher_id',
+            'propertyName' => 'students',
+        ]);
     }
 
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
@@ -188,8 +194,8 @@ class CharactersTable extends Table
             'Conditions',
             'Powers',
             'Skills.Manatypes',
-            'MyTeacher' => ['Teacher', 'Student', 'Skills.Manatypes', 'Started', 'Updated'],
-            'MyStudents' => ['Teacher', 'Student', 'Skills.Manatypes', 'Started', 'Updated'],
+            'MyTeacher' => ['Teacher', 'Skill.Manatypes'],
+            'MyStudents' => ['Student', 'Skill.Manatypes'],
         ];
     }
 

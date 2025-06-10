@@ -21,7 +21,7 @@ class Character extends Entity
 
         $this->setCompact(['player_id', 'chin', 'name', 'status']);
 
-        $this->setVirtual(['teacher', 'faction']);
+        $this->setVirtual(['faction']);
 
         $this->setHidden(['id'], true);
         $this->setHidden(['faction_id', 'faction_object'], true);
