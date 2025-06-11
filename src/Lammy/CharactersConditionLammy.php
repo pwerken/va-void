@@ -19,7 +19,7 @@ class CharactersConditionLammy extends LammyCard
 
             $expiry = $this->entity->expiry ?: 'Until death';
             if (!is_string($expiry)) {
-                $expiry = $expiry->jsonSerialize();
+                $expiry = (string)$expiry;
             }
             $data['expiry'] = $expiry;
         }

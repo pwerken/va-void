@@ -44,7 +44,7 @@ class ItemLammy extends LammyCard
 
         $expiry = $this->entity->expiry ?: 'Permanent';
         if (!is_string($expiry)) {
-            $expiry = $expiry->jsonSerialize();
+            $expiry = (string)$expiry;
         }
 
         $this->font(11, 'B');

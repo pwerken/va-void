@@ -145,7 +145,7 @@ class HistoryTable extends Table
                     $row['name'] = implode(' ', array_filter($name));
                 }
                 $row['entity'] = $entity;
-                $row['modified'] = $dateParser->marshal($row['modified'])->jsonSerialize();
+                $row['modified'] = (string)$dateParser->marshal($row['modified']);
                 $list[] = $row;
             }
         }

@@ -40,6 +40,7 @@ use Cake\Error\ErrorTrap;
 use Cake\Error\ExceptionTrap;
 use Cake\I18n\Date;
 use Cake\I18n\Time;
+use Cake\I18n\DateTime;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
@@ -216,3 +217,4 @@ Security::setSalt(Configure::consume('Security.salt'));
 // and https://unicode-org.github.io/icu/userguide/format_parse/datetime/#datetime-format-syntax
 Date::setToStringFormat('yyyy-MM-dd');
 Time::setToStringFormat('yyyy-MM-dd HH:mm:ss');
+DateTime::setToStringFormat('yyyy-MM-dd HH:mm:ss');

@@ -131,7 +131,7 @@ class History extends CakeEntity
             return '(??)';
         }
 
-        return $modified->jsonSerialize();
+        return (string)$modified;
     }
 
     public function modifierString(): string
