@@ -30,8 +30,10 @@ class History extends CakeEntity
             $history->set('key' . ($key + 1), $data[$field]);
             unset($data[$field]);
         }
-        $history->set('modified', $data['modified']);
-        unset($data['modified']);
+        if (isset($data['modified'])) {
+            $history->set('modified', $data['modified']);
+            unset($data['modified']);
+        }
 
         if (isset($data['modifier_id'])) {
             $history->set('modifier_id', $data['modifier_id']);

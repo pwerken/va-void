@@ -140,7 +140,7 @@ class HistoryTable extends Table
                 if ($select['key1'] == $select['key2']) {
                     $row['key2'] = null;
                 }
-                if (is_null($row['name']) && $tbl == 'Players') {
+                if ($tbl == 'Players') {
                     $name = [$row['first_name'], $row['insertion'], $row['last_name']];
                     $row['name'] = implode(' ', array_filter($name));
                 }
@@ -256,15 +256,15 @@ class HistoryTable extends Table
             return [];
         }
 
-        $list = $this->find()
+        $history = $this->find()
             ->where(['entity' => 'Player', 'key1' => $plin])
             ->all()
             ->toList();
 
-        $list[] = History::fromEntity($entity);
-        usort($list, ['App\Model\Entity\History', 'compare']);
+        $history[] = History::fromEntity($entity);
+        usort($history, ['App\Model\Entity\History', 'compare']);
 
-        return $list;
+        return $history;
     }
 
     private function getCharacterHistory(int $plin, int $chin): array
@@ -278,23 +278,33 @@ class HistoryTable extends Table
             return [];
         }
 
-        $id = $entity->get('id');
-        $list = $this->find()
-            ->where(['entity LIKE' => 'Character%', 'key1' => $id])
+        $list = [History::fromEntity($entity)];
+
+        foreach ($entity->conditions as $condition) {
+            $relation = $condition->_joinData;
+            $relation->condition = $condition;
+            $list[] = History::fromEntity($relation);
+        }
+
+        foreach ($entity->powers as $power) {
+            $relation = $power->_joinData;
+            $relation->power = $power;
+            $list[] = History::fromEntity($relation);
+        }
+
+        foreach ($entity->skills as $skill) {
+            $relation = $skill->_joinData;
+            $relation->skill = $skill;
+            $list[] = History::fromEntity($relation);
+        }
+
+        $history = $this->find()
+            ->where(['entity LIKE' => 'Character%', 'key1' => $entity->id])
             ->contain(['Conditions', 'Powers', 'Skills'])
             ->all()
             ->toList();
 
-        $list[] = History::fromEntity($entity);
-        foreach ($entity->get('conditions') as $condition) {
-            $list[] = History::fromEntity($condition);
-        }
-        foreach ($entity->get('powers') as $power) {
-            $list[] = History::fromEntity($power);
-        }
-        foreach ($entity->get('skills') as $skill) {
-            $list[] = History::fromEntity($skill);
-        }
+        $list = array_merge($list, $history);
         usort($list, ['App\Model\Entity\History', 'compare']);
 
         return $list;
@@ -310,7 +320,15 @@ class HistoryTable extends Table
             return [];
         }
 
-        $list = $this->find()
+        $list = [History::fromEntity($entity)];
+
+        foreach ($entity->characters as $character) {
+            $relation = $character->_joinData;
+            $relation->character = $character;
+            $list[] = History::fromEntity($relation);
+        }
+
+        $history = $this->find()
             ->where(function (QueryExpression $exp) use ($coin) {
                 $a = $exp->and(['entity' => 'Condition', 'key1' => $coin]);
                 $b = $exp->and(['entity' => 'CharactersCondition', 'key2' => $coin]);
@@ -321,10 +339,7 @@ class HistoryTable extends Table
             ->all()
             ->toList();
 
-        $list[] = History::fromEntity($entity);
-        foreach ($entity->get('characters') as $character) {
-            $list[] = History::fromEntity($character);
-        }
+        $list = array_merge($list, $history);
         usort($list, ['App\Model\Entity\History', 'compare']);
 
         return $list;
@@ -340,7 +355,15 @@ class HistoryTable extends Table
             return [];
         }
 
-        $list = $this->find()
+        $list = [History::fromEntity($entity)];
+
+        foreach ($entity->characters as $character) {
+            $relation = $character->_joinData;
+            $relation->character = $character;
+            $list[] = History::fromEntity($relation);
+        }
+
+        $history = $this->find()
             ->where(function (QueryExpression $exp) use ($poin) {
                 $a = $exp->and(['entity' => 'Power', 'key1' => $poin]);
                 $b = $exp->and(['entity' => 'CharactersPower', 'key2' => $poin]);
@@ -351,10 +374,7 @@ class HistoryTable extends Table
             ->all()
             ->toList();
 
-        $list[] = History::fromEntity($entity);
-        foreach ($entity->get('characters') as $character) {
-            $list[] = History::fromEntity($character);
-        }
+        $list = array_merge($list, $history);
         usort($list, ['App\Model\Entity\History', 'compare']);
 
         return $list;
@@ -370,7 +390,15 @@ class HistoryTable extends Table
             return [];
         }
 
-        $list = $this->find()
+        $list = [History::fromEntity($entity)];
+
+        foreach ($entity->attributes as $attribute) {
+            $relation = $attribute->_joinData;
+            $relation->attribute = $attribute;
+            $list[] = History::fromEntity($relation);
+        }
+
+        $history = $this->find()
             ->where(function (QueryExpression $exp) use ($itin) {
                 $a = $exp->and(['entity' => 'Item', 'key1' => $itin]);
                 $b = $exp->and(['entity' => 'AttributesItem', 'key2' => $itin]);
@@ -381,10 +409,7 @@ class HistoryTable extends Table
             ->all()
             ->toList();
 
-        $list[] = History::fromEntity($entity);
-        foreach ($entity->get('attributes') as $attribute) {
-            $list[] = History::fromEntity($attribute);
-        }
+        $list = array_merge($list, $history);
         usort($list, ['App\Model\Entity\History', 'compare']);
 
         return $list;

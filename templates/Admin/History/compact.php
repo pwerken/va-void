@@ -1,5 +1,4 @@
 <?php
-
 use Cake\ORM\TableRegistry;
 
 $state = [];
@@ -28,10 +27,6 @@ $format_v = function ($k, $v) {
     }
 
     if ($k !== 'character_id') {
-        if (empty($v)) {
-            $v = '(removed)';
-        }
-
         return nl2br($v);
     }
 
@@ -75,7 +70,7 @@ foreach ($list as $cur) {
     if (is_null($related)) {
         if (isset($data['name'])) {
             $related = $data['name'];
-        } else {
+        } elseif ($cur->entity != 'Player') {
             $related = '<em>(removed)</em>';
         }
     }
