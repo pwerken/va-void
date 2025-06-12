@@ -17,8 +17,6 @@ class AuthIntegrationTestCase extends TestCase
     public function getFixtures(): array
     {
         return [
-            'app.Attributes',
-            'app.AttributesItems',
             'app.Characters',
             'app.CharactersConditions',
             'app.CharactersPowers',

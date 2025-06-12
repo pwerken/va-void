@@ -8,7 +8,7 @@ ToDo-list:
    - [x] add skill.base property
    - [x] add skill relation 'times' property
    - [x] remove spells
-   - [ ] remove attributes and attributes-items
+   - [x] remove attributes and attributes-items
    - [ ] remove character.soulpath property
    - [x] belief/group/world: de-normalize and remove tables
  - /admin pages for tables with lookup-data

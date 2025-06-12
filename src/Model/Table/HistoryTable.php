@@ -27,8 +27,6 @@ class HistoryTable extends Table
         $this->belongsTo('Skills')->setForeignKey('key2')
             ->setConditions(['History.entity' => 'CharactersSkill']);
 
-        $this->belongsTo('Attributes')->setForeignKey('key1')
-            ->setConditions(['History.entity' => 'AttributesItem']);
         $this->belongsTo('Items')->setForeignKey('key2')
             ->setConditions(['History.entity LIKE' => '%sItem']);
 
@@ -392,20 +390,8 @@ class HistoryTable extends Table
 
         $list = [History::fromEntity($entity)];
 
-        foreach ($entity->attributes as $attribute) {
-            $relation = $attribute->_joinData;
-            $relation->attribute = $attribute;
-            $list[] = History::fromEntity($relation);
-        }
-
         $history = $this->find()
-            ->where(function (QueryExpression $exp) use ($itin) {
-                $a = $exp->and(['entity' => 'Item', 'key1' => $itin]);
-                $b = $exp->and(['entity' => 'AttributesItem', 'key2' => $itin]);
-
-                return $exp->or([$a, $b]);
-            })
-            ->contain(['Attributes'])
+            ->where(['entity' => 'Item', 'key1' => $itin])
             ->all()
             ->toList();
 

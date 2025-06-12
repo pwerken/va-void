@@ -44,30 +44,6 @@ class GettersTest extends AuthIntegrationTestCase
         $this->assertGet('/manatypes/99', 404);
     }
 
-    public function testAttributes(): void
-    {
-        $this->withoutAuth();
-        $this->assertGet('/attributes', 401);
-        $this->assertGet('/attributes/1', 401);
-        $this->assertGet('/attributes/1/items', 401);
-        $this->assertGet('/attributes/99', 401);
-        $this->assertGet('/attributes/99/items', 401);
-
-        $this->withAuthPlayer();
-        $this->assertGet('/attributes', 403);
-        $this->assertGet('/attributes/1', 403);
-        $this->assertGet('/attributes/1/items', 403);
-        $this->assertGet('/attributes/99', 403);
-        $this->assertGet('/attributes/99/items', 403);
-
-        $this->withAuthReadOnly();
-        $this->assertGet('/attributes');
-        $this->assertGet('/attributes/1');
-        $this->assertGet('/attributes/1/items');
-        $this->assertGet('/attributes/99', 404);
-        $this->assertGet('/attributes/99/items', 404);
-    }
-
     public function testBelieves(): void
     {
         $this->withoutAuth();

@@ -6,9 +6,6 @@ namespace App\Model\Table;
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\RulesChecker;
 
-/**
- * @property \App\Model\Table\AttributesItemsTable $AttributesItems;
- */
 class ItemsTable extends Table
 {
     public function initialize(array $config): void
@@ -16,32 +13,15 @@ class ItemsTable extends Table
         parent::initialize($config);
 
         $this->belongsTo('Characters');
-
-        $this->hasMany('AttributesItems')->setProperty('attributes');
     }
 
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn('character_id', 'Characters'));
 
-        $rules->addDelete([$this, 'ruleNoAttributes']);
         $rules->addDelete([$this, 'ruleNoCharacter']);
 
         return $rules;
-    }
-
-    public function ruleNoAttributes(EntityInterface $entity, array $options): bool
-    {
-        $query = $this->AttributesItems->find();
-        $query->where(['item_id' => $entity->id]);
-
-        if ($query->count() > 0) {
-            $entity->setError('attributes', $this->consistencyError);
-
-            return false;
-        }
-
-        return true;
     }
 
     public function ruleNoCharacter(EntityInterface $entity, array $options): bool
@@ -75,7 +55,7 @@ class ItemsTable extends Table
 
     protected function contain(): array
     {
-        return ['Characters', 'AttributesItems.Attributes'];
+        return ['Characters'];
     }
 
     protected function orderBy(): array

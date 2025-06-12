@@ -62,9 +62,6 @@ class History extends CakeEntity
         if ($entity->get('skill')) {
             $history->set('skill', $entity->get('skill'));
         }
-        if ($entity->get('attribute')) {
-            $history->set('attribute', $entity->get('attribute'));
-        }
         if ($entity->get('item')) {
             $history->set('item', $entity->get('item'));
         }
@@ -157,12 +154,6 @@ class History extends CakeEntity
         }
 
         switch ($this->get('entity')) {
-            case 'AttributesItem':
-                $relation = $this->get('attribute');
-                if (is_null($relation)) {
-                    $relation = $this->get('item');
-                }
-                break;
             case 'CharactersCondition':
                 $relation = $this->get('condition');
                 break;
