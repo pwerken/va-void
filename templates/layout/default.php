@@ -1,92 +1,143 @@
 <?php
 
+$site = 'VOID-API';
 
-$cakeDescription = 'VOID-API';
+$hasAuthPlayer = $user?->hasAuth('Player');
+$hasAuthReadOnly = $user?->hasAuth('Read-only');
+$hasAuthReferee = $user?->hasAuth('Referee');
+$hasAuthInfobalie = $user?->hasAuth('Infobalie');
 
-$role = $user?->get('role');
-
-$nav = [];
-switch ($role) {
-    case 'Super':
-        // intentional fall-through
-    case 'Event Control':
-        // intentional fall-through
-    case 'Infobalie':
-        $nav['/admin/migrations'] = 'Database Migrations';
-        $nav['/admin/backups'] = 'Database Backups';
-        // intentional fall-through
-    case 'Referee':
-        $nav['/admin/authentication'] = 'Authentication';
-        // intentional fall-through
-    case 'Read-only':
-        $nav['/admin/authorization'] = 'Authorization';
-        $nav['/admin/history'] = 'Entity History';
-        $nav['/admin/printing'] = 'Printing Queue';
-        $nav['/admin/skills'] = 'Skill~Player Lookup';
-        // intentional fall-through
-    case 'Player':
-        $nav['/admin/password'] = 'Authentication - Legacy';
-        $nav['/admin/routes'] = 'Configured Routes';
-        // intentional fall-through
-    default:
-        $nav['/admin/checks'] = 'Check Configuration';
-        asort($nav);
-}
+/*
+RO
+$nav['/admin/skills'] = 'Skill~Player Lookup';
+*/
 
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
-        <?= $cakeDescription ?>:
+        <?= $site ?>:
         <?= $this->fetch('title') ?>
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('style.css') ?>
+    <?= $this->Html->css(['normalize.min', 'milligram.min']) ?>
+    <?= $this->Html->css(['fonts', 'cake', 'void', 'dark']) ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
 </head>
 <body>
-    <nav class="top-bar expanded" data-topbar role="navigation">
-        <ul class="title-area large-3 medium-4 columns">
-            <li class="name">
-                <h1><?= $this->Html->link($cakeDescription, '/admin') ?></h1>
-            </li>
-        </ul>
-        <div class="top-bar-section">
-            <ul class="right">
-<?php if (!isset($user)) : ?>
-                <li><?= $this->Html->link('LOGIN', '/admin') ?></li>
-<?php else :
-                $descr = $user['full_name'] . ' (' . $user['role'] . ')';
-    ?>
-                <li><?= $this->Html->link($descr, '/admin'); ?></li>
-                <li><?= $this->Html->link('LOGOUT', '/admin/logout') ?></li>
+    <nav class="navigation">
+        <section class="container">
+            <div class="navigation-item" style="margin-left:0;">
+                <a class="navigation-title" href="#popover-site" data-popover>
+                    <?= $site ?>
+                </a>
+                <div class="popover" id="popover-site">
+                    <ul class="popover-list">
+                        <li class="popover-item">
+                            <a class="popover-link" href="/admin">Home</a>
+                        </li>
+                        <li class="popover-item">
+                            <a class="popover-link" href="/admin/checks">Config Checks</a>
+                        </li>
+<?php if ($hasAuthPlayer) : ?>
+                        <li class="popover-item">
+                            <a class="popover-link" href="/admin/routes">Routes</a>
+                        </li>
 <?php endif ?>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="navigation-item not-on-mobile">
+                <a href="/admin">
+                    <small>
+                        <?= $user?->full_name ?><br/>
+                        <em><?= $user?->role ?></em>
+                    </small>
+                </a>
+            </div>
+
+<?php if ($hasAuthPlayer) : ?>
+            <ul class="navigation-list float-right">
+    <?php if ($hasAuthReadOnly) : ?>
+                <li class="navigation-item">
+                    <a class="navigation-link" href="/admin/history" title="History">
+                        <img src="/img/icons/clock.svg">
+                    </a>
+                </li>
+                <li class="navigation-item">
+                    <a class="navigation-link" href="/admin/printing" title="Printing">
+                        <img src="/img/icons/printer.svg">
+                    </a>
+                </li>
+                <li class="navigation-item">
+                    <a class="navigation-link" href="#popover-db" data-popover title="Database">
+                        <img src="/img/icons/database.svg">
+                    </a>
+                    <div class="popover" id="popover-db">
+                        <ul class="popover-list">
+                            <li class="popover-item">
+                                <a class="popover-link" href="/admin/skills">Skills lookup</a>
+                            </li>
+        <?php if ($hasAuthInfobalie) : ?>
+                            <li class="popover-item">
+                                <a class="popover-link" href="/admin/backups">Backups</a>
+                            </li>
+                            <li class="popover-item">
+                                <a class="popover-link" href="/admin/migrations">Migrations</a>
+                            </li>
+        <?php endif ?>
+                        </ul>
+                    </div>
+                </li>
+    <?php endif ?>
+                <li class="navigation-item">
+                    <a class="navigation-link" href="#popover-users" data-popover title="Access control">
+                        <img src="/img/icons/person-bounding-box.svg">
+                    </a>
+                    <div class="popover" id="popover-users">
+                        <ul class="popover-list">
+    <?php if ($hasAuthReadOnly) : ?>
+                            <li class="popover-item">
+                                <a class="popover-link" href="/admin/authorization">Authorization</a>
+                            </li>
+    <?php endif ?>
+    <?php if ($hasAuthReferee) : ?>
+                            <li class="popover-item">
+                                <a class="popover-link" href="/admin/authentication">Authentication</a>
+                            </li>
+    <?php endif ?>
+                            <li class="popover-item">
+                                <a class="popover-link" href="/admin/password">Password</a>
+                            </li>
+                            <li class="popover-item">
+                                <a class="popover-link" href="/admin/logout">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
             </ul>
-        </div>
+<?php endif ?>
+        </section>
     </nav>
-    <?= $this->Flash->render() ?>
-    <div class="container clearfix">
-        <nav class="large-3 medium-4 columns" id="actions-sidebar">
-            <ul class="side-nav">
-                <li class="heading"><?= $this->Html->link('Administrator ', '/admin') ?></li>
-<?php foreach ($nav as $url => $descr) : ?>
-                <li><?= $this->Html->link($descr, $url) ?></il>
-<?php endforeach; ?>
-            </ul>
-        </nav>
-        <div class="large-9 medium-8 columns content">
-<?= $this->fetch('content') ?>
-        </div>
-    </div>
+
+    <main class="main">
+        <div class="container">
+            <?= $this->Flash->render() ?>
+            <?= $this->fetch('content') ?>
+        <div>
+    </main>
+
     <footer>
     </footer>
+
+    <?= $this->Html->script(['void']) ?>
 </body>
 </html>

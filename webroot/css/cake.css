@@ -1,0 +1,88 @@
+/* Milligram overrides */
+:root {
+    --color-message-success-bg: #e3fcec;
+    --color-message-success-text: #1f9d55;
+    --color-message-success-border: #51d88a;
+
+    --color-message-warning-bg: #fffabc;
+    --color-message-warning-text: #8d7b00;
+    --color-message-warning-border: #d3b800;
+
+    --color-message-error-bg: #fcebea;
+    --color-message-error-text: #cc1f1a;
+    --color-message-error-border: #ef5753;
+
+    --color-message-info-bg: #eff8ff;
+    --color-message-info-text: #2779bd;
+    --color-message-info-border: #6cb2eb;
+}
+
+/* Flash messages */
+.message {
+    padding: .5rem 1rem;
+    background: var(--color-message-info-bg);
+    color: var(--color-message-info-text);
+    border-color: var(--color-message-info-border);
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+.message.hidden {
+    display: none;
+}
+.message.success {
+    background: var(--color-message-success-bg);
+    color: var(--color-message-success-text);
+    border-color: var(--color-message-success-border);
+}
+.message.warning {
+    background: var(--color-message-warning-bg);
+    color: var(--color-message-warning-text);
+    border-color: var(--color-message-warning-border);
+}
+.message.error {
+    background: var(--color-message-error-bg);
+    color: var(--color-message-error-text);
+    border-color: var(--color-message-error-border);
+}
+
+/* Forms */
+.input {
+    margin-bottom: 1.5rem;
+}
+.input input,
+.input select,
+.input textarea {
+    margin-bottom: 0;
+}
+.input label:has(input[type='checkbox']),
+.input label:has(input[type='radio']) {
+    display: flex;
+    align-items: center;
+}
+.input label:has(~ label),
+.input label:has(input[type='radio']) {
+    margin-bottom: 0;
+}
+.input label > input[type='checkbox'],
+.input label > input[type='radio'] {
+    margin-right: 1.0rem;
+}
+input[type='color'] {
+    max-width: 4rem;
+    padding: 0.3rem .5rem 0.3rem;
+}
+.error-message {
+    color: var(--color-message-error-text);
+}
+
+/* Error in non debug mode */
+.error-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+}

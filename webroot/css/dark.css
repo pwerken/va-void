@@ -1,0 +1,33 @@
+@media (prefers-color-scheme: dark) {
+    body,
+	input,
+	select,
+	textarea {
+		background: #111;
+		color: #ccc;
+    }
+
+	form {
+		color: #888;
+	}
+
+    pre {
+		background: #141518;
+    }
+
+    .prettyprint {
+		color: #fff;
+    }
+
+    .prettyprint.lang-md * {
+		color: #fff !important;
+    }
+
+    code {
+		background: #222;
+    }
+
+    .prettyprint .atv {
+		color: rgba(73, 158, 223, 1);
+    }
+}

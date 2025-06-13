@@ -11,7 +11,8 @@ ToDo-list:
    - [x] remove attributes and attributes-items
    - [ ] remove character.soulpath property
    - [x] belief/group/world: de-normalize and remove tables
- - /admin pages for tables with lookup-data
+ - /Admin
+   - [ ] check all the pages on a mobile device
    - [ ] CRUD-operations page(s) for Factions
    - [ ] CRUD-operations page(s) for Skills
  - Player editable concept character
