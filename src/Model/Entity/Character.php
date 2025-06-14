@@ -12,7 +12,6 @@ class Character extends Entity
         'group' => '-',
         'faction_id' => 1,
         'world' => '-',
-        'soulpath' => '',
     ];
 
     public function __construct(array $properties = [], array $options = [])
@@ -25,16 +24,6 @@ class Character extends Entity
 
         $this->setHidden(['id'], true);
         $this->setHidden(['faction_id', 'faction_object'], true);
-    }
-
-    public static function soulpathValues(): array
-    {
-        static $data = null;
-        if (is_null($data)) {
-            $data = ['BO', 'LI', 'LU', 'MA', 'MO', 'NO', 'NY', 'RA', 'SO', 'TA'];
-        }
-
-        return $data;
     }
 
     public static function statusValues(): array

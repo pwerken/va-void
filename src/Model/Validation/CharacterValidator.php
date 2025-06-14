@@ -24,7 +24,6 @@ class CharacterValidator extends Validator
         $this->allowEmptyString('belief');
         $this->allowEmptyString('group');
         $this->allowEmptyString('world');
-        $this->allowEmptyString('soulpath')->inList('soulpath', Character::soulpathValues());
         $this->inList('status', Character::statusValues());
     }
 }

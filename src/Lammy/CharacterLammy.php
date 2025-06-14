@@ -48,9 +48,6 @@ class CharacterLammy extends LammyCard
         $this->text(12, 16, 60, 'L', $this->entity->name);
         $this->text(12, 23, 60, 'L', $this->entity->faction);
 
-        if (!empty($this->entity->soulpath)) {
-            $this->text(56, 22, 18, 'L', $this->entity->soulpath);
-        }
         $this->text(12, 28, 44, 'L', $this->entity->belief);
         $this->text(12, 33, 44, 'L', $this->entity->group);
         $this->text(12, 38, 44, 'L', $this->entity->world);

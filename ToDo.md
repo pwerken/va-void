@@ -9,7 +9,7 @@ ToDo-list:
    - [x] add skill relation 'times' property
    - [x] remove spells
    - [x] remove attributes and attributes-items
-   - [ ] remove character.soulpath property
+   - [x] remove character.soulpath property
    - [x] belief/group/world: de-normalize and remove tables
  - /Admin
    - [ ] check all the pages on a mobile device
