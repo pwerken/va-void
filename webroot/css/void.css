@@ -10,18 +10,6 @@
     --color-popover-link-hover: #fff;
     --color-popover-link-hover-bg: #9b4dca;
 }
-@media (prefers-color-scheme: dark) {
-    :root {
-        --color-nav-bg: #333;
-        --color-nav-border: #222;
-        --color-nav-title: #eee;
-        --color-nav-link-active: #777;
-
-        --color-popover-bg: #444;
-        --color-popover-border: #222;
-        --color-popover-link: #ccc;
-    }
-}
 
 body {
     display: block;
@@ -52,7 +40,7 @@ body > .main {
 .navigation .navigation-list {
     list-style: none;
     margin-bottom: 0;
-	margin-right: 3rem;
+    margin-right: 3rem;
 }
 @media (min-width: 80rem) {
     .navigation .navigation-list {
@@ -69,11 +57,6 @@ body > .main {
     height: 3rem;
     position: relative;
     top: 1rem;
-}
-@media (prefers-color-scheme: dark) {
-    .navigation img {
-        filter: invert(1);
-    }
 }
 .navigation .navigation-title,
 .navigation .title {
@@ -94,6 +77,10 @@ body > .main {
 .navigation .navigation-link.active {
     color: var(--color-nav-link-active);
 }
+.navigation img {
+    filter: opacity(0.667);
+}
+
 
 .popover {
     background: var(--color-popover-bg);
@@ -165,8 +152,13 @@ body > .main {
     color: var(--color-popover-link-hover);
 }
 
+@media (min-width:40rem) {
+    .on-mobile {
+        display: none
+    }
+}
 @media (max-width:40rem) {
     .not-on-mobile {
-        display:none
+        display: none
     }
 }

@@ -1,33 +1,112 @@
 @media (prefers-color-scheme: dark) {
-    body,
-	input,
-	select,
-	textarea {
-		background: #111;
-		color: #ccc;
+    :root {
+        --color-bg: #070709;
+        --color-text: #aaabad;
+
+        --color-border: #29292d;
+
+        --color-input-text: #7b7c84;
+        --color-code-bg: #131316;
+        --color-selected: #dbdcdf;
+        --color-selected-bg: #242426;
+
+        --color-nav-bg: #242426;
+        --color-nav-border: #222;
+        --color-nav-title: #dbdcdf;
+
+        --color-popover-bg: #131316;
+        --color-popover-border: #323337;
+        --color-popover-link: #e3e3e6;
+
+		--color-message-info-bg: #2779bd;
+		--color-message-info-text: #100700;
+
+		--color-message-success-bg: #1f9d55;
+		--color-message-success-text: #1b0313;
+
+		--color-message-warning-bg: #8d7b00;
+		--color-message-warning-text: #000543;
+
+		--color-message-error-bg: #cc1f1a;
+		--color-message-error-text: #031415;
     }
 
-	form {
-		color: #888;
-	}
+    body {
+        background: var(--color-bg);
+        color: var(--color-text);
+    }
 
+    hr,
+    tr, th, td {
+        border-color: var(--color-border);
+    }
+
+    input[type="color"],
+    input[type="date"],
+    input[type="datetime"],
+    input[type="email"],
+    input[type="number"],
+    input[type="password"],
+    input[type="search"],
+    input[type="text"],
+    input:not([type]),
+    select,
+    textarea {
+        border-color: var(--color-border);
+        color: var(--color-input-text);
+    }
+
+    option[selected] {
+        background: var(--color-selected-bg);
+        color: var(--color-selected);
+    }
+
+    code,
     pre {
-		background: #141518;
+        background: var(--color-code-bg);
     }
 
-    .prettyprint {
-		color: #fff;
+    .navigation {
+        background: var(--color-nav-bg);
+        border-bottom-color: var(--color-nav-border);
+    }
+    .navigation .navigation-title,
+    .navigation .title {
+        color: var(--color-nav-title);
+    }
+    .navigation img {
+        filter: invert(0.667);
     }
 
-    .prettyprint.lang-md * {
-		color: #fff !important;
+    .popover {
+        background: var(--color-popover-bg);
+        border-color: var(--color-popover-border);
+    }
+    .popover:after {
+        border-bottom-color: var(--color-popover-bg);
+    }
+    .popover:before {
+        border-bottom-color: var(--color-popover-border);
+    }
+    .popover .popover-link {
+        border-bottom-color: var(--color-popover-border);
+        color: var(--color-popover-link);
     }
 
-    code {
-		background: #222;
-    }
-
-    .prettyprint .atv {
-		color: rgba(73, 158, 223, 1);
-    }
+	.message {
+		background: var(--color-message-info-bg);
+		color: var(--color-message-info-text);
+	}
+	.message.success {
+		background: var(--color-message-success-bg);
+		color: var(--color-message-success-text);
+	}
+	.message.warning {
+		background: var(--color-message-warning-bg);
+		color: var(--color-message-warning-text);
+	}
+	.message.error {
+		background: var(--color-message-error-bg);
+		color: var(--color-message-error-text);
+	}
 }
