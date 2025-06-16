@@ -41,15 +41,12 @@ $format_v = function ($k, $v) {
 <?php
 
 foreach ($list as $cur) {
-    switch ($cur->get('state')) {
+    $state = $cur->get('state');
+    switch ($state) {
         case 'added':
-            $color = ' style="color:green"';
-            break;
         case 'removed':
-            $color = ' style="color:red"';
-            break;
         case 'modified':
-            $color = ' style="color:blue"';
+            $color = " class=\"{$state}\"";
             break;
         default:
             $color = '';

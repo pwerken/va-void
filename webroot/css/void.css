@@ -162,3 +162,15 @@ body > .main {
         display: none
     }
 }
+
+.added {
+	color: #070;
+}
+.modified {
+	color: #55F;
+}
+.removed {
+	color: #D00;
+}
+
+
