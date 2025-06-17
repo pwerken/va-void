@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Entity\History;
+use App\Utility\Json;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Database\Type\DateTimeType;
 use Cake\Datasource\EntityInterface;
@@ -198,7 +199,7 @@ class HistoryTable extends Table
             $row['modified'] = $obj->modifiedString();
             $row['modifier_id'] = $obj->modifier_id;
 
-            $data = json_decode($obj->data ?? '', true);
+            $data = Json::decode($obj->data);
             if ($obj->entity == 'Character') {
                 $row['key1'] = $data['player_id'];
                 $row['key2'] = $data['chin'];

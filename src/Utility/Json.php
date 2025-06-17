@@ -7,8 +7,21 @@ use Cake\Core\Configure;
 
 class Json
 {
-    public static function encode(mixed $data): string
+    public static function decode(?string $data): mixed
     {
+        if ($data === null) {
+            return null;
+        }
+
+        return json_decode($data, true);
+    }
+
+    public static function encode(mixed $data): ?string
+    {
+        if ($data === null) {
+            return null;
+        }
+
         $jsonOptions = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT;
         if (Configure::read('debug')) {
             $jsonOptions = $jsonOptions | JSON_PRETTY_PRINT;
