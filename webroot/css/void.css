@@ -175,4 +175,29 @@ body > .main {
 	color: #D00;
 }
 
+/* Admin: checks */
 
+.checks .success:before,
+.checks .problem:before {
+    line-height: 0px;
+    font-size: 28px;
+    height: 12px;
+    width: 12px;
+    border-radius: 15px;
+    text-align: center;
+    vertical-align: middle;
+    display: inline-block;
+    position: relative;
+    left: 0px;
+    margin-right: 12px;
+}
+
+.checks .success:before {
+    content: "\2713";
+    color: green;
+}
+
+.checks .problem:before {
+    content: "\2718";
+    color: red;
+}
