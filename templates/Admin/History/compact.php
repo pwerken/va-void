@@ -1,113 +1,43 @@
-<?php
-use Cake\ORM\TableRegistry;
-
-$state = [];
-for ($i = count($list) - 1; $i >= 0; $i--) {
-    $cur = $list[$i];
-    $key = $cur->keyString();
-    if (!isset($state[$key])) {
-        $cur->set('state', 'added');
-        $state[$key] = $cur->get('data');
-    } elseif (is_null($cur->data)) {
-        $cur->set('state', 'removed');
-        unset($state[$key]);
-    } else {
-        $cur->set('state', 'modified');
-        $cur->set('prev', $state[$key]);
-        $state[$key] = $cur->get('data');
-    }
-}
-
-$format_v = function ($k, $v) {
-    if (is_null($v)) {
-        return '<em>NULL</em>';
-    }
-    if (is_bool($v)) {
-        return '<em>' . ($v ? 'true' : 'false') . '</em>';
-    }
-
-    if ($k !== 'character_id') {
-        return nl2br($v);
-    }
-
-    $char = TableRegistry::getTableLocator()->get('Characters')->get($v);
-
-    return $v . ' = ' . $char->player_id . '/' . $char->chin . ' ' . $char->name;
-};
-
-?>
 <h3>Entity History</h3>
 
 <?php
 
-foreach ($list as $cur) {
-    $state = $cur->get('state');
-    switch ($state) {
-        case 'added':
-        case 'removed':
-        case 'modified':
-            $color = " class=\"{$state}\"";
-            break;
-        default:
-            $color = '';
+foreach ($history as $row) {
+    $tooltip = $row['modifier_name'];
+    if ($tooltip) {
+        $tooltip = ' title="' . $tooltip . '"';
     }
 
-    if ($plin && ($plin == $cur->get('modifier_id'))) {
-        $bgcolor = ' style="background-color:yellow"';
+    echo '<samp' . $tooltip . '>'
+        . str_pad($row['modified'], 19, '_', STR_PAD_BOTH) . ' ' . $row['modifier']
+        . '</samp> ';
+
+    $close = '';
+    if ($row['link']) {
+        echo '<a href="/admin/history' . $row['link'] . '">';
+        $close = '</a>';
+    }
+    echo $row['key'] . $close;
+    echo '<br class="on-mobile"/>';
+
+    echo ' <span class="' . $row['state'] . '"><strong>';
+    if ($row['name'] === null) {
+        echo '<em>(removed)</em>';
     } else {
-        $bgcolor = '';
+        echo $row['name'];
+    }
+    echo '</strong></span> ';
+
+    if ($row['link']) {
+        echo '</a>';
     }
 
-    $data = $cur->get('data');
-    if (!is_null($data)) {
-        $data = json_decode($data, true);
-    }
+    if (isset($row['field'])) {
+        $value = var_export($row['value'], true);
 
-    $related = $cur->relation();
-    if (is_null($related)) {
-        if (isset($data['name'])) {
-            $related = $data['name'];
-        } elseif ($cur->entity != 'Player') {
-            $related = '<em>(removed)</em>';
-        }
+        echo '<span class="' . $row['state'] . '">'
+            . '<em>' . $row['field'] . '</em>: ' . nl2br($value)
+            . '</span>';
     }
-    if (!is_null($related)) {
-        $related = '<strong>' . $related . '</strong> ';
-    }
-
-    $prefix = "<span$bgcolor><samp>"
-        . str_pad($cur->modifiedString(), 19, '_', STR_PAD_BOTH) . ' '
-        . $cur->modifierString() . '</samp> '
-        . $cur->keyString() . "<span$color> " . $related;
-    $postfix = "</span></span><br/>\n";
-
-    switch ($cur->get('state')) {
-        case 'added':
-        case 'removed':
-            if (empty($data)) {
-                echo $prefix . $postfix;
-                break;
-            }
-            foreach ($data as $k => $v) {
-                $v = $format_v($k, $v);
-                echo $prefix . "<em>$k</em>: $v" . $postfix;
-            }
-            break;
-        case 'modified':
-            $prev = json_decode($cur->get('prev'), true);
-            foreach ($data as $k => $v) {
-                if (array_key_exists($k, $prev)) {
-                    if ($v == $prev[$k]) {
-                        continue;
-                    }
-                } elseif (is_null($v)) {
-                    continue;
-                }
-                $v = $format_v($k, $v);
-                echo $prefix . "<em>$k</em>: $v" . $postfix;
-            }
-            break;
-        default:
-            break;
-    }
+    echo "<br/>\n";
 }

@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use Cake\Datasource\EntityInterface;
 use Cake\ORM\Entity as CakeEntity;
 use Cake\ORM\TableRegistry;
 
 class History extends CakeEntity
 {
-    public static function fromEntity(EntityInterface $entity): ?History
+    public static function fromEntity(Entity $entity): ?History
     {
         if (is_null($entity)) {
             return null;
@@ -144,13 +143,11 @@ class History extends CakeEntity
         return sprintf('%04d', $modifier);
     }
 
-    public function relation(): ?string
+    public function relation(): ?Entity
     {
         $relation = $this->get('character');
         if (!is_null($relation)) {
-            return $relation->get('player_id')
-                    . '/' . $relation->get('chin')
-                    . ' ' . $relation->get('name');
+            return $relation;
         }
 
         switch ($this->get('entity')) {
@@ -165,6 +162,6 @@ class History extends CakeEntity
                 break;
         }
 
-        return $relation?->get('name');
+        return $relation;
     }
 }

@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+/**
+ * @property \App\Model\Table\TeachingsTable $Teachings;
+ */
 class TeachingsController extends Controller
 {
     /**

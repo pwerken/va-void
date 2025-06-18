@@ -2,7 +2,7 @@
 
 <?php
 echo $this->Form->create(null, ['type' => 'get']);
-$style = ['style' => 'display: inline-block; width: auto; margin-right: 1rem'];
+$style = ['style' => 'display: inline-block; width: 15rem; margin-right: 1rem'];
 
 $style['value'] = $what;
 $values = [
@@ -16,10 +16,12 @@ $values = [
 echo $this->Form->select('what', $values, $style);
 
 $style['value'] = $since;
-echo 'Since: ' . $this->Form->text('since', $style);
+$style['maxlength'] = 10;
+echo $this->Form->text('since', $style);
 
 $style['value'] = $plin;
-echo 'Plin: ' . $this->Form->text('plin', $style);
+$style['maxlength'] = 4;
+echo $this->Form->text('plin', $style);
 
 echo $this->Form->button(__('Update'));
 echo $this->Form->end() . "\n";
@@ -47,7 +49,7 @@ foreach ($list as $row) {
     }
 
     echo str_pad($row['modified'], 19, '_', STR_PAD_BOTH) . ' '
-        . $this->Html->link(str_pad($modifier, 4, '0', STR_PAD_LEFT), $link . '?verbose')
+        . str_pad($modifier, 4, '0', STR_PAD_LEFT)
         . ' ' . $this->Html->link($name, $link . $highlight) . "<br/>\n";
 }
 echo "</samp>\n";
