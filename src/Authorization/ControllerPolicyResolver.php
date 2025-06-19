@@ -17,7 +17,7 @@ class ControllerPolicyResolver implements ResolverInterface
     public function getPolicy(mixed $resource): mixed
     {
         if (!($resource instanceof ServerRequest)) {
-            throw new MissingPolicyException($resource);
+            throw new MissingPolicyException($resource ?? 'null');
         }
 
         $name = $resource->getParam('controller') . 'Controller';

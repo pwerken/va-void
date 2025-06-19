@@ -16,7 +16,7 @@ class EntityPolicyResolver implements ResolverInterface
     public function getPolicy(mixed $resource): mixed
     {
         if (!($resource instanceof EntityInterface)) {
-            throw new MissingPolicyException($resource);
+            throw new MissingPolicyException($resource ?? 'null');
         }
 
         $name = get_class($resource);
