@@ -5,9 +5,30 @@ namespace App\Test\Migrations;
 
 use App\Migrations\Table;
 use App\Test\TestSuite\TestCase;
+use Phinx\Db\Adapter\AdapterInterface;
 
 class TableTest extends TestCase
 {
+    public function testAddForeignKey(): void
+    {
+        $sqlite = $this->createStub(AdapterInterface::class);
+        $sqlite->method('getAdapterType')->willReturn('sqlite');
+
+        $table = new Table('someTableName', [], $sqlite);
+
+        $this->assertSame($table, $table->addForeignKey('', ''));
+    }
+
+    public function testAddForeignKeyWithName(): void
+    {
+        $sqlite = $this->createStub(AdapterInterface::class);
+        $sqlite->method('getAdapterType')->willReturn('sqlite');
+
+        $table = new Table('someTableName', [], $sqlite);
+
+        $this->assertSame($table, $table->addForeignKeyWithName('', '', ''));
+    }
+
     public function testAddColumnBoolean(): void
     {
         $columnName = 'testColumnName';
