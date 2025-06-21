@@ -18,11 +18,16 @@ class ErrorLogger extends CakeErrorLogger
     {
         $message = parent::getRequestContext($request);
 
+        $plin = $request->getAttribute('identity')?->getIdentifier();
+        if ($plin) {
+            $message .= "\nLogged in user: {$plin}";
+        }
+
         $body = $request->getParsedBody();
         if ($body) {
             $message .= "\nRequest data: " . var_export($body, true);
         }
 
-        return $message;
+        return substr($message, 1);
     }
 }
