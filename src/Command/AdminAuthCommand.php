@@ -79,7 +79,7 @@ class AdminAuthCommand extends Command
     {
         $table = $this->fetchTable();
         $player = $table->getMaybe($plin);
-        if (is_null($player) || strcmp((string)$player->id, $plin)) {
+        if (is_null($player) || $plin === (string)$player->id) {
             $this->abort(sprintf('No player found with plin `%s`.', $plin));
         }
 

@@ -41,7 +41,7 @@ trait BackupTrait
             if ($fileInfo->isDot()) {
                 continue;
             }
-            if (strcmp($fileInfo->getExtension(), 'sql') !== 0) {
+            if ($fileInfo->getExtension() !== 'sql') {
                 continue;
             }
 

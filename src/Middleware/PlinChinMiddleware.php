@@ -16,8 +16,8 @@ class PlinChinMiddleware implements MiddlewareInterface
         $controller = $request->getParam('controller');
         $action = $request->getParam('action');
 
-        $hasPlinChin = strcmp($controller, 'Characters') == 0;
-        $hasPlinChin |= strcmp(substr($action, 0, 10), 'characters') == 0;
+        $hasPlinChin = ($controller === 'Characters');
+        $hasPlinChin |= (substr($action, 0, 10) === 'characters');
 
         $pass = $request->getParam('pass');
         if ($hasPlinChin && count($pass) >= 2) {
@@ -34,6 +34,7 @@ class PlinChinMiddleware implements MiddlewareInterface
             }
         }
 
+        $request = $request->withAttribute('PlinChin', $hasPlinChin);
         $request = $request->withParam('pass', $pass);
 
         return $handler->handle($request);

@@ -49,8 +49,9 @@ class AdminPasswordCommand extends Command
 
         $table = $this->fetchTable();
         $player = $table->getMaybe($plin);
-        if (is_null($player) || strcmp((string)$player->id, $plin)) {
-            $this->abort(sprintf('No player found with plin `%s`.', $plin));
+
+        if ($plin !== (string)$player?->id) {
+            $io->abort(sprintf('No player found with plin `%s`.', $plin));
         }
 
         $new_password = false;
