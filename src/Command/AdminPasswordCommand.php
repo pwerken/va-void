@@ -111,9 +111,13 @@ class AdminPasswordCommand extends Command
 
             return $password;
         } else {
-            $io->out('<question>' . $prompt . '</question>');
-            $command = "/usr/bin/env bash -c 'read -s -p \"\" mypassword && echo \$mypassword'";
-            $password = rtrim(shell_exec($command));
+            $restore = exec('stty -g');
+            system('stty -echo');
+
+            $password = $io->ask($prompt);
+            $io->out('');
+
+            system("stty {$restore}");
 
             return $password;
         }

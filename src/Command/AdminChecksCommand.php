@@ -33,17 +33,13 @@ class AdminChecksCommand extends Command
         $hasError = false;
         foreach ($checks as $check => $ok) {
             if ($ok) {
-                $io->out($check);
+                $io->out('[X] ' . $check);
                 continue;
             }
-            $io->err($check);
+            $io->err('[ ] ' . $check);
             $hasError = true;
         }
 
-        if ($hasError) {
-            $this->abort();
-        }
-
-        return static::CODE_SUCCESS;
+        return $hasError ? static:: CODE_ERROR : static::CODE_SUCCESS;
     }
 }

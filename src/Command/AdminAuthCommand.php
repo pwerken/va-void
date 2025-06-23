@@ -52,12 +52,8 @@ class AdminAuthCommand extends Command
             return $this->authPlayer($io, $plin, $role);
         }
 
-        $perms = $this->fetchTable()->find(
-            'list',
-            [ 'valueField' => 'id'
-                    , 'groupField' => 'role',
-            ],
-        )->toArray();
+        $query = $this->fetchTable()->find('list', valueField: 'id', groupField: 'role');
+        $perms = $query->toArray();
 
         foreach (array_reverse(Player::roleValues()) as $role) {
             $count = isset($perms[$role]) ? count($perms[$role]) : 0;
@@ -75,12 +71,12 @@ class AdminAuthCommand extends Command
         return static::CODE_SUCCESS;
     }
 
-    protected function authPlayer(ConsoleIo $io, ?string $plin, ?string $role): int
+    protected function authPlayer(ConsoleIo $io, string $plin, ?string $role): int
     {
         $table = $this->fetchTable();
         $player = $table->getMaybe($plin);
-        if (is_null($player) || $plin === (string)$player->id) {
-            $this->abort(sprintf('No player found with plin `%s`.', $plin));
+        if ($plin !== (string)$player?->id) {
+            $io->abort(sprintf('No player found with plin `%s`.', $plin));
         }
 
         if (isset($role)) {
