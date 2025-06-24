@@ -46,6 +46,15 @@ class HistoryController extends AdminController
             $list = array_merge($list, $all);
             usort($list, [$table, 'compare']);
         }
+
+        $plins = [];
+        foreach ($list as $row) {
+            if (is_int($row['modifier_id']) && $row['modifier_id'] >= 0) {
+                $plins[] = $row['modifier_id'];
+            }
+        }
+
+        $this->set('modifier_names', $this->retrieveModifierNames($plins));
         $this->set('list', $list);
     }
 
@@ -66,12 +75,18 @@ class HistoryController extends AdminController
 
         $seen = [];
         $history = [];
+        $plins = [];
 
         foreach (array_reverse($list) as $row) {
             $cur = $this->entityLink($e, $row);
 
             $data = Json::decode($row->data ?? '{}');
             $key = $row->keyString();
+
+            $modifier_id = $row->get('modifier_id');
+            if (is_int($modifier_id) && $modifier_id >= 0) {
+                $plins[] = $modifier_id;
+            }
 
             if (!isset($seen[$key])) {
                 $cur['state'] = 'added';
@@ -156,6 +171,7 @@ class HistoryController extends AdminController
             }
         }
 
+        $this->set('modifier_names', $this->retrieveModifierNames($plins));
         $this->set('history', array_reverse($history));
     }
 
@@ -166,12 +182,7 @@ class HistoryController extends AdminController
         $cur = [];
         $cur['modified'] = $row->modifiedString();
         $cur['modifier'] = $row->modifierString();
-        $cur['modifier_name'] = null;
-
-        $modifier_id = $row->get('modifier_id');
-        if (is_int($modifier_id) && $modifier_id >= 0) {
-            $cur['modifier_name'] = $this->fetchTable('Players')->get($modifier_id)->full_name;
-        }
+        $cur['modifier_id'] = $row->modifier_id;
 
         $data = Json::decode($row->data ?? '{}');
 
@@ -221,5 +232,20 @@ class HistoryController extends AdminController
         }
 
         return $cur;
+    }
+
+    protected function retrieveModifierNames(array $plins): array
+    {
+        if (empty($plins)) {
+            return [];
+        }
+
+        $result = [];
+        $query = $this->fetchTable('Players')->find('all')->where(['id IN' => $plins]);
+        foreach ($query->all() as $row) {
+            $result[$row->id] = $row->full_name;
+        }
+
+        return $result;
     }
 }

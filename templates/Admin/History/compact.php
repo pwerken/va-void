@@ -3,9 +3,10 @@
 <?php
 
 foreach ($history as $row) {
-    $tooltip = $row['modifier_name'];
-    if ($tooltip) {
-        $tooltip = ' title="' . $tooltip . '"';
+    $tooltip = '';
+    $modifier_id = $row['modifier_id'];
+    if (isset($modifier_names[$modifier_id])) {
+        $tooltip = ' title="' . $modifier_names[$modifier_id] . '"';
     }
 
     echo '<samp' . $tooltip . '>'

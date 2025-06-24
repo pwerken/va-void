@@ -31,7 +31,6 @@ if ($plin) {
     $highlight = "?highlight=$plin";
 }
 
-echo "<samp>\n";
 foreach ($list as $row) {
     $name = $row['entity'] . '/' . $row['key1'];
     if (!is_null($row['key2'])) {
@@ -40,16 +39,21 @@ foreach ($list as $row) {
     $link = '/admin/history/' . strtolower($name);
     $name .= ': ' . $row['name'];
 
-    $modifier = $row['modifier_id'];
+    $modifier = $modifier_id = $row['modifier_id'];
     if (is_null($modifier)) {
         $modifier = '(??)';
     }
     if ($modifier < 0) {
         $modifier = '_cli';
     }
+    $tooltip = '';
+    if (isset($modifier_names[$modifier_id])) {
+        $tooltip = ' title="' . $modifier_names[$modifier_id] . '"';
+    }
 
-    echo str_pad($row['modified'], 19, '_', STR_PAD_BOTH) . ' '
+    echo '<samp' . $tooltip . '>'
+        . str_pad($row['modified'], 19, '_', STR_PAD_BOTH) . ' '
         . str_pad($modifier, 4, '0', STR_PAD_LEFT)
-        . ' ' . $this->Html->link($name, $link . $highlight) . "<br/>\n";
+        . '</samp> '
+        . $this->Html->link($name, $link . $highlight) . "<br/>\n";
 }
-echo "</samp>\n";
