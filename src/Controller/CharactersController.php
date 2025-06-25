@@ -89,14 +89,14 @@ class CharactersController extends Controller
         if ((string)$this->getRequest()->getBody() === 'all') {
             foreach ($char->powers as $power) {
                 $lammy = $table->newEmptyEntity();
-                $lammy->set('target', $power);
+                $lammy->set('target', $power->_joinData);
                 $table->saveOrFail($lammy);
                 $count++;
             }
 
             foreach ($char->conditions as $condition) {
                 $lammy = $table->newEmptyEntity();
-                $lammy->set('target', $condition);
+                $lammy->set('target', $condition->_joinData);
                 $table->saveOrFail($lammy);
                 $count++;
             }

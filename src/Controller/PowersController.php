@@ -57,7 +57,7 @@ class PowersController extends Controller
             $table = $this->fetchTable('Lammies');
             foreach ($power->characters as $character) {
                 $lammy = $table->newEmptyEntity();
-                $lammy->set('target', $character);
+                $lammy->set('target', $character->_joinData);
                 $table->saveOrFail($lammy);
             }
 
