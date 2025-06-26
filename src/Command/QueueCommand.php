@@ -26,9 +26,9 @@ class QueueCommand extends Command
     {
         $result = $this->fetchTable()->find('lastInQueue')->all();
         if ($result->count() == 0) {
-            $io->out(0);
+            $io->out('0');
         } else {
-            $io->out($result->first()->id);
+            $io->out((string)$result->first()->id);
         }
 
         return static::CODE_SUCCESS;

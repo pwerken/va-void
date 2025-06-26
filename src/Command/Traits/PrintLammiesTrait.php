@@ -9,16 +9,21 @@ trait PrintLammiesTrait
 {
     protected function createPdf(int $id, bool $double): ?string
     {
-        $lammies = $this->fetchTable()
-                        ->find('Queued')
-                        ->where(['Lammies.id <=' => $id])
-                        ->all();
+        $queue = $this->fetchTable()
+                    ->find('Queued')
+                    ->where(['Lammies.id <=' => $id])
+                    ->all();
 
-        if ($lammies->count() == 0) {
+        if ($queue->count() == 0) {
             return null;
         }
 
-        $this->fetchTable()->setStatuses($lammies, 'Printing');
+        $this->fetchTable()->setStatuses($queue, 'Printing');
+
+        $lammies = [];
+        foreach ($queue as $queued) {
+            $lammies[] = $queued->lammy;
+        }
 
         $pdf = (new PdfView())->createPdf($lammies, $double);
         if (is_null($pdf)) {

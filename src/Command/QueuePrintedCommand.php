@@ -35,7 +35,7 @@ class QueuePrintedCommand extends Command
 
     public function execute(Arguments $args, ConsoleIo $io): int
     {
-        $id = $args->getArgument('id');
+        $id = (int)$args->getArgument('id');
         $lammies = $this->fetchTable()
                         ->find('Printing')
                         ->where(['Lammies.id <=' => $id])
@@ -43,7 +43,7 @@ class QueuePrintedCommand extends Command
 
         $this->fetchTable()->setStatuses($lammies, 'Printed');
 
-        $io->out($lammies->count());
+        $io->out((string)$lammies->count());
 
         return static::CODE_SUCCESS;
     }

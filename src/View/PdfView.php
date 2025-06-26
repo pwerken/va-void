@@ -33,6 +33,14 @@ class PdfView extends View
             }
         }
 
+        $this->setLayout('pdf');
+        $this->response = $this->response->withType('pdf');
+
+        return $this->createPdf($lammies, $this->get('double', false));
+    }
+
+    public function createPdf(array $lammies, bool $double): string
+    {
         if (empty($lammies)) {
             return '';
         }
@@ -57,9 +65,6 @@ class PdfView extends View
                 }
             }
         }
-
-        $this->setLayout('pdf');
-        $this->response = $this->response->withType('pdf');
 
         return $pdf->Output('s');
     }
