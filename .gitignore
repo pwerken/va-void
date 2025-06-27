@@ -37,7 +37,6 @@ Thumbs.db
 composer.lock
 # PHPUnit
 .phpunit.cache
-tests.sqlite
 # vim
 *~
 *.swp

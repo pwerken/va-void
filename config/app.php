@@ -10,6 +10,7 @@ use Authorization\Policy\Exception\MissingPolicyException;
 use Cake\Cache\Engine\FileEngine;
 use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
+use Cake\Database\Driver\Sqlite;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Mailer\Transport\MailTransport;
@@ -363,7 +364,7 @@ return [
          */
         'test' => [
             'className' => Connection::class,
-            'driver' => Mysql::class,
+            'driver' => Sqlite::class,
             'persistent' => false,
             'timezone' => 'UTC',
             'encoding' => 'utf8mb4',
