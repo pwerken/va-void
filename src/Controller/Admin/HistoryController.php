@@ -13,16 +13,10 @@ use DateTimeImmutable;
 class HistoryController extends AdminController
 {
     /**
-     * GET /admin/history/...
+     * GET /admin/history
      */
-    public function index(?string $e = null, string|int|null $k1 = null, string|int|null $k2 = null): void
+    public function index(): void
     {
-        if (!is_null($e)) {
-            $this->entityHistory($e, $k1, $k2);
-
-            return;
-        }
-
         $plin = $this->request->getQuery('plin');
         $plin = empty($plin) ? null : (int)$plin;
         $this->set('plin', $plin);
@@ -58,7 +52,47 @@ class HistoryController extends AdminController
         $this->set('list', $list);
     }
 
-    protected function entityHistory(string $e, mixed $k1, mixed $k2): void
+    /**
+     * GET /admin/history/player/$plin
+     */
+    public function player(int $plin): void
+    {
+        $this->entityHistory('player', $plin);
+    }
+
+    /**
+     * GET /admin/history/character/$plin/$chin
+     */
+    public function character(int $plin, int $chin): void
+    {
+        $this->entityHistory('character', $plin, $chin);
+    }
+
+    /**
+     * GET /admin/history/item/$itin
+     */
+    public function item(int $itin): void
+    {
+        $this->entityHistory('item', $itin);
+    }
+
+    /**
+     * GET /admin/history/condition/$coin
+     */
+    public function condition(int $coin): void
+    {
+        $this->entityHistory('condition', $coin);
+    }
+
+    /**
+     * GET /admin/history/power/$poin
+     */
+    public function power(int $poin): void
+    {
+        $this->entityHistory('power', $poin);
+    }
+
+    protected function entityHistory(string $e, int $k1, ?int $k2 = null): void
     {
         $this->viewBuilder()->setTemplate('compact');
 

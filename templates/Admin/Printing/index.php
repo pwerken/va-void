@@ -38,13 +38,13 @@ switch ($role) {
         echo '<span style="padding-left:100px;"></span>';
         echo $this->Html->link(
             'Single-sided pdf',
-            '/admin/printing/single',
+            ['controller' => 'printing', 'action' => 'single'],
             ['class' => 'button'],
         );
         echo '&nbsp;';
         echo $this->Html->link(
             'Double-sided pdf',
-            '/admin/printing/double',
+            ['controller' => 'printing', 'action' => 'double'],
             ['class' => 'button'],
         );
         echo "LET OP: klikken = status naar 'Printed' voor hele queue";

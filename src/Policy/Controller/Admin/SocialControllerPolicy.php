@@ -11,4 +11,14 @@ class SocialControllerPolicy extends ControllerPolicy
     {
         return true;
     }
+
+    public function login(): bool
+    {
+        return true;
+    }
+
+    public function callback(): bool
+    {
+        return true;
+    }
 }

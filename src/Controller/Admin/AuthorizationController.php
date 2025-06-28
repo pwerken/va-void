@@ -4,11 +4,12 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Model\Entity\Player;
+use Cake\Http\Response;
 
 class AuthorizationController extends AdminController
 {
     /**
-     * GET /admin/authentication
+     * GET /admin/authorization
      */
     public function index(): void
     {
@@ -20,10 +21,27 @@ class AuthorizationController extends AdminController
             array_pop($roles);
         }
         $this->set('roles', $roles);
+    }
+
+    /**
+     * POST /admin/authorization/edit
+     */
+    public function edit(): Response
+    {
+        $response = $this->redirect(['controller' => 'authorization', 'action' => 'index']);
 
         if (!$this->request->is('post')) {
-            return;
+            return $response;
         }
+
+        $user = $this->getRequest()->getAttribute('identity');
+
+        $roles = Player::roleValues();
+        if (!$user->hasAuth('Super')) {
+            # hide 'Super' to prevent authorization envy
+            array_pop($roles);
+        }
+        $this->set('roles', $roles);
 
         $plin = $this->request->getData('plin');
         $role = $this->request->getData('role');
@@ -33,20 +51,20 @@ class AuthorizationController extends AdminController
         if (is_null($player)) {
             $this->Flash->error("Player#$plin not found");
 
-            return;
+            return $response;
         }
 
         if ($player->role == $role) {
             $this->Flash->success("Player#$plin already as `$role` authorization");
 
-            return;
+            return $response;
         }
 
         $players->patchEntity($player, ['role' => $role]);
         if (!$player->isDirty('role')) {
             $this->Flash->error('Not authorized to change roles');
 
-            return;
+            return $response;
         }
 
         if (!$players->save($player)) {
@@ -55,5 +73,7 @@ class AuthorizationController extends AdminController
         } else {
             $this->Flash->success("Player#$plin has `$role` authorization");
         }
+
+        return $response;
     }
 }

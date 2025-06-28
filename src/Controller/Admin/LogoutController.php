@@ -14,6 +14,6 @@ class LogoutController extends AdminController
     {
         $this->Authentication->logout();
 
-        return $this->redirect('/admin');
+        return $this->redirect(['controller' => 'Root']);
     }
 }

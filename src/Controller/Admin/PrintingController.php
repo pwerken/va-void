@@ -15,27 +15,12 @@ class PrintingController extends AdminController
 {
     /**
      * GET /printing
-     * GET /printing/single
-     * GET /printing/double
      * POST /printing
      */
-    public function index(?string $sides = null): void
+    public function index(): void
     {
         $lammies = $this->fetchTable('Lammies');
         $user = $this->getRequest()->getAttribute('identity');
-
-        if (!is_null($sides) && $user->hasAuth('Infobalie')) {
-            $queued = $lammies->find('Queued')->all();
-
-            $this->set('double', ($sides == 'double'));
-            $this->viewBuilder()->setClassName('Pdf');
-            $this->set('lammies', $queued);
-            $this->set('viewVar', 'lammies');
-
-            $lammies->setStatuses($queued, 'Printed');
-
-            return;
-        }
 
         if ($this->request->is('post') && $user->hasAuth('Infobalie')) {
             $ids = $this->request->getData('delete');
@@ -63,5 +48,31 @@ class PrintingController extends AdminController
             ->enableHydration(false);
 
         $this->set('printing', $query->all());
+    }
+
+    /**
+     * GET /printing/double
+     */
+    public function double(): void
+    {
+        $lammies = $this->fetchTable('Lammies');
+        $queued = $lammies->find('queued')->all();
+
+        $this->viewBuilder()->setClassName('Pdf');
+
+        $this->set('double', true);
+        $this->set('lammies', $queued);
+        $this->set('viewVar', 'lammies');
+
+        $lammies->setStatuses($queued, 'Printed');
+    }
+
+    /**
+     * GET /printing/single
+     */
+    public function single(): void
+    {
+        $this->double();
+        $this->set('double', false);
     }
 }

@@ -9,7 +9,9 @@ foreach ($roles as $role) {
 $style = ['style' => 'display: inline-block; width: auto; margin-right: 1rem'];
 
 echo '<h3>Authorization</h3>';
-echo $this->Form->create();
+echo $this->Form->create(null, [
+        'url' => ['controller' => 'authorization', 'action' => 'edit'],
+    ]);
 echo 'Plin: ';
 echo $this->Form->text('plin', $style);
 echo $this->Form->select('role', $options, $style);
@@ -41,7 +43,7 @@ foreach (array_reverse($roles) as $role) {
 
     echo "<p>\n  <ul>\n";
     foreach ($query as $player) {
-        $url = '/admin/history/player/' . $player->id;
+        $url = ['controller' => 'history', 'action' => 'player', $player->id];
         $descr = $player->id . ': ' . $player->full_name;
         echo '    <li>' . $this->Html->link($descr, $url) . "\n";
     }

@@ -8,29 +8,68 @@ use Cake\Http\Response;
 class SocialController extends AdminController
 {
     /**
-     * GET /admin/social/$providerName
+     * GET /admin/social
      */
-    public function index(?string $providerName = null): Response
+    public function index(): void
     {
-        if (empty($providerName)) {
-            return $this->redirect('/admin');
+        if (!$this->request->is('post')) {
+            return;
         }
 
-        $this->SocialAuth->setCallbackUri([
-            'controller' => 'Social',
-            'action' => 'index',
-            'callback',
-        ]);
+        $plin = $this->request->getData('plin');
+        $social = $this->request->getData('social');
 
-        if ($providerName == 'callback') {
-            return $this->callback();
+        if (empty($plin) || empty($social)) {
+            return;
         }
 
-        // save redirectUri for after the login callback
+        $profiles = $this->fetchTable('SocialProfiles');
+        $login = $profiles->getMaybe($social);
+        if (is_null($login)) {
+            $this->Flash->error("SocialProfile#$social not found ?!");
+
+            return;
+        }
+
+        // delete login attempt
+        if (!is_null($this->request->getData('delete'))) {
+            if (!$profiles->delete($login)) {
+                $this->Flash->error("Failed to delete SocialProfile#$social");
+            } else {
+                $this->Flash->success("Deleted SocialProfile#$social");
+            }
+
+            return;
+        }
+
+        // link $plin to $social profile
+        $players = $this->fetchTable('Players');
+        $player = $players->getMaybe($plin);
+        if (is_null($player)) {
+            $this->Flash->error("Player#$plin not found");
+
+            return;
+        }
+
+        $login->user_id = $player->id;
+
+        if (!$profiles->save($login)) {
+            $this->Flash->error("Failed to link SocialProfile#$social");
+        } else {
+            $this->Flash->success("SocialProfile#$social linked to Player#$plin");
+        }
+    }
+
+    /**
+     * GET /admin/social/login/$providerName
+     */
+    public function login(string $providerName): Response
+    {
         $redirect = $this->request->getQuery('redirect', '/admin');
         $redirect = $this->request->getData('redirect', $redirect);
-        $this->request->getSession()->write('redirect', $redirect);
 
+        // save redirectUri for after the login callback
+        $this->request->getSession()->write('redirect', $redirect);
         $this->request->getSession()->write('provider', $providerName);
 
         // redirect to login via social site
@@ -42,7 +81,7 @@ class SocialController extends AdminController
     /**
      * GET /admin/social/callback
      */
-    protected function callback(): Response
+    public function callback(): Response
     {
         // callback from the social site login
         $providerName = $this->request->getSession()->consume('provider');
@@ -62,6 +101,6 @@ class SocialController extends AdminController
             $this->Flash->error('Failed to login');
         }
 
-        return $this->redirect('/admin');
+        return $this->redirect(['controller' => 'Root']);
     }
 }

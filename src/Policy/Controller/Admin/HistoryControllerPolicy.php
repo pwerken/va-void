@@ -11,4 +11,29 @@ class HistoryControllerPolicy extends ControllerPolicy
     {
         return $this->hasAuth('read-only');
     }
+
+    public function player(): bool
+    {
+        return $this->index();
+    }
+
+    public function character(): bool
+    {
+        return $this->index();
+    }
+
+    public function item(): bool
+    {
+        return $this->index();
+    }
+
+    public function condition(): bool
+    {
+        return $this->index();
+    }
+
+    public function power(): bool
+    {
+        return $this->index();
+    }
 }

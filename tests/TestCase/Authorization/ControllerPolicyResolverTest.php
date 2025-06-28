@@ -70,7 +70,6 @@ class ControllerPolicyResolverTest extends TestCase
             ['Skills'],
             ['Teachings'],
             ['Worlds'],
-            ['Authentication', 'Admin'],
             ['Authorization', 'Admin'],
             ['Backups', 'Admin'],
             ['Checks', 'Admin'],

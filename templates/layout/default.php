@@ -111,7 +111,7 @@ $nav['/admin/skills'] = 'Skill~Player Lookup';
     <?php endif ?>
     <?php if ($hasAuthReferee) : ?>
                             <li class="popover-item">
-                                <a class="popover-link" href="/admin/authentication">Authentication</a>
+                                <a class="popover-link" href="/admin/social">Authentication</a>
                             </li>
     <?php endif ?>
                             <li class="popover-item">

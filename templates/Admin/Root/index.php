@@ -13,7 +13,7 @@ declare(strict_types=1);
 if (isset($user)) {
     echo '<p>Logged in as: ' . $user['full_name'] . '<br/>';
     echo 'With auth level: ' . $user['role'] . '</p>';
-    echo $this->Html->link(__('Click here to logout.'), '/admin/logout');
+    echo $this->Html->link(__('Click here to logout.'), ['controller' => 'logout']);
 
     return;
 }
@@ -30,11 +30,11 @@ foreach ($socials as $social) {
     );
     echo $this->Form->postLink(
         $img,
-        '/admin/social/' . $social,
+        [ 'controller' => 'social', 'action' => 'login', $social],
         [ 'escape' => false
         , 'data' => ['redirect' => $redirect],
         ],
-    );
+    ) . "\n";
 }
 ?>
 <br/>

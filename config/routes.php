@@ -49,7 +49,10 @@ return function (RouteBuilder $routes): void {
         $routes->connect('/', $defaults);
 
         unset($defaults['controller']);
-        $routes->connect('/{controller}/*', $defaults);
+        $routes->connect('/{controller}', $defaults);
+
+        unset($defaults['action']);
+        $routes->connect('/{controller}/{action}/*', $defaults);
     });
 
     /**

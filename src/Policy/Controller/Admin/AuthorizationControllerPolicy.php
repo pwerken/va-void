@@ -11,4 +11,9 @@ class AuthorizationControllerPolicy extends ControllerPolicy
     {
         return $this->hasAuth('read-only');
     }
+
+    public function edit(): bool
+    {
+        return $this->index();
+    }
 }

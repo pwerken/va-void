@@ -11,4 +11,14 @@ class PrintingControllerPolicy extends ControllerPolicy
     {
         return $this->hasAuth('read-only');
     }
+
+    public function double(): bool
+    {
+        return $this->hasAuth('infobalie');
+    }
+
+    public function single(): bool
+    {
+        return $this->double();
+    }
 }

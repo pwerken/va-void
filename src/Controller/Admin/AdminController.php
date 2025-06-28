@@ -20,11 +20,15 @@ abstract class AdminController extends CakeController
         $this->defaultTable = null;
 
         $this->loadComponent('Flash');
-        $this->loadComponent('Authentication.Authentication');
+        $this->loadComponent('Authentication.Authentication', ['requireIdentity' => false]);
         $this->loadComponent('Authorization.Authorization');
         $this->loadComponent('SocialAuth');
 
-        $this->Authentication->allowUnauthenticated(['index']);
-        $this->set('user', $this->Authentication->getResult()->getData());
+        $this->set('user', $this->Authentication->getResult()?->getData());
+
+        $this->SocialAuth->setCallbackUri([
+            'controller' => 'Social',
+            'action' => 'callback',
+        ]);
     }
 }
