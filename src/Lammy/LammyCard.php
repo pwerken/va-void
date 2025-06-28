@@ -4,7 +4,8 @@ declare(strict_types=1);
 namespace App\Lammy;
 
 use App\Model\Entity\Entity;
-use QRcode\QRcode;
+use BaconQrCode\Common\ErrorCorrectionLevel;
+use BaconQrCode\Encoder\Encoder;
 use RPDF\Rpdf;
 
 /**
@@ -140,14 +141,31 @@ abstract class LammyCard
 
     protected function qrcode(): void
     {
-        $qr = new QRcode($this->entity->getUrl(), 'L');
-        $qr->disableBorder();
+        $ecc = ErrorCorrectionLevel::valueOf('L');
+        $matrix = Encoder::encode($this->entity->getUrl(), $ecc, 'UTF-8')->getMatrix();
 
-        $w = 17;
-        $x = $this->xPos + self::$WIDTH - 1 - $w;
-        $y = $this->yPos + self::$HEIGHT - 3 - $w;
+        $width = $matrix->getWidth();
+        $height = $matrix->getHeight();
 
-        $qr->displayFPDF($this->pdf, $x, $y, $w);
+        $qrcodeSize = 18;
+        $x = $this->xPos + self::$WIDTH - 1 - $qrcodeSize;
+        $y = $this->yPos + self::$HEIGHT - 3 - $qrcodeSize;
+        $blockWidth = $qrcodeSize / $width;
+        $blockHeight = $qrcodeSize / $height;
+
+        for ($row = 0; $row < $height; $row++) {
+            for ($col = 0; $col < $width; $col++) {
+                if ($matrix->get($col, $row) === 1) {
+                    $this->pdf->Rect(
+                        $x + $col * $blockWidth,
+                        $y + $row * $blockHeight,
+                        $blockWidth,
+                        $blockHeight,
+                        'F',
+                    );
+                }
+            }
+        }
     }
 
     protected function text(float $x, float $y, float $w, string $align, mixed $text, int $border = 0): void

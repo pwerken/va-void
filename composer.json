@@ -6,6 +6,7 @@
     "license": "ISC",
     "require": {
         "php": ">=8.2",
+        "bacon/bacon-qr-code": "^3.0",
         "cakephp/authentication": "^3.0.0",
         "cakephp/authorization": "^3.0.0",
         "cakephp/cakephp": "5.2.*",
@@ -27,7 +28,6 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/",
-            "QRcode\\": "plugins/qrcode/",
             "RPDF\\": "plugins/rpdf/"
         }
     },
