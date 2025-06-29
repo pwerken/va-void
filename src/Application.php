@@ -19,11 +19,11 @@ namespace App;
 use App\Authentication\AuthenticationService;
 use App\Authorization\AuthorizationService;
 use App\Middleware\BodyParserMiddleware;
+use App\Middleware\CharacterIdFromPlinChinMiddleware;
 use App\Middleware\CharacterIdNotNullMiddleware;
 use App\Middleware\CorsMiddleware;
 use App\Middleware\JsonInputMiddleware;
 use App\Middleware\LoginWithPlinMiddleware;
-use App\Middleware\PlinChinMiddleware;
 use App\Middleware\SessionAdminOnlyMiddleware;
 use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\Middleware\AuthorizationMiddleware;
@@ -94,7 +94,7 @@ class Application extends BaseApplication
             ->add(new RoutingMiddleware($this))
 
             // Try to convert url's {plin}/{chin} to {character_id}
-            ->add(new PlinChinMiddleware())
+            ->add(new CharacterIdFromPlinChinMiddleware())
 
             // Force PUT/POST to 'Content-Type: application/json'
             ->add(new JsonInputMiddleware())

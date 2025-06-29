@@ -4,10 +4,11 @@ declare(strict_types=1);
 namespace App\Test\TestCase;
 
 use App\Application;
+use App\Middleware\CharacterIdFromPlinChinMiddleware;
+use App\Middleware\CharacterIdNotNullMiddleware;
 use App\Middleware\CorsMiddleware;
 use App\Middleware\JsonInputMiddleware;
 use App\Middleware\LoginWithPlinMiddleware;
-use App\Middleware\PlinChinMiddleware;
 use App\Middleware\SessionAdminOnlyMiddleware;
 use App\Test\TestSuite\TestCase;
 use Authentication\Middleware\AuthenticationMiddleware;
@@ -63,17 +64,14 @@ class ApplicationTest extends TestCase
         $middleware->seek(2);
         $this->assertInstanceOf(AssetMiddleware::class, $middleware->current());
         $middleware->seek(3);
-
         $this->assertInstanceOf(RoutingMiddleware::class, $middleware->current());
         $middleware->seek(4);
-        $this->assertInstanceOf(PlinChinMiddleware::class, $middleware->current());
+        $this->assertInstanceOf(CharacterIdFromPlinChinMiddleware::class, $middleware->current());
         $middleware->seek(5);
-
         $this->assertInstanceOf(JsonInputMiddleware::class, $middleware->current());
         $middleware->seek(6);
         $this->assertInstanceOf(BodyParserMiddleware::class, $middleware->current());
         $middleware->seek(7);
-
         $this->assertInstanceOf(SessionAdminOnlyMiddleware::class, $middleware->current());
         $middleware->seek(8);
         $this->assertInstanceOf(LoginWithPlinMiddleware::class, $middleware->current());
@@ -83,5 +81,7 @@ class ApplicationTest extends TestCase
         $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->current());
         $middleware->seek(11);
         $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->current());
+        $middleware->seek(12);
+        $this->assertInstanceOf(CharacterIdNotNullMiddleware::class, $middleware->current());
     }
 }

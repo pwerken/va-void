@@ -9,21 +9,20 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
-class PlinChinMiddleware implements MiddlewareInterface
+class CharacterIdFromPlinChinMiddleware implements MiddlewareInterface
 {
     public function process(Request $request, RequestHandler $handler): Response
     {
-        $controller = $request->getParam('controller');
-        $action = $request->getParam('action');
+        $params = $request->getAttribute('params');
 
-        $hasPlinChin = ($controller === 'Characters');
-        $hasPlinChin |= (substr($action, 0, 10) === 'characters');
+        $hasPlinChin = ($params['controller'] === 'Characters');
+        $hasPlinChin |= (substr($params['action'], 0, 10) === 'characters');
 
-        $pass = $request->getParam('pass');
+        $pass = $params['pass'];
         if ($hasPlinChin && count($pass) >= 2) {
             $table = TableRegistry::getTableLocator()->get('Characters');
             $char = $table->findByPlayerIdAndChin($pass[0], $pass[1])->first()?->id;
-            $request = $request->withParam('character_id', $char);
+            $params['character_id'] = $char;
 
             array_shift($pass);
             $pass[0] = $char;
@@ -33,9 +32,10 @@ class PlinChinMiddleware implements MiddlewareInterface
                 $pass[$key] = (int)$value;
             }
         }
+        $params['pass'] = $pass;
 
         $request = $request->withAttribute('PlinChin', $hasPlinChin);
-        $request = $request->withParam('pass', $pass);
+        $request = $request->withAttribute('params', $params);
 
         return $handler->handle($request);
     }
