@@ -11,10 +11,8 @@ class PowersTablePolicy extends Policy
 {
     public function scopeIndex(User $identity, Query $query): void
     {
-        $this->setIdentity($identity);
         if (!$this->hasAuth('read-only')) {
-            $plin = $identity->getIdentifier();
-            $query->where(['Characters.player_id' => $plin])
+            $query->where(['Characters.player_id' => $this->getPlin()])
               ->leftJoin(
                   ['CharactersPowers' => 'characters_powers'],
                   ['CharactersPowers.power_id = Powers.id'],

@@ -17,7 +17,7 @@ class AddComponent extends Component
         if ($checkAuthorize) {
             $controller->Authorization->authorize($obj, 'add');
         }
-        $controller->Authorization->applyScope($obj, 'accesible');
+        $controller->Authorization->applyScope($obj, 'accessible');
 
         $data = $controller->getRequest()->getData();
         $obj = $model->patchEntity($obj, $data, ['associated' => []]);

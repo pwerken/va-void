@@ -6,9 +6,8 @@ namespace App\Policy\Entity;
 use App\Model\Entity\Entity;
 use App\Policy\Policy;
 use Authorization\IdentityInterface as User;
-use Authorization\Policy\BeforePolicyInterface;
 
-abstract class EntityPolicy extends Policy implements BeforePolicyInterface
+abstract class EntityPolicy extends Policy
 {
     private array $showFieldAuth = [];
     private array $editFieldAuth = [];
@@ -19,20 +18,8 @@ abstract class EntityPolicy extends Policy implements BeforePolicyInterface
         $this->showFieldAuth('modifier_id', 'read-only');
     }
 
-    /**
-     * This method is called just prior to the 'can{$action}' check.
-     */
-    public function before(?User $identity, mixed $resource, string $action): null
+    public function scopeAccessible(User $identity, Entity $obj): void
     {
-        $this->setIdentity($identity);
-
-        return null;
-    }
-
-    public function scopeAccesible(User $identity, Entity $obj): void
-    {
-        $this->setIdentity($identity);
-
         $audit_fields = ['created', 'creator_id', 'modified', 'modifier_id'];
         $obj->setAccess($audit_fields, false);
 
@@ -43,8 +30,6 @@ abstract class EntityPolicy extends Policy implements BeforePolicyInterface
 
     public function scopeVisible(User $identity, Entity $obj): void
     {
-        $this->setIdentity($identity);
-
         foreach ($this->showFieldAuth as $field => $access) {
             if ($this->hasAuth($access, $obj)) {
                 continue;

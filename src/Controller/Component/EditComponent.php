@@ -15,7 +15,7 @@ class EditComponent extends Component
 
         $obj = $model->get($id);
         $controller->Authorization->authorize($obj, 'edit');
-        $controller->Authorization->applyScope($obj, 'accesible');
+        $controller->Authorization->applyScope($obj, 'accessible');
 
         $data = $controller->getRequest()->getData();
         $obj = $model->patchEntity($obj, $data, ['associated' => []]);

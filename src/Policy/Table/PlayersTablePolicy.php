@@ -11,11 +11,10 @@ class PlayersTablePolicy extends Policy
 {
     public function scopeIndex(User $identity, Query $query): void
     {
-        $this->setIdentity($identity);
         if ($this->hasAuth('read-only')) {
             return;
         }
 
-        $query->where(['Players.id' => $identity->getIdentifier()]);
+        $query->where(['Players.id' => $this->getPlin()]);
     }
 }
