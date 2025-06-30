@@ -7,9 +7,12 @@ use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\EventInterface;
+use Cake\I18n\DateTime;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table as CakeTable;
 use Cake\ORM\TableRegistry;
+use Cake\Routing\Router;
+use ReflectionClass;
 
 abstract class Table extends CakeTable
 {
@@ -21,8 +24,7 @@ abstract class Table extends CakeTable
 
         $this->addBehavior('WhoWhen');
 
-        $entityName = $this->getEntityClass();
-        $entityName = substr($entityName, strrpos($entityName, '\\') + 1);
+        $entityName = (new ReflectionClass($this->getEntityClass()))->getShortName();
         $this->_validatorClass = "App\\Model\\Validation\\{$entityName}Validator";
     }
 
@@ -127,17 +129,8 @@ abstract class Table extends CakeTable
         }
     }
 
-    public function getWithContain(int|array $id): EntityInterface
+    public function findWithContain(SelectQuery $query): SelectQuery
     {
-        return $this->get($id, contain: $this->contain());
-    }
-
-    public function findWithContain(?SelectQuery $query = null, mixed ...$args): SelectQuery
-    {
-        if (is_null($query)) {
-            $query = $this->find('all', ...$args);
-        }
-
         $contain = $this->contain();
         if (!empty($contain)) {
             $query->contain($contain);
@@ -165,7 +158,15 @@ abstract class Table extends CakeTable
     {
         $table = TableRegistry::getTableLocator()->get($model);
         $entity = $table->get($id);
-        $table->touch($entity);
+
+        if ($table->hasField('modified')) {
+            $entity->set('modified', new DateTime());
+        }
+        if ($table->hasField('modifier_id')) {
+            $who = Router::getRequest()->getAttribute('identity')->id;
+            $entity->set('modifier_id', $who);
+        }
+
         $table->save($entity);
     }
 }

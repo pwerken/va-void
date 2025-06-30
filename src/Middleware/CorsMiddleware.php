@@ -35,7 +35,7 @@ class CorsMiddleware implements MiddlewareInterface
         }
 
         $cors = $response->cors($request);
-        if ($request->is('options')) {
+        if ($request->getMethod() === 'OPTIONS') {
             $cors = $cors
                 ->allowMethods($this->config['allowMethods'])
                 ->allowHeaders($this->config['allowHeaders']);

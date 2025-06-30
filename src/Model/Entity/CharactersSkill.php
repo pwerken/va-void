@@ -13,26 +13,26 @@ class CharactersSkill extends Entity
         $this->setHidden(['character_id', 'skill_id'], true);
     }
 
-    public function getUrl(array $parents = []): string
+    public function getUrl(): string
     {
-        return $this->getRelationUrl('character', 'skill', $parents);
+        return $this->getRelationUrl('character', 'skill');
     }
 
     public function printableName(Skill $skill): string
     {
-        $name = $skill->name;
+        $name = $skill->get('name');
         $times = $this->get('times');
         if ($times > 1) {
             $name .= ' x' . $times;
         }
-        if ($skill->loresheet && $skill->blanks) {
+        if ($skill->get('loresheet') && $skill->get('blanks')) {
             $name .= ' (lore & blanks)';
-        } elseif ($skill->loresheet) {
+        } elseif ($skill->get('loresheet')) {
             $name .= ' (lore)';
-        } elseif ($skill->blanks) {
+        } elseif ($skill->get('blanks')) {
             $name .= ' (blanks)';
         }
-        $name .= ' (' . ($times * $skill->cost) . ')';
+        $name .= ' (' . ($times * $skill->get('cost')) . ')';
 
         return $name;
     }

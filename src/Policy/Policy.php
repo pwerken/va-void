@@ -10,7 +10,7 @@ use Authorization\Policy\BeforeScopeInterface;
 
 abstract class Policy implements BeforePolicyInterface, BeforeScopeInterface
 {
-    private ?User $identity;
+    private ?User $identity = null;
 
     public function before(?User $identity, mixed $resource, string $action): null
     {
@@ -28,11 +28,7 @@ abstract class Policy implements BeforePolicyInterface, BeforeScopeInterface
 
     protected function getPlin(): ?int
     {
-        if (is_null($this->identity)) {
-            return null;
-        }
-
-        return $this->identity->getOriginalData()['id'];
+        return $this->identity?->getOriginalData()['id'];
     }
 
     protected function setIdentity(?User $identity): void

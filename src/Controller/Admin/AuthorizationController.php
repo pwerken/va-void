@@ -54,8 +54,9 @@ class AuthorizationController extends AdminController
             return $response;
         }
 
-        if ($player->role == $role) {
-            $this->Flash->success("Player#$plin already as `$role` authorization");
+        $who = $player->get('full_name');
+        if ($player->get('role') == $role) {
+            $this->Flash->success("$who (#$plin) already as `$role` authorization");
 
             return $response;
         }
@@ -71,7 +72,7 @@ class AuthorizationController extends AdminController
             $errors = $player->getError('role');
             $this->Flash->error(reset($errors));
         } else {
-            $this->Flash->success("Player#$plin has `$role` authorization");
+            $this->Flash->success("$who (#$plin) now has `$role` authorization");
         }
 
         return $response;

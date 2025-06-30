@@ -28,7 +28,7 @@ use SocialConnect\Provider\Exception\InvalidResponse;
 use SocialConnect\Provider\Session\Session as SocialConnectSession;
 
 /**
- * @property \Authentication\Controller\Component\AuthenticationComponent $Mailer;
+ * @property \App\Controller\Component\MailerComponent $Mailer;
  */
 class SocialAuthComponent extends Component
 {

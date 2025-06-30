@@ -45,7 +45,7 @@ class RemoveItemAttributes extends Migration
         $history = $this->table('history');
         $insertAll = [];
 
-        $rows = $this->getQueryBuilder('select')
+        $rows = $this->getSelectBuilder()
             ->select('*')
             ->from('attributes_items')
             ->order(['attribute_id' => 'ASC', 'item_id' => 'ASC'])
@@ -69,7 +69,7 @@ class RemoveItemAttributes extends Migration
             $insertAll[] = $delete;
         }
 
-        $rows = $this->getQueryBuilder('select')
+        $rows = $this->getSelectBuilder()
             ->select('*')
             ->from('attributes')
             ->order(['id' => 'ASC'])

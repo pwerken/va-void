@@ -15,7 +15,7 @@ class TeachingsController extends Controller
     {
         $parent = $this->fetchTable('Characters')->get($char_id);
 
-        $query = $this->Teachings->findWithContain();
+        $query = $this->Teachings->find('withContain');
         $query->where(['teacher_id' => $char_id]);
 
         $this->set('parent', $parent);
@@ -27,7 +27,7 @@ class TeachingsController extends Controller
      */
     public function charactersView(int $char_id): void
     {
-        $query = $this->Teachings->findWithContain();
+        $query = $this->Teachings->find('withContain');
         $query->where(['student_id' => $char_id]);
 
         $this->set('_serialize', $query->firstOrFail());

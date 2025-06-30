@@ -28,7 +28,7 @@ class PowersTable extends Table
     public function ruleNoCharacters(EntityInterface $entity, array $options): bool
     {
         $query = $this->CharactersPowers->find();
-        $query->where(['power_id' => $entity->id]);
+        $query->where(['power_id' => $entity->get('id')]);
 
         if ($query->count() > 0) {
             $entity->setError('characters', $this->consistencyError);

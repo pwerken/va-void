@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use Cake\Utility\Hash;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
@@ -12,13 +13,15 @@ class LoginWithPlinMiddleware implements MiddlewareInterface
 {
     public function process(Request $request, RequestHandler $handler): Response
     {
-        $isAuthComp = $request->getParam('controller') === 'Auth';
-        $isLogin = $request->getParam('action') === 'login';
+        $params = $request->getAttribute('params');
+        $isAuthComp = $params['controller'] === 'Auth';
+        $isLogin = $params['action'] === 'login';
 
         if ($isAuthComp && $isLogin) {
-            $id = $request->getData('id');
-            $plin = $request->getData('plin', $id);
-            $request = $request->withData('id', $plin);
+            $id = Hash::get($request->getParsedBody(), 'id');
+            $plin = Hash::get($request->getParsedBody(), 'plin', $id);
+
+            $request = $request->withParsedBody(Hash::insert($request->getParsedBody(), 'id', $plin));
         }
 
         return $handler->handle($request);

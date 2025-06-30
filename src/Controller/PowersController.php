@@ -53,15 +53,17 @@ class PowersController extends Controller
     public function queue(int $poin): void
     {
         if ((string)$this->getRequest()->getBody() === 'all') {
-            $power = $this->fetchTable()->getWithContain($poin);
+            $power = $this->fetchTable()->get($poin, 'withContain');
             $table = $this->fetchTable('Lammies');
-            foreach ($power->characters as $character) {
+
+            $characters = $power->get('characters');
+            foreach ($characters as $character) {
                 $lammy = $table->newEmptyEntity();
                 $lammy->set('target', $character->_joinData);
                 $table->saveOrFail($lammy);
             }
 
-            $this->set('_serialize', count($power->characters));
+            $this->set('_serialize', count($characters));
 
             return;
         }

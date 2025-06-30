@@ -13,8 +13,8 @@ class CharactersPower extends Entity
         $this->setHidden(['character_id', 'power_id'], true);
     }
 
-    public function getUrl(array $parents = []): string
+    public function getUrl(): string
     {
-        return $this->getRelationUrl('character', 'power', $parents);
+        return $this->getRelationUrl('character', 'power');
     }
 }

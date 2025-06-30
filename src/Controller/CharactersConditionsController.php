@@ -21,7 +21,7 @@ class CharactersConditionsController extends Controller
     {
         $parent = $this->fetchTable('Characters')->get($char_id);
 
-        $query = $this->CharactersConditions->findWithContain();
+        $query = $this->CharactersConditions->find('withContain');
         $query->andWhere(['CharactersConditions.character_id' => $char_id]);
 
         $this->loadComponent('IndexRelation');
@@ -87,7 +87,7 @@ class CharactersConditionsController extends Controller
     {
         $parent = $this->fetchTable('Conditions')->get($coin);
 
-        $query = $this->CharactersConditions->findWithContain();
+        $query = $this->CharactersConditions->find('withContain');
         $query->andWhere(['CharactersConditions.condition_id' => $coin]);
 
         $this->loadComponent('IndexRelation');

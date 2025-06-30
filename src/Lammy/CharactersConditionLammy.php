@@ -8,16 +8,19 @@ class CharactersConditionLammy extends LammyCard
     public function draw(int $side, ?array $data = null): void
     {
         if (is_null($data)) {
+            $condition = $this->entity->get('condition');
+            $character = $this->entity->get('character');
+
             $data = [];
             $data['type'] = 'Condition';
             $data['key'] = 'COIN';
-            $data['id'] = $this->entity->condition_id;
-            $data['name'] = $this->entity->condition->name;
-            $data['text'] = $this->entity->condition->player_text;
-            $data['plin'] = $this->entity->character->player_id . ' - ' . $this->entity->character->chin;
-            $data['char'] = $this->entity->character->name;
+            $data['id'] = $this->entity->get('condition_id');
+            $data['name'] = $condition->get('name');
+            $data['text'] = $condition->get('player_text');
+            $data['plin'] = $character->get('player_id') . ' - ' . $character->get('chin');
+            $data['char'] = $character->get('name');
 
-            $expiry = $this->entity->expiry ?: 'Until death';
+            $expiry = $this->entity->get('expiry') ?: 'Until death';
             if (!is_string($expiry)) {
                 $expiry = (string)$expiry;
             }

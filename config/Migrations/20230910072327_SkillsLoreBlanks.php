@@ -13,7 +13,7 @@ class SkillsLoreBlanks extends Migration
             ->update();
 
         // fill columns based on skill name
-        $query = $this->getQueryBuilder('select');
+        $query = $this->getSelectBuilder();
         $query->select('*')->from('skills')
             ->where($query->newExpr()->or([])
                       ->add($query->newExpr()->like('name', '% (blanks)'))
@@ -30,7 +30,7 @@ class SkillsLoreBlanks extends Migration
             $hasLore = (int)(substr($matches[2], 0, 5) == '(lore');
             $hasBlanks = (int)(substr($matches[2], -7) == 'blanks)');
 
-            $this->getQueryBuilder('update')
+            $this->getUpdateBuilder()
                 ->update('skills')
                 ->set(['name' => $name])
                 ->set(['loresheet' => $hasLore])
@@ -43,7 +43,7 @@ class SkillsLoreBlanks extends Migration
     public function down(): void
     {
         // add loresheet and blanks back to skill name
-        $query = $this->getQueryBuilder('select');
+        $query = $this->getSelectBuilder();
         $query->select('*')->from('skills')
             ->where($query->newExpr()->or([])
                       ->add(['loresheet' => true])
@@ -57,7 +57,7 @@ class SkillsLoreBlanks extends Migration
             } else {
                 $name .= ' (blanks)';
             }
-            $this->getQueryBuilder('update')
+            $this->getUpdateBuilder()
                 ->update('skills')
                 ->set(['name' => $name])
                 ->where(['id' => $row['id']])

@@ -64,7 +64,7 @@ class AdminAuthCommand extends Command
 
             foreach ($perms[$role] as $plin) {
                 $player = $this->fetchTable()->get($plin);
-                $io->out(sprintf('<info>%4d</info> %s', $plin, $player->fullName));
+                $io->out(sprintf('<info>%4d</info> %s', $plin, $player->get('full_name')));
             }
         }
 
@@ -75,7 +75,7 @@ class AdminAuthCommand extends Command
     {
         $table = $this->fetchTable();
         $player = $table->getMaybe($plin);
-        if ($plin !== (string)$player?->id) {
+        if ($plin !== (string)$player?->get('id')) {
             $io->abort(sprintf('No player found with plin `%s`.', $plin));
         }
 
@@ -83,7 +83,7 @@ class AdminAuthCommand extends Command
             $table->patchEntity($player, ['role' => $role]);
             $table->save($player);
 
-            $errors = $player->getErrors('role');
+            $errors = $player->getError('role');
             if (!empty($errors)) {
                 foreach ($errors as $error) {
                     $io->err($error);
@@ -94,9 +94,9 @@ class AdminAuthCommand extends Command
 
         $io->out(sprintf(
             '<info>%04d</info> %s: <warning>%s</warning>',
-            $player->id,
-            $player->fullName,
-            $player->role,
+            $player->get('id'),
+            $player->get('full_name'),
+            $player->get('role'),
         ));
 
         return static::CODE_SUCCESS;

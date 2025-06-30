@@ -4,10 +4,16 @@ declare(strict_types=1);
 namespace App\Controller\Component;
 
 use App\Error\Exception\ValidationException;
+use App\Model\Entity\Entity;
 use Cake\Controller\Component;
 
+/**
+ * @property \Authorization\Controller\Component\AuthorizationComponent $Authorization;
+ */
 class AddComponent extends Component
 {
+    protected array $components = ['Authorization.Authorization'];
+
     public function action(bool $checkAuthorize = true): void
     {
         $controller = $this->getController();
@@ -15,9 +21,9 @@ class AddComponent extends Component
 
         $obj = $model->newEmptyEntity();
         if ($checkAuthorize) {
-            $controller->Authorization->authorize($obj, 'add');
+            $this->Authorization->authorize($obj, 'add');
         }
-        $controller->Authorization->applyScope($obj, 'accessible');
+        $this->Authorization->applyScope($obj, 'accessible');
 
         $data = $controller->getRequest()->getData();
         $obj = $model->patchEntity($obj, $data, ['associated' => []]);
@@ -26,7 +32,7 @@ class AddComponent extends Component
             throw new ValidationException($obj);
         }
 
-        $obj = $obj->refresh();
+        $obj = Entity::refresh($obj);
 
         $response = $controller->getResponse()
                         ->withLocation($obj->getUrl())

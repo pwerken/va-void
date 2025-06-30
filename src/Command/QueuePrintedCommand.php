@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Command\Traits\CommandAuthorizationTrait;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -10,6 +11,8 @@ use Cake\Console\ConsoleOptionParser;
 
 class QueuePrintedCommand extends Command
 {
+    use CommandAuthorizationTrait;
+
     protected ?string $defaultTable = 'Lammies';
 
     public static function defaultName(): string
@@ -37,7 +40,7 @@ class QueuePrintedCommand extends Command
     {
         $id = (int)$args->getArgument('id');
         $lammies = $this->fetchTable()
-                        ->find('Printing')
+                        ->find('printing')
                         ->where(['Lammies.id <=' => $id])
                         ->all();
 

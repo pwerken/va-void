@@ -20,11 +20,11 @@ class DropDataTables extends Migration
             ->update();
 
         // fill text field
-        $subQuery = $this->getQueryBuilder('select')
+        $subQuery = $this->getSelectBuilder()
                     ->select('`name`')
                     ->from("`$lookupTable`")
                     ->where(["`id` = `characters`.`$reference`"]);
-        $this->getQueryBuilder('update')
+        $this->getUpdateBuilder()
             ->update('`characters`')
             ->set(["`$name`" => $subQuery])
             ->execute();
@@ -57,12 +57,12 @@ class DropDataTables extends Migration
             ->create();
 
         // fill lookup tables
-        $subQuery = $this->getQueryBuilder('select')
+        $subQuery = $this->getSelectBuilder()
                     ->select([$name])
                     ->distinct([$name])
                     ->from('characters')
                     ->orderAsc($name);
-        $this->getQueryBuilder('insert')
+        $this->getInsertBuilder()
             ->insert(['name'])
             ->into($lookupTable)
             ->values($subQuery)
@@ -82,11 +82,11 @@ class DropDataTables extends Migration
             ->update();
 
         // set foreign key fields
-        $subQuery = $this->getQueryBuilder('select')
+        $subQuery = $this->getSelectBuilder()
                     ->select('id')
                     ->from($lookupTable)
                     ->where(["name = characters.$name"]);
-        $this->getQueryBuilder('update')
+        $this->getUpdateBuilder()
             ->update('characters')
             ->set([$reference => $subQuery])
             ->execute();

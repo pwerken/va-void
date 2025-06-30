@@ -20,7 +20,7 @@ class CharactersSkillsController extends Controller
     {
         $parent = $this->fetchTable('Characters')->get($char_id);
 
-        $query = $this->CharactersSkills->findWithContain();
+        $query = $this->CharactersSkills->find('withContain');
         $query->andWhere(['CharactersSkills.character_id' => $char_id]);
 
         $this->loadComponent('IndexRelation');
@@ -77,7 +77,7 @@ class CharactersSkillsController extends Controller
     {
         $parent = $this->fetchTable('Skills')->get($skill_id);
 
-        $query = $this->CharactersSkills->findWithContain();
+        $query = $this->CharactersSkills->find('withContain');
         $query->andWhere(['CharactersSkills.skill_id' => $skill_id]);
 
         $this->loadComponent('IndexRelation');

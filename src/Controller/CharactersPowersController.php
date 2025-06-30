@@ -21,7 +21,7 @@ class CharactersPowersController extends Controller
     {
         $parent = $this->fetchTable('Characters')->get($char_id);
 
-        $query = $this->CharactersPowers->findWithContain();
+        $query = $this->CharactersPowers->find('withContain');
         $query->andWhere(['CharactersPowers.character_id' => $char_id]);
 
         $this->loadComponent('IndexRelation');
@@ -87,7 +87,7 @@ class CharactersPowersController extends Controller
     {
         $parent = $this->fetchTable('Powers')->get($poin);
 
-        $query = $this->CharactersPowers->findWithContain();
+        $query = $this->CharactersPowers->find('withContain');
         $query->andWhere(['CharactersPowers.power_id' => $poin]);
 
         $this->loadComponent('IndexRelation');

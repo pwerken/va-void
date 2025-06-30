@@ -137,8 +137,8 @@ class HistoryController extends AdminController
                         case 'character_id':
                             if ($value) {
                                 $char = $characters->get($value);
-                                $id = $char->player_id . '/' . $char->chin;
-                                $value = $id . ' ' . $char->name;
+                                $id = $char->get('player_id') . '/' . $char->get('chin');
+                                $value = $id . ' ' . $char->get('name');
                                 $cur['link'] = '/character/' . $id;
                             }
                             break;
@@ -190,8 +190,8 @@ class HistoryController extends AdminController
                         case 'character_id':
                             if ($value) {
                                 $char = $characters->get($value);
-                                $id = $char->player_id . '/' . $char->chin;
-                                $value = $id . ' ' . $char->name;
+                                $id = $char->get('player_id') . '/' . $char->get('chin');
+                                $value = $id . ' ' . $char->get('name');
                                 $cur['link'] = '/character/' . $id;
                             }
                             break;
@@ -216,11 +216,11 @@ class HistoryController extends AdminController
         $cur = [];
         $cur['modified'] = $row->modifiedString();
         $cur['modifier'] = $row->modifierString();
-        $cur['modifier_id'] = $row->modifier_id;
+        $cur['modifier_id'] = $row->get('modifier_id');
 
-        $data = Json::decode($row->data ?? '{}');
+        $data = Json::decode($row->get('data') ?? '{}');
 
-        switch ($row->entity) {
+        switch ($row->get('entity')) {
             case 'Character':
                 $cur['link'] = '/character' . '/' . $data['player_id'] . '/' . $data['chin'];
                 $cur['name'] = $data['name'];
@@ -228,26 +228,28 @@ class HistoryController extends AdminController
                 break;
             case 'CharactersCondition':
                 if ($fromCharacter) {
-                    $cur['link'] = '/condition/' . $row->key2;
-                    $cur['name'] = $row->condition?->get('name');
+                    $cur['link'] = '/condition/' . $row->get('key2');
+                    $cur['name'] = $row->get('condition')?->get('name');
                 } else {
-                    $cur['link'] = '/character/' . $row->character->player_id . '/' . $row->character->chin;
-                    $cur['name'] = $row->character?->get('name');
+                    $character = $row->get('character');
+                    $cur['link'] = '/character/' . $character->get('player_id') . '/' . $character->get('chin');
+                    $cur['name'] = $character->get('name');
                 }
                 $cur['key'] = $row->keyString();
                 break;
             case 'CharactersPower':
                 if ($fromCharacter) {
-                    $cur['link'] = '/power/' . $row->key2;
-                    $cur['name'] = $row->power?->get('name');
+                    $cur['link'] = '/power/' . $row->get('key2');
+                    $cur['name'] = $row->get('power')?->get('name');
                 } else {
-                    $cur['link'] = '/character/' . $row->relation()->player_id . '/' . $row->relation()->chin;
-                    $cur['name'] = $row->character?->get('name');
+                    $character = $row->get('character');
+                    $cur['link'] = '/character/' . $character->get('player_id') . '/' . $character->get('chin');
+                    $cur['name'] = $character->get('name');
                 }
                 $cur['key'] = $row->keyString();
                 break;
             case 'Player':
-                $cur['link'] = '/player/' . $row->key1;
+                $cur['link'] = '/player/' . $row->get('key');
                 $cur['name'] = implode(' ', [$data['first_name'], $data['insertion'], $data['last_name']]);
                 $cur['key'] = $row->keyString();
                 break;
@@ -261,7 +263,7 @@ class HistoryController extends AdminController
                 $cur['key'] = $row->keyString();
         }
 
-        if (strtolower($row->entity) == $self || is_null($cur['name'])) {
+        if (strtolower($row->get('entity')) == $self || is_null($cur['name'])) {
             $cur['link'] = false;
         }
 

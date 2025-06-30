@@ -77,7 +77,7 @@ class CharactersController extends Controller
      */
     public function queue(int $char_id): void
     {
-        $char = $this->Characters->getWithContain($char_id);
+        $char = $this->Characters->get($char_id, 'withContain');
 
         $table = $this->fetchTable('Lammies');
 
@@ -87,21 +87,21 @@ class CharactersController extends Controller
         $count = 1;
 
         if ((string)$this->getRequest()->getBody() === 'all') {
-            foreach ($char->powers as $power) {
+            foreach ($char->get('powers') as $power) {
                 $lammy = $table->newEmptyEntity();
                 $lammy->set('target', $power->_joinData);
                 $table->saveOrFail($lammy);
                 $count++;
             }
 
-            foreach ($char->conditions as $condition) {
+            foreach ($char->get('conditions') as $condition) {
                 $lammy = $table->newEmptyEntity();
                 $lammy->set('target', $condition->_joinData);
                 $table->saveOrFail($lammy);
                 $count++;
             }
 
-            foreach ($char->items as $item) {
+            foreach ($char->get('items') as $item) {
                 $lammy = $table->newEmptyEntity();
                 $lammy->set('target', $item);
                 $table->saveOrFail($lammy);

@@ -12,9 +12,9 @@ class SessionAdminOnlyMiddleware implements MiddlewareInterface
 {
     public function process(Request $request, RequestHandler $handler): Response
     {
-        $isAdminComp = $request->getParam('prefix') === 'Admin';
-        if (!$isAdminComp) {
-            $request->getSession()->destroy();
+        $params = $request->getAttribute('params');
+        if (!isset($params['prefix']) || $params['prefix'] !== 'Admin') {
+            $request->getAttribute('session')->destroy();
         }
 
         return $handler->handle($request);

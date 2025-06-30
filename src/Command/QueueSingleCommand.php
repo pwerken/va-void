@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Command\Traits\CommandAuthorizationTrait;
 use App\Command\Traits\PrintLammiesTrait;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
@@ -11,6 +12,7 @@ use Cake\Console\ConsoleOptionParser;
 
 class QueueSingleCommand extends Command
 {
+    use CommandAuthorizationTrait;
     use PrintLammiesTrait;
 
     protected ?string $defaultTable = 'Lammies';

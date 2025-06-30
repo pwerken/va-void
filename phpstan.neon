@@ -1,7 +1,7 @@
 includes:
 	- vendor/cakedc/cakephp-phpstan/extension.neon
 parameters:
-	level: 1
+	level: 2
 	treatPhpDocTypesAsCertain: false
 	bootstrapFiles:
 		- config/bootstrap.php

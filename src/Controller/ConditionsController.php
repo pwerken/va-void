@@ -55,18 +55,21 @@ class ConditionsController extends Controller
     public function queue(int $coin): void
     {
         if ((string)$this->getRequest()->getBody() === 'all') {
-            $condition = $this->fetchTable()->getWithContain($coin);
+            $condition = $this->fetchTable()->get($coin, 'withContain');
             $table = $this->fetchTable('Lammies');
-            foreach ($condition->characters as $character) {
+
+            $characters = $condition->get('characters');
+            foreach ($characters as $character) {
                 $lammy = $table->newEmptyEntity();
                 $lammy->set('target', $character->_joinData);
                 $table->saveOrFail($lammy);
             }
 
-            $this->set('_serialize', count($condition->characters));
+            $this->set('_serialize', count($characters));
 
             return;
         }
+
         $this->loadComponent('QueueLammy');
         $this->QueueLammy->action($coin);
         $this->set('_serialize', 1);

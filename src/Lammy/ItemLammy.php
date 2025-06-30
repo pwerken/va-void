@@ -42,26 +42,26 @@ class ItemLammy extends LammyCard
 
         $this->pdf->SetTextColor(0);
 
-        $expiry = $this->entity->expiry ?: 'Permanent';
+        $expiry = $this->entity->get('expiry') ?: 'Permanent';
         if (!is_string($expiry)) {
             $expiry = (string)$expiry;
         }
 
         $this->font(11, 'B');
-        $this->text(57.5, 5, 10, 'R', $this->entity->id);
+        $this->text(57.5, 5, 10, 'R', $this->entity->get('id'));
 
         $this->font(8);
-        $this->textarea(12, 15, 60, 24, $this->entity->description);
+        $this->textarea(12, 15, 60, 24, $this->entity->get('description'));
 
         $this->font(8, 'B');
-        $this->text(12, 10, 60, 'L', $this->entity->name);
+        $this->text(12, 10, 60, 'L', $this->entity->get('name'));
         $this->text(12, 43, 60, 'L', $expiry);
 
-        if ($this->entity->character) {
-            $owner = $this->entity->character->player_id;
-            $owner .= ' - ' . $this->entity->character->chin;
-        } else {
+        $character = $this->entity->get('character');
+        if ($character === null) {
             $owner = 'unknown';
+        } else {
+            $owner = $character->get('player_id') . ' - ' . $character->get('chin');
         }
         $this->inMargin('owner: ' . $owner);
     }
@@ -73,13 +73,13 @@ class ItemLammy extends LammyCard
         $this->pdf->SetTextColor(0);
         $this->square(8, 5, 72, 42);
         $this->font(6);
-        $this->textarea(8, 7, 64, 37, $this->entity->player_text);
+        $this->textarea(8, 7, 64, 37, $this->entity->get('player_text'));
 
-        if (!is_null($this->entity->character)) {
-            $char_id = $this->entity->character->player_id
-                        . ' - ' . $this->entity->character->chin;
-        } else {
+        $character = $this->entity->get('character');
+        if ($character === null) {
             $char_id = 'PLIN';
+        } else {
+            $char_id = $character->get('player_id') . ' - ' . $character->get('chin');
         }
         $this->pdf->SetTextColor(191);
         $this->font(5);

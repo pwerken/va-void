@@ -23,7 +23,7 @@ class AddCreatedCreator extends Migration
             ->save();
 
         // set initial created/creator_field based on modified/modifier_id
-        $query = $this->getQueryBuilder('update')
+        $query = $this->getUpdateBuilder()
                     ->update('items')
                     ->set(function ($exp) {
                         return $exp->equalFields('created', 'modified');
@@ -32,7 +32,7 @@ class AddCreatedCreator extends Migration
                         return $exp->equalFields('creator_id', 'modifier_id');
                     })
                     ->execute();
-        $query = $this->getQueryBuilder('update')
+        $query = $this->getUpdateBuilder()
                     ->update('conditions')
                     ->set(function ($exp) {
                         return $exp->equalFields('created', 'modified');
@@ -41,7 +41,7 @@ class AddCreatedCreator extends Migration
                         return $exp->equalFields('creator_id', 'modifier_id');
                     })
                     ->execute();
-        $query = $this->getQueryBuilder('update')
+        $query = $this->getUpdateBuilder()
                     ->update('powers')
                     ->set(function ($exp) {
                         return $exp->equalFields('created', 'modified');
@@ -52,7 +52,7 @@ class AddCreatedCreator extends Migration
                     ->execute();
 
         // try to improve on created/creator_id based on historical data
-        $query = $this->getQueryBuilder('select')
+        $query = $this->getSelectBuilder()
                     ->select(function ($query) {
                         return ['min' => $query->func()->min('id')];
                     })
@@ -67,7 +67,7 @@ class AddCreatedCreator extends Migration
                         return $exp->and([$or, $list]);
                     });
         foreach ($query->execute() as $row) {
-            $this->getQueryBuilder('update')
+            $this->getUpdateBuilder()
                 ->update(strtolower($row['entity'] . 's'))
                 ->set('created', $row['modified'])
                 ->set('creator_id', $row['modifier_id'])

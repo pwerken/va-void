@@ -9,6 +9,7 @@ use App\View\Helper\AuthorizeHelper;
 use Cake\ORM\ResultSet;
 use Cake\Utility\Inflector;
 use Cake\View\View;
+use ReflectionClass;
 
 /**
  * @property \App\View\Helper\AuthorizeHelper $authorize
@@ -46,7 +47,7 @@ class ApiView extends View
 
     protected function jsonEntity(Entity $obj): array
     {
-        $class = $obj->getClass();
+        $class = (new ReflectionClass($obj))->getShortName();
 
         $result = [];
         $result['class'] = $class;
@@ -102,12 +103,16 @@ class ApiView extends View
 
     protected function jsonCompact(Entity $obj, ?Entity $parent = null): mixed
     {
-        $class = $obj->getClass();
-        $skip = strtolower($parent?->getClass() ?? '');
+        $class = (new ReflectionClass($obj))->getShortName();
+        $skip = '';
+
+        if ($parent) {
+            $skip = strtolower((new ReflectionClass($parent))->getShortName());
+        }
 
         $result = [];
         $result['class'] = $class;
-        $result['url'] = $obj->getUrl([$parent]);
+        $result['url'] = $obj->getUrl();
 
         foreach ($obj->getCompact() as $field) {
             if ($field === $skip) {

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\Entity as CakeEntity;
 use Cake\ORM\TableRegistry;
-use Cake\Utility\Inflector;
 
 abstract class Entity extends CakeEntity
 {
@@ -30,31 +30,17 @@ abstract class Entity extends CakeEntity
         return $value;
     }
 
-    public function getClass(): string
-    {
-        $class = $this::class;
-
-        return substr($class, strrpos($class, '\\') + 1);
-    }
-
     protected function getBaseUrl(): string
     {
-        return strtolower(Inflector::pluralize($this->getClass()));
+        $table = TableRegistry::getTableLocator()->get($this->getSource());
+
+        return strtolower($table->getTable());
     }
 
-    protected function getRelationUrl(string $first, string $second, array $objs): string
+    protected function getRelationUrl(string $first, string $second): string
     {
         $a = $this->{strtolower($first)}?->getUrl();
         $b = $this->{strtolower($second)}?->getUrl();
-
-        foreach ($objs as $obj) {
-            if ($obj->getClass() === $first) {
-                $a = $obj->getUrl();
-            }
-            if ($obj->getClass() === $second) {
-                $b = $obj->getUrl();
-            }
-        }
 
         return $a . $b;
     }
@@ -62,26 +48,6 @@ abstract class Entity extends CakeEntity
     public function getUrl(): string
     {
         return '/' . $this->getBaseUrl() . '/' . $this->id;
-    }
-
-    public function refresh(): self
-    {
-        $name = Inflector::pluralize($this->getClass());
-        $table = TableRegistry::getTableLocator()->get($name);
-        $query = $table->find('withContain');
-
-        $keys = $table->getPrimaryKey();
-        if (is_array($keys)) {
-            foreach ($keys as $key) {
-                $field = current($query->aliasField($key));
-                $query->where([$field => $this->$key]);
-            }
-        } else {
-            $field = current($query->aliasField($keys));
-            $query->where([$field => $this->$keys]);
-        }
-
-        return $query->first();
     }
 
     public function setCompact(array $properties, bool $merge = false): static
@@ -101,5 +67,24 @@ abstract class Entity extends CakeEntity
     public function getCompact(): array
     {
         return $this->_compact;
+    }
+
+    public static function refresh(EntityInterface $entity): self
+    {
+        $table = TableRegistry::getTableLocator()->get($entity->getSource());
+        $query = $table->find('withContain');
+
+        $keys = $table->getPrimaryKey();
+        if (is_array($keys)) {
+            foreach ($keys as $key) {
+                $field = current($query->aliasField($key));
+                $query->where([$field => $entity->get($key)]);
+            }
+        } else {
+            $field = current($query->aliasField($keys));
+            $query->where([$field => $entity->get($keys)]);
+        }
+
+        return $query->first();
     }
 }

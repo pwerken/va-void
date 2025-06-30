@@ -5,18 +5,22 @@ namespace App\Controller\Component;
 
 use Cake\Controller\Component;
 
+/**
+ * @property \Authorization\Controller\Component\AuthorizationComponent $Authorization;
+ */
 class ViewComponent extends Component
 {
+    protected array $components = ['Authorization.Authorization'];
+
     public function action(int|array $id, bool $checkAuthorize = true): void
     {
         $controller = $this->getController();
-        $model = $controller->fetchTable();
 
-        $obj = $model->getWithContain($id);
+        $obj = $controller->fetchTable()->get($id, 'withContain');
         if ($checkAuthorize) {
-            $controller->Authorization->authorize($obj, 'view');
+            $this->Authorization->authorize($obj, 'view');
         }
-        $controller->Authorization->applyScope($obj, 'visible');
+        $this->Authorization->applyScope($obj, 'visible');
 
         $controller->set('_serialize', $obj);
     }

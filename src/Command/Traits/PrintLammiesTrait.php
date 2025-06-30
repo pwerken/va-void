@@ -10,7 +10,7 @@ trait PrintLammiesTrait
     protected function createPdf(int $id, bool $double): ?string
     {
         $queue = $this->fetchTable()
-                    ->find('Queued')
+                    ->find('queued')
                     ->where(['Lammies.id <=' => $id])
                     ->all();
 

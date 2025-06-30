@@ -5,6 +5,7 @@ namespace App\Test\ApiTest;
 
 use App\Test\Fixture\TestAccount;
 use App\Test\TestSuite\AuthIntegrationTestCase;
+use ReflectionClass;
 
 class PlayersTest extends AuthIntegrationTestCase
 {
@@ -26,7 +27,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $ref = $this->fetchTable('players')->get($id);
 
         $this->assertCount(4, $data);
-        $this->assertArrayKeyValue('class', $ref->getClass(), $data);
+        $this->assertArrayKeyValue('class', (new ReflectionClass($ref))->getShortName(), $data);
         $this->assertArrayKeyValue('url', $ref->getUrl(), $data);
         $this->assertArrayKeyValue('plin', $ref->getIdentifier(), $data);
         $this->assertArrayKeyValue('full_name', $ref->full_name, $data);
@@ -39,7 +40,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $data = $this->assertGet($url);
 
         $this->assertCount(13, $data);
-        $this->assertArrayKeyValue('class', $ref->getClass(), $data);
+        $this->assertArrayKeyValue('class', (new ReflectionClass($ref))->getShortName(), $data);
         $this->assertArrayKeyValue('url', $ref->getUrl(), $data);
         $this->assertArrayKeyValue('plin', $ref->getIdentifier(), $data);
 

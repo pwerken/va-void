@@ -12,7 +12,7 @@ class SkillBase extends Migration
            ->update();
 
         // all skills with sort_order < 110 are base skills
-        $this->getQueryBuilder('update')
+        $this->getUpdateBuilder()
             ->update('skills')
             ->set(['base_max = times_max'])
             ->where(['sort_order <' => 110])

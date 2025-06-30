@@ -5,6 +5,7 @@ namespace App\Model\Entity;
 
 use Cake\ORM\Entity as CakeEntity;
 use Cake\ORM\TableRegistry;
+use ReflectionClass;
 
 class History extends CakeEntity
 {
@@ -24,7 +25,7 @@ class History extends CakeEntity
         }
 
         $history = new History();
-        $history->set('entity', $entity->getClass());
+        $history->set('entity', (new ReflectionClass($entity))->getShortName());
         foreach ($primary as $key => $field) {
             $history->set('key' . ($key + 1), $data[$field]);
             unset($data[$field]);

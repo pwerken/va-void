@@ -42,15 +42,15 @@ class CharacterLammy extends LammyCard
 
         $this->pdf->SetTextColor(0);
         $this->font(11, 'B');
-        $this->text(52, 5, 10, 'R', $this->entity->player_id);
-        $this->text(61, 5, 7, 'C', sprintf('%02d', $this->entity->chin));
-        $this->text(12, 10, 60, 'L', $this->entity->player->fullName);
-        $this->text(12, 16, 60, 'L', $this->entity->name);
-        $this->text(12, 23, 60, 'L', $this->entity->faction);
+        $this->text(52, 5, 10, 'R', $this->entity->get('player_id'));
+        $this->text(61, 5, 7, 'C', sprintf('%02d', $this->entity->get('chin')));
+        $this->text(12, 10, 60, 'L', $this->entity->get('player')->get('full_name'));
+        $this->text(12, 16, 60, 'L', $this->entity->get('name'));
+        $this->text(12, 23, 60, 'L', $this->entity->get('faction'));
 
-        $this->text(12, 28, 44, 'L', $this->entity->belief);
-        $this->text(12, 33, 44, 'L', $this->entity->group);
-        $this->text(12, 38, 44, 'L', $this->entity->world);
+        $this->text(12, 28, 44, 'L', $this->entity->get('belief'));
+        $this->text(12, 33, 44, 'L', $this->entity->get('group'));
+        $this->text(12, 38, 44, 'L', $this->entity->get('world'));
     }
 
     protected function _drawBack(): void
@@ -66,22 +66,22 @@ class CharacterLammy extends LammyCard
         $data['mana']['Willpower'] = 0;
         $data['skills'] = [];
 
-        foreach ($this->entity->skills as $skill) {
+        foreach ($this->entity->get('skills') as $skill) {
             $relation = $skill->_joinData;
-            $times = $relation->times;
+            $times = $relation->get('times');
 
-            $data['xp'] += $times * $skill->cost;
+            $data['xp'] += $times * $skill->get('cost');
             $data['skills'][] = $relation->printableName($skill);
 
-            if (!isset($skill->manatype)) {
+            if (is_null($skill->get('manatype'))) {
                 continue;
             }
 
-            $mana = $skill->manatype->name;
+            $mana = $skill->get('manatype')->get('name');
             if (!isset($data['mana'][$mana])) {
                 $data['mana'][$mana] = 0;
             }
-            $data['mana'][$mana] += $times * $skill->mana_amount;
+            $data['mana'][$mana] += $times * $skill->get('mana_amount');
         }
 
         $data['skills'] = SkillNameGroup::group($data['skills']);
@@ -98,7 +98,7 @@ class CharacterLammy extends LammyCard
         $this->textarea(8, 7, 64, 31, implode(', ', $data['skills']));
 
         $this->text(56, 37.7, 16, 'C', 'Experience');
-        $this->text(56, 40.7, 16, 'C', $data['xp'] . ' / ' . $this->entity->xp);
+        $this->text(56, 40.7, 16, 'C', $data['xp'] . ' / ' . $this->entity->get('xp'));
 
         $g = 159;
         $this->pdf->SetTextColor($data['mana']['Elemental'] > 0 ? 0 : $g);

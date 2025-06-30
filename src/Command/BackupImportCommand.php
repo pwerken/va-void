@@ -59,7 +59,9 @@ class BackupImportCommand extends Command
 
         $io->out('Truncating database tables...');
         $tables = $this->tablesTruncateOrder();
-        $existing = ConnectionManager::get('default')
+
+        $existing = $this->fetchTable('Players')
+                        ->getConnection()
                         ->getSchemaCollection()
                         ->listTables();
         $sql = 'ALTER TABLE `%s` auto_increment = 1;';

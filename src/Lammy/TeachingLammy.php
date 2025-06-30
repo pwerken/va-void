@@ -61,15 +61,15 @@ class TeachingLammy extends LammyCard
         $this->pdf->SetTextColor(0);
         $this->font(11, 'B');
 
-        $p = $this->entity->teacher;
+        $p = $this->entity->get('teacher');
         $this->text(10, 13, 12, 'R', $p->player_id);
         $this->text(21, 13, 7, 'C', sprintf('%02d', $p->chin));
         $this->text(28, 13, 47, 'L', $p->name);
-        $p = $this->entity->student;
+        $p = $this->entity->get('student');
         $this->text(10, 20, 12, 'R', $p->player_id);
         $this->text(21, 20, 7, 'C', sprintf('%02d', $p->chin));
         $this->text(28, 20, 47, 'L', $p->name);
 
-        $this->text(12, 27, 60, 'L', $this->entity->skill->name);
+        $this->text(12, 27, 60, 'L', $this->entity->get('skill')->name);
     }
 }

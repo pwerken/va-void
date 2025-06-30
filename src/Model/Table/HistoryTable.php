@@ -6,8 +6,8 @@ namespace App\Model\Table;
 use App\Model\Entity\History;
 use App\Utility\Json;
 use Cake\Database\Expression\QueryExpression;
-use Cake\Database\Type\DateTimeType;
 use Cake\Datasource\EntityInterface;
+use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorInterface;
 use Cake\ORM\TableRegistry;
 
@@ -100,7 +100,6 @@ class HistoryTable extends Table
             $what = null;
         }
 
-        $dateParser = new DateTimeType();
         $list = [];
         foreach ($tbls as $tbl => $select) {
             if (!is_null($what) && $tbl != $what) {
@@ -144,7 +143,7 @@ class HistoryTable extends Table
                     $row['name'] = implode(' ', array_filter($name));
                 }
                 $row['entity'] = $entity;
-                $row['modified'] = (string)$dateParser->marshal($row['modified']);
+                $row['modified'] = (string)(new DateTime($row['modified']));
                 $list[] = $row;
             }
         }
@@ -268,7 +267,7 @@ class HistoryTable extends Table
 
     private function getCharacterHistory(int $plin, int $chin): array
     {
-        $entity = $this->locator->get('Characters')->findWithContain()
+        $entity = $this->locator->get('Characters')->find('withContain')
             ->where(['Characters.player_id' => $plin])
             ->where(['Characters.chin' => $chin])
             ->first();
@@ -311,7 +310,7 @@ class HistoryTable extends Table
 
     private function getConditionHistory(int $coin): array
     {
-        $entity = $this->locator->get('Conditions')->findWithContain()
+        $entity = $this->locator->get('Conditions')->find('withContain')
             ->where(['Conditions.id' => $coin])
             ->first();
 
@@ -346,7 +345,7 @@ class HistoryTable extends Table
 
     private function getPowerHistory(int $poin): array
     {
-        $entity = $this->locator->get('Powers')->findWithContain()
+        $entity = $this->locator->get('Powers')->find('withContain')
             ->where(['Powers.id' => $poin])
             ->first();
 
@@ -381,7 +380,7 @@ class HistoryTable extends Table
 
     private function getItemHistory(int $itin): array
     {
-        $entity = $this->locator->get('Items')->findWithContain()
+        $entity = $this->locator->get('Items')->find('withContain')
             ->where(['Items.id' => $itin])
             ->first();
 

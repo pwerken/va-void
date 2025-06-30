@@ -6,22 +6,25 @@ namespace App\Controller\Component;
 use App\Error\Exception\ValidationException;
 use Cake\Controller\Component;
 
+/**
+ * @property \Authorization\Controller\Component\AuthorizationComponent $Authorization;
+ */
 class DeleteComponent extends Component
 {
+    protected array $components = ['Authorization.Authorization'];
+
     public function action(int|array $id): void
     {
         $controller = $this->getController();
         $model = $controller->fetchTable();
 
         $obj = $model->get($id);
-        $controller->Authorization->authorize($obj, 'delete');
-
+        $this->Authorization->authorize($obj, 'delete');
         if (!$model->delete($obj)) {
             throw new ValidationException($obj);
         }
 
-        $response = $controller->getResponse()->withStatus(204);
-        $controller->setResponse($response);
+        $controller->setResponse($controller->getResponse()->withStatus(204));
         $controller->set('_serialize', null);
     }
 }

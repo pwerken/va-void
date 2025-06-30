@@ -11,7 +11,7 @@ class QueueLammyComponent extends Component
     {
         $controller = $this->getController();
 
-        $obj = $controller->fetchTable()->getWithContain($id);
+        $obj = $controller->fetchTable()->get($id, 'withContain');
 
         $table = $controller->fetchTable('Lammies');
         $lammy = $table->newEmptyEntity();

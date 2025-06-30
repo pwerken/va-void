@@ -12,7 +12,7 @@ class JsonInputMiddleware implements MiddlewareInterface
 {
     public function process(Request $request, RequestHandler $handler): Response
     {
-        if ($request->is('put')) {
+        if ($request->getMethod() === 'PUT') {
             $request = $request->withHeader('Content-Type', 'application/json');
         }
 

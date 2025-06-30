@@ -10,7 +10,7 @@ class RemoveSpells extends Migration
         // create history entries before dropping the tables
         $history = $this->table('history');
 
-        $rows = $this->getQueryBuilder('select')
+        $rows = $this->getSelectBuilder()
             ->select('*')
             ->from('characters_spells')
             ->order(['character_id' => 'ASC', 'spell_id' => 'ASC'])
@@ -39,7 +39,7 @@ class RemoveSpells extends Migration
                 ->saveData();
         }
 
-        $rows = $this->getQueryBuilder('select')
+        $rows = $this->getSelectBuilder()
             ->select('*')
             ->from('spells')
             ->order(['id' => 'ASC'])

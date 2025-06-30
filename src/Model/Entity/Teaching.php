@@ -14,10 +14,8 @@ class Teaching extends Entity
         $this->setHidden(['student_id', 'teacher_id', 'skill_id'], true);
     }
 
-    public function getUrl(array $parents = []): string
+    public function getUrl(): string
     {
-        $student = $this->student ?? $parents[0];
-
-        return $student->getUrl() . '/teacher';
+        return 'FIXME'; #$this->student?->getUrl() . '/teacher';
     }
 }

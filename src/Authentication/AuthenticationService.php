@@ -66,7 +66,8 @@ class AuthenticationService extends BaseAuthenticationService
      */
     public function getUnauthenticatedRedirectUrl(ServerRequestInterface $request): ?string
     {
-        if ($request->getParam('prefix') != 'Admin') {
+        $params = $request->getAttribute('params');
+        if (!isset($params['prefix']) || $params['prefix'] !== 'Admin') {
             return null;
         }
 

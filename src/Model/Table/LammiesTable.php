@@ -20,18 +20,18 @@ class LammiesTable extends Table
     {
     }
 
-    public function findLastInQueue(SelectQuery $query, array $options = []): SelectQuery
+    public function findLastInQueue(SelectQuery $query): SelectQuery
     {
-        $query = $this->findQueued($query, $options);
+        $query = $this->findQueued($query);
         $query->orderBy(['Lammies.id' => 'DESC']);
         $query->limit(1);
 
         return $query;
     }
 
-    public function findQueued(SelectQuery $query, array $options = []): SelectQuery
+    public function findQueued(SelectQuery $query): SelectQuery
     {
-        $query = $this->findWithContain($query, $options);
+        $query = $this->findWithContain($query);
         $query->where(function (QueryExpression $exp) {
             return $exp->or(['status LIKE' => 'Queued'])
                         ->eq('status', 'Printing');
@@ -40,9 +40,9 @@ class LammiesTable extends Table
         return $query;
     }
 
-    public function findPrinting(SelectQuery $query, array $options = []): SelectQuery
+    public function findPrinting(SelectQuery $query): SelectQuery
     {
-        $query = $this->findWithContain($query, $options);
+        $query = $this->findWithContain($query);
         $query->where(['status LIKE' => 'Printing']);
 
         return $query;

@@ -16,7 +16,7 @@ class SkillMultipleTimes extends Migration
            ->update();
 
         // converting old skills entries that are multiples...
-        $query = $this->getQueryBuilder('select')
+        $query = $this->getSelectBuilder()
                     ->select('*')
                     ->from('skills')
                     ->where(['name LIKE' => '% (%x)', 'deprecated' => false]);
@@ -36,7 +36,7 @@ class SkillMultipleTimes extends Migration
 
             // rename & remember $name - $id relation
             $base[$name] = $row['id'];
-            $query = $this->getQueryBuilder('update')
+            $query = $this->getUpdateBuilder()
                         ->update('skills')
                         ->set('name', $name)
                         ->where(['id' => $row['id']])
@@ -49,7 +49,7 @@ class SkillMultipleTimes extends Migration
                 continue;
             }
 
-            $result = $this->getQueryBuilder('select')
+            $result = $this->getSelectBuilder()
                         ->select('id')
                         ->from('skills')
                         ->where(['name LIKE' => $skill['name']])
@@ -61,12 +61,12 @@ class SkillMultipleTimes extends Migration
         foreach ($mapping as $key => $skill) {
             $replace_id = $base[$skill['name']];
 
-            $query = $this->getQueryBuilder('update')
+            $query = $this->getUpdateBuilder()
                         ->update('skills')
                         ->set('deprecated', true)
                         ->where(['id' => $key])
                         ->execute();
-            $query = $this->getQueryBuilder('update')
+            $query = $this->getUpdateBuilder()
                         ->update('skills')
                         ->set('times_max', $skill['times'])
                         ->where(['id' => $replace_id
@@ -74,7 +74,7 @@ class SkillMultipleTimes extends Migration
                         ->execute();
 
             // update characters that have the skill
-            $query = $this->getQueryBuilder('select')
+            $query = $this->getSelectBuilder()
                         ->select('*')
                         ->from('characters_skills')
                         ->where(['skill_id' => $key]);
@@ -100,31 +100,31 @@ class SkillMultipleTimes extends Migration
                 $replacement['modifier_id'] = -2;
 
                 // log the changes
-                $query = $this->getQueryBuilder('insert')
+                $query = $this->getInsertBuilder()
                         ->into('history')
                         ->insert(array_keys($current))
                         ->values($current)
                         ->values($delete)
                         ->execute();
                 // remove the old skill
-                $query = $this->getQueryBuilder('delete')
+                $query = $this->getDeleteBuilder()
                         ->delete('characters_skills')
                         ->where(['character_id' => $row['character_id']
                                 , 'skill_id' => $key])
                         ->execute();
 
                 // check if base skill already present
-                $query = $this->getQueryBuilder('select')
+                $query = $this->getSelectBuilder()
                         ->select('times')
                         ->from('characters_skills')
                         ->where(['character_id' => $row['character_id']
                             , 'skill_id' => $replace_id])
                         ->execute();
-                if ($query->count() > 0) {
+                if ($query->rowCount() > 0) {
                     // if it does, add to existing skill
                     $existing = $query->fetch();
                     $times = $existing[0] + $skill['times'];
-                    $query = $this->getQueryBuilder('update')
+                    $query = $this->getUpdateBuilder()
                                 ->update('characters_skills')
                                 ->set('times', $times)
                                 ->where(['character_id' => $row['character_id']
@@ -132,7 +132,7 @@ class SkillMultipleTimes extends Migration
                                 ->execute();
                 } else {
                     // else insert base skill
-                    $query = $this->getQueryBuilder('insert')
+                    $query = $this->getInsertBuilder()
                             ->into('characters_skills')
                             ->insert(array_keys($replacement))
                             ->values($replacement)

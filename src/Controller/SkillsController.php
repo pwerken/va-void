@@ -17,7 +17,6 @@ class SkillsController extends Controller
      */
     public function index(): void
     {
-        $query = $this->Skills->findWithContain();
-        $this->set('_serialize', $query->all());
+        $this->set('_serialize', $this->Skills->find('withContain')->all());
     }
 }

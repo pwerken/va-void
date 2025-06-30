@@ -18,45 +18,27 @@ class WhoWhenBehavior extends Behavior
 {
     public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
-        if ($entity instanceof History && !is_null($entity->data)) {
+        if ($entity instanceof History && !$entity->isEmpty('data')) {
             return;
         }
 
+        $when = new DateTime();
+        $who = Router::getRequest()?->getAttribute('identity')->id;
+
         if ($entity->isNew()) {
             if ($this->table()->hasField('created')) {
-                $entity->set('created', $this->when());
+                $entity->set('created', $when);
             }
             if ($this->table()->hasField('creator_id')) {
-                $entity->set('creator_id', $this->who());
+                $entity->set('creator_id', $who);
             }
         }
 
-        $this->touch($entity);
-    }
-
-    public function touch(EntityInterface $entity): bool
-    {
-        $modified = false;
-
         if ($this->table()->hasField('modified')) {
-            $entity->set('modified', $this->when());
-            $modified = true;
+            $entity->set('modified', $when);
         }
         if ($this->table()->hasField('modifier_id')) {
-            $entity->set('modifier_id', $this->who());
-            $modified = true;
+            $entity->set('modifier_id', $who);
         }
-
-        return $modified;
-    }
-
-    protected function when(): DateTime
-    {
-        return new DateTime();
-    }
-
-    protected function who(): int
-    {
-        return Router::getRequest()->getAttribute('identity')->id;
     }
 }

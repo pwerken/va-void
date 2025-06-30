@@ -91,7 +91,7 @@ class LammiesController extends Controller
     public function printed(): void
     {
         $lammies = $this->Lammies
-                    ->find('Printing')
+                    ->find('printing')
                     ->where(['Lammies.id <=' => $this->intFromBody()])
                     ->all();
         $this->Lammies->setStatuses($lammies, 'Printed');
@@ -105,7 +105,7 @@ class LammiesController extends Controller
     private function pdfOutput(int $max_id, ?bool $double = false): void
     {
         $lammies = $this->Lammies
-                    ->find('Queued')
+                    ->find('queued')
                     ->where(['Lammies.id <=' => $max_id])
                     ->all();
 

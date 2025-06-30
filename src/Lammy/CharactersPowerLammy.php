@@ -7,17 +7,19 @@ class CharactersPowerLammy extends CharactersConditionLammy
 {
     public function draw(int $side, ?array $data = null): void
     {
+        $power = $this->entity->get('power');
+        $character = $this->entity->get('character');
+
         $data = [];
         $data['type'] = 'Power';
         $data['key'] = 'POIN';
-        $data['id'] = $this->entity->power_id;
-        $data['name'] = $this->entity->power->name;
-        $data['text'] = $this->entity->power->player_text;
-        $data['plin'] = $this->entity->character->player_id
-                        . ' - ' . $this->entity->character->chin;
-        $data['char'] = $this->entity->character->name;
+        $data['id'] = $this->entity->get('power_id');
+        $data['name'] = $power->get('name');
+        $data['text'] = $power->get('player_text');
+        $data['plin'] = $character->get('player_id') . ' - ' . $character->get('chin');
+        $data['char'] = $character->get('name');
 
-        $expiry = $this->entity->expiry ?: 'Until death';
+        $expiry = $this->entity->get('expiry') ?: 'Until death';
         if (!is_string($expiry)) {
             $expiry = (string)$expiry;
         }

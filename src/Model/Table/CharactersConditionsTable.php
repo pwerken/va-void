@@ -22,12 +22,12 @@ class CharactersConditionsTable extends Table
 
     public function afterDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
-        $this->touchEntity('Characters', $entity->character_id);
+        $this->touchEntity('Characters', $entity->get('character_id'));
     }
 
     public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
-        $this->touchEntity('Characters', $entity->character_id);
+        $this->touchEntity('Characters', $entity->get('character_id'));
     }
 
     public function buildRules(RulesChecker $rules): RulesChecker

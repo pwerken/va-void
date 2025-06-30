@@ -26,12 +26,12 @@ class CharactersSkillsTable extends Table
 
     public function afterDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
-        $this->touchEntity('Characters', $entity->character_id);
+        $this->touchEntity('Characters', $entity->get('character_id'));
     }
 
     public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
-        $this->touchEntity('Characters', $entity->character_id);
+        $this->touchEntity('Characters', $entity->get('character_id'));
     }
 
     public function buildRules(RulesChecker $rules): RulesChecker
@@ -49,8 +49,8 @@ class CharactersSkillsTable extends Table
 
     public function disallowDeprecated(EntityInterface $entity, array $options): bool
     {
-        $skill = $this->Skills->getMaybe($entity->skill_id);
-        if ($skill && $skill->deprecated) {
+        $skill = $this->Skills->getMaybe($entity->get('skill_id'));
+        if ($skill?->get('deprecated')) {
             $entity->setError('skill_id', ['deprecated' => 'Skill is deprecated']);
 
             return false;
@@ -61,8 +61,8 @@ class CharactersSkillsTable extends Table
 
     public function limitTimesToMax(EntityInterface $entity, array $options): bool
     {
-        $skill = $this->Skills->getMaybe($entity->skill_id);
-        if ($skill && $entity->times > $skill->times_max) {
+        $skill = $this->Skills->getMaybe($entity->get('skill_id'));
+        if (!is_null($skill) && $entity->get('times') > $skill->get('times_max')) {
             $entity->setError('times', ['limit' => 'Value exceeds skills times_max']);
 
             return false;

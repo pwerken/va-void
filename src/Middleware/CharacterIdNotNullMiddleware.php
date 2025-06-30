@@ -14,9 +14,10 @@ class CharacterIdNotNullMiddleware implements MiddlewareInterface
     public function process(Request $request, RequestHandler $handler): Response
     {
         $hasPlinChin = $request->getAttribute('PlinChin', false);
-        $pass = $request->getParam('pass');
+        $params = $request->getAttribute('params');
+        $params['pass'] ??= [];
 
-        if ($hasPlinChin && count($pass) > 0 && is_null($pass[0])) {
+        if ($hasPlinChin && count($params['pass']) > 0 && is_null($params['pass'][0])) {
             throw new NotFoundException();
         }
 
