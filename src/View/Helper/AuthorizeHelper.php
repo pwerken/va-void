@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\View\Helper;
 
+use ArrayAccess;
 use Authorization\AuthorizationServiceInterface;
 use Authorization\Exception\ForbiddenException;
 use Authorization\IdentityInterface;
@@ -103,10 +104,8 @@ class AuthorizeHelper extends Helper
 
     /**
      * Gets the identity itself
-     *
-     * @return \Authorization\IdentityInterface
      */
-    public function getIdentity(): IdentityInterface
+    public function getIdentity(): array|ArrayAccess
     {
         return $this->identity->getOriginalData();
     }
