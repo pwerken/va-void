@@ -84,11 +84,8 @@ class Lammy extends Entity
     {
         if (is_null($this->lammy)) {
             $class = 'App\\Lammy\\' . $this->get('entity') . 'Lammy';
-            $target = $this->_getTarget();
-            if (!is_null($target)) {
-                $this->lammy = new $class($target);
-                $this->lammy->printedBy($this->get('creator_id'));
-            }
+            $this->lammy = new $class($this->_getTarget());
+            $this->lammy->printedBy($this->get('creator_id'));
         }
 
         return $this->lammy;

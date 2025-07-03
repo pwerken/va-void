@@ -11,10 +11,6 @@ class History extends CakeEntity
 {
     public static function fromEntity(Entity $entity): ?History
     {
-        if (is_null($entity)) {
-            return null;
-        }
-
         $table = TableRegistry::getTableLocator()->get($entity->getSource());
         $columns = $table->getSchema()->columns();
         $data = $entity->extractOriginal($columns);

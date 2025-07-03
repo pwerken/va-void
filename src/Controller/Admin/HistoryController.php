@@ -259,7 +259,7 @@ class HistoryController extends AdminController
                 }
 
                 $cur['link'] = false;
-                $cur['name'] = $row->relation()?->name ?? $data['name'];
+                $cur['name'] = $row->relation()->name ?? $data['name'];
                 $cur['key'] = $row->keyString();
         }
 

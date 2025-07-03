@@ -12,7 +12,7 @@ use Cake\Http\ServerRequest;
 
 abstract class ControllerPolicy extends Policy
 {
-    private ?ServerRequest $request;
+    private ServerRequest $request;
 
     public function canAccess(?User $identity, ServerRequest $request): bool
     {

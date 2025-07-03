@@ -49,15 +49,6 @@ class AuthorizeHelper extends Helper
         if (empty($this->identity)) {
             return;
         }
-
-        if (!$this->identity instanceof IdentityInterface) {
-            $message = 'Identity found in request does not implement %s';
-            throw new RuntimeException(sprintf($message, IdentityInterface::class));
-        }
-        if (!$this->authorize instanceof AuthorizationServiceInterface) {
-            $message = 'Authorization service found in request does not implement %s';
-            throw new RuntimeException(sprintf($message, AuthorizationServiceInterface::class));
-        }
     }
 
     /**

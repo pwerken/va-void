@@ -72,7 +72,7 @@ class CheckConfig
             $errorMsg = $connectionError->getMessage();
             if (method_exists($connectionError, 'getAttributes')) {
                 $attributes = $connectionError->getAttributes();
-                if (isset($errorMsg['message'])) {
+                if (isset($attributes['message'])) {
                     $errorMsg .= "\n" . $attributes['message'];
                 }
             }

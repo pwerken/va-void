@@ -26,7 +26,7 @@ trait PrintLammiesTrait
         }
 
         $pdf = (new PdfView())->createPdf($lammies, $double);
-        if (is_null($pdf)) {
+        if (empty($pdf)) {
             $this->abort('Error generating pdf');
         }
 
