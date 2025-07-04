@@ -3,14 +3,19 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\Entity as CakeEntity;
 use Cake\ORM\TableRegistry;
 use ReflectionClass;
 
 class History extends CakeEntity
 {
-    public static function fromEntity(Entity $entity): ?History
+    public static function fromEntity(EntityInterface $entity): ?History
     {
+        if (!($entity instanceof Entity)) {
+            return null;
+        }
+
         $table = TableRegistry::getTableLocator()->get($entity->getSource());
         $columns = $table->getSchema()->columns();
         $data = $entity->extractOriginal($columns);

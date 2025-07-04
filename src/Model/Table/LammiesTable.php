@@ -6,9 +6,9 @@ namespace App\Model\Table;
 use ArrayObject;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
+use Cake\Datasource\ResultSetInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\Query\SelectQuery;
-use Cake\ORM\ResultSet;
 
 class LammiesTable extends Table
 {
@@ -48,7 +48,7 @@ class LammiesTable extends Table
         return $query;
     }
 
-    public function setStatuses(ResultSet $set, string $status): void
+    public function setStatuses(ResultSetInterface $set, string $status): void
     {
         foreach ($set as $lammy) {
             $lammy->status = (is_null($lammy->lammy) ? 'Failed' : $status);

@@ -25,11 +25,6 @@ trait PrintLammiesTrait
             $lammies[] = $queued->lammy;
         }
 
-        $pdf = (new PdfView())->createPdf($lammies, $double);
-        if (empty($pdf)) {
-            $this->abort('Error generating pdf');
-        }
-
-        return $pdf;
+        return (new PdfView())->createPdf($lammies, $double);
     }
 }

@@ -39,7 +39,7 @@ class PrintingController extends AdminController
                 '/',
                 'characters.chin' => 'identifier',
             ])])
-            ->leftJoin(['characters'], [
+            ->leftJoin('characters', [
                 'Lammies.entity LIKE' => 'Character%',
                 'Lammies.key1 = characters.id',
             ])

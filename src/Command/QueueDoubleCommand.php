@@ -42,9 +42,11 @@ class QueueDoubleCommand extends Command
     {
         $pdf = $this->createPdf((int)$args->getArgument('id'), true);
 
-        if (isset($pdf)) {
-            $io->out($pdf);
+        if (empty($pdf)) {
+            $io->abort('Error generating pdf');
         }
+
+        $io->out($pdf);
 
         return static::CODE_SUCCESS;
     }

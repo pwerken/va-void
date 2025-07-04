@@ -36,12 +36,12 @@ class BackupExportCommand extends Command
     {
         $app = $this->config('mysqldump');
         if (!$this->checkApp($app)) {
-            $this->abort(sprintf('Error executing `%s`, check your config.', $app));
+            $io->abort(sprintf('Error executing `%s`, check your config.', $app));
         }
 
         $target = $this->config('target');
         if (!is_writable($target)) {
-            $this->abort(sprintf('Directory `%s` not writable', $target));
+            $io->abort(sprintf('Directory `%s` not writable', $target));
         }
 
         $descr = $args->getArgument('description');
@@ -53,7 +53,7 @@ class BackupExportCommand extends Command
         $filename = sprintf('%s%s%s.sql', $target, date('YmdHis'), $descr);
 
         if (file_exists($filename)) {
-            $this->abort(sprintf('File `%s` already exists', $filename));
+            $io->abort(sprintf('File `%s` already exists', $filename));
         }
 
         $io->out('Exporting database content to file:');
@@ -72,11 +72,11 @@ class BackupExportCommand extends Command
         unlink($auth);
 
         if (!file_exists($filename)) {
-            $this->abort(sprintf('File `%s` not created', $filename));
+            $io->abort(sprintf('File `%s` not created', $filename));
         }
 
         if (filesize($filename) == 0) {
-            $this->abort(sprintf('File `%s` is empty', $filename));
+            $io->abort(sprintf('File `%s` is empty', $filename));
         }
 
         $io->out('Done');

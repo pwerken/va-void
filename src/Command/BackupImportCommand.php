@@ -37,7 +37,7 @@ class BackupImportCommand extends Command
     {
         $app = $this->config('mysql');
         if (!$this->checkApp($app)) {
-            $this->abort(sprintf('Error executing `%s`, check your config.', $app));
+            $io->abort(sprintf('Error executing `%s`, check your config.', $app));
         }
 
         $filename = $args->getArgument('filename');
@@ -46,15 +46,15 @@ class BackupImportCommand extends Command
         }
 
         if (!file_exists($filename)) {
-            $this->abort(sprintf('File `%s` does not exists', $filename));
+            $io->abort(sprintf('File `%s` does not exists', $filename));
         }
 
         if (!is_readable($filename)) {
-            $this->abort(sprintf('File `%s` not readable', $filename));
+            $io->abort(sprintf('File `%s` not readable', $filename));
         }
 
         if (filesize($filename) == 0) {
-            $this->abort(sprintf('File `%s` is empty', $filename));
+            $io->abort(sprintf('File `%s` is empty', $filename));
         }
 
         $io->out('Truncating database tables...');
