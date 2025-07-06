@@ -13,6 +13,15 @@ class MigrationsController extends AdminController
     public function index(): void
     {
         $migrations = new Migrations();
-        $this->set('migrations', array_reverse($migrations->status()));
+        $rows = [];
+        foreach (array_reverse($migrations->status()) as $migration) {
+            $status = $migration['status'] === 'up' ? 'up' : 'down';
+            $name = $migration['name'] ?: '** MISSING **';
+            $id = sprintf('%14.0f', $migration['id']);
+
+            $rows[] = [$status, $id, $name];
+        }
+
+        $this->set('migrations', $rows);
     }
 }
