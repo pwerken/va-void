@@ -5,20 +5,12 @@
 This pages gives a basic overview of the database backups present on the
 server.</p>
 
-<table>
-<tr>
-    <th>Filename</th>
-    <th>Size</th>
-    <th>Datetime</th>
-</tr>
+<p>
+<samp>Size&nbsp;&nbsp;&nbsp;&nbsp;
+Filename</samp><br/>
 <?php
-foreach ($backups as $backup) :
-    [$file, $size, $date] = $backup;
-    ?>
-<tr>
-    <td><?= $file ?></td>
-    <td><?= $size ?></td>
-    <td><?= $date ?></td>
-</tr>
-<?php endforeach; ?>
-</table>
+foreach ($backups as [$file, $size, $date]) {
+    echo '<samp>' . $size . ' ' . $file . "</samp><br/>\n";
+}
+?>
+</p>
