@@ -4,17 +4,19 @@
 <code>./bin/cake migrations --help</code> for more details.<br/>
 This pages gives a basic overview of the migration files and their status.</p>
 
-<p>
-<samp>Status
-Migration ID&nbsp;&nbsp;
-Migration Name</samp><br/>
+<table>
+    <tr>
+        <th>Status</th>
+        <th>Migration ID</th>
+        <th>Migration Name</th>
+    </tr>
 <?php
 foreach ($migrations as [$status, $id, $name]) {
-    echo '<samp>'
-        . str_replace(' ', '&nbsp', str_pad($status, 6, ' ', STR_PAD_BOTH))
-        . '  ' . $id
-        . '  ' . $name
-        . "</samp><br/>\n";
+    echo '<tr>'
+        . '<td>' . $status . '</td>'
+        . '<td>' . $id . '</td>'
+        . '<td>' . $name . '</td>'
+        . "</tr>\n";
 }
 ?>
-</p>
+</table>

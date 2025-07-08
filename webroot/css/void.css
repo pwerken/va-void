@@ -20,6 +20,15 @@ body > .main {
     padding-top: 1rem;
 }
 
+td, th {
+	padding-top: 0.2rem;
+	padding-bottom: 0.2rem;
+}
+
+input {
+	margin-bottom: .4rem;
+}
+
 .navigation {
     background: var(--color-nav-bg);
     border-bottom: 0.1rem solid var(--color-nav-border);

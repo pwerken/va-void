@@ -5,12 +5,17 @@
 This pages gives a basic overview of the database backups present on the
 server.</p>
 
-<p>
-<samp>Size&nbsp;&nbsp;&nbsp;&nbsp;
-Filename</samp><br/>
+<table>
+    <tr>
+        <th>Size</th>
+        <th>Filename</th>
+    </tr>
 <?php
 foreach ($backups as [$file, $size, $date]) {
-    echo '<samp>' . $size . ' ' . $file . "</samp><br/>\n";
+    echo '<tr>'
+        . '<td>' . $size . '</td>'
+        . '<td>' . $file . '</td>'
+        . "</tr>\n";
 }
 ?>
-</p>
+</table>
