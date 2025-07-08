@@ -1,9 +1,11 @@
 <h3>Lookup Players with Skill</h3>
 <?php
 
-echo $this->Form->create();
+echo $this->Form->create(null, ['type' => 'get']);
+echo 'Only characters modified since:';
+echo $this->Form->text('since', ['value' => $since]);
 echo 'Select one or more skills:';
-echo $this->Form->select('skills', $skills, ['multiple' => true]);
+echo $this->Form->select('skills', $skills, ['multiple' => true, 'value' => $selected]);
 echo $this->Form->button('Select characters');
 echo '&nbsp;<strong>Found ' . count($characters) . '</strong>';
 echo $this->Form->end();
@@ -20,7 +22,7 @@ if (count($characters) == 0) {
     <th>State</th>
     <th>Last Modified</th>
 <?php
-foreach ($this->request->getData('skills') as $s) {
+foreach ($selected as $s) {
     echo "\t<th>" . $skills[$s] . "</th>\n";
 }
 ?>
@@ -36,7 +38,7 @@ foreach ($characters as $c) {
     <td><?php echo $c['status']; ?></td>
     <td><?php echo $c['modified']->i18nFormat('yyyy-MM-dd HH:mm:ss'); ?></td>
     <?php
-    foreach ($this->request->getData('skills') as $s) {
+    foreach ($selected as $s) {
         echo "\t<td>";
         if (isset($c['_matchingData'][$s])) {
             echo $c['_matchingData'][$s] . 'x';

@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use DateInterval;
+use DateTime;
+use DateTimeImmutable;
+
 class SkillsController extends AdminController
 {
     /**
@@ -14,18 +18,25 @@ class SkillsController extends AdminController
         $skills = $this->fetchTable('Skills');
         $this->set('skills', $skills->find('list')->all()->toArray());
 
+        $since = $this->request->getQuery('since', '');
+        $date = DateTimeImmutable::createFromFormat('Y-m-d', $since);
+        if (!$date) {
+            $date = new DateTime();
+            $date->sub(new DateInterval('P2Y'));
+            $since = $date->format('Y-m-d');
+        }
+        $this->set('since', $since);
+
+        $ids = $this->request->getQuery('skills', []);
+        $this->set('selected', $ids);
+
         $characters = [];
-
-        $user = $this->getRequest()->getAttribute('identity');
-        if ($this->request->is('post') && $user->hasAuth('Referee')) {
-            $ids = $this->request->getData('skills');
-            if (!is_array($ids)) {
-                $ids = [$ids];
-            }
-
-            $query = $this->fetchTable('Characters')->find();
-            $query->orderDesc('Characters.modified');
-            $query->enableHydration(false);
+        if (!empty($ids)) {
+            $query = $this->fetchTable('Characters')
+                        ->find()
+                        ->where(['Characters.modified >=' => $since])
+                        ->orderDesc('Characters.modified')
+                        ->enableHydration(false);
             $query->innerJoinWith('Skills', function ($q) use ($ids) {
                 return $q->where(['Skills.id IN' => $ids]);
             });
