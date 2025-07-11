@@ -15,7 +15,7 @@ class QueueCommand extends Command
     public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         $parser->setDescription('ID of the last unprinted lammy in the queue,'
-                            . 'or 0 if everything is printed.');
+                            . ' or 0 if everything is printed.');
         $parser->removeOption('quiet');
         $parser->removeOption('verbose');
 
