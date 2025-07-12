@@ -4,13 +4,14 @@ declare(strict_types=1);
 namespace App\Policy;
 
 use App\Model\Entity\Entity;
+use App\Model\Entity\Player;
 use Authorization\IdentityInterface as User;
 use Authorization\Policy\BeforePolicyInterface;
 use Authorization\Policy\BeforeScopeInterface;
 
 abstract class Policy implements BeforePolicyInterface, BeforeScopeInterface
 {
-    private ?User $identity = null;
+    private ?Player $identity = null;
 
     public function before(?User $identity, mixed $resource, string $action): null
     {
@@ -21,19 +22,19 @@ abstract class Policy implements BeforePolicyInterface, BeforeScopeInterface
 
     public function beforeScope(?User $identity, mixed $resource, string $action): null
     {
-        $this->setIdentity($identity);
-
-        return null;
+        return $this->before($identity, $resource, $action);
     }
 
-    protected function getPlin(): ?int
+    protected function getPlin(): int
     {
-        return $this->identity?->getOriginalData()['id'];
+        return $this->identity->id;
     }
 
     protected function setIdentity(?User $identity): void
     {
-        $this->identity = $identity;
+        if ($identity instanceof Player) {
+            $this->identity = $identity;
+        }
     }
 
     protected function hasAuth(string|array $roles, ?Entity $obj = null): bool

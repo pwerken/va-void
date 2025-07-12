@@ -4,12 +4,17 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use ArrayAccess;
-use Authentication\IdentityInterface;
+use Authentication\IdentityInterface as AuthenticationIdentity;
 use Authentication\PasswordHasher\DefaultPasswordHasher;
+use Authorization\AuthorizationServiceInterface;
+use Authorization\IdentityInterface as AuthorizationIdentity;
+use Authorization\Policy\ResultInterface;
 
-class Player extends Entity implements IdentityInterface
+class Player extends Entity implements AuthenticationIdentity, AuthorizationIdentity
 {
     protected array $_defaults = [ 'role' => 'Player' ];
+
+    protected AuthorizationServiceInterface $authorization;
 
     public function __construct(array $properties = [], array $options = [])
     {
@@ -26,16 +31,6 @@ class Player extends Entity implements IdentityInterface
         }
 
         return (new DefaultPasswordHasher())->hash($password);
-    }
-
-    public function getIdentifier(): string
-    {
-        return (string)$this->id;
-    }
-
-    public function getOriginalData(): ArrayAccess|array
-    {
-        return $this;
     }
 
     public static function labelPassword(mixed $value = null): bool
@@ -77,5 +72,37 @@ class Player extends Entity implements IdentityInterface
         }
 
         return 0;
+    }
+
+    public function setAuthorization(AuthorizationServiceInterface $service): self
+    {
+        $this->authorization = $service;
+
+        return $this;
+    }
+
+    public function getIdentifier(): int
+    {
+        return $this->id;
+    }
+
+    public function can(string $action, mixed $resource): bool
+    {
+        return $this->authorization->can($this, $action, $resource);
+    }
+
+    public function canResult(string $action, mixed $resource): ResultInterface
+    {
+        return $this->authorization->canResult($this, $action, $resource);
+    }
+
+    public function applyScope(string $action, mixed $resource, mixed ...$optionalArgs): mixed
+    {
+        return $this->authorization->applyScope($this, $action, $resource, $optionalArgs);
+    }
+
+    public function getOriginalData(): ArrayAccess|array
+    {
+        return $this;
     }
 }

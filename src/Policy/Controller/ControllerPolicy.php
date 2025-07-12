@@ -5,8 +5,8 @@ namespace App\Policy\Controller;
 
 use App\Authentication\UnauthenticatedException;
 use App\Model\Entity\Entity;
+use App\Model\Entity\Player;
 use App\Policy\Policy;
-use Authorization\IdentityInterface as User;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\ServerRequest;
 
@@ -14,7 +14,7 @@ abstract class ControllerPolicy extends Policy
 {
     private ServerRequest $request;
 
-    public function canAccess(?User $identity, ServerRequest $request): bool
+    public function canAccess(?Player $identity, ServerRequest $request): bool
     {
         $this->request = $request;
         $this->setIdentity($identity);

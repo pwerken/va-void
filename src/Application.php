@@ -123,7 +123,11 @@ class Application extends BaseApplication
 
             // Add the AuthorizationMiddleware.
             // It should be after routing and body parser.
-            ->add(new AuthorizationMiddleware(new AuthorizationService()))
+            ->add(new AuthorizationMiddleware(new AuthorizationService(), [
+                    'identityDecorator' => function ($auth, $user) {
+                        return $user->setAuthorization($auth);
+                    },
+                ]))
 
             // Perform ControllerPolicy canAccess authorization check.
             ->add(new RequestAuthorizationMiddleware())
