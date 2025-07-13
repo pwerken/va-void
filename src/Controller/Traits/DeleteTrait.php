@@ -11,7 +11,7 @@ trait DeleteTrait
     /**
      * call DeleteComponent->action($id)
      */
-    public function delete(int $id)
+    public function delete(int $id): void
     {
         $this->loadComponent('Delete');
         $this->Delete->action($id);

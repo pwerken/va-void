@@ -11,7 +11,7 @@ trait AddTrait
     /**
      * call AddComponent->action()
      */
-    public function add()
+    public function add(): void
     {
         $this->loadComponent('Add');
         $this->Add->action();

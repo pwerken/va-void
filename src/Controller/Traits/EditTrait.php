@@ -11,7 +11,7 @@ trait EditTrait
     /**
      * call EditComponent->action($id)
      */
-    public function edit(int $id)
+    public function edit(int $id): void
     {
         $this->loadComponent('Edit');
         $this->Edit->action($id);

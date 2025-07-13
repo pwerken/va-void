@@ -59,7 +59,7 @@ class AuthController extends Controller
         }
     }
 
-    protected function socialListing()
+    protected function socialListing(): void
     {
         $result = [];
         $result['class'] = 'List';
