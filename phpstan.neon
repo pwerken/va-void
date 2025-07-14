@@ -9,3 +9,4 @@ parameters:
 		- config
 		- plugins
 		- src
+		- tests

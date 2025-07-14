@@ -21,10 +21,7 @@ class CheckConfigTest extends TestCase
 
     public function testInstallationHasChecks(): void
     {
-        $results = CheckConfig::installation();
-
-        $this->assertIsArray($results);
-        $this->assertNotEmpty($results);
+        $this->assertNotEmpty(CheckConfig::installation());
     }
 
     #[DataProvider('installationResults')]

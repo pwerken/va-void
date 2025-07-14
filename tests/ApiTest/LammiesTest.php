@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\ApiTest;
 
 use App\Test\TestSuite\AuthIntegrationTestCase;
+use Cake\Database\Schema\TableSchema;
 
 class LammiesTest extends AuthIntegrationTestCase
 {
@@ -149,9 +150,11 @@ class LammiesTest extends AuthIntegrationTestCase
         $this->withAuthInfobalie();
 
         // clear table/queue before testing
-        $table = $this->getTableLocator()->get('Lammies');
+        $table = $this->fetchTable('Lammies');
+        $schema = $table->getSchema();
+        $this->assertInstanceOf(TableSchema::class, $schema);
         $connection = $table->getConnection();
-        foreach ($table->getSchema()->truncateSql($connection) as $sql) {
+        foreach ($schema->truncateSql($connection) as $sql) {
             $connection->execute($sql);
         }
 

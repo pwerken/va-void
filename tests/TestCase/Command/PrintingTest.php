@@ -31,8 +31,8 @@ class PrintingTest extends ConsoleIntegrationTestCase
         $this->assertErrorContains('Error generating pdf');
 
         # fill the queue
-        $table = $this->getTableLocator()->get('Lammies');
-        $table->insertQuery()
+        $this->fetchTable('Lammies')
+            ->insertQuery()
             ->insert(['status', 'entity', 'key1'])
             ->values(['status' => 'Queued', 'entity' => 'Character', 'key1' => 1])
             ->execute();

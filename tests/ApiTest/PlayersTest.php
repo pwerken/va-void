@@ -24,18 +24,18 @@ class PlayersTest extends AuthIntegrationTestCase
 
     public function checkPlayerCompact($id, $data): void
     {
-        $ref = $this->fetchTable('players')->get($id);
+        $ref = $this->fetchTable('Players')->get($id);
 
         $this->assertCount(4, $data);
         $this->assertArrayKeyValue('class', (new ReflectionClass($ref))->getShortName(), $data);
         $this->assertArrayKeyValue('url', $ref->getUrl(), $data);
         $this->assertArrayKeyValue('plin', $ref->getIdentifier(), $data);
-        $this->assertArrayKeyValue('full_name', $ref->full_name, $data);
+        $this->assertArrayKeyValue('full_name', $ref->get('full_name'), $data);
     }
 
     public function checkPlayer($url, $id): void
     {
-        $ref = $this->fetchTable('players')->get($id);
+        $ref = $this->fetchTable('Players')->get($id);
 
         $data = $this->assertGet($url);
 
@@ -44,14 +44,14 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertArrayKeyValue('url', $ref->getUrl(), $data);
         $this->assertArrayKeyValue('plin', $ref->getIdentifier(), $data);
 
-        $this->assertArrayKeyValue('role', $ref->role, $data);
-        $this->assertArrayKeyValue('password', isset($ref->password), $data);
-        $this->assertArrayKeyValue('first_name', $ref->first_name, $data);
-        $this->assertArrayKeyValue('insertion', $ref->insertion, $data);
-        $this->assertArrayKeyValue('last_name', $ref->last_name, $data);
-        $this->assertArrayKeyValue('email', $ref->email, $data);
-        $this->assertArrayKeyValue('modified', $ref->modified, $data);
-        $this->assertArrayKeyValue('full_name', $ref->full_name, $data);
+        $this->assertArrayKeyValue('role', $ref->get('role'), $data);
+        $this->assertArrayKeyValue('password', $ref->has('password'), $data);
+        $this->assertArrayKeyValue('first_name', $ref->get('first_name'), $data);
+        $this->assertArrayKeyValue('insertion', $ref->get('insertion'), $data);
+        $this->assertArrayKeyValue('last_name', $ref->get('last_name'), $data);
+        $this->assertArrayKeyValue('email', $ref->get('email'), $data);
+        $this->assertArrayKeyValue('modified', $ref->get('modified'), $data);
+        $this->assertArrayKeyValue('full_name', $ref->get('full_name'), $data);
 
         $this->assertArrayHasKey('characters', $data);
         $this->assertArrayHasKey('socials', $data);

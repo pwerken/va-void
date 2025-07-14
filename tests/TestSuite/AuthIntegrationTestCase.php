@@ -82,7 +82,7 @@ class AuthIntegrationTestCase extends TestCase
                 $this->now = null;
         }
 
-        $name = $this->account?->name ?? 'Unauthenticated';
+        $name = $this->account->name ?? 'Unauthenticated';
         $message = "Failed `$method` request on url `$url` with authorization `$name`";
 
         $this->setConfigRequest($method == 'POST');
