@@ -96,10 +96,6 @@ class HistoryController extends AdminController
     {
         $this->viewBuilder()->setTemplate('compact');
 
-        $plin = $this->request->getQuery('highlight');
-        $plin = empty($plin) ? null : (int)$plin;
-        $this->set('plin', $plin);
-
         $characters = $this->fetchTable('Characters');
         $table = $this->fetchTable('History');
         $list = $table->getEntityHistory($e, $k1, $k2);

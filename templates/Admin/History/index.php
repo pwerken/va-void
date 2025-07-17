@@ -26,11 +26,6 @@ echo $this->Form->text('plin', $style);
 echo $this->Form->button(__('Update'));
 echo $this->Form->end() . "\n";
 
-$highlight = '';
-if ($plin) {
-    $highlight = "?highlight=$plin";
-}
-
 foreach ($list as $row) {
     $name = $row['entity'] . '/' . $row['key1'];
     if (!is_null($row['key2'])) {
@@ -55,5 +50,5 @@ foreach ($list as $row) {
         . str_pad($row['modified'], 19, '_', STR_PAD_BOTH) . ' '
         . str_pad($modifier, 4, '0', STR_PAD_LEFT)
         . '</samp> '
-        . $this->Html->link($name, $link . $highlight) . "<br/>\n";
+        . $this->Html->link($name, $link) . "<br/>\n";
 }
