@@ -9,7 +9,7 @@ use ReflectionClass;
 
 class PlayersTest extends AuthIntegrationTestCase
 {
-    public function checkList($url, $size): array
+    public function checkList(string $url, int $size): array
     {
         $data = $this->assertGet($url);
 
@@ -22,7 +22,7 @@ class PlayersTest extends AuthIntegrationTestCase
         return $data['list'];
     }
 
-    public function checkPlayerCompact($id, $data): void
+    public function checkPlayerCompact(int $id, array $data): void
     {
         $ref = $this->fetchTable('Players')->get($id);
 
@@ -33,7 +33,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertArrayKeyValue('full_name', $ref->get('full_name'), $data);
     }
 
-    public function checkPlayer($url, $id): void
+    public function checkPlayer(string $url, int $id): void
     {
         $ref = $this->fetchTable('Players')->get($id);
 
@@ -322,7 +322,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->checkPlayer('/players/1', 1);
     }
 
-    public function testGetIndexAsReadonly($asReadOnly = true): void
+    public function testGetIndexAsReadonly(bool $asReadOnly = true): void
     {
         if ($asReadOnly) {
             $this->withAuthReadOnly();

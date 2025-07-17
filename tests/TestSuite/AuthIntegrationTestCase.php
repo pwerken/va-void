@@ -34,42 +34,42 @@ class AuthIntegrationTestCase extends TestCase
         ];
     }
 
-    public function assertGet(string $url, int $code = 200)
+    public function assertGet(string $url, int $code = 200): mixed
     {
         return $this->_assertRequest($url, 'GET', $code);
     }
 
-    public function assertPost(string $url, array|string $data = [], int $code = 200)
+    public function assertPost(string $url, array|string $data = [], int $code = 200): mixed
     {
         return $this->_assertRequest($url, 'POST', $code, $data);
     }
 
-    public function assertPatch(string $url, array|string $data = [], int $code = 200)
+    public function assertPatch(string $url, array|string $data = [], int $code = 200): mixed
     {
         return $this->_assertRequest($url, 'PATCH', $code, json_encode($data));
     }
 
-    public function assertPut(string $url, array|string $data = [], int $code = 200)
+    public function assertPut(string $url, array|string $data = [], int $code = 200): mixed
     {
         return $this->_assertRequest($url, 'PUT', $code, json_encode($data));
     }
 
-    public function assertDelete(string $url, int $code = 204)
+    public function assertDelete(string $url, int $code = 204): mixed
     {
         return $this->_assertRequest($url, 'DELETE', $code);
     }
 
-    public function assertHead(string $url, int $code = 200)
+    public function assertHead(string $url, int $code = 200): mixed
     {
         return $this->_assertRequest($url, 'HEAD', $code);
     }
 
-    public function assertOptions(string $url, int $code = 200)
+    public function assertOptions(string $url, int $code = 200): mixed
     {
         return $this->_assertRequest($url, 'OPTIONS', $code);
     }
 
-    protected function _assertRequest(string $url, string $method, int $code, array|string $data = [])
+    protected function _assertRequest(string $url, string $method, int $code, array|string $data = []): mixed
     {
         switch ($method) {
             case 'POST':

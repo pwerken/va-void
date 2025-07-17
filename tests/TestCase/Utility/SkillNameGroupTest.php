@@ -10,7 +10,7 @@ use RuntimeException;
 
 class SkillNameGroupTest extends TestCase
 {
-    public function testGroup()
+    public function testGroup(): void
     {
         $input = [];
         $input[] = 'ambidextry (2)';

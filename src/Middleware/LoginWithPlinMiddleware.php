@@ -18,10 +18,13 @@ class LoginWithPlinMiddleware implements MiddlewareInterface
         $isLogin = $params['action'] === 'login';
 
         if ($isAuthComp && $isLogin) {
-            $id = Hash::get($request->getParsedBody(), 'id');
-            $plin = Hash::get($request->getParsedBody(), 'plin', $id);
+            /** @var array $body */
+            $body = $request->getParsedBody();
 
-            $request = $request->withParsedBody(Hash::insert($request->getParsedBody(), 'id', $plin));
+            $id = Hash::get($body, 'id');
+            $plin = Hash::get($body, 'plin', $id);
+
+            $request = $request->withParsedBody(Hash::insert($body, 'id', $plin));
         }
 
         return $handler->handle($request);
