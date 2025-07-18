@@ -1,5 +1,13 @@
-<h3>Lookup Players with Skill</h3>
 <?php
+declare(strict_types=1);
+/**
+ * @var \Cake\View\View $this
+ * @var string $since
+ * @var array $selected
+ * @var array $characters
+ * @var array $skills
+ */
+echo '<h3>Lookup Players with Skill</h3>' . PHP_EOL;
 
 echo $this->Form->create(null, ['type' => 'get']);
 echo 'Only characters modified since:';

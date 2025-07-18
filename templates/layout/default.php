@@ -1,16 +1,14 @@
 <?php
-
+/**
+ * @var \Cake\View\View $this
+ * @var ?\App\Model\Entity\Player $user
+ */
 $site = 'VOID-API';
 
 $hasAuthPlayer = $user?->hasAuth('Player');
 $hasAuthReadOnly = $user?->hasAuth('Read-only');
 $hasAuthReferee = $user?->hasAuth('Referee');
 $hasAuthInfobalie = $user?->hasAuth('Infobalie');
-
-/*
-RO
-$nav['/admin/skills'] = 'Skill~Player Lookup';
-*/
 
 ?>
 <!DOCTYPE html>
@@ -58,8 +56,8 @@ $nav['/admin/skills'] = 'Skill~Player Lookup';
             <div class="navigation-item not-on-mobile">
                 <a href="/admin">
                     <small>
-                        <?= $user?->full_name ?><br/>
-                        <em><?= $user?->role ?></em>
+                        <?= $user?->get('full_name') ?><br/>
+                        <em><?= $user?->get('role') ?></em>
                     </small>
                 </a>
             </div>

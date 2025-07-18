@@ -1,6 +1,7 @@
 <?php
-use Cake\Routing\Router;
+declare(strict_types=1);
 
+use Cake\Routing\Router;
 ?>
 <h3>Configured Routes</h3>
 

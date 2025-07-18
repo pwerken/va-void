@@ -1,5 +1,10 @@
-<h3>Printing queue</h3>
 <?php
+declare(strict_types=1);
+/**
+ * @var \Cake\View\View $this
+ * @var array $printing
+ */
+echo '<h3>Printing queue</h3>' . PHP_EOL;
 
 $uniq = [];
 $duplicates = 0;

@@ -1,6 +1,14 @@
-<h3>Entity History</h3>
-
 <?php
+declare(strict_types=1);
+/**
+ * @var \Cake\View\View $this
+ * @var array $list
+ * @var string $what
+ * @var string $since
+ * @var string $plin
+ */
+echo '<h3>Entity History</h3>' . PHP_EOL;
+
 echo $this->Form->create(null, ['type' => 'get']);
 $style = ['style' => 'display: inline-block; width: 15rem; margin-right: 1rem'];
 
@@ -48,7 +56,7 @@ foreach ($list as $row) {
 
     echo '<samp' . $tooltip . '>'
         . str_pad($row['modified'], 19, '_', STR_PAD_BOTH) . ' '
-        . str_pad($modifier, 4, '0', STR_PAD_LEFT)
+        . str_pad((string)$modifier, 4, '0', STR_PAD_LEFT)
         . '</samp> '
         . $this->Html->link($name, $link) . "<br/>\n";
 }

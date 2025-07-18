@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \Cake\View\View $this
+ * @var array $backups
+ */
+?>
 <h3>Database Backups</h3>
 
 <p>Backup management is done using the command line interface, see

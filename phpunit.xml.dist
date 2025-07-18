@@ -29,7 +29,6 @@
     <source ignoreIndirectDeprecations="true" restrictWarnings="true" restrictNotices="true">
         <include>
             <directory suffix=".php">src/</directory>
-            <directory suffix=".php">plugins/*/src/</directory>
         </include>
         <exclude>
             <file>src/Console/Installer.php</file>

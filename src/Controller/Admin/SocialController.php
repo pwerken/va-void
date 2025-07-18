@@ -16,17 +16,15 @@ class SocialController extends AdminController
             return;
         }
 
-        $plin = $this->request->getData('plin');
         $social = $this->request->getData('social');
-
-        if (empty($plin) || empty($social)) {
+        if (empty($social)) {
             return;
         }
 
         $profiles = $this->fetchTable('SocialProfiles');
         $login = $profiles->getMaybe($social);
         if (is_null($login)) {
-            $this->Flash->error("SocialProfile#$social not found ?!");
+            $this->Flash->error("SocialProfile#$social not found.");
 
             return;
         }
@@ -34,10 +32,17 @@ class SocialController extends AdminController
         // delete login attempt
         if (!is_null($this->request->getData('delete'))) {
             if (!$profiles->delete($login)) {
-                $this->Flash->error("Failed to delete SocialProfile#$social");
+                $this->Flash->error("Failed to delete SocialProfile#$social.");
             } else {
-                $this->Flash->success("Deleted SocialProfile#$social");
+                $this->Flash->success("Deleted SocialProfile#$social.");
             }
+
+            return;
+        }
+
+        $plin = $this->request->getData('plin');
+        if (empty($plin)) {
+            $this->Flash->error("Failed to link SocialProfile#$social, no plin entered.");
 
             return;
         }
@@ -46,7 +51,7 @@ class SocialController extends AdminController
         $players = $this->fetchTable('Players');
         $player = $players->getMaybe($plin);
         if (is_null($player)) {
-            $this->Flash->error("Player#$plin not found");
+            $this->Flash->error("Failed to link SocialProfile#$social, Player#$plin not found.");
 
             return;
         }
@@ -54,10 +59,12 @@ class SocialController extends AdminController
         $login->set('user_id', $player->get('id'));
 
         if (!$profiles->save($login)) {
-            $this->Flash->error("Failed to link SocialProfile#$social");
+            $this->Flash->error("Failed to link SocialProfile#$social.");
         } else {
-            $this->Flash->success("SocialProfile#$social linked to Player#$plin");
+            $this->Flash->success("SocialProfile#$social linked to Player#$plin.");
         }
+
+        $this->redirect(['controller' => 'Social']);
     }
 
     /**

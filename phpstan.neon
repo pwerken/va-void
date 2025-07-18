@@ -8,6 +8,7 @@ parameters:
 	paths:
 		- config
 		- src
+		- templates
 		- tests
 	ignoreErrors:
 		- identifier: missingType.iterableValue

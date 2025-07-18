@@ -1,3 +1,10 @@
+<?php
+declare(strict_types=1);
+/**
+ * @var \Cake\View\View $this
+ * @var array $migrations
+ */
+?>
 <h3>Database Migrations</h3>
 
 <p>Database migrations are done using the command line interface, see

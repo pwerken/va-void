@@ -1,6 +1,10 @@
-<h3>Entity History</h3>
-
 <?php
+declare(strict_types=1);
+/**
+ * @var \Cake\View\View $this
+ * @var array $history
+ */
+echo '<h3>Entity History</h3>' . PHP_EOL;
 
 foreach ($history as $row) {
     $tooltip = '';
