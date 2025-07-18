@@ -51,8 +51,8 @@
             "@test",
             "@stan"
         ],
-        "cs-check": "phpcs --colors -p src/ templates/ tests/",
-        "cs-fix": "phpcbf --colors -p src/ templates/ tests/",
+        "cs-check": "phpcs --colors -p",
+        "cs-fix": "phpcbf --colors -p",
         "stan": "phpstan analyse",
         "test": "phpunit --colors=always",
         "test:coverage": [

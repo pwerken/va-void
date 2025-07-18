@@ -21,8 +21,8 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
-use Cake\Routing\RouteBuilder;
 use Cake\Routing\Route\InflectedRoute;
+use Cake\Routing\RouteBuilder;
 
 return function (RouteBuilder $routes): void {
 
@@ -38,7 +38,7 @@ return function (RouteBuilder $routes): void {
     $defaults['action'] = 'cors';
     $routes->connect('/*', $defaults);
 
-    $routes->prefix('Admin', function (RouteBuilder $routes) {
+    $routes->prefix('Admin', function (RouteBuilder $routes): void {
         /**
          *  Admin pages
          */
@@ -78,7 +78,7 @@ return function (RouteBuilder $routes): void {
      * Helper function for building the rest api
      */
     $rest = function ($routes, $name, $subs = [], $nest = [], $rels = []): void {
-        $getKeys = function ($controller) {
+        $getKeys = function ($controller): array {
             switch ($controller) {
                 case 'Players':
                     return [ 'plin' ];
@@ -106,11 +106,11 @@ return function (RouteBuilder $routes): void {
         $url = '/' . $lcName . '/' . $path;
 
         $map =
-            [ 'index'   => [ '_method' => 'GET',    'path' => 0 ]
-            , 'add'     => [ '_method' => 'PUT',    'path' => 0 ]
-            , 'view'    => [ '_method' => 'GET',    'path' => 1 ]
-            , 'edit'    => [ '_method' => 'PUT',    'path' => 1 ]
-            , 'delete'  => [ '_method' => 'DELETE', 'path' => 1 ],
+            [ 'index' => [ '_method' => 'GET', 'path' => 0 ]
+            , 'add' => [ '_method' => 'PUT', 'path' => 0 ]
+            , 'view' => [ '_method' => 'GET', 'path' => 1 ]
+            , 'edit' => [ '_method' => 'PUT', 'path' => 1 ]
+            , 'delete' => [ '_method' => 'DELETE', 'path' => 1 ],
             ];
 
         foreach ($map as $method => $options) {
@@ -187,11 +187,11 @@ return function (RouteBuilder $routes): void {
             $path = '{' . implode('}/{', $path) . '}';
 
             $map =
-                [ 'index'   => [ '_method' => 'GET',    'path' => 0 ]
-                , 'add'     => [ '_method' => 'PUT',    'path' => 0 ]
-                , 'view'    => [ '_method' => 'GET',    'path' => 1 ]
-                , 'edit'    => [ '_method' => 'PUT',    'path' => 1 ]
-                , 'delete'  => [ '_method' => 'DELETE', 'path' => 1 ],
+                [ 'index' => [ '_method' => 'GET', 'path' => 0 ]
+                , 'add' => [ '_method' => 'PUT', 'path' => 0 ]
+                , 'view' => [ '_method' => 'GET', 'path' => 1 ]
+                , 'edit' => [ '_method' => 'PUT', 'path' => 1 ]
+                , 'delete' => [ '_method' => 'DELETE', 'path' => 1 ],
                 ];
 
             $controller = [ $name, $rel ];
@@ -233,9 +233,9 @@ return function (RouteBuilder $routes): void {
         }
         if ($name == 'Characters') {
             $map = [
-                'View'    => [ '_method' => 'GET',    'path' => 1 ],
-                'Edit'    => [ '_method' => 'PUT',    'path' => 1 ],
-                'Delete'  => [ '_method' => 'DELETE', 'path' => 1 ],
+                'View' => [ '_method' => 'GET', 'path' => 1 ],
+                'Edit' => [ '_method' => 'PUT', 'path' => 1 ],
+                'Delete' => [ '_method' => 'DELETE', 'path' => 1 ],
             ];
 
             $urlNest = $url . '/students';
