@@ -12,10 +12,30 @@ class SocialController extends AdminController
      */
     public function index(): void
     {
-        if (!$this->request->is('post')) {
+        if ($this->request->is('post')) {
+            $this->index_post();
+            $this->redirect(['controller' => 'Social']);
+
             return;
         }
 
+        $total = $this->fetchTable('SocialProfiles')
+            ->find()
+            ->all()
+            ->count();
+
+        $logins = $this->fetchTable('SocialProfiles')
+            ->find()
+            ->where(['user_id IS NULL'])
+            ->orderDesc('modified')
+            ->all();
+
+        $this->set('logins', $logins);
+        $this->set('total', $total);
+    }
+
+    protected function index_post(): void
+    {
         $social = $this->request->getData('social');
         if (empty($social)) {
             return;
@@ -57,7 +77,6 @@ class SocialController extends AdminController
         }
 
         $login->set('user_id', $player->get('id'));
-
         if (!$profiles->save($login)) {
             $this->Flash->error("Failed to link SocialProfile#$social.");
         } else {
@@ -65,6 +84,67 @@ class SocialController extends AdminController
         }
 
         $this->redirect(['controller' => 'Social']);
+    }
+
+    /**
+     * GET /admin/social/all
+     */
+    public function all(): void
+    {
+        if ($this->request->is('post')) {
+            $this->all_post();
+            $this->redirect(['controller' => 'Social', 'action' => 'all']);
+
+            return;
+        }
+
+        $logins = $this->fetchTable('SocialProfiles')
+            ->find()
+            ->all();
+
+        $this->set('logins', $logins);
+    }
+
+    protected function all_post(): void
+    {
+        $social = $this->request->getData('social');
+        if (empty($social)) {
+            return;
+        }
+
+        $profiles = $this->fetchTable('SocialProfiles');
+        $login = $profiles->getMaybe($social);
+        if (is_null($login)) {
+            $this->Flash->error("SocialProfile#$social not found.");
+
+            return;
+        }
+
+        // delete login attempt
+        if (!is_null($this->request->getData('delete'))) {
+            if (!$profiles->delete($login)) {
+                $this->Flash->error("Failed to delete SocialProfile#$social.");
+            } else {
+                $this->Flash->success("Deleted SocialProfile#$social.");
+            }
+
+            return;
+        }
+
+        // unlink login from plin
+        if (!is_null($this->request->getData('unlink'))) {
+            $plin = $login->get('user_id');
+            $login->set('user_id', null);
+            if (!$profiles->save($login)) {
+                $this->Flash->error("Failed to unlink SocialProfile#$social from Player#$plin.");
+            } else {
+                $this->Flash->success("Unlinked SocialProfile#$social from Player#$plin.");
+            }
+
+            return;
+        }
+
+        $this->Flash->error("Unknown action for SocialProfile#$social.");
     }
 
     /**

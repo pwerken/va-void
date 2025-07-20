@@ -42,6 +42,7 @@
     }
 
     input[type="color"],
+    input[type="checkbox"],
     input[type="date"],
     input[type="datetime"],
     input[type="email"],
@@ -55,6 +56,14 @@
         border-color: var(--color-border);
         color: var(--color-input-text);
     }
+
+	input[type='checkbox'] {
+		filter: invert(1);
+	}
+
+	input[type='checkbox']:checked {
+		filter: invert(0);
+	}
 
     option[selected] {
         background: var(--color-selected-bg);

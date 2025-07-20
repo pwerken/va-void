@@ -9,7 +9,12 @@ class SocialControllerPolicy extends ControllerPolicy
 {
     public function index(): bool
     {
-        return true;
+        return $this->hasAuth('infobalie');
+    }
+
+    public function all(): bool
+    {
+        return $this->hasAuth('infobalie');
     }
 
     public function login(): bool

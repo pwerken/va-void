@@ -3,58 +3,46 @@ declare(strict_types=1);
 /**
  * @var \Cake\View\View $this
  * @var list<string> $roles
+ * @var array $permissions
  */
-use Cake\ORM\TableRegistry;
+?>
+<h3>Authorization</h3>
+<?php
 
 $options = [];
 foreach ($roles as $role) {
     $options[$role] = $role;
 }
 
-$style = ['style' => 'display: inline-block; width: auto; margin-right: 1rem'];
-
-echo '<h3>Authorization</h3>' . PHP_EOL;
-echo $this->Form->create(null, [
-        'url' => ['controller' => 'authorization', 'action' => 'edit'],
-    ]);
-echo 'Plin: ';
-echo $this->Form->text('plin', $style) . PHP_EOL;
-echo $this->Form->select('role', $options, $style) . PHP_EOL;
-echo $this->Form->button(__('Set Role')) . PHP_EOL;
-echo $this->Form->end();
-
-$players = TableRegistry::getTableLocator()->get('Players');
-$perms = $query = $players->find(
-    'list',
-    ['valueField' => 'id', 'groupField' => 'role'],
-)->toArray();
+echo $this->Form->create(null, ['url' => ['controller' => 'Authorization', 'action' => 'edit']])
+    . $this->Form->control('plin', ['label' => 'Plin', 'class' => 'plin'])
+    . $this->Form->control('role', ['label' => 'Role', 'options' => $options])
+    . $this->Form->button(__('Set Permissions'))
+    . $this->Form->end();
 
 echo "<table>\n";
 foreach (array_reverse($roles) as $role) {
     echo '<tr><th colspan="2">' . $role . "</th></tr>\n";
 
-    if (!isset($perms[$role])) {
+    if (!isset($permissions[$role])) {
         echo '<tr><td/><td>'
             . 'There are <em>NO</em> accounts with this role.'
             . "</td></tr>\n";
         continue;
     }
-    if (count($perms[$role]) > 100) {
+    if (count($permissions[$role]) > 100) {
         echo '<tr><td/><td>'
-            . 'A total of <em>' . count($perms[$role]) . '</em> accounts with this role.'
+            . 'A total of <em>' . count($permissions[$role]) . '</em> accounts with this role.'
             . "</td></tr>\n";
         continue;
     }
 
-    $query = $players->find();
-    $query->where(['role' => $role]);
-
-    foreach ($query as $player) {
-        $url = ['controller' => 'history', 'action' => 'player', $player->id];
+    foreach ($permissions[$role] as $plin => $name) {
+        $url = ['controller' => 'History', 'action' => 'player', $plin];
         echo '<tr><td>'
-            . $this->Html->link((string)$player->id, $url)
+            . $this->Html->link((string)$plin, $url)
             . '</td><td>'
-            . $this->Html->link($player->full_name, $url)
+            . $this->Html->link($name, $url)
             . "</td></tr>\n";
     }
 }

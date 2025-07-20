@@ -27,6 +27,9 @@ class SkillsController extends AdminController
         }
         $this->set('since', $since);
 
+        $and = $this->request->getQuery('and', 0);
+        $this->set('and', $and);
+
         $ids = $this->request->getQuery('skills', []);
         $this->set('selected', $ids);
 
@@ -61,6 +64,16 @@ class SkillsController extends AdminController
                 }
                 $c['_matchingData'] = [$skill_id => $times];
                 $characters[$id] = $c;
+            }
+            if ($and) {
+                $filtered = [];
+                $skillCount = count($ids);
+                foreach ($characters as $id => $character) {
+                    if (count($character['_matchingData']) === $skillCount) {
+                        $filtered[$id] = $character;
+                    }
+                }
+                $characters = $filtered;
             }
         }
         $this->set('characters', $characters);

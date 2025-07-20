@@ -7,13 +7,17 @@ declare(strict_types=1);
  * @var string $since
  * @var string $plin
  */
-echo '<h3>Entity History</h3>' . PHP_EOL;
+?>
+<h3>Entity History</h3>
+<?php
 
 echo $this->Form->create(null, ['type' => 'get']);
-$style = ['style' => 'display: inline-block; width: 15rem; margin-right: 1rem'];
 
-$style['value'] = $what;
-$values = [
+$options = [];
+$options['type'] = 'select';
+$optionp['label'] = 'What';
+$optoins['value'] = $what;
+$options['options'] = [
     '' => 'All',
     'Players' => 'Players',
     'Characters' => 'Characters',
@@ -21,25 +25,33 @@ $values = [
     'Conditions' => 'Conditions',
     'Powers' => 'Powers',
 ];
-echo $this->Form->select('what', $values, $style);
+echo $this->Form->control('what', $options);
 
-$style['value'] = $since;
-$style['maxlength'] = 10;
-echo $this->Form->text('since', $style);
+$options = [];
+$options['type'] = 'date';
+$options['label'] = 'Since';
+$options['value'] = $since;
+$options['maxlength'] = 10;
+echo $this->Form->control('since', $options);
 
-$style['value'] = $plin;
-$style['maxlength'] = 4;
-echo $this->Form->text('plin', $style);
+$options = [];
+$options['type'] = 'text';
+$options['label'] = 'By Plin';
+$options['class'] = 'plin';
+$options['value'] = $plin;
+$options['maxlength'] = 4;
+echo $this->Form->control('plin', $options);
 
-echo $this->Form->button(__('Update'));
+echo $this->Form->button(__('Select'));
 echo $this->Form->end() . "\n";
 
 foreach ($list as $row) {
+    $link = ['controller' => 'History', 'action' => strtolower($row['entity']), $row['key1']];
     $name = $row['entity'] . '/' . $row['key1'];
     if (!is_null($row['key2'])) {
         $name .= '/' . $row['key2'];
+        $link[] = $row['key2'];
     }
-    $link = '/admin/history/' . strtolower($name);
     $name .= ': ' . $row['name'];
 
     $modifier = $modifier_id = $row['modifier_id'];

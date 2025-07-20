@@ -7,7 +7,7 @@ $site = 'VOID-API';
 
 $hasAuthPlayer = $user?->hasAuth('Player');
 $hasAuthReadOnly = $user?->hasAuth('Read-only');
-$hasAuthReferee = $user?->hasAuth('Referee');
+#$hasAuthReferee = $user?->hasAuth('Referee');
 $hasAuthInfobalie = $user?->hasAuth('Infobalie');
 
 ?>
@@ -32,7 +32,7 @@ $hasAuthInfobalie = $user?->hasAuth('Infobalie');
 <body>
     <nav class="navigation">
         <section class="container">
-            <div class="navigation-item" style="margin-left:0;">
+            <div class="navigation-item">
                 <a class="navigation-title" href="#popover-site" data-popover>
                     <?= $site ?>
                 </a>
@@ -107,7 +107,7 @@ $hasAuthInfobalie = $user?->hasAuth('Infobalie');
                                 <a class="popover-link" href="/admin/authorization">Authorization</a>
                             </li>
     <?php endif ?>
-    <?php if ($hasAuthReferee) : ?>
+    <?php if ($hasAuthInfobalie) : ?>
                             <li class="popover-item">
                                 <a class="popover-link" href="/admin/social">Authentication</a>
                             </li>

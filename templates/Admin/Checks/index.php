@@ -12,6 +12,6 @@ use App\Utility\CheckConfig;
 foreach (CheckConfig::installation() as $msg => $success) :
     $class = $success ? 'success' : 'problem';
     ?>
-    <p class="<?=$class?>"><?=$msg?>
+    <p class="<?= $class ?>"><?=$msg?>
 <?php endforeach; ?>
 </div>

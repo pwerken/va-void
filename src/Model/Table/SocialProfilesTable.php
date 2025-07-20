@@ -18,4 +18,9 @@ class SocialProfilesTable extends Table
     {
         // don't log changes to History table
     }
+
+    protected function orderBy(): array
+    {
+        return ['user_id' => 'ASC', 'modified' => 'DESC'];
+    }
 }

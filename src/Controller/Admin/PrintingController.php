@@ -28,6 +28,9 @@ class PrintingController extends AdminController
                 $nr = $lammies->deleteAll(['id IN' => $ids]);
                 $this->Flash->success("Removed $nr lammies from queue");
             }
+            $this->redirect(['controller' => 'Printing']);
+
+            return;
         }
 
         $since = (new DateTime())->sub(new DateInterval('P3M'));

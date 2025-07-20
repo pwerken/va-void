@@ -21,6 +21,20 @@ class AuthorizationController extends AdminController
             array_pop($roles);
         }
         $this->set('roles', $roles);
+
+        $players = $this->fetchTable('Players');
+
+        $permissions = [];
+        foreach ($roles as $role) {
+            $query = $players
+                    ->find()
+                    ->where(['Players.role LIKE' => $role]);
+            $permissions[$role] = [];
+            foreach ($query->all() as $player) {
+                $permissions[$role][$player->get('id')] = $player->get('full_name');
+            }
+        }
+        $this->set('permissions', $permissions);
     }
 
     /**

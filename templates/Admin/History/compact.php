@@ -4,7 +4,9 @@ declare(strict_types=1);
  * @var \Cake\View\View $this
  * @var array $history
  */
-echo '<h3>Entity History</h3>' . PHP_EOL;
+?>
+<h3>Entity History</h3>
+<?php
 
 foreach ($history as $row) {
     $tooltip = '';

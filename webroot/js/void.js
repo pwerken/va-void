@@ -1,19 +1,22 @@
 "use strict";
 !(function () {
-	function r(e) {
+	/* Navigation menu drop down */
+	function f(e) {
 		e.preventDefault();
-		var c = document.querySelector(this.getAttribute("href")).classList;
-		if (c.contains("popover-open")) {
-			c.remove("popover-open")
+		var a = document.querySelector(this.getAttribute("href")).classList;
+		if (a.contains("popover-open")) {
+			a.remove("popover-open")
 		} else {
 			o()
-			c.add("popover-open")
+			a.add("popover-open")
 		}
 		e.stopImmediatePropagation();
 	}
-	var e = document.querySelectorAll("[data-popover]")
-	for (var t = 0; t < e.length; t++)
-		e[t].addEventListener("click", r)
+
+	var p = document.querySelectorAll("[data-popover]")
+	for (var t = 0; t < p.length; t++) {
+		p[t].addEventListener("click", f)
+	}
 
 	var n = document.querySelectorAll(".popover")
 	function o(e) {
@@ -21,4 +24,20 @@
 			n[t].classList.remove("popover-open")
 	}
 	document.addEventListener("click", o)
+
+	/* admin/printing */
+	console.log('ping');
+	function g(e) {
+		var x = document.getElementById('checkboxcount');
+		if (x) {
+			var c = document.querySelectorAll('input[type=checkbox]:checked').length;
+			x.textContent = c;
+		}
+	}
+
+	var c = document.querySelectorAll('input[type=checkbox]');
+	for (var t = 0; t < c.length; t++) {
+		c[t].addEventListener("click", g);
+	}
+	g();
 })();

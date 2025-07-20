@@ -2,9 +2,14 @@
 declare(strict_types=1);
 /**
  * @var \Cake\View\View $this
+ * @var ?\App\Model\Entity\Player $user
  * @var array $printing
  */
-echo '<h3>Printing queue</h3>' . PHP_EOL;
+?>
+<h3>Printing queue</h3>
+<?php
+
+$isInfobalie = $user?->hasAuth('infobalie');
 
 $uniq = [];
 $duplicates = 0;
@@ -25,68 +30,66 @@ foreach ($printing as $row) {
     $uniq[$key] = $row['id'];
 }
 
-if ($queued > 0) {
-    echo "&nbsp;Queue size : $queued";
-}
-if ($duplicates > 0) {
-    echo " ($duplicates duplicates)";
-}
-
-echo $this->Form->create();
-
-$role = (!isset($user) ? '' : $user['role']);
-switch ($role) {
-    case 'Super':
-    case 'Event Control':
-    case 'Infobalie':
-        echo $this->Form->button(__('Delete selected'));
-        echo '<span style="padding-left:100px;"></span>';
-        echo $this->Html->link(
+if ($isInfobalie) {
+    echo "<strong>LET OP:</strong> klikken = gehele queue naar <em>'Printed'</em>. "
+        . $this->Html->link(
             'Single-sided pdf',
-            ['controller' => 'printing', 'action' => 'single'],
+            ['controller' => 'Printing', 'action' => 'single'],
             ['class' => 'button'],
-        );
-        echo '&nbsp;';
-        echo $this->Html->link(
+        )
+        . "<br/>\n"
+        . "<strong>LET OP:</strong> klikken = gehele queue naar <em>'Printed'</em>. "
+        . $this->Html->link(
             'Double-sided pdf',
-            ['controller' => 'printing', 'action' => 'double'],
+            ['controller' => 'Printing', 'action' => 'double'],
             ['class' => 'button'],
-        );
-        echo "LET OP: klikken = status naar 'Printed' voor hele queue";
+        )
+        . "<br/>\n";
 
-        break;
-    default:
+    echo $this->Form->create()
+        . $this->Form->button('Delete all selected');
 }
+
+echo " Queue size : $queued (";
+if ($duplicates === 1) {
+    echo '1 duplicate';
+} else {
+    echo $duplicates . ' duplicates';
+}
+echo ', <span id="checkboxcount"></span> selected)';
 
 ?>
 <table>
 <tr>
-    <th>ID</th>
-    <th>Status</th>
+    <th></th>
+    <th class="not-on-mobile">Status</th>
+    <th class="not-on-mobile">By</th>
     <th>Type</th>
     <th>Key #1</th>
     <th>Key #2</th>
-    <th>Created</th>
-    <th>Creator</th>
     <th>Modified</th>
 </tr>
 <?php
 
 foreach ($printing as $row) {
-    echo "<tr>\n"
-        . '<td>' . $row['id'];
+    $checkbox = '';
+    $duplicate = false;
     if ($row['status'] == 'Queued') {
+        $options = [];
+        $options['type'] = 'checkbox';
+        $options['value'] = $row['id'];
+        $options['hiddenField'] = false;
+
         $key = $row['entity'] . '_' . $row['key1'] . '_' . $row['key2'];
         if (
             $uniq[$key] != $row['id'] &&
             $row['entity'] != 'Power' &&
             $row['entity'] != 'Condition'
         ) {
-            $checked = ' checked';
-        } else {
-            $checked = '';
+            $options['checked'] = true;
+            $duplicate = true;
         }
-        echo ' <input type="checkbox" name="delete[]" value="' . $row['id'] . '"' . $checked . '>';
+        $checkbox = $this->Form->checkbox('delete[]', $options);
     }
     if (!is_null($row['created'])) {
         $row['created'] = $row['created']->i18nFormat('yyyy-MM-dd HH:mm:ss');
@@ -100,41 +103,38 @@ foreach ($printing as $row) {
 
     $key1 = $row['character_str'] ?: $row['key1'];
     $key2 = $row['key2'];
-    $link = null;
 
-    if (substr($row['entity'], 0, 9) == 'Character') {
-        $key1 = $this->Html->link($key1, '/admin/history/character/' . $key1);
-    } elseif ($row['entity'] == 'Item') {
-        $link = 'item';
-    }
-    if (substr($row['entity'], -5, 5) == 'Power') {
-        $link = 'power';
-    } elseif (substr($row['entity'], -9, 9) == 'Condition') {
-        $link = 'condition';
-    }
-    if ($link) {
-        if (is_null($key2)) {
-            $key1 = $this->Html->link($key1, '/admin/history/' . $link . '/' . $key1);
-        } else {
-            $key2 = $this->Html->link($key2, '/admin/history/' . $link . '/' . $key2);
+    if (substr($row['entity'], 0, 9) === 'Character') {
+        $link = ['controller' => 'History', 'action' => 'character'] + explode('/', $key1, 2);
+        $key1 = $this->Html->link((string)$key1, $link);
+        if (substr($row['entity'], -5, 5) === 'Power') {
+            $key2 = $this->Html->link((string)$key2, ['controller' => 'History', 'action' => 'power', $key2]);
+        } elseif (substr($row['entity'], -9, 9) === 'Condition') {
+            $key2 = $this->Html->link((string)$key2, ['controller' => 'History', 'action' => 'condition', $key2]);
         }
+    } elseif ($row['entity'] === 'Item') {
+        $key1 = $this->Html->link((string)$key1, ['controller' => 'History', 'action' => 'item', $key1]);
+    } elseif ($row['entity'] === 'Power') {
+        $key1 = $this->Html->link((string)$key1, ['controller' => 'History', 'action' => 'power', $key1]);
+    } elseif ($row['entity'] === 'Condition') {
+        $key1 = $this->Html->link((string)$key1, ['controller' => 'History', 'action' => 'condition', $key1]);
     }
 
-    echo "</td>\n"
-        . '<td>' . $row['status'] . "</td>\n"
+    echo "<tr>\n"
+        . '<td>' . $checkbox . "</td>\n"
+        . '<td class="not-on-mobile">' . $row['status'] . ($duplicate ? ' (D)' : '') . "</td>\n"
+        . '<td class="not-on-mobile">' . $row['creator_id'] . "</td>\n"
         . '<td>' . $row['entity'] . "</td>\n"
         . '<td>' . $key1 . "</td>\n"
         . '<td>' . $key2 . "</td>\n"
-        . '<td>' . $row['created'] . "</td>\n"
-        . '<td>' . $row['creator_id'] . "</td>\n"
         . '<td>' . $row['modified'] . "</td>\n"
         . "</tr>\n";
 }
 
 ?>
 </table>
-</form>
-
 <?php
 
-echo $this->Form->end();
+if ($isInfobalie) {
+    echo $this->Form->end();
+}
