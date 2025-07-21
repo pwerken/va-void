@@ -8,7 +8,112 @@ use Cake\Database\Schema\TableSchema;
 
 class LammiesTest extends AuthIntegrationTestCase
 {
-    public function testWhoCanPrint(): void
+    public function testWhoCanDownloadPdf(): void
+    {
+        $this->withoutAuth();
+        $this->assertGet('/characters/1/1/print', 401);
+        $this->assertGet('/characters/1/1/conditions/1/print', 401);
+        $this->assertGet('/characters/1/1/conditions/2/print', 401);
+        $this->assertGet('/characters/1/1/powers/1/print', 401);
+        $this->assertGet('/characters/1/1/powers/2/print', 401);
+        $this->assertGet('/characters/1/2/print', 401);
+        $this->assertGet('/characters/1/2/conditions/1/print', 401);
+        $this->assertGet('/characters/1/2/conditions/2/print', 401);
+        $this->assertGet('/characters/1/2/powers/1/print', 401);
+        $this->assertGet('/characters/1/2/powers/2/print', 401);
+        $this->assertGet('/characters/2/1/conditions/1/print', 401);
+        $this->assertGet('/characters/2/1/conditions/2/print', 401);
+        $this->assertGet('/characters/2/1/powers/1/print', 401);
+        $this->assertGet('/characters/2/1/powers/2/print', 401);
+        $this->assertGet('/characters/2/1/print', 401);
+        $this->assertGet('/characters/2/2/print', 401);
+        $this->assertGet('/characters/99/1/print', 401);
+        $this->assertGet('/characters/99/1/conditions/1/print', 401);
+        $this->assertGet('/characters/99/1/conditions/2/print', 401);
+        $this->assertGet('/characters/99/1/powers/1/print', 401);
+        $this->assertGet('/characters/99/1/powers/2/print', 401);
+        $this->assertGet('/conditions/1/print', 401);
+        $this->assertGet('/conditions/2/print', 401);
+        $this->assertGet('/conditions/99/print', 401);
+        $this->assertGet('/items/1/print', 401);
+        $this->assertGet('/items/2/print', 401);
+        $this->assertGet('/items/99/print', 401);
+        $this->assertGet('/powers/1/print', 401);
+        $this->assertGet('/powers/2/print', 401);
+        $this->assertGet('/powers/99/print', 401);
+
+        $this->withAuthPlayer();
+        $this->assertPdf('/characters/1/1/print');
+        $this->assertPdf('/characters/1/1/print?all');
+        $this->assertPdf('/characters/1/1/conditions/1/print');
+        $this->assertGet('/characters/1/1/conditions/2/print', 404);
+        $this->assertPdf('/characters/1/1/powers/1/print');
+        $this->assertGet('/characters/1/1/powers/2/print', 404);
+        $this->assertGet('/characters/1/2/print', 404);
+        $this->assertGet('/characters/1/2/conditions/1/print', 404);
+        $this->assertGet('/characters/1/2/conditions/2/print', 404);
+        $this->assertGet('/characters/1/2/powers/1/print', 404);
+        $this->assertGet('/characters/1/2/powers/2/print', 404);
+        $this->assertGet('/characters/2/1/conditions/1/print', 403);
+        $this->assertGet('/characters/2/1/conditions/2/print', 403);
+        $this->assertGet('/characters/2/1/powers/1/print', 403);
+        $this->assertGet('/characters/2/1/powers/2/print', 403);
+        $this->assertGet('/characters/2/1/print', 403);
+        $this->assertGet('/characters/2/2/print', 403);
+        $this->assertGet('/characters/99/1/print', 403);
+        $this->assertGet('/characters/99/1/conditions/1/print', 403);
+        $this->assertGet('/characters/99/1/conditions/2/print', 403);
+        $this->assertGet('/characters/99/1/powers/1/print', 403);
+        $this->assertGet('/characters/99/1/powers/2/print', 403);
+        $this->assertGet('/conditions/1/print', 403);
+        $this->assertGet('/conditions/2/print', 403);
+        $this->assertGet('/conditions/99/print', 403);
+        $this->assertPdf('/items/1/print');
+        $this->assertPdf('/items/2/print');
+        $this->assertGet('/items/99/print', 404);
+        $this->assertGet('/powers/1/print', 403);
+        $this->assertGet('/powers/2/print', 403);
+        $this->assertGet('/powers/99/print', 403);
+
+        $this->withAuthReadOnly();
+        $this->assertPdf('/characters/1/1/print');
+        $this->assertPdf('/characters/1/1/print?all');
+        $this->assertPdf('/characters/1/1/conditions/1/print');
+        $this->assertGet('/characters/1/1/conditions/2/print', 404);
+        $this->assertPdf('/characters/1/1/powers/1/print');
+        $this->assertGet('/characters/1/1/powers/2/print', 404);
+        $this->assertGet('/characters/1/2/print', 404);
+        $this->assertGet('/characters/1/2/conditions/1/print', 404);
+        $this->assertGet('/characters/1/2/conditions/2/print', 404);
+        $this->assertGet('/characters/1/2/powers/1/print', 404);
+        $this->assertGet('/characters/1/2/powers/2/print', 404);
+        $this->assertPdf('/characters/2/1/conditions/1/print');
+        $this->assertPdf('/characters/2/1/conditions/2/print');
+        $this->assertPdf('/characters/2/1/powers/1/print');
+        $this->assertPdf('/characters/2/1/powers/2/print');
+        $this->assertPdf('/characters/2/1/print');
+        $this->assertGet('/characters/2/2/print', 404);
+        $this->assertGet('/characters/99/1/print', 404);
+        $this->assertGet('/characters/99/1/conditions/1/print', 404);
+        $this->assertGet('/characters/99/1/conditions/2/print', 404);
+        $this->assertGet('/characters/99/1/powers/1/print', 404);
+        $this->assertGet('/characters/99/1/powers/2/print', 404);
+        $this->assertPdf('/conditions/1/print');
+        $this->assertPdf('/conditions/1/print?all');
+        $this->assertPdf('/conditions/2/print');
+        $this->assertPdf('/conditions/2/print?all');
+        $this->assertGet('/conditions/99/print', 404);
+        $this->assertPdf('/items/1/print');
+        $this->assertPdf('/items/2/print');
+        $this->assertGet('/items/99/print', 404);
+        $this->assertPdf('/powers/1/print');
+        $this->assertPdf('/powers/1/print?all');
+        $this->assertPdf('/powers/2/print');
+        $this->assertPdf('/powers/2/print?all');
+        $this->assertGet('/powers/99/print', 404);
+    }
+
+    public function testWhoCanQueue(): void
     {
         $this->withoutAuth();
         $this->assertPost('/characters/1/1/print', [], 401);
@@ -191,6 +296,18 @@ class LammiesTest extends AuthIntegrationTestCase
 
         // check queue is empty again
         $this->assertGetResponse(0, '/lammies/queue');
+    }
+
+    private function assertPdf(string $url): void
+    {
+        $message = "Failed asserting response of `GET` on `$url`.";
+
+        $this->setConfigRequest(false);
+        $this->_sendRequest($url, 'GET', []);
+        $this->assertResponseCode(200, $message);
+
+        $actual = (string)$this->_response->getBody();
+        $this->assertStringStartsWith('%PDF', $actual, $message);
     }
 
     private function assertGetResponse(mixed $expected, string $url): void

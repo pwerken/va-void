@@ -46,6 +46,14 @@ class ConditionsControllerPolicy extends ControllerPolicy
     }
 
     /**
+     * GET /conditions/{coin}/print
+     */
+    public function pdf(): bool
+    {
+        return $this->hasAuth('read-only');
+    }
+
+    /**
      * POST /conditions/{coin}/print
      */
     public function queue(): bool

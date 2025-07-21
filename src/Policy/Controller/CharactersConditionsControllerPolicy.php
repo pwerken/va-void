@@ -46,6 +46,14 @@ class CharactersConditionsControllerPolicy extends ControllerPolicy
     }
 
     /**
+     * GET /characters/{plin}/{chin}/conditions/{coin}/print
+     */
+    public function charactersPdf(): bool
+    {
+        return $this->charactersView();
+    }
+
+    /**
      * POST /characters/{plin}/{chin}/conditions/{coin}/print
      */
     public function charactersQueue(): bool

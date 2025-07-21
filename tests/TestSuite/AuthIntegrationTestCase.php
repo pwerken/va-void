@@ -148,7 +148,7 @@ class AuthIntegrationTestCase extends TestCase
         $this->assertNotNull($this->token, 'Failed asserting that JWT is set after login.');
     }
 
-    private function setConfigRequest(bool $isPost): void
+    protected function setConfigRequest(bool $isPost): void
     {
         $headers = [
             'Accept' => 'application/json',

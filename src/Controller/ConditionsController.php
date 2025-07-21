@@ -9,7 +9,7 @@ use App\Controller\Traits\EditTrait;
 use App\Controller\Traits\ViewTrait;
 
 /**
- * @property \App\Controller\Component\QueueLammyComponent $QueueLammy
+ * @property \App\Controller\Component\LammyComponent $Lammy
  * @property \App\Model\Table\ConditionsTable $Conditions;
  */
 class ConditionsController extends Controller
@@ -50,28 +50,42 @@ class ConditionsController extends Controller
     }
 
     /**
+     * GET /conditions/{coin}/print
+     */
+    public function pdf(int $coin): void
+    {
+        $all = !is_null($this->getRequest()->getQuery('all'));
+        $lammies = $this->objectsForLammies($coin, $all);
+        $this->Lammy->outputPdf($lammies);
+    }
+
+    /**
      * POST /conditions/{coin}/print
      */
     public function queue(int $coin): void
     {
-        if ((string)$this->getRequest()->getBody() === 'all') {
-            $condition = $this->fetchTable()->get($coin, 'withContain');
-            $table = $this->fetchTable('Lammies');
+        $all = (string)$this->getRequest()->getBody() === 'all';
+        $lammies = $this->objectsForLammies($coin, $all);
+        $this->Lammy->queueLammies($lammies);
+    }
 
-            $characters = $condition->get('characters');
-            foreach ($characters as $character) {
-                $lammy = $table->newEmptyEntity();
-                $lammy->set('target', $character->_joinData);
-                $table->saveOrFail($lammy);
-            }
+    /**
+     * Helper for pdf() and queue() methods.
+     */
+    protected function objectsForLammies(int $coin, bool $all): array
+    {
+        $this->loadComponent('Lammy');
 
-            $this->set('_serialize', count($characters));
-
-            return;
+        $condition = $this->fetchTable()->get($coin, 'withContain');
+        if (!$all) {
+            return [$this->Lammy->createLammy($condition)];
         }
 
-        $this->loadComponent('QueueLammy');
-        $this->QueueLammy->action($coin);
-        $this->set('_serialize', 1);
+        $objs = [];
+        foreach ($condition->get('characters') as $character) {
+            $objs[] = $this->Lammy->createLammy($character);
+        }
+
+        return $objs;
     }
 }

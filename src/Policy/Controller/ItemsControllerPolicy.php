@@ -46,6 +46,14 @@ class ItemsControllerPolicy extends ControllerPolicy
     }
 
     /**
+     * GET /items/{itin}/print
+     */
+    public function pdf(): bool
+    {
+        return $this->view();
+    }
+
+    /**
      * POST /items/{itin}/print
      */
     public function queue(): bool

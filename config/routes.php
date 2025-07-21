@@ -146,8 +146,11 @@ return function (RouteBuilder $routes): void {
             || $name == 'Powers'
             || $name == 'Conditions'
         ) {
-            $defaults['_method'] = 'POST';
+            $defaults['_method'] = 'GET';
             $defaults['controller'] = $name;
+            $defaults['action'] = 'pdf';
+            $routes->connect($url . '/print', $defaults, $routeOptions);
+            $defaults['_method'] = 'POST';
             $defaults['action'] = 'queue';
             $routes->connect($url . '/print', $defaults, $routeOptions);
         }
@@ -215,8 +218,11 @@ return function (RouteBuilder $routes): void {
             }
 
             if ($controller == 'CharactersConditions' || $controller == 'CharactersPowers') {
-                $defaults['_method'] = 'POST';
+                $defaults['_method'] = 'GET';
                 $defaults['controller'] = $controller;
+                $defaults['action'] = 'charactersPdf';
+                $routes->connect($urlNest . '/print', $defaults, $routeOptions2);
+                $defaults['_method'] = 'POST';
                 $defaults['action'] = 'charactersQueue';
                 $routes->connect($urlNest . '/print', $defaults, $routeOptions2);
             }

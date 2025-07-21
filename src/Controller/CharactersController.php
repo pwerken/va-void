@@ -9,6 +9,7 @@ use Cake\Utility\Inflector;
 
 /**
  * @property \App\Controller\Component\AddComponent $Add
+ * @property \App\Controller\Component\LammyComponent $Lammy
  * @property \App\Model\Table\CharactersTable $Characters;
  */
 class CharactersController extends Controller
@@ -73,43 +74,24 @@ class CharactersController extends Controller
     }
 
     /**
+     * GET /characters/{plin}/{chin}/print
+     * GET /characters/{plin}/{chin}/print?all
+     */
+    public function pdf(int $char_id): void
+    {
+        $all = !is_null($this->getRequest()->getQuery('all'));
+        $lammies = $this->objectsForLammies($char_id, $all);
+        $this->Lammy->outputPdf($lammies);
+    }
+
+    /**
      * POST /characters/{plin}/{chin}/print
      */
     public function queue(int $char_id): void
     {
-        $char = $this->Characters->get($char_id, 'withContain');
-
-        $table = $this->fetchTable('Lammies');
-
-        $lammy = $table->newEmptyEntity();
-        $lammy->set('target', $char);
-        $table->saveOrFail($lammy);
-        $count = 1;
-
-        if ((string)$this->getRequest()->getBody() === 'all') {
-            foreach ($char->get('powers') as $power) {
-                $lammy = $table->newEmptyEntity();
-                $lammy->set('target', $power->_joinData);
-                $table->saveOrFail($lammy);
-                $count++;
-            }
-
-            foreach ($char->get('conditions') as $condition) {
-                $lammy = $table->newEmptyEntity();
-                $lammy->set('target', $condition->_joinData);
-                $table->saveOrFail($lammy);
-                $count++;
-            }
-
-            foreach ($char->get('items') as $item) {
-                $lammy = $table->newEmptyEntity();
-                $lammy->set('target', $item);
-                $table->saveOrFail($lammy);
-                $count++;
-            }
-        }
-
-        $this->set('_serialize', $count);
+        $all = (string)$this->getRequest()->getBody() === 'all';
+        $lammies = $this->objectsForLammies($char_id, $all);
+        $this->Lammy->queueLammies($lammies);
     }
 
     /**
@@ -128,5 +110,30 @@ class CharactersController extends Controller
     {
         $this->parent = $this->fetchTable('Players')->get($plin);
         $this->index();
+    }
+
+    /**
+     * Helper for pdf() and queue() methods.
+     */
+    protected function objectsForLammies(int $char_id, bool $all): array
+    {
+        $this->loadComponent('Lammy');
+
+        $char = $this->Characters->get($char_id, 'withContain');
+        $objs = [$this->Lammy->createLammy($char)];
+
+        if ($all) {
+            foreach ($char->get('powers') as $power) {
+                $objs[] = $this->Lammy->createLammy($power);
+            }
+            foreach ($char->get('conditions') as $condition) {
+                $objs[] = $this->Lammy->createLammy($condition);
+            }
+            foreach ($char->get('items') as $item) {
+                $objs[] = $this->Lammy->createLammy($item);
+            }
+        }
+
+        return $objs;
     }
 }

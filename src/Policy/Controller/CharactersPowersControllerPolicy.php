@@ -46,6 +46,14 @@ class CharactersPowersControllerPolicy extends ControllerPolicy
     }
 
     /**
+     * GET /characters/{plin}/{chin}/powers/{poin}/print
+     */
+    public function charactersPdf(): bool
+    {
+        return $this->charactersView();
+    }
+
+    /**
      * POST /characters/{plin}/{chin}/powers/{poin}/print
      */
     public function charactersQueue(): bool

@@ -46,6 +46,14 @@ class CharactersControllerPolicy extends ControllerPolicy
     }
 
     /**
+     * GET /characters/{plin}/{chin}/print
+     */
+    public function pdf(): bool
+    {
+        return $this->view();
+    }
+
+    /**
      * POST /characters/{plin}/{chin}/print
      */
     public function queue(): bool

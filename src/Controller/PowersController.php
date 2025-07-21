@@ -8,7 +8,7 @@ use App\Controller\Traits\EditTrait;
 use App\Controller\Traits\ViewTrait;
 
 /**
- * @property \App\Controller\Component\QueueLammyComponent $QueueLammy
+ * @property \App\Controller\Component\LammyComponent $Lammy
  * @property \App\Model\Table\PowersTable $Powers;
  */
 class PowersController extends Controller
@@ -48,28 +48,42 @@ class PowersController extends Controller
     }
 
     /**
+     * GET /powers/{poin}/print
+     */
+    public function pdf(int $poin): void
+    {
+        $all = !is_null($this->getRequest()->getQuery('all'));
+        $lammies = $this->objectsForLammies($poin, $all);
+        $this->Lammy->outputPdf($lammies);
+    }
+
+    /**
      * POST /powers/{poin}/print
      */
     public function queue(int $poin): void
     {
-        if ((string)$this->getRequest()->getBody() === 'all') {
-            $power = $this->fetchTable()->get($poin, 'withContain');
-            $table = $this->fetchTable('Lammies');
+        $all = (string)$this->getRequest()->getBody() === 'all';
+        $lammies = $this->objectsForLammies($poin, $all);
+        $this->Lammy->queueLammies($lammies);
+    }
 
-            $characters = $power->get('characters');
-            foreach ($characters as $character) {
-                $lammy = $table->newEmptyEntity();
-                $lammy->set('target', $character->_joinData);
-                $table->saveOrFail($lammy);
-            }
+    /**
+     * Helper for pdf() and queue() methods.
+     */
+    protected function objectsForLammies(int $poin, bool $all): array
+    {
+        $this->loadComponent('Lammy');
 
-            $this->set('_serialize', count($characters));
-
-            return;
+        $power = $this->fetchTable()->get($poin, 'withContain');
+        if (!$all) {
+            return [$this->Lammy->createLammy($power)];
         }
 
-        $this->loadComponent('QueueLammy');
-        $this->QueueLammy->action($poin);
-        $this->set('_serialize', 1);
+        $objs = [];
+        foreach ($power->get('characters') as $character) {
+            $objs[] = $this->Lammy->createLammy($character);
+        }
+
+        return $objs;
     }
 }

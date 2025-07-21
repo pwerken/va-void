@@ -10,7 +10,7 @@ use App\Controller\Traits\ViewTrait;
 use Cake\Utility\Inflector;
 
 /**
- * @property \App\Controller\Component\QueueLammyComponent $QueueLammy
+ * @property \App\Controller\Component\LammyComponent $Lammy
  * @property \App\Model\Table\ItemsTable $Items;
  */
 class ItemsController extends Controller
@@ -111,12 +111,21 @@ class ItemsController extends Controller
     }
 
     /**
+     * GET /items/{itin}/print
+     */
+    public function pdf(int $itin): void
+    {
+        $this->loadComponent('Lammy');
+        $this->Lammy->actionPdf($itin);
+    }
+
+    /**
      * POST /items/{itin}/print
      */
     public function queue(int $itin): void
     {
-        $this->loadComponent('QueueLammy');
-        $this->QueueLammy->action($itin);
+        $this->loadComponent('Lammy');
+        $this->Lammy->actionQueue($itin);
     }
 
     /**

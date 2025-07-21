@@ -8,7 +8,7 @@ namespace App\Controller;
  * @property \App\Controller\Component\DeleteComponent $Delete
  * @property \App\Controller\Component\EditComponent $Edit
  * @property \App\Controller\Component\IndexRelationComponent $IndexRelation
- * @property \App\Controller\Component\QueueLammyComponent $QueueLammy
+ * @property \App\Controller\Component\LammyComponent $Lammy
  * @property \App\Controller\Component\ViewComponent $View
  * @property \App\Model\Table\CharactersPowersTable $CharactersPowers;
  */
@@ -72,12 +72,21 @@ class CharactersPowersController extends Controller
     }
 
     /**
+     * GET /characters/{plin}/{chin}/powers/{poin}/print
+     */
+    public function charactersPdf(int $char_id, int $poin): void
+    {
+        $this->loadComponent('Lammy');
+        $this->Lammy->actionPdf([$char_id, $poin]);
+    }
+
+    /**
      * POST /characters/{plin}/{chin}/powers/{poin}/print
      */
     public function charactersQueue(int $char_id, int $poin): void
     {
-        $this->loadComponent('QueueLammy');
-        $this->QueueLammy->action([$char_id, $poin]);
+        $this->loadComponent('Lammy');
+        $this->Lammy->actionQueue([$char_id, $poin]);
     }
 
     /**

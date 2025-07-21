@@ -46,6 +46,14 @@ class PowersControllerPolicy extends ControllerPolicy
     }
 
     /**
+     * GET /powers/{poin}/print
+     */
+    public function pdf(): bool
+    {
+        return $this->hasAuth('read-only');
+    }
+
+    /**
      * POST /powers/{poin}/print
      */
     public function queue(): bool
