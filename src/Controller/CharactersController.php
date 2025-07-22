@@ -81,7 +81,7 @@ class CharactersController extends Controller
     {
         $all = !is_null($this->getRequest()->getQuery('all'));
         $double = !is_null($this->getRequest()->getQuery('double'));
-        $lammies = $this->objectsForLammies($char_id, $all);
+        $lammies = $this->objectsForLammies($char_id, $all, false);
         $this->Lammy->outputPdf($lammies, $double);
     }
 
@@ -91,7 +91,7 @@ class CharactersController extends Controller
     public function queue(int $char_id): void
     {
         $all = (string)$this->getRequest()->getBody() === 'all';
-        $lammies = $this->objectsForLammies($char_id, $all);
+        $lammies = $this->objectsForLammies($char_id, $all, true);
         $this->Lammy->queueLammies($lammies);
     }
 
@@ -116,7 +116,7 @@ class CharactersController extends Controller
     /**
      * Helper for pdf() and queue() methods.
      */
-    protected function objectsForLammies(int $char_id, bool $all): array
+    protected function objectsForLammies(int $char_id, bool $all, bool $items): array
     {
         $this->loadComponent('Lammy');
 
@@ -136,8 +136,10 @@ class CharactersController extends Controller
                 $c->condition = $condition;
                 $objs[] = $this->Lammy->createLammy($c);
             }
-            foreach ($char->get('items') as $item) {
-                $objs[] = $this->Lammy->createLammy($item);
+            if ($items) {
+                foreach ($char->get('items') as $item) {
+                    $objs[] = $this->Lammy->createLammy($item);
+                }
             }
         }
 

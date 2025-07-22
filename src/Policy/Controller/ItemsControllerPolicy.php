@@ -50,7 +50,7 @@ class ItemsControllerPolicy extends ControllerPolicy
      */
     public function pdf(): bool
     {
-        return $this->view();
+        return false;
     }
 
     /**

@@ -111,15 +111,6 @@ class ItemsController extends Controller
     }
 
     /**
-     * GET /items/{itin}/print
-     */
-    public function pdf(int $itin): void
-    {
-        $this->loadComponent('Lammy');
-        $this->Lammy->actionPdf($itin);
-    }
-
-    /**
      * POST /items/{itin}/print
      */
     public function queue(int $itin): void

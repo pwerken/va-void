@@ -68,9 +68,9 @@ class LammiesTest extends AuthIntegrationTestCase
         $this->assertGet('/conditions/1/print', 403);
         $this->assertGet('/conditions/2/print', 403);
         $this->assertGet('/conditions/99/print', 403);
-        $this->assertPdf('/items/1/print');
-        $this->assertPdf('/items/2/print');
-        $this->assertGet('/items/99/print', 404);
+        $this->assertGet('/items/1/print', 403);
+        $this->assertGet('/items/2/print', 403);
+        $this->assertGet('/items/99/print', 403);
         $this->assertGet('/powers/1/print', 403);
         $this->assertGet('/powers/2/print', 403);
         $this->assertGet('/powers/99/print', 403);
@@ -103,9 +103,9 @@ class LammiesTest extends AuthIntegrationTestCase
         $this->assertPdf('/conditions/2/print');
         $this->assertPdf('/conditions/2/print?all');
         $this->assertGet('/conditions/99/print', 404);
-        $this->assertPdf('/items/1/print');
-        $this->assertPdf('/items/2/print');
-        $this->assertGet('/items/99/print', 404);
+        $this->assertGet('/items/1/print', 403);
+        $this->assertGet('/items/2/print', 403);
+        $this->assertGet('/items/99/print', 403);
         $this->assertPdf('/powers/1/print');
         $this->assertPdf('/powers/1/print?all');
         $this->assertPdf('/powers/2/print');
