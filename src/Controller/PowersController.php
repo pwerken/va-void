@@ -53,8 +53,9 @@ class PowersController extends Controller
     public function pdf(int $poin): void
     {
         $all = !is_null($this->getRequest()->getQuery('all'));
+        $double = !is_null($this->getRequest()->getQuery('double'));
         $lammies = $this->objectsForLammies($poin, $all);
-        $this->Lammy->outputPdf($lammies);
+        $this->Lammy->outputPdf($lammies, $double);
     }
 
     /**

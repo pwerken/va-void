@@ -11,8 +11,9 @@ class LammyComponent extends Component
 {
     public function actionPdf(int|array $id): void
     {
+        $double = !is_null($this->getController()->getRequest()->getQuery('double'));
         $lammy = $this->getLammy($id);
-        $this->outputPdf([$lammy]);
+        $this->outputPdf([$lammy], $double);
     }
 
     public function actionQueue(int|array $id): void
@@ -31,13 +32,13 @@ class LammyComponent extends Component
         return $lammy;
     }
 
-    public function outputPdf(array $lammies): void
+    public function outputPdf(array $lammies, bool $double = false): void
     {
         $controller = $this->getController();
         $controller->viewBuilder()->setClassName('Pdf');
         $controller->set('viewVar', 'lammies');
         $controller->set('lammies', $lammies);
-        $controller->set('double', false);
+        $controller->set('double', $double);
     }
 
     public function queueLammies(array $lammies): void

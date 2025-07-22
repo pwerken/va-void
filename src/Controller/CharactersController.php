@@ -75,13 +75,14 @@ class CharactersController extends Controller
 
     /**
      * GET /characters/{plin}/{chin}/print
-     * GET /characters/{plin}/{chin}/print?all
+     * GET /characters/{plin}/{chin}/print?all&double
      */
     public function pdf(int $char_id): void
     {
         $all = !is_null($this->getRequest()->getQuery('all'));
+        $double = !is_null($this->getRequest()->getQuery('double'));
         $lammies = $this->objectsForLammies($char_id, $all);
-        $this->Lammy->outputPdf($lammies);
+        $this->Lammy->outputPdf($lammies, $double);
     }
 
     /**
