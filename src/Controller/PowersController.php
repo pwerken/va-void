@@ -81,7 +81,10 @@ class PowersController extends Controller
 
         $objs = [];
         foreach ($power->get('characters') as $character) {
-            $objs[] = $this->Lammy->createLammy($character);
+            $c = $character->_joinData;
+            $c->character = $character;
+            $c->power = $power;
+            $objs[] = $this->Lammy->createLammy($c);
         }
 
         return $objs;
