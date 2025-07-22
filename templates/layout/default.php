@@ -82,6 +82,9 @@ $hasAuthInfobalie = $user?->hasAuth('Infobalie');
                     <div class="popover" id="popover-db">
                         <ul class="popover-list">
                             <li class="popover-item">
+                                <a class="popover-link" href="/admin/stats">Statistics</a>
+                            </li>
+                            <li class="popover-item">
                                 <a class="popover-link" href="/admin/skills">Skills lookup</a>
                             </li>
         <?php if ($hasAuthInfobalie) : ?>
