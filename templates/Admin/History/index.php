@@ -35,13 +35,14 @@ $options['maxlength'] = 10;
 echo $this->Form->control('since', $options);
 
 $options = [];
-$options['type'] = 'text';
+$options['type'] = 'number';
 $options['label'] = 'By Plin';
 $options['class'] = 'plin';
 $options['value'] = $plin;
+$options['min'] = 0;
+$options['max'] = 9999;
 $options['maxlength'] = 4;
 echo $this->Form->control('plin', $options);
-
 echo $this->Form->button(__('Select'));
 echo $this->Form->end() . "\n";
 

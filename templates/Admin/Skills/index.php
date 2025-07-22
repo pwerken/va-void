@@ -9,7 +9,7 @@ declare(strict_types=1);
  * @var array $skills
  */
 ?>
-<h3>Lookup Players with Skill</h3>
+<h3>Lookup Characters by Skill</h3>
 <?php
 
 $optionsSkills = [];

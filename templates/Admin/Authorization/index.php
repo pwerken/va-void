@@ -15,9 +15,16 @@ foreach ($roles as $role) {
 }
 
 echo $this->Form->create(null, ['url' => ['controller' => 'Authorization', 'action' => 'edit']])
-    . $this->Form->control('plin', ['label' => 'Plin', 'class' => 'plin'])
+    . $this->Form->control('plin', [
+        'label' => 'Plin',
+        'class' => 'plin',
+        'type' => 'number',
+        'min' => 0,
+        'max' => 9999,
+        'maxlength' => 4,
+        ])
     . $this->Form->control('role', ['label' => 'Role', 'options' => $options])
-    . $this->Form->button(__('Set Permissions'))
+    . $this->Form->button('Set')
     . $this->Form->end();
 
 echo "<table>\n";

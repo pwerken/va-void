@@ -7,18 +7,18 @@ declare(strict_types=1);
  */
 $link = ['controller' => 'Social', 'action' => 'all'];
 ?>
-<h3>Social media authentication</h3>
+<h3>Authentication</h3>
 
 <p>
-There are <?= $this->Html->link((string)$total, $link) ?> social media logins stored.
+We have <?= $this->Html->link((string)$total, $link) ?> stored logins.
 </p>
 <?php if ($logins->count() > 0) : ?>
 <p>
-With <b><?= $logins->count() ?></b> social media login(s) where the provided
-email did <b>not</b> match a known player's email.<br/>
-This can be resolved by either updating the players information with the used
-email adres (via voidwalker).</br>
-Or by linking the login below to a plin.
+For <b><?= $logins->count() ?></b> login(s) the provided email did <em>not</em>
+match a known player's email.<br/>
+This can be resolved by updating the players information with the used email
+adres (via voidwalker).</br>
+Or by linking the login below.
 </p>
 
 <table>
@@ -37,7 +37,15 @@ Or by linking the login below to a plin.
             . '<tr>'
             . '<td>'
             . $this->Form->hidden('social', ['value' => $id])
-            . $this->Form->widget('text', ['name' => 'plin', 'value' => '', 'class' => 'plin'])
+            . $this->Form->widget('plin', [
+                'name' => 'plin',
+                'class' => 'plin',
+                'type' => 'number',
+                'value' => '',
+                'min' => 0,
+                'max' => 9999,
+                'maxlength' => 4,
+                ])
             . '</td><td>'
             . $this->Form->button('Link')
             . '</td><td>'

@@ -6,7 +6,7 @@ declare(strict_types=1);
  * @var array $printing
  */
 ?>
-<h3>Printing queue</h3>
+<h3>Printing Queue</h3>
 <?php
 
 $isInfobalie = $user?->hasAuth('infobalie');
@@ -64,9 +64,7 @@ echo ', <span id="checkboxcount"></span> selected)';
     <th></th>
     <th class="not-on-mobile">Status</th>
     <th class="not-on-mobile">By</th>
-    <th>Type</th>
-    <th>Key #1</th>
-    <th>Key #2</th>
+    <th>What</th>
     <th>Modified</th>
 </tr>
 <?php
@@ -124,9 +122,7 @@ foreach ($printing as $row) {
         . '<td>' . $checkbox . "</td>\n"
         . '<td class="not-on-mobile">' . $row['status'] . ($duplicate ? ' (D)' : '') . "</td>\n"
         . '<td class="not-on-mobile">' . $row['creator_id'] . "</td>\n"
-        . '<td>' . $row['entity'] . "</td>\n"
-        . '<td>' . $key1 . "</td>\n"
-        . '<td>' . $key2 . "</td>\n"
+        . '<td>' . $row['entity'] . ' ' . $key1 . ' ' . $key2 . "</td>\n"
         . '<td>' . $row['modified'] . "</td>\n"
         . "</tr>\n";
 }

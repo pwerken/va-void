@@ -4,14 +4,13 @@ declare(strict_types=1);
  * @var \Cake\View\View $this
  * @var \Cake\Datasource\ResultSetInterface $logins
  */
-
-$count = $logins->count();
+$total = $logins->count();
 $link = ['controller' => 'Social', 'action' => 'index'];
 ?>
-<h3>Social media authentication</h3>
+<h3>Authentication</h3>
 
 <p>
-There are <?= $this->Html->link((string)$count, $link) ?> social media logins stored.
+We have <?= $this->Html->link((string)$total, $link) ?> stored logins.
 </p>
 
 <table>

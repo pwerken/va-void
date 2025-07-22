@@ -59,8 +59,14 @@ select,
 	margin-right: .4rem;
 }
 
-input[type="text"].plin {
+input[type="number"].plin {
+	-moz-appearance: textfield;
 	width: 6rem;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
 }
 
 .navigation {

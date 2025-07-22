@@ -46,7 +46,16 @@ foreach ($socials as $social) {
 <hr>
 <h3>Legacy password:</h3>
 <?= $this->Form->create() ?>
-<?= $this->Form->control('id', ['label' => 'Plin', 'type' => 'text', 'class' => 'plin']) ?>
+<?= $this->Form->control('id', [
+        'label' => 'Plin',
+        'name' => 'id',
+        'class' => 'plin',
+        'type' => 'number',
+        'value' => '',
+        'min' => 0,
+        'max' => 9999,
+        'maxlength' => 4,
+        ]) ?>
 <?= $this->Form->control('password', ['type' => 'password']) ?>
 <?= $this->Form->button(__('Login')) ?>
 <br/>
