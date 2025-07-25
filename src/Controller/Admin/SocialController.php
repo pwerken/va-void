@@ -9,6 +9,7 @@ class SocialController extends AdminController
 {
     /**
      * GET /admin/social
+     * POST /admin/social
      */
     public function index(): void
     {
@@ -88,6 +89,7 @@ class SocialController extends AdminController
 
     /**
      * GET /admin/social/all
+     * POST /admin/social/all
      */
     public function all(): void
     {

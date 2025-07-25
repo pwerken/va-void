@@ -7,6 +7,9 @@ use App\Policy\Controller\ControllerPolicy;
 
 class ChecksControllerPolicy extends ControllerPolicy
 {
+    /**
+     * GET /admin/checks
+     */
     public function index(): bool
     {
         return true;

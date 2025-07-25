@@ -7,6 +7,7 @@ class PasswordController extends AdminController
 {
     /**
      * GET /admin/password
+     * POST /admin/password
      */
     public function index(): void
     {

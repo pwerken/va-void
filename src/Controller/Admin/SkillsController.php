@@ -11,7 +11,6 @@ class SkillsController extends AdminController
 {
     /**
      * GET /skills
-     * POST /skills
      */
     public function index(): void
     {

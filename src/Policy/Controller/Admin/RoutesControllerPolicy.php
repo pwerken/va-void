@@ -7,6 +7,9 @@ use App\Policy\Controller\ControllerPolicy;
 
 class RoutesControllerPolicy extends ControllerPolicy
 {
+    /**
+     * GET /admin/routes
+     */
     public function index(): bool
     {
         return $this->hasAuth('player');

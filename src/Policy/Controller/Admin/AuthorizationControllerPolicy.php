@@ -7,11 +7,17 @@ use App\Policy\Controller\ControllerPolicy;
 
 class AuthorizationControllerPolicy extends ControllerPolicy
 {
+    /**
+     * GET /admin/authorization
+     */
     public function index(): bool
     {
         return $this->hasAuth('read-only');
     }
 
+    /**
+     * POST /admin/authorization/edit
+     */
     public function edit(): bool
     {
         return $this->index();

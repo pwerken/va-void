@@ -7,6 +7,9 @@ use App\Policy\Controller\ControllerPolicy;
 
 class BackupsControllerPolicy extends ControllerPolicy
 {
+    /**
+     * GET /admin/backups
+     */
     public function index(): bool
     {
         return $this->hasAuth('infobalie');

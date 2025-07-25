@@ -7,6 +7,10 @@ use App\Policy\Controller\ControllerPolicy;
 
 class PasswordControllerPolicy extends ControllerPolicy
 {
+    /**
+     * GET /admin/password
+     * POST /admin/password
+     */
     public function index(): bool
     {
         return $this->hasAuth('player');

@@ -7,6 +7,9 @@ use App\Policy\Controller\ControllerPolicy;
 
 class StatsControllerPolicy extends ControllerPolicy
 {
+    /**
+     * GET /stats
+     */
     public function index(): bool
     {
         return $this->hasAuth('read-only');

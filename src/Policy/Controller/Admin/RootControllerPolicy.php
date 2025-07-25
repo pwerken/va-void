@@ -7,6 +7,10 @@ use App\Policy\Controller\ControllerPolicy;
 
 class RootControllerPolicy extends ControllerPolicy
 {
+    /**
+     * GET /admin
+     * POST /admin
+     */
     public function index(): bool
     {
         return true;

@@ -7,6 +7,9 @@ use App\Policy\Controller\ControllerPolicy;
 
 class SkillsControllerPolicy extends ControllerPolicy
 {
+    /**
+     * GET /skills
+     */
     public function index(): bool
     {
         return $this->hasAuth('read-only');
