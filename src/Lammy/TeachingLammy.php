@@ -28,7 +28,7 @@ class TeachingLammy extends LammyCard
 
     protected function _drawFront(): void
     {
-        $this->cardFront();
+        $this->cardFront('TODO FIXME');
         $this->QRcode();
 
         $this->pdf->SetTextColor(0);

@@ -174,8 +174,11 @@ class SocialController extends AdminController
     {
         // callback from the social site login
         $providerName = $this->request->getSession()->consume('provider');
-        $user = $this->SocialAuth->loginCallback($providerName);
+        if (is_null($providerName)) {
+            return $this->redirect(['controller' => 'Root']);
+        }
 
+        $user = $this->SocialAuth->loginCallback($providerName);
         if ($user && $user->id) {
             $this->request->getSession()->write('Auth', $user);
 

@@ -74,7 +74,7 @@ abstract class LammyCard
         $this->yPos = $y;
     }
 
-    protected function cardFront(?string $title = null): void
+    protected function cardFront(string $title): void
     {
         $this->border();
         $this->logo(68, 1);

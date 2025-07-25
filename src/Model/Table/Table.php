@@ -113,16 +113,20 @@ abstract class Table extends CakeTable
         TableRegistry::getTableLocator()->get('History')->logDeletion($entity);
     }
 
-    public function getMaybe(int|string|array $id): ?EntityInterface
+    public function getMaybe(mixed $id): ?EntityInterface
     {
-        try {
-            if (is_string($id)) {
-                $id = (int)$id;
-            }
-            if (is_array($id)) {
-                $id = [$id];
-            }
+        if (is_null($id)) {
+            return null;
+        }
 
+        if (is_string($id)) {
+            $id = (int)$id;
+        }
+        if (is_array($id)) {
+            $id = [$id];
+        }
+
+        try {
             return $this->get($id);
         } catch (RecordNotFoundException $e) {
             return null;
