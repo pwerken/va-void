@@ -28,7 +28,7 @@ class SocialController extends AdminController
         $logins = $this->fetchTable('SocialProfiles')
             ->find()
             ->where(['user_id IS NULL'])
-            ->orderDesc('modified')
+            ->orderByDesc('modified')
             ->all();
 
         $this->set('logins', $logins);

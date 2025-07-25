@@ -37,7 +37,7 @@ class SkillsController extends AdminController
             $query = $this->fetchTable('Characters')
                         ->find()
                         ->where(['Characters.modified >=' => $since])
-                        ->orderDesc('Characters.modified')
+                        ->orderByDesc('Characters.modified')
                         ->enableHydration(false);
             $query->innerJoinWith('Skills', function ($q) use ($ids) {
                 return $q->where(['Skills.id IN' => $ids]);

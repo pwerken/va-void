@@ -130,7 +130,7 @@ class HistoryTable extends Table
             $result = $this->locator->get($tbl)->find()
                 ->select($select)
                 ->where($where)
-                ->order(['modified' => 'DESC'])
+                ->orderBy(['modified' => 'DESC'])
                 ->enableHydration(false)
                 ->all();
 
