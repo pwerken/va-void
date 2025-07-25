@@ -22,6 +22,9 @@ class ConditionsTest extends AuthIntegrationTestCase
         $this->assertPut('/conditions/1', [], 401);
         $this->assertPut('/conditions/2', [], 401);
         $this->assertPut('/conditions/99', [], 401);
+        $this->assertDelete('/conditions/1', 401);
+        $this->assertDelete('/conditions/2', 401);
+        $this->assertDelete('/conditions/99', 401);
 
         $this->withAuthPlayer();
         $this->assertGet('/conditions');
@@ -35,6 +38,9 @@ class ConditionsTest extends AuthIntegrationTestCase
         $this->assertPut('/conditions/1', [], 403);
         $this->assertPut('/conditions/2', [], 403);
         $this->assertPut('/conditions/99', [], 403);
+        $this->assertDelete('/conditions/1', 403);
+        $this->assertDelete('/conditions/2', 403);
+        $this->assertDelete('/conditions/99', 403);
 
         $this->withAuthReadOnly();
         $this->assertGet('/conditions');
@@ -48,6 +54,9 @@ class ConditionsTest extends AuthIntegrationTestCase
         $this->assertPut('/conditions/1', [], 403);
         $this->assertPut('/conditions/2', [], 403);
         $this->assertPut('/conditions/99', [], 403);
+        $this->assertDelete('/conditions/1', 403);
+        $this->assertDelete('/conditions/2', 403);
+        $this->assertDelete('/conditions/99', 403);
 
         $this->withAuthReferee();
         $this->assertGet('/conditions');
@@ -61,6 +70,25 @@ class ConditionsTest extends AuthIntegrationTestCase
         $this->assertPut('/conditions/1', []);
         $this->assertPut('/conditions/2', []);
         $this->assertPut('/conditions/99', [], 404);
+        $this->assertDelete('/conditions/1', 403);
+        $this->assertDelete('/conditions/2', 403);
+        $this->assertDelete('/conditions/99', 403);
+
+        $this->withAuthInfobalie();
+        $this->assertGet('/conditions');
+        $this->assertGet('/conditions/1');
+        $this->assertGet('/conditions/1/characters');
+        $this->assertGet('/conditions/2');
+        $this->assertGet('/conditions/2/characters');
+        $this->assertGet('/conditions/99', 404);
+        $this->assertGet('/conditions/99/characters', 404);
+        $this->assertPut('/conditions', [], 422);
+        $this->assertPut('/conditions/1', []);
+        $this->assertPut('/conditions/2', []);
+        $this->assertPut('/conditions/99', [], 404);
+        $this->assertDelete('/conditions/1', 403);
+        $this->assertDelete('/conditions/2', 403);
+        $this->assertDelete('/conditions/99', 403);
     }
 
     public function testAddConditionMinimal(): void

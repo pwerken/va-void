@@ -35,6 +35,10 @@ class CharactersTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/99/1/items', 401);
         $this->assertGet('/characters/99/1/students', 401);
         $this->assertGet('/characters/99/1/teacher', 401);
+        $this->assertDelete('/characters/1/1', 401);
+        $this->assertDelete('/characters/1/2', 401);
+        $this->assertDelete('/characters/2/1', 401);
+        $this->assertDelete('/characters/99/1', 401);
 
         $this->withAuthPlayer();
         $this->assertGet('/characters');
@@ -57,6 +61,10 @@ class CharactersTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/99/1/items', 403);
 #       $this->assertGet('/characters/99/1/students', 403);
 #       $this->assertGet('/characters/99/1/teacher', 403);
+        $this->assertDelete('/characters/1/1', 403);
+        $this->assertDelete('/characters/1/2', 403);
+        $this->assertDelete('/characters/2/1', 403);
+        $this->assertDelete('/characters/99/1', 403);
 
         $this->withAuthReadOnly();
         $this->assertGet('/characters');
@@ -79,6 +87,49 @@ class CharactersTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/99/1/items', 404);
 #       $this->assertGet('/characters/99/1/students', 404);
 #       $this->assertGet('/characters/99/1/teacher', 404);
+        $this->assertDelete('/characters/1/1', 403);
+        $this->assertDelete('/characters/1/2', 403);
+        $this->assertDelete('/characters/2/1', 403);
+        $this->assertDelete('/characters/99/1', 403);
+
+        $this->withAuthReferee();
+        $this->assertDelete('/characters/1/1', 403);
+        $this->assertDelete('/characters/1/2', 403);
+        $this->assertDelete('/characters/2/1', 403);
+        $this->assertDelete('/characters/99/1', 403);
+
+        $this->withAuthInfobalie();
+        $this->assertDelete('/characters/1/1', 403);
+        $this->assertDelete('/characters/1/2', 403);
+        $this->assertDelete('/characters/2/1', 403);
+        $this->assertDelete('/characters/99/1', 403);
+    }
+
+    public function testBelieves(): void
+    {
+        $this->withoutAuth();
+        $this->assertGet('/believes', 401);
+
+        $this->withAuthPlayer();
+        $this->assertGet('/believes');
+    }
+
+    public function testGroups(): void
+    {
+        $this->withoutAuth();
+        $this->assertGet('/groups', 401);
+
+        $this->withAuthPlayer();
+        $this->assertGet('/groups');
+    }
+
+    public function testWorlds(): void
+    {
+        $this->withoutAuth();
+        $this->assertGet('/worlds', 401);
+
+        $this->withAuthPlayer();
+        $this->assertGet('/worlds');
     }
 
     public function testRequiredFieldsValidation(): void

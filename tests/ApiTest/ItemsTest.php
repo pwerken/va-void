@@ -17,6 +17,9 @@ class ItemsTest extends AuthIntegrationTestCase
         $this->assertPut('/items', [], 401);
         $this->assertPut('/items/1', [], 401);
         $this->assertPut('/items/99', [], 401);
+        $this->assertDelete('/items/1', 401);
+        $this->assertDelete('/items/2', 401);
+        $this->assertDelete('/items/99', 401);
 
         $this->withAuthPlayer();
         $this->assertGet('/items');
@@ -26,6 +29,9 @@ class ItemsTest extends AuthIntegrationTestCase
         $this->assertPut('/items', [], 403);
         $this->assertPut('/items/1', [], 403);
         $this->assertPut('/items/99', [], 403);
+        $this->assertDelete('/items/1', 403);
+        $this->assertDelete('/items/2', 403);
+        $this->assertDelete('/items/99', 403);
 
         $this->withAuthReadOnly();
         $this->assertGet('/items');
@@ -35,6 +41,9 @@ class ItemsTest extends AuthIntegrationTestCase
         $this->assertPut('/items', [], 403);
         $this->assertPut('/items/1', [], 403);
         $this->assertPut('/items/99', [], 403);
+        $this->assertDelete('/items/1', 403);
+        $this->assertDelete('/items/2', 403);
+        $this->assertDelete('/items/99', 403);
 
         $this->withAuthReferee();
         $this->assertGet('/items');
@@ -44,6 +53,21 @@ class ItemsTest extends AuthIntegrationTestCase
         $this->assertPut('/items', [], 422);
         $this->assertPut('/items/1', []);
         $this->assertPut('/items/99', [], 404);
+        $this->assertDelete('/items/1', 403);
+        $this->assertDelete('/items/2', 403);
+        $this->assertDelete('/items/99', 403);
+
+        $this->withAuthInfobalie();
+        $this->assertGet('/items');
+        $this->assertGet('/items/1');
+        $this->assertGet('/items/2');
+        $this->assertGet('/items/99', 404);
+        $this->assertPut('/items', [], 422);
+        $this->assertPut('/items/1', []);
+        $this->assertPut('/items/99', [], 404);
+        $this->assertDelete('/items/1', 403);
+        $this->assertDelete('/items/2', 403);
+        $this->assertDelete('/items/99', 403);
     }
 
     public function testAddItemMinimal(): void

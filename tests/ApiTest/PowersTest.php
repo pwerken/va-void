@@ -22,6 +22,9 @@ class PowersTest extends AuthIntegrationTestCase
         $this->assertPut('/powers/1', [], 401);
         $this->assertPut('/powers/2', [], 401);
         $this->assertPut('/powers/99', [], 401);
+        $this->assertDelete('/powers/1', 401);
+        $this->assertDelete('/powers/2', 401);
+        $this->assertDelete('/powers/99', 401);
 
         $this->withAuthPlayer();
         $this->assertGet('/powers');
@@ -35,6 +38,9 @@ class PowersTest extends AuthIntegrationTestCase
         $this->assertPut('/powers/1', [], 403);
         $this->assertPut('/powers/2', [], 403);
         $this->assertPut('/powers/99', [], 403);
+        $this->assertDelete('/powers/1', 403);
+        $this->assertDelete('/powers/2', 403);
+        $this->assertDelete('/powers/99', 403);
 
         $this->withAuthReadOnly();
         $this->assertGet('/powers');
@@ -48,6 +54,9 @@ class PowersTest extends AuthIntegrationTestCase
         $this->assertPut('/powers/1', [], 403);
         $this->assertPut('/powers/2', [], 403);
         $this->assertPut('/powers/99', [], 403);
+        $this->assertDelete('/powers/1', 403);
+        $this->assertDelete('/powers/2', 403);
+        $this->assertDelete('/powers/99', 403);
 
         $this->withAuthReferee();
         $this->assertGet('/powers');
@@ -61,6 +70,25 @@ class PowersTest extends AuthIntegrationTestCase
         $this->assertPut('/powers/1', []);
         $this->assertPut('/powers/2', []);
         $this->assertPut('/powers/99', [], 404);
+        $this->assertDelete('/powers/1', 403);
+        $this->assertDelete('/powers/2', 403);
+        $this->assertDelete('/powers/99', 403);
+
+        $this->withAuthInfobalie();
+        $this->assertGet('/powers');
+        $this->assertGet('/powers/1');
+        $this->assertGet('/powers/1/characters');
+        $this->assertGet('/powers/2');
+        $this->assertGet('/powers/2/characters');
+        $this->assertGet('/powers/99', 404);
+        $this->assertGet('/powers/99/characters', 404);
+        $this->assertPut('/powers', [], 422);
+        $this->assertPut('/powers/1', []);
+        $this->assertPut('/powers/2', []);
+        $this->assertPut('/powers/99', [], 404);
+        $this->assertDelete('/powers/1', 403);
+        $this->assertDelete('/powers/2', 403);
+        $this->assertDelete('/powers/99', 403);
     }
 
     public function testAddPowerMinimal(): void

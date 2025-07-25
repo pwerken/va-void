@@ -74,6 +74,9 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertPut('/players/2/characters', [], 401);
         $this->assertPut('/players/99', [], 401);
         $this->assertPut('/players/99/characters', [], 401);
+        $this->assertDelete('/players/1', 401);
+        $this->assertDelete('/players/2', 401);
+        $this->assertDelete('/players/99', 401);
 
         $this->withAuthPlayer();
         $this->assertGet('/players');
@@ -92,6 +95,9 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertPut('/players/2/characters', [], 403);
         $this->assertPut('/players/99', [], 404);
         $this->assertPut('/players/99/characters', [], 403);
+        $this->assertDelete('/players/1', 403);
+        $this->assertDelete('/players/2', 403);
+        $this->assertDelete('/players/99', 403);
 
         $this->withAuthReadOnly();
         $this->assertGet('/players');
@@ -108,6 +114,9 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertPut('/players/2/characters', [], 403);
         $this->assertPut('/players/99', [], 404);
         $this->assertPut('/players/99/characters', [], 403);
+        $this->assertDelete('/players/1', 403);
+        $this->assertDelete('/players/2', 403);
+        $this->assertDelete('/players/99', 403);
 
         $this->withAuthReferee();
         $this->assertGet('/players');
@@ -124,6 +133,9 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertPut('/players/2/characters', [], 422);
         $this->assertPut('/players/99', [], 404);
         $this->assertPut('/players/99/characters', [], 422); // FIXME -> 404
+        $this->assertDelete('/players/1', 403);
+        $this->assertDelete('/players/2', 403);
+        $this->assertDelete('/players/99', 403);
     }
 
     public function testRequiredFieldsValidation(): void

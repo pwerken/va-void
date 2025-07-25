@@ -216,6 +216,11 @@ class LammiesTest extends AuthIntegrationTestCase
     {
         $this->withoutAuth();
         $this->assertGet('/lammies', 401);
+        $this->assertPut('/lammies', [], 401);
+        $this->assertGet('/lammies/1', 401);
+        $this->assertPut('/lammies/1', [], 401);
+        $this->assertDelete('/lammies/1', 401);
+        $this->assertGet('/lammies/99', 401);
         $this->assertGet('/lammies/queue', 401);
         $this->assertPost('/lammies/single', [], 401);
         $this->assertPost('/lammies/double', [], 401);
@@ -223,6 +228,11 @@ class LammiesTest extends AuthIntegrationTestCase
 
         $this->withAuthPlayer(); // no access
         $this->assertGet('/lammies', 403);
+        $this->assertPut('/lammies', [], 403);
+        $this->assertGet('/lammies/1', 403);
+        $this->assertPut('/lammies/1', [], 403);
+        $this->assertDelete('/lammies/1', 403);
+        $this->assertGet('/lammies/99', 403);
         $this->assertGet('/lammies/queue', 403);
         $this->assertPost('/lammies/single', [], 403);
         $this->assertPost('/lammies/double', [], 403);
@@ -230,6 +240,11 @@ class LammiesTest extends AuthIntegrationTestCase
 
         $this->withAuthReadOnly(); // can view print queue
         $this->assertGet('/lammies');
+        $this->assertPut('/lammies', [], 403);
+        $this->assertGet('/lammies/1');
+        $this->assertPut('/lammies/1', [], 403);
+        $this->assertDelete('/lammies/1', 403);
+        $this->assertGet('/lammies/99', 404);
         $this->assertGet('/lammies/queue', 403);
         $this->assertPost('/lammies/single', [], 403);
         $this->assertPost('/lammies/double', [], 403);
@@ -237,6 +252,11 @@ class LammiesTest extends AuthIntegrationTestCase
 
         $this->withAuthReferee(); // can view print queue
         $this->assertGet('/lammies');
+        $this->assertPut('/lammies', [], 403);
+        $this->assertGet('/lammies/1');
+        $this->assertPut('/lammies/1', [], 403);
+        $this->assertDelete('/lammies/1', 403);
+        $this->assertGet('/lammies/99', 404);
         $this->assertGet('/lammies/queue', 403);
         $this->assertPost('/lammies/single', [], 403);
         $this->assertPost('/lammies/double', [], 403);
@@ -244,6 +264,11 @@ class LammiesTest extends AuthIntegrationTestCase
 
         $this->withAuthInfobalie(); // can print
         $this->assertGet('/lammies');
+        $this->assertPut('/lammies', [], 403);
+        $this->assertGet('/lammies/1');
+        $this->assertPut('/lammies/1', [], 403);
+        $this->assertDelete('/lammies/1', 403);
+        $this->assertGet('/lammies/99', 404);
         $this->assertGet('/lammies/queue');
         $this->assertPost('/lammies/single');
         $this->assertPost('/lammies/double');
