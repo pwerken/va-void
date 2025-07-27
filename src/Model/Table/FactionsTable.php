@@ -29,10 +29,9 @@ class FactionsTable extends Table
 
     public function ruleNoCharacters(EntityInterface $entity, array $options): bool
     {
-        $query = $this->Characters->find();
-        $query->where(['faction_id' => $entity->get('id')]);
+        $this->loadInto($entity, ['Characters']);
 
-        if ($query->count() > 0) {
+        if (count($entity->get('characters')) > 0) {
             $entity->setError('characters', $this->consistencyError);
 
             return false;

@@ -100,10 +100,10 @@ class CharactersTable extends Table
 
         $rules->add($rules->existsIn('faction_id', 'Factions'));
 
-        $rules->addDelete([$this, 'ruleNoConditions']);
-        $rules->addDelete([$this, 'ruleNoItems']);
-        $rules->addDelete([$this, 'ruleNoPowers']);
         $rules->addDelete([$this, 'ruleNoSkills']);
+        $rules->addDelete([$this, 'ruleNoItems']);
+        $rules->addDelete([$this, 'ruleNoConditions']);
+        $rules->addDelete([$this, 'ruleNoPowers']);
 
         return $rules;
     }
@@ -131,10 +131,9 @@ class CharactersTable extends Table
 
     public function ruleNoConditions(EntityInterface $entity, array $options): bool
     {
-        $query = $this->CharactersConditions->find();
-        $query->where(['character_id' => $entity->get('id')]);
+        $this->loadInto($entity, ['Conditions']);
 
-        if ($query->count() > 0) {
+        if (count($entity->get('conditions')) > 0) {
             $entity->setError('conditions', $this->consistencyError);
 
             return false;
@@ -145,10 +144,9 @@ class CharactersTable extends Table
 
     public function ruleNoItems(EntityInterface $entity, array $options): bool
     {
-        $query = $this->Items->find();
-        $query->where(['character_id' => $entity->get('id')]);
+        $this->loadInto($entity, ['Items']);
 
-        if ($query->count() > 0) {
+        if (count($entity->get('items')) > 0) {
             $entity->setError('items', $this->consistencyError);
 
             return false;
@@ -159,10 +157,9 @@ class CharactersTable extends Table
 
     public function ruleNoPowers(EntityInterface $entity, array $options): bool
     {
-        $query = $this->CharactersPowers->find();
-        $query->where(['character_id' => $entity->get('id')]);
+        $this->loadInto($entity, ['Powers']);
 
-        if ($query->count() > 0) {
+        if (count($entity->get('powers')) > 0) {
             $entity->setError('powers', $this->consistencyError);
 
             return false;
@@ -173,10 +170,9 @@ class CharactersTable extends Table
 
     public function ruleNoSkills(EntityInterface $entity, array $options): bool
     {
-        $query = $this->CharactersSkills->find();
-        $query->where(['character_id' => $entity->get('id')]);
+        $this->loadInto($entity, ['Skills']);
 
-        if ($query->count() > 0) {
+        if (count($entity->get('skills')) > 0) {
             $entity->setError('skills', $this->consistencyError);
 
             return false;
