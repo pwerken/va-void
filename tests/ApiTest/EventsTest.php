@@ -49,4 +49,13 @@ class EventsTest extends AuthIntegrationTestCase
         $this->assertPut('/events/1', [], 403);
         $this->assertDelete('/events/1', 403);
     }
+
+    public function testEvents(): void
+    {
+        $this->withAuthSuper();
+        $this->assertPut('/events', [], 422);
+        $this->assertPut('/events', ['name' => 'Test'], 201);
+        $this->assertPut('/events/2', ['name' => 'Edit']);
+        $this->assertDelete('/events/2');
+    }
 }
