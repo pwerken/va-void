@@ -14,9 +14,9 @@ use App\Controller\Traits\ViewTrait;
 class EventsController extends Controller
 {
     use AddTrait; // PUT /events
-    use ViewTrait; // GET /events/{id}
-    use EditTrait; // PUT /events/{id}
     use DeleteTrait; // DELETE /events/{id}
+    use EditTrait; // PUT /events/{id}
+    use ViewTrait; // GET /events/{id}
 
     /**
      * GET /events

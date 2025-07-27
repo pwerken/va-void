@@ -14,9 +14,9 @@ use App\Controller\Traits\ViewTrait;
 class PlayersController extends Controller
 {
     use AddTrait; // PUT /players
-    use ViewTrait; // GET /players/{plin}
-    use EditTrait; // PUT /players/{plin}
     use DeleteTrait; // DELETE /players/{plin}
+    use EditTrait; // PUT /players/{plin}
+    use ViewTrait; // GET /players/{plin}
 
     /**
      * GET /players

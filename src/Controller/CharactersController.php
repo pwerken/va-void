@@ -15,9 +15,9 @@ use Cake\Utility\Inflector;
  */
 class CharactersController extends Controller
 {
-    use ViewTrait; // GET /characters/{plin}/{chin}
     use DeleteTrait; // DELETE /characters/{plin}/{chin}
     use EditTrait; // PUT /characters/{plin}/{chin}
+    use ViewTrait; // GET /characters/{plin}/{chin}
 
     /**
      * GET /characters

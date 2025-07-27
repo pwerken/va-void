@@ -21,9 +21,9 @@ class SocialProfilePolicy extends EntityPolicy
         return false;
     }
 
-    public function canView(User $identity, SocialProfile $obj): bool
+    public function canDelete(User $identity, SocialProfile $obj): bool
     {
-        return $this->hasAuth(['infobalie', 'user'], $obj);
+        return $this->canView($identity, $obj);
     }
 
     public function canEdit(User $identity, SocialProfile $obj): bool
@@ -31,7 +31,7 @@ class SocialProfilePolicy extends EntityPolicy
         return false;
     }
 
-    public function canDelete(User $identity, SocialProfile $obj): bool
+    public function canView(User $identity, SocialProfile $obj): bool
     {
         return $this->hasAuth(['infobalie', 'user'], $obj);
     }

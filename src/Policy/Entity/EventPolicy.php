@@ -13,9 +13,9 @@ class EventPolicy extends EntityPolicy
         return $this->hasAuth(['Super'], $obj);
     }
 
-    public function canView(User $identity, Event $obj): bool
+    public function canDelete(User $identity, Event $obj): bool
     {
-        return $this->hasAuth(['player'], $obj);
+        return $this->canAdd($identity, $obj);
     }
 
     public function canEdit(User $identity, Event $obj): bool
@@ -23,8 +23,8 @@ class EventPolicy extends EntityPolicy
         return $this->canAdd($identity, $obj);
     }
 
-    public function canDelete(User $identity, Event $obj): bool
+    public function canView(User $identity, Event $obj): bool
     {
-        return $this->canAdd($identity, $obj);
+        return $this->hasAuth(['player'], $obj);
     }
 }

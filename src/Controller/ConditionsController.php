@@ -15,9 +15,9 @@ use App\Controller\Traits\ViewTrait;
 class ConditionsController extends Controller
 {
     use AddTrait; // PUT /conditions
-    use ViewTrait; // GET /conditions/{coin}
-    use EditTrait; // PUT /conditions/{coin}
     use DeleteTrait; // DELETE /conditions/{coin}
+    use EditTrait; // PUT /conditions/{coin}
+    use ViewTrait; // GET /conditions/{coin}
 
     /**
      * GET /conditions

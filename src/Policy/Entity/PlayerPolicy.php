@@ -25,9 +25,9 @@ class PlayerPolicy extends EntityPolicy
         return $this->hasAuth(['infobalie'], $obj);
     }
 
-    public function canView(User $identity, Player $obj): bool
+    public function canDelete(User $identity, Player $obj): bool
     {
-        return $this->hasAuth(['read-only', 'user'], $obj);
+        return $this->canAdd($identity, $obj);
     }
 
     public function canEdit(User $identity, Player $obj): bool
@@ -35,9 +35,9 @@ class PlayerPolicy extends EntityPolicy
         return $this->hasAuth(['infobalie', 'user'], $obj);
     }
 
-    public function canDelete(User $identity, Player $obj): bool
+    public function canView(User $identity, Player $obj): bool
     {
-        return $this->canAdd($identity, $obj);
+        return $this->hasAuth(['read-only', 'user'], $obj);
     }
 
     public function canCharactersIndex(User $identity, Player $obj): bool

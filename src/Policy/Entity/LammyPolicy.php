@@ -20,9 +20,9 @@ class LammyPolicy extends EntityPolicy
         return $this->hasAuth(['super'], $obj);
     }
 
-    public function canView(User $identity, Lammy $obj): bool
+    public function canDelete(User $identity, Lammy $obj): bool
     {
-        return $this->hasAuth(['read-only'], $obj);
+        return $this->canAdd($identity, $obj);
     }
 
     public function canEdit(User $identity, Lammy $obj): bool
@@ -30,8 +30,8 @@ class LammyPolicy extends EntityPolicy
         return $this->canAdd($identity, $obj);
     }
 
-    public function canDelete(User $identity, Lammy $obj): bool
+    public function canView(User $identity, Lammy $obj): bool
     {
-        return $this->canAdd($identity, $obj);
+        return $this->hasAuth(['read-only'], $obj);
     }
 }

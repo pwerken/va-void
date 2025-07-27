@@ -12,9 +12,9 @@ use App\Controller\Traits\ViewTrait;
  */
 class LammiesController extends Controller
 {
-    use ViewTrait; // GET /lammies/{id}
-    use EditTrait; // PUT /lammies/{id}
     use DeleteTrait; // DELETE /lammies/{id}
+    use EditTrait; // PUT /lammies/{id}
+    use ViewTrait; // GET /lammies/{id}
 
     /**
      * GET /lammies

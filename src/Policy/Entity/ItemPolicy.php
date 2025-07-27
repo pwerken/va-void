@@ -26,9 +26,9 @@ class ItemPolicy extends EntityPolicy
         return $this->hasAuth(['referee'], $obj);
     }
 
-    public function canView(User $identity, Item $obj): bool
+    public function canDelete(User $identity, Item $obj): bool
     {
-        return $this->hasAuth(['read-only', 'user'], $obj);
+        return $this->hasAuth(['super'], $obj);
     }
 
     public function canEdit(User $identity, Item $obj): bool
@@ -36,9 +36,9 @@ class ItemPolicy extends EntityPolicy
         return $this->canAdd($identity, $obj);
     }
 
-    public function canDelete(User $identity, Item $obj): bool
+    public function canView(User $identity, Item $obj): bool
     {
-        return $this->canAdd($identity, $obj);
+        return $this->hasAuth(['read-only', 'user'], $obj);
     }
 
     protected function hasRoleUser(int $plin, ?Entity $obj): bool

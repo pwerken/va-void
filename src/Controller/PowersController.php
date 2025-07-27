@@ -15,9 +15,9 @@ use App\Controller\Traits\ViewTrait;
 class PowersController extends Controller
 {
     use AddTrait; // PUT /powers
-    use ViewTrait; // GET /powers/{poin}
     use DeleteTrait; // DELETE /powers/{poin}
     use EditTrait; // PUT /powers/{poin}
+    use ViewTrait; // GET /powers/{poin}
 
     /**
      * GET /powers

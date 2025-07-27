@@ -22,9 +22,9 @@ class CharacterPolicy extends EntityPolicy
         return $this->hasAuth(['referee'], $obj);
     }
 
-    public function canView(User $identity, Character $obj): bool
+    public function canDelete(User $identity, Character $obj): bool
     {
-        return $this->hasAuth(['read-only', 'user'], $obj);
+        return $this->canAdd($identity, $obj);
     }
 
     public function canEdit(User $identity, Character $obj): bool
@@ -32,9 +32,9 @@ class CharacterPolicy extends EntityPolicy
         return $this->canAdd($identity, $obj);
     }
 
-    public function canDelete(User $identity, Character $obj): bool
+    public function canView(User $identity, Character $obj): bool
     {
-        return $this->canAdd($identity, $obj);
+        return $this->hasAuth(['read-only', 'user'], $obj);
     }
 
     protected function hasRoleUser(int $plin, ?Entity $obj): bool

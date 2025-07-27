@@ -21,11 +21,11 @@ class CharactersPowerPolicy extends EntityPolicy
 
     public function canEdit(User $identity, CharactersPower $obj): bool
     {
-        return $this->hasAuth(['referee'], $obj);
+        return $this->canAdd($identity, $obj);
     }
 
     public function canDelete(User $identity, CharactersPower $obj): bool
     {
-        return $this->hasAuth(['referee'], $obj);
+        return $this->canAdd($identity, $obj);
     }
 }
