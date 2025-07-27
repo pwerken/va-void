@@ -18,7 +18,7 @@ class FactionsControllerPolicy extends ControllerPolicy
      */
     public function add(): bool
     {
-        return false; //$this->hasAuth('super');
+        return $this->hasAuth('super');
     }
 
     /**

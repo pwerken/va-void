@@ -59,4 +59,15 @@ class FactionsTest extends AuthIntegrationTestCase
         $this->assertPut('/factions/1', [], 403);
         $this->assertDelete('/factions/1', 403);
     }
+
+    public function testEvents(): void
+    {
+        $this->withAuthSuper();
+        $this->assertPut('/factions', [], 422);
+        $this->assertDelete('/factions/2', 422);
+
+        $this->assertPut('/factions', ['name' => 'Test'], 201);
+        $this->assertPut('/factions/3', ['name' => 'Edit']);
+        $this->assertDelete('/factions/3');
+    }
 }
