@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Controller\Traits\AddTrait;
+use App\Controller\Traits\DeleteTrait;
 use App\Controller\Traits\EditTrait;
 use App\Controller\Traits\ViewTrait;
 
@@ -15,6 +16,7 @@ class PowersController extends Controller
 {
     use AddTrait; // PUT /powers
     use ViewTrait; // GET /powers/{poin}
+    use DeleteTrait; // DELETE /powers/{poin}
     use EditTrait; // PUT /powers/{poin}
 
     /**

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Traits\DeleteTrait;
 use App\Controller\Traits\EditTrait;
 use App\Controller\Traits\ViewTrait;
 use Cake\Utility\Inflector;
@@ -15,6 +16,7 @@ use Cake\Utility\Inflector;
 class CharactersController extends Controller
 {
     use ViewTrait; // GET /characters/{plin}/{chin}
+    use DeleteTrait; // DELETE /characters/{plin}/{chin}
     use EditTrait; // PUT /characters/{plin}/{chin}
 
     /**

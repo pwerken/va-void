@@ -3,28 +3,20 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Controller\Traits\AddTrait;
 use App\Controller\Traits\DeleteTrait;
-use App\Controller\Traits\EditTrait;
 use App\Controller\Traits\ViewTrait;
 use Cake\Utility\Inflector;
 
 /**
+ * @property \App\Controller\Component\AddComponent $Add
+ * @property \App\Controller\Component\EditComponent $Edit
  * @property \App\Controller\Component\LammyComponent $Lammy
  * @property \App\Model\Table\ItemsTable $Items;
  */
 class ItemsController extends Controller
 {
-    use ViewTrait; // GET /items/{itin}
     use DeleteTrait; // DELETE /items/{itin}
-
-    use AddTrait {
-        add as addFromTrait;
-    }
-
-    use EditTrait {
-        edit as editFromTrait;
-    }
+    use ViewTrait; // GET /items/{itin}
 
     /**
      * GET /items
@@ -97,8 +89,9 @@ class ItemsController extends Controller
      */
     public function add(): void
     {
+        $this->loadComponent('Add');
         $this->setCharacterId();
-        $this->addFromTrait();
+        $this->Add->action();
     }
 
     /**
@@ -106,8 +99,9 @@ class ItemsController extends Controller
      */
     public function edit(int $itin): void
     {
+        $this->loadComponent('Edit');
         $this->setCharacterId();
-        $this->editFromTrait($itin);
+        $this->Edit->action($itin);
     }
 
     /**
