@@ -16,7 +16,7 @@ class PlayerPolicy extends EntityPolicy
         $this->showFieldAuth('password', ['user', 'infobalie']);
         $this->showFieldAuth('socials', ['user', 'infobalie']);
 
-        $this->editFieldAuth('role', 'infobalie');
+        $this->editFieldAuth('role', 'referee');
         $this->editFieldAuth('password', ['user', 'infobalie']);
     }
 

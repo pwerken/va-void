@@ -25,9 +25,10 @@ class PasswordController extends AdminController
             return;
         }
 
+        $this->Authorization->applyScope($player, 'accessible');
         $players->patchEntity($player, ['password' => $pass]);
         if (!$player->isDirty('password')) {
-            $this->Flash->error('Not authorized to change passwords');
+            $this->Flash->error('Not authorized to change password');
 
             return;
         }

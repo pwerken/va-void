@@ -42,20 +42,11 @@ class AuthorizationController extends AdminController
      */
     public function edit(): Response
     {
-        $response = $this->redirect(['controller' => 'authorization', 'action' => 'index']);
+        $response = $this->redirect(['controller' => 'Authorization', 'action' => 'index']);
 
         if (!$this->request->is('post')) {
             return $response;
         }
-
-        $user = $this->getRequest()->getAttribute('identity');
-
-        $roles = Player::roleValues();
-        if (!$user->hasAuth('Super')) {
-            # hide 'Super' to prevent authorization envy
-            array_pop($roles);
-        }
-        $this->set('roles', $roles);
 
         $plin = $this->request->getData('plin');
         $role = $this->request->getData('role');
@@ -75,6 +66,7 @@ class AuthorizationController extends AdminController
             return $response;
         }
 
+        $this->Authorization->applyScope($player, 'accessible');
         $players->patchEntity($player, ['role' => $role]);
         if (!$player->isDirty('role')) {
             $this->Flash->error('Not authorized to change roles');
