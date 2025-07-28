@@ -18,44 +18,54 @@ class AuthenticationService extends BaseAuthenticationService
 {
     public function __construct(array $config = [])
     {
-        $config['identityClass'] = Player::class;
-
-        parent::setConfig($config);
-
         $fields = [
             AbstractIdentifier::CREDENTIAL_USERNAME => 'id',
             AbstractIdentifier::CREDENTIAL_PASSWORD => 'password',
         ];
+
         $resolver = [
             'className' => OrmResolver::class,
             'userModel' => 'Players',
         ];
 
-        // Load the authenticators. Session should be first.
-        $this->loadAuthenticator(SessionAuthenticator::class, [
-            'fields' => [ 'sub' => 'id' ],
-            'identify' => true,
-        ]);
-        $this->loadAuthenticator(JwtAuthenticator::class, [
-            'returnPayload' => false,
-        ]);
-        $this->loadAuthenticator(PutPostDataAuthenticator::class, [
-            'fields' => $fields,
-            'returnPayload' => false,
-            'loginUrl' => [
-                Router::url('/admin'),
-                Router::url('/auth/login'),
+        $defaults = [
+            'authenticators' => [
+                SessionAuthenticator::class => [
+                    'identifier' => [
+                        JwtSubjectIdentifier::class => [
+                            'resolver' => $resolver,
+                        ],
+                    ],
+                    'fields' => [ 'sub' => 'id' ],
+                    'identify' => true,
+                ],
+                JwtAuthenticator::class => [
+                    'identifier' => [
+                        JwtSubjectIdentifier::class => [
+                            'resolver' => $resolver,
+                        ],
+                    ],
+                    'returnPayload' => false,
+                ],
+                PutPostDataAuthenticator::class => [
+                    'identifier' => [
+                        PasswordIdentifier::class => [
+                            'fields' => $fields,
+                            'resolver' => $resolver,
+                        ],
+                    ],
+                    'fields' => $fields,
+                    'returnPayload' => false,
+                    'loginUrl' => [
+                        Router::url('/admin'),
+                        Router::url('/auth/login'),
+                    ],
+                ],
             ],
-        ]);
+            'identityClass' => Player::class,
+        ];
 
-        // Load identifiers
-        $this->loadIdentifier(JwtSubjectIdentifier::class, [
-            'resolver' => $resolver,
-        ]);
-        $this->loadIdentifier(PasswordIdentifier::class, [
-            'fields' => $fields,
-            'resolver' => $resolver,
-        ]);
+        parent::setConfig($config + $defaults);
     }
 
     /**
