@@ -10,7 +10,7 @@ If the password field is left blank, the password is removed.<br/>
 </p>
 <?php
 
-echo $this->Form->create()
+echo $this->Form->create(null, ['url' => ['controller' => 'Password', 'action' => 'edit']])
     . $this->Form->control('plin', [
         'label' => 'Plin',
         'class' => 'plin',

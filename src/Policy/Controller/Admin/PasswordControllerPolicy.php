@@ -9,10 +9,17 @@ class PasswordControllerPolicy extends ControllerPolicy
 {
     /**
      * GET /admin/password
-     * POST /admin/password
      */
     public function index(): bool
     {
         return $this->hasAuth('player');
+    }
+
+    /**
+     * POST /admin/password/edit
+     */
+    public function edit(): bool
+    {
+        return $this->index();
     }
 }

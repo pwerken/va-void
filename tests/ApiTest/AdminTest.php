@@ -26,7 +26,7 @@ class AdminTest extends AuthIntegrationTestCase
         $this->assertHttp('/admin/logout', 'GET', 302);
         $this->assertHttp('/admin/migrations', 'GET', 302);
         $this->assertHttp('/admin/password', 'GET', 302);
-        $this->assertHttp('/admin/password', 'POST', 302);
+        $this->assertHttp('/admin/password/edit', 'POST', 302);
         $this->assertHttp('/admin/printing', 'GET', 302);
         $this->assertHttp('/admin/printing', 'POST', 302);
         $this->assertHttp('/admin/printing/single', 'GET', 302);
@@ -56,7 +56,7 @@ class AdminTest extends AuthIntegrationTestCase
         $this->assertHttp('/admin/logout', 'GET', 302);
         $this->assertHttp('/admin/migrations', 'GET', 403);
         $this->assertHttp('/admin/password', 'GET');
-        $this->assertHttp('/admin/password', 'POST');
+        $this->assertHttp('/admin/password/edit', 'POST', 302);
         $this->assertHttp('/admin/printing', 'GET', 403);
         $this->assertHttp('/admin/printing', 'POST', 403);
         $this->assertHttp('/admin/printing/single', 'GET', 403);

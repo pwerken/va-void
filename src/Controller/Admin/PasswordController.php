@@ -3,17 +3,28 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use Cake\Http\Response;
+
 class PasswordController extends AdminController
 {
     /**
      * GET /admin/password
-     * POST /admin/password
      */
     public function index(): void
     {
+    }
+
+    /**
+     * POST /admin/password/edit
+     */
+    public function edit(): Response
+    {
+        $response = $this->redirect(['controller' => 'Password', 'action' => 'index']);
+
         if (!$this->request->is('post')) {
-            return;
+            return $response;
         }
+
         $plin = $this->request->getData('plin');
         $pass = $this->request->getData('password');
 
@@ -22,7 +33,7 @@ class PasswordController extends AdminController
         if (is_null($player)) {
             $this->Flash->error("Player#$plin not found");
 
-            return;
+            return $response;
         }
 
         $this->Authorization->applyScope($player, 'accessible');
@@ -30,7 +41,7 @@ class PasswordController extends AdminController
         if (!$player->isDirty('password')) {
             $this->Flash->error('Not authorized to change password');
 
-            return;
+            return $response;
         }
 
         $players->save($player);
@@ -42,5 +53,7 @@ class PasswordController extends AdminController
         } else {
             $this->Flash->success("Player#$plin password set");
         }
+
+        return $response;
     }
 }
