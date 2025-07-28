@@ -35,6 +35,11 @@ td > button {
 	margin-right: 0;
 }
 
+th small {
+	font-style: italic;
+	font-weight: normal;
+}
+
 input[type="color"],
 input[type="date"],
 input[type="datetime"],

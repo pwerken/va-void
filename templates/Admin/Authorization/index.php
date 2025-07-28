@@ -9,6 +9,20 @@ declare(strict_types=1);
 <h3>Authorization</h3>
 <?php
 
+$descriptions = [
+    'Player' => 'Can view own player data and related characters, items, conditions and powers.' . PHP_EOL .
+                ' Can edit own player data and login credentials.' . PHP_EOL .
+                ' Can download pdf for character with related conditions and powers.',
+    'Read-only' => 'Same as "Player", plus: can view all players, characters, items, powers and conditions,' .
+                ' including notes and referee notes fields.' . PHP_EOL .
+                ' Can view the print queue.',
+    'Referee' => 'Same as "Read-only", plus: can add and edit characters, items, powers, and conditions.' . PHP_EOL .
+                ' Can add lammies to the print queue.',
+    'Infobalie' => 'Same as "Referee", plus: can add and edit players.' . PHP_EOL .
+                ' Can download pdf from the print queue.',
+    'Event Control' => 'Same as "Infobalie".',
+];
+
 $options = [];
 foreach ($roles as $role) {
     $options[$role] = $role;
@@ -29,7 +43,9 @@ echo $this->Form->create(null, ['url' => ['controller' => 'Authorization', 'acti
 
 echo "<table>\n";
 foreach (array_reverse($roles) as $role) {
-    echo '<tr><th colspan="2">' . $role . "</th></tr>\n";
+    echo '<tr><th colspan="2">' . $role .
+        '<br/><small>Permissions: ' . $descriptions[$role] . '</small>' .
+        "</th></tr>\n";
 
     if (!isset($permissions[$role])) {
         echo '<tr><td/><td>'
