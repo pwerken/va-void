@@ -21,6 +21,6 @@ class SocialProfilesTable extends Table
 
     protected function orderBy(): array
     {
-        return ['user_id' => 'ASC', 'modified' => 'DESC'];
+        return ['user_id' => 'ASC', 'hidden' => 'DESC', 'modified' => 'DESC'];
     }
 }

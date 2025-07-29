@@ -5,13 +5,15 @@ namespace App\Model\Entity;
 
 class SocialProfile extends Entity
 {
+    protected array $_defaults = [ 'hidden' => false ];
+
     public function __construct(array $properties = [], array $options = [])
     {
         parent::__construct($properties, $options);
 
         $this->setCompact(['id', 'provider', 'email', 'created', 'modified']);
 
-        $this->setHidden(['identifier'], true);
+        $this->setHidden(['identifier', 'hidden'], true);
     }
 
     public function getUrl(): string

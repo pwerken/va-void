@@ -27,7 +27,7 @@ class SocialController extends AdminController
 
         $logins = $this->fetchTable('SocialProfiles')
             ->find()
-            ->where(['user_id IS NULL'])
+            ->where(['user_id IS NULL', 'hidden' => false])
             ->orderByDesc('modified')
             ->all();
 
@@ -63,7 +63,13 @@ class SocialController extends AdminController
 
         $plin = $this->request->getData('plin');
         if (empty($plin)) {
-            $this->Flash->error("Failed to link SocialProfile#$social, no plin entered.");
+            $login->set('user_id', null);
+            $login->set('hidden', true);
+            if (!$profiles->save($login)) {
+                $this->Flash->error("Failed to disable SocialProfile#$social.");
+            } else {
+                $this->Flash->success("Disabled SocialProfile#$social.");
+            }
 
             return;
         }
@@ -78,6 +84,7 @@ class SocialController extends AdminController
         }
 
         $login->set('user_id', $player->get('id'));
+        $login->set('hidden', false);
         if (!$profiles->save($login)) {
             $this->Flash->error("Failed to link SocialProfile#$social.");
         } else {
@@ -122,12 +129,13 @@ class SocialController extends AdminController
             return;
         }
 
-        // delete login attempt
-        if (!is_null($this->request->getData('delete'))) {
-            if (!$profiles->delete($login)) {
-                $this->Flash->error("Failed to delete SocialProfile#$social.");
+        // enable login
+        if (!is_null($this->request->getData('enable'))) {
+            $login->set('hidden', false);
+            if (!$profiles->save($login)) {
+                $this->Flash->error("Failed to enable SocialProfile#$social.");
             } else {
-                $this->Flash->success("Deleted SocialProfile#$social.");
+                $this->Flash->success("Enabled SocialProfile#$social.");
             }
 
             return;

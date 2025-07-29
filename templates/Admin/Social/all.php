@@ -27,8 +27,10 @@ foreach ($logins as $login) {
     if ($plin) {
         $link = ['controller' => 'History', 'action' => 'player', $plin];
         $player = $this->Html->link((string)$plin, $link);
+    } elseif (!$login->get('hidden')) {
+        continue;
     } else {
-        $player = '';
+        $player = '<em><small>NONE</small></em>';
     }
 
     echo $this->Form->create(null, ['inputDefaults' => ['label' => false, 'div' => false]])
@@ -44,9 +46,14 @@ foreach ($logins as $login) {
         . $login['provider'] . ' - ' . ($login['full_name'] ?? $login['username'] ?? '<i>null</i>')
         . ')'
         . '</td><td>'
-        . (isset($plin) ? $this->Form->button('Unlink', ['name' => 'unlink']) : '')
         . '</td><td>'
-        . $this->Form->button('Delete', ['name' => 'delete'])
+        . (isset($plin)
+            ? $this->Form->button('Unlink', ['name' => 'unlink'])
+            : ($login->get('hidden')
+                ? $this->Form->button('Enable', ['name' => 'enable'])
+                : $this->Form->button('Delete', ['name' => 'delete'])
+                )
+            )
         . '</td>'
         . $this->Form->end()
         . '</tr>'
