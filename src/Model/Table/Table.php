@@ -28,17 +28,6 @@ abstract class Table extends CakeTable
         $this->_validatorClass = "App\\Model\\Validation\\{$entityName}Validator";
     }
 
-    public function beforeFind(EventInterface $event, SelectQuery $query, ArrayObject $options, bool $primary): void
-    {
-        if ($query->clause('limit') == 1) {
-            return;
-        }
-
-        foreach ($this->orderBy() as $field => $ord) {
-            $query->orderBy([$this->aliasField($field) => $ord]);
-        }
-    }
-
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
         // drop association data from input
@@ -133,6 +122,16 @@ abstract class Table extends CakeTable
         }
     }
 
+    public function findAll(SelectQuery $query): SelectQuery
+    {
+        $order = [];
+        foreach ($this->orderBy() as $field => $ord) {
+            $order[$this->aliasField($field)] = $ord;
+        }
+
+        return parent::findAll($query)->orderBy($order);
+    }
+
     public function findWithContain(SelectQuery $query): SelectQuery
     {
         $contain = $this->contain();
@@ -140,7 +139,7 @@ abstract class Table extends CakeTable
             $query->contain($contain);
         }
 
-        return $query;
+        return $this->findAll($query);
     }
 
     protected function belongsToManyThrough(string $associated, string $linktable): void
