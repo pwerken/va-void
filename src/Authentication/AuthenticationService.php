@@ -16,7 +16,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class AuthenticationService extends BaseAuthenticationService
 {
-    public function __construct(array $config = [])
+    public function __construct(bool $isAdmin, array $config = [])
     {
         $fields = [
             AbstractIdentifier::CREDENTIAL_USERNAME => 'id',
@@ -28,41 +28,39 @@ class AuthenticationService extends BaseAuthenticationService
             'userModel' => 'Players',
         ];
 
-        $defaults = [
-            'authenticators' => [
-                SessionAuthenticator::class => [
-                    'identifier' => [
-                        JwtSubjectIdentifier::class => [
-                            'resolver' => $resolver,
-                        ],
+        $defaults = ['identityClass' => Player::class];
+        if ($isAdmin) {
+            $defaults['authenticators'][SessionAuthenticator::class] = [
+                'identifier' => [
+                    JwtSubjectIdentifier::class => [
+                        'resolver' => $resolver,
                     ],
-                    'fields' => [ 'sub' => 'id' ],
-                    'identify' => true,
                 ],
-                JwtAuthenticator::class => [
-                    'identifier' => [
-                        JwtSubjectIdentifier::class => [
-                            'resolver' => $resolver,
-                        ],
-                    ],
-                    'returnPayload' => false,
-                ],
-                PutPostDataAuthenticator::class => [
-                    'identifier' => [
-                        PasswordIdentifier::class => [
-                            'fields' => $fields,
-                            'resolver' => $resolver,
-                        ],
-                    ],
-                    'fields' => $fields,
-                    'returnPayload' => false,
-                    'loginUrl' => [
-                        Router::url('/admin'),
-                        Router::url('/auth/login'),
-                    ],
+                'fields' => [ 'sub' => 'id' ],
+                'identify' => true,
+            ];
+        }
+        $defaults['authenticators'][JwtAuthenticator::class] = [
+            'identifier' => [
+                JwtSubjectIdentifier::class => [
+                    'resolver' => $resolver,
                 ],
             ],
-            'identityClass' => Player::class,
+            'returnPayload' => false,
+        ];
+        $defaults['authenticators'][PutPostDataAuthenticator::class] = [
+            'identifier' => [
+                PasswordIdentifier::class => [
+                    'fields' => $fields,
+                    'resolver' => $resolver,
+                ],
+            ],
+            'fields' => $fields,
+            'returnPayload' => false,
+            'loginUrl' => [
+                Router::url('/admin'),
+                Router::url('/auth/login'),
+            ],
         ];
 
         parent::setConfig($config + $defaults);

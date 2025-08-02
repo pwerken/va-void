@@ -9,7 +9,6 @@ use App\Middleware\CharacterIdNotNullMiddleware;
 use App\Middleware\CorsMiddleware;
 use App\Middleware\JsonInputMiddleware;
 use App\Middleware\LoginWithPlinMiddleware;
-use App\Middleware\SessionAdminOnlyMiddleware;
 use App\Test\TestSuite\TestCase;
 use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\Middleware\AuthorizationMiddleware;
@@ -72,16 +71,14 @@ class ApplicationTest extends TestCase
         $middleware->seek(6);
         $this->assertInstanceOf(BodyParserMiddleware::class, $middleware->current());
         $middleware->seek(7);
-        $this->assertInstanceOf(SessionAdminOnlyMiddleware::class, $middleware->current());
-        $middleware->seek(8);
         $this->assertInstanceOf(LoginWithPlinMiddleware::class, $middleware->current());
-        $middleware->seek(9);
+        $middleware->seek(8);
         $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->current());
-        $middleware->seek(10);
+        $middleware->seek(9);
         $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->current());
-        $middleware->seek(11);
+        $middleware->seek(10);
         $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->current());
-        $middleware->seek(12);
+        $middleware->seek(11);
         $this->assertInstanceOf(CharacterIdNotNullMiddleware::class, $middleware->current());
     }
 }

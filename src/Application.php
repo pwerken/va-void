@@ -16,7 +16,7 @@ declare(strict_types=1);
  */
 namespace App;
 
-use App\Authentication\AuthenticationService;
+use App\Authentication\AuthenticationServiceProvider;
 use App\Authorization\AuthorizationService;
 use App\Middleware\BodyParserMiddleware;
 use App\Middleware\CharacterIdFromPlinChinMiddleware;
@@ -24,7 +24,6 @@ use App\Middleware\CharacterIdNotNullMiddleware;
 use App\Middleware\CorsMiddleware;
 use App\Middleware\JsonInputMiddleware;
 use App\Middleware\LoginWithPlinMiddleware;
-use App\Middleware\SessionAdminOnlyMiddleware;
 use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Middleware\RequestAuthorizationMiddleware;
@@ -110,16 +109,12 @@ class Application extends BaseApplication
 #                'httponly' => true,
 #            ]));
 
-            // Forces the use of the issued JWT by disabling the PHP Session
-            // outside of /admin
-            ->add(new SessionAdminOnlyMiddleware())
-
             // At login accept either 'id' or 'plin' as the player id.
             ->add(new LoginWithPlinMiddleware())
 
             // Add the AuthenticationMiddleware.
             // It should be after routing and body parser.
-            ->add(new AuthenticationMiddleware(new AuthenticationService()))
+            ->add(new AuthenticationMiddleware(new AuthenticationServiceProvider()))
 
             // Add the AuthorizationMiddleware.
             // It should be after routing and body parser.
