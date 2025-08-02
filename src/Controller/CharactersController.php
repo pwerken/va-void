@@ -126,6 +126,11 @@ class CharactersController extends Controller
         $objs = [$this->Lammy->createLammy($char)];
 
         if ($all) {
+            if ($char->get('teacher')) {
+                $t = $char->get('teacher');
+                $t->student = $char;
+                $objs[] = $this->Lammy->createLammy($t);
+            }
             foreach ($char->get('powers') as $power) {
                 $c = $power->_joinData;
                 $c->character = $char;

@@ -191,7 +191,7 @@ class CharactersTable extends Table
             'Powers',
             'Skills.Manatypes',
             'MyTeacher' => ['Teacher', 'Skill.Manatypes'],
-            'MyStudents' => ['Student', 'Skill.Manatypes'],
+            'MyStudents' => ['Student.Skills', 'Skill.Manatypes'],
         ];
     }
 

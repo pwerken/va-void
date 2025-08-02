@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\View;
 
 use App\Model\Entity\Entity;
+use App\Model\Entity\Teaching;
 use App\Utility\Json;
 use App\View\Helper\AuthorizeHelper;
 use Cake\ORM\ResultSet;
@@ -89,12 +90,23 @@ class ApiView extends View
             $result['parent'] = $this->jsonCompact($parent);
         }
 
+        $isTeaching = false;
         $result['list'] = [];
         foreach ($list as $obj) {
+            $value = $obj;
             if ($obj instanceof Entity) {
-                $result['list'][] = $this->jsonCompact($obj, $parent);
-            } else {
-                $result['list'][] = $obj;
+                $value = $this->jsonCompact($obj, $parent);
+                $isTeaching |= ($obj instanceof Teaching);
+            }
+            $result['list'][] = $value;
+        }
+
+        if ($isTeaching) {
+            if (is_null($key)) {
+                $result['url'] .= 'students';
+            }
+            foreach (array_keys($result['list']) as $key) {
+                unset($result['list'][$key]['teacher']);
             }
         }
 
@@ -104,8 +116,8 @@ class ApiView extends View
     protected function jsonCompact(Entity $obj, ?Entity $parent = null): mixed
     {
         $class = (new ReflectionClass($obj))->getShortName();
-        $skip = '';
 
+        $skip = '';
         if ($parent) {
             $skip = strtolower((new ReflectionClass($parent))->getShortName());
         }
@@ -128,6 +140,13 @@ class ApiView extends View
                 $field = $this->aliases[$class][$field];
             }
             $result[$field] = $value;
+        }
+
+        if ($obj instanceof Teaching) {
+            $result['url'] = $parent->getUrl() . '/teacher';
+            if (is_null($result['student'])) {
+                unset($result['student']);
+            }
         }
 
         // joinData should be in between $parent en $obj

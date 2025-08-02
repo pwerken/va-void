@@ -10,15 +10,15 @@ class TeachingsControllerPolicy extends ControllerPolicy
      */
     public function charactersIndex(): bool
     {
-        return $this->hasAuth('player');
+        return $this->hasAuth(['user', 'read-only']);
     }
 
     /**
-     * PUT ??
+     * PUT /characters/{plin}/{chin}/teacher
      */
     public function charactersAdd(): bool
     {
-        return $this->hasAuth('infobalie');
+        return $this->hasAuth('referee');
     }
 
     /**
@@ -30,11 +30,11 @@ class TeachingsControllerPolicy extends ControllerPolicy
     }
 
     /**
-     * PUT /characters/{plin}/{chin}/teacher
+     * PUT ??
      */
     public function charactersEdit(): bool
     {
-        return $this->charactersAdd();
+        return false;
     }
 
     /**
@@ -43,6 +43,14 @@ class TeachingsControllerPolicy extends ControllerPolicy
     public function charactersDelete(): bool
     {
         return $this->charactersAdd();
+    }
+
+    /**
+     * POST /characters/{plin}/{chin}/teacher/print
+     */
+    public function charactersPdf(): bool
+    {
+        return $this->charactersView();
     }
 
     /**

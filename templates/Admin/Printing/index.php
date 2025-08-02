@@ -102,7 +102,7 @@ foreach ($printing as $row) {
     $key1 = $row['character_str'] ?: $row['key1'];
     $key2 = $row['key2'];
 
-    if (substr($row['entity'], 0, 9) === 'Character') {
+    if (substr($row['entity'], 0, 9) === 'Character' || $row['entity'] === 'Teaching') {
         $link = ['controller' => 'History', 'action' => 'character'] + explode('/', $key1, 2);
         $key1 = $this->Html->link((string)$key1, $link);
         if (substr($row['entity'], -5, 5) === 'Power') {

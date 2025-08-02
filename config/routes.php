@@ -239,8 +239,8 @@ return function (RouteBuilder $routes): void {
         }
         if ($name == 'Characters') {
             $map = [
+                'Add' => [ '_method' => 'PUT', 'path' => 1 ],
                 'View' => [ '_method' => 'GET', 'path' => 1 ],
-                'Edit' => [ '_method' => 'PUT', 'path' => 1 ],
                 'Delete' => [ '_method' => 'DELETE', 'path' => 1 ],
             ];
 
@@ -258,6 +258,9 @@ return function (RouteBuilder $routes): void {
                 $routes->connect($urlNest, $defaults, $routeOptions);
             }
 
+            $defaults['_method'] = 'GET';
+            $defaults['action'] = 'charactersPdf';
+            $routes->connect($urlNest . '/print', $defaults, $routeOptions);
             $defaults['_method'] = 'POST';
             $defaults['action'] = 'charactersQueue';
             $routes->connect($urlNest . '/print', $defaults, $routeOptions);

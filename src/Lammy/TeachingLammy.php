@@ -28,35 +28,20 @@ class TeachingLammy extends LammyCard
 
     protected function _drawFront(): void
     {
-        $this->cardFront('TODO FIXME');
+        $this->cardFront('Teaching Card');
         $this->QRcode();
 
-        $this->pdf->SetTextColor(0);
-        $this->font(9);
-        $this->text(48, 3, 20, 'C', 'Teaching');
-        $this->text(48, 7, 20, 'C', 'Card');
-
-        $this->pdf->SetTextColor(63);
-        $this->font(5);
-        $this->text(10, 16.5, 12, 'R', 'PLIN');
-        $this->text(21, 16.5, 7, 'C', 'CHIN');
-        $this->text(28, 16.5, 47, 'L', 'Name');
-
         $this->pdf->SetTextColor(31);
+
+        $this->font(5);
+        $this->text(52, 2, 10, 'R', 'PLIN');
+        $this->text(61, 2, 7, 'C', 'CHIN');
+
         $this->font(6);
         $this->text(0, 13, 12, 'R', 'Teacher');
         $this->text(0, 20, 12, 'R', 'Student');
         $this->text(0, 27, 12, 'R', 'Skill Name');
-
-        $this->font(8, 'B');
-        $this->text(0, 4, 8, 'C', 'TXP');
-        $this->text(0, 41, 8, 'C', 'XP');
-
-        $this->square(0, 0, 16, 8);
-        $this->square(0, 37, 16, 45);
-
-        $this->pdf->SetTextColor(63);
-        $this->font(26, 'B');
+        $this->text(0, 34, 12, 'R', 'XP');
 
         $this->pdf->SetTextColor(0);
         $this->font(11, 'B');
@@ -65,11 +50,17 @@ class TeachingLammy extends LammyCard
         $this->text(10, 13, 12, 'R', $p->player_id);
         $this->text(21, 13, 7, 'C', sprintf('%02d', $p->chin));
         $this->text(28, 13, 47, 'L', $p->name);
+
         $p = $this->entity->get('student');
+        $this->text(52, 5, 10, 'R', $p->player_id);
+        $this->text(61, 5, 7, 'C', sprintf('%02d', $p->chin));
         $this->text(10, 20, 12, 'R', $p->player_id);
         $this->text(21, 20, 7, 'C', sprintf('%02d', $p->chin));
         $this->text(28, 20, 47, 'L', $p->name);
 
-        $this->text(12, 27, 60, 'L', $this->entity->get('skill')->name);
+        $s = $this->entity->get('skill');
+        $this->text(12, 27, 60, 'L', $s->name);
+        $progress = $this->entity->get('progress') . ' of ' . $s->cost;
+        $this->text(12, 34, 60, 'L', $progress);
     }
 }

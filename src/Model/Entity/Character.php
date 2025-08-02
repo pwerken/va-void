@@ -3,8 +3,12 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Cake\ORM\Locator\LocatorAwareTrait;
+
 class Character extends Entity
 {
+    use LocatorAwareTrait;
+
     protected array $_defaults = [
         'xp' => 15,
         'status' => 'inactive',
@@ -20,9 +24,9 @@ class Character extends Entity
 
         $this->setCompact(['player_id', 'chin', 'name', 'status']);
 
-        $this->setVirtual(['faction']);
+        $this->setVirtual(['faction', 'xp_available']);
 
-        $this->setHidden(['id'], true);
+        $this->setHidden(['id', 'xp_available'], true);
         $this->setHidden(['faction_id', 'faction_object'], true);
     }
 
@@ -44,6 +48,21 @@ class Character extends Entity
     protected function _getFaction(): ?string
     {
         return $this->get('faction_object')?->name;
+    }
+
+    protected function _getXpAvailable(): float
+    {
+        if (empty($this->get('skills')) && $this->getSource()) {
+            $this->getTableLocator()->get($this->getSource())->loadInto($this, ['Skills']);
+        }
+
+        $used = 0;
+        foreach ($this->get('skills') as $skill) {
+            $times = $skill->_joinData->get('times');
+            $used += $times * $skill->get('cost');
+        }
+
+        return $this->get('xp') - $used;
     }
 
     protected function _setBelief(mixed $belief): mixed

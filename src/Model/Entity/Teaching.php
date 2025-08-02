@@ -9,13 +9,27 @@ class Teaching extends Entity
     {
         parent::__construct($properties, $options);
 
-        $this->setCompact(['student', 'teacher', 'skill']);
-        $this->setVirtual(['student', 'teacher', 'skill']);
+        $this->setCompact(['student', 'teacher', 'skill', 'progress']);
+        $this->setVirtual(['student', 'teacher', 'skill', 'progress']);
         $this->setHidden(['student_id', 'teacher_id', 'skill_id'], true);
     }
 
     public function getUrl(): string
     {
-        return 'FIXME'; #$this->student?->getUrl() . '/teacher';
+        if ($this->get('student')) {
+            return $this->get('student')->getUrl() . '/teacher';
+        }
+
+        return '';
+    }
+
+    protected function _getProgress(): float
+    {
+        $student = $this->get('student');
+        if (!$student) {
+            return 0;
+        }
+
+        return $student->get('xp_available');
     }
 }

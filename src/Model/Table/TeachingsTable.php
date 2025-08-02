@@ -13,44 +13,29 @@ class TeachingsTable extends Table
 
         $this->setPrimaryKey('student_id');
 
-        $this->hasOne('Teacher', [
+        $this->belongsTo('Teacher', [
             'className' => 'Characters',
-            'bindingKey' => 'teacher_id',
-            'foreignKey' => 'id',
             'propertyName' => 'teacher',
         ]);
-        $this->hasOne('Student', [
+        $this->belongsTo('Student', [
             'className' => 'Characters',
-            'bindingKey' => 'student_id',
-            'foreignKey' => 'id',
             'propertyName' => 'student',
         ]);
-        $this->hasOne('Skill', [
+        $this->belongsTo('Skill', [
             'className' => 'Skills',
-            'bindingKey' => 'skill_id',
-            'foreignKey' => 'id',
             'propertyName' => 'skill',
         ]);
     }
 
     public function buildRules(RulesChecker $rules): RulesChecker
     {
+        $rules->addCreate($rules->isUnique(['student_id']));
+
         $rules->add($rules->existsIn('student_id', 'Student'));
         $rules->add($rules->existsIn('teacher_id', 'Teacher'));
-        $rules->add($rules->existsIn('skill_id', 'Skills'));
+        $rules->add($rules->existsIn('skill_id', 'Skill'));
 
         return $rules;
-    }
-
-    public function findStudent(int $plin, int $chin): mixed
-    {
-        $query = $this->find('all', contain: ['Student']);
-        $query->select(['Teachings.student_id']);
-        $query->where(['Student.player_id =' => $plin, 'Student.chin = ' => $chin]);
-        $query->limit(1);
-        $query->enableHydration(false);
-
-        return $query->first();
     }
 
     protected function contain(): array
