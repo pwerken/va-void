@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use ArrayObject;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
 
 class TeachingsTable extends Table
@@ -25,6 +28,16 @@ class TeachingsTable extends Table
             'className' => 'Skills',
             'propertyName' => 'skill',
         ]);
+    }
+
+    public function afterDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    {
+        $this->touchEntity('Characters', $entity->get('student_id'));
+    }
+
+    public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    {
+        $this->touchEntity('Characters', $entity->get('student_id'));
     }
 
     public function buildRules(RulesChecker $rules): RulesChecker

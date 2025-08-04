@@ -33,6 +33,14 @@ class PrintingController extends AdminController
             return;
         }
 
+        $related = [
+            'Character',
+            'CharactersCondition',
+            'CharactersPower',
+            'CharactersSkill',
+            'Teaching',
+        ];
+
         $since = (new DateTime())->sub(new DateInterval('P3M'));
         $query = $lammies->find();
         $query
@@ -43,7 +51,7 @@ class PrintingController extends AdminController
                 'characters.chin' => 'identifier',
             ])])
             ->leftJoin('characters', [
-                'Lammies.entity LIKE' => 'Character%',
+                'Lammies.entity IN' => $related,
                 'Lammies.key1 = characters.id',
             ])
             ->where(['Lammies.modified >' => $since->format('Y-m-d')])

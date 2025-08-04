@@ -97,6 +97,8 @@ class HistoryController extends AdminController
         $this->viewBuilder()->setTemplate('compact');
 
         $characters = $this->fetchTable('Characters');
+        $skills = $this->fetchTable('Skills');
+
         $table = $this->fetchTable('History');
         $list = $table->getEntityHistory($e, $k1, $k2);
         if (empty($list)) {
@@ -130,12 +132,19 @@ class HistoryController extends AdminController
                         case 'creator_id':
                             continue 2;
 
+                        case 'teacher_id':
                         case 'character_id':
                             if ($value) {
                                 $char = $characters->get($value);
                                 $id = $char->get('player_id') . '/' . $char->get('chin');
                                 $value = $id . ' ' . $char->get('name');
                                 $cur['link'] = '/character/' . $id;
+                            }
+                            break;
+                        case 'skill_id':
+                            if ($value) {
+                                $skill = $skills->get($value);
+                                $value = $value . ' ' . $skill->get('name');
                             }
                             break;
                     }
@@ -183,6 +192,7 @@ class HistoryController extends AdminController
                         case 'creator_id':
                             continue 2;
 
+                        case 'teacher_id':
                         case 'character_id':
                             if ($value) {
                                 $char = $characters->get($value);
@@ -247,6 +257,11 @@ class HistoryController extends AdminController
             case 'Player':
                 $cur['link'] = '/player/' . $row->get('key');
                 $cur['name'] = implode(' ', [$data['first_name'], $data['insertion'], $data['last_name']]);
+                $cur['key'] = $row->keyString();
+                break;
+            case 'Teaching':
+                $cur['link'] = false;
+                $cur['name'] = '';
                 $cur['key'] = $row->keyString();
                 break;
             default:

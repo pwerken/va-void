@@ -27,9 +27,10 @@ class HistoryTable extends Table
             ->setConditions(['History.entity' => 'CharactersPower']);
         $this->belongsTo('Skills')->setForeignKey('key2')
             ->setConditions(['History.entity' => 'CharactersSkill']);
-
         $this->belongsTo('Items')->setForeignKey('key2')
             ->setConditions(['History.entity LIKE' => '%sItem']);
+        $this->belongsTo('Teachings')->setForeignKey('key1')
+            ->setConditions(['History.entity' => 'Teaching']);
 
         $this->locator = TableRegistry::getTableLocator();
     }
@@ -276,6 +277,10 @@ class HistoryTable extends Table
 
         $list = [History::fromEntity($entity)];
 
+        if ($entity->teacher) {
+            $list[] = History::fromEntity($entity->teacher);
+        }
+
         foreach ($entity->conditions as $condition) {
             $relation = $condition->_joinData;
             $relation->condition = $condition;
@@ -294,9 +299,17 @@ class HistoryTable extends Table
             $list[] = History::fromEntity($relation);
         }
 
+        $related = [
+            'Character',
+            'CharactersCondition',
+            'CharactersPower',
+            'CharactersSkill',
+            'Teaching',
+        ];
+
         $history = $this->find()
-            ->where(['entity LIKE' => 'Character%', 'key1' => $entity->id])
-            ->contain(['Conditions', 'Powers', 'Skills'])
+            ->where(['entity in' => $related, 'key1' => $entity->id])
+            ->contain(['Conditions', 'Powers', 'Skills', 'Teachings.Teacher', 'Teachings.Skill'])
             ->all()
             ->toList();
 
