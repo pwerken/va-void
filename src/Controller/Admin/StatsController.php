@@ -64,7 +64,7 @@ class StatsController extends AdminController
                 'Characters.modified >' => $since,
                 'Characters.status LIKE' => 'active',
             ])
-            ->orderByDesc('xp');
+            ->orderByDesc('xp', true);
 
         $rows = [];
         foreach ($query->all() as $character) {
@@ -95,7 +95,9 @@ class StatsController extends AdminController
             ->where(['Characters.modified >' => $since])
             ->andWhere(['Characters.status' => 'active'])
             ->groupBy('character_id')
-            ->orderByDesc('total');
+            ->orderByDesc('total', true)
+            ->orderByAsc('player_id')
+            ->orderByDesc('chin');
 
         $rows = [];
         foreach ($query->all() as $item) {
@@ -142,7 +144,7 @@ class StatsController extends AdminController
                 'Characters.status' => 'active',
             ])
             ->groupBy('c.id')
-            ->orderByDesc('total')
+            ->orderByDesc('total', true)
             ->orderByAsc('Characters.player_id')
             ->orderByDesc('Characters.chin');
 
@@ -180,7 +182,7 @@ class StatsController extends AdminController
                 'CharactersSkills.skill_id IN' => [425, 434],
             ])
             ->groupBy('character_id')
-            ->orderByDesc('total')
+            ->orderByDesc('total', true)
             ->orderByAsc('Characters.player_id')
             ->orderByDesc('Characters.chin');
 
