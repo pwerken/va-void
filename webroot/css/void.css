@@ -73,6 +73,9 @@ input::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
 }
+select[multiple] {
+	resize: vertical;
+}
 
 .navigation {
     background: var(--color-nav-bg);
