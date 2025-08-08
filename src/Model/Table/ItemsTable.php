@@ -17,6 +17,7 @@ class ItemsTable extends Table
 
         $this->setPrimaryKey('itin');
 
+        $this->belongsTo('Manatypes');
         $this->belongsTo('Characters');
     }
 
@@ -46,9 +47,11 @@ class ItemsTable extends Table
     {
         $rules = parent::buildRules($rules);
 
-        $rules->add($rules->existsIn('character_id', 'Characters'));
-
         $rules->addDelete([$this, 'ruleNoCharacter']);
+
+        $rules->add($rules->existsIn('character_id', 'Characters'));
+        $rules->add($rules->existsIn('manatype_id', 'Manatypes'));
+        $rules->add([$this, 'ruleManaConsistency']);
 
         return $rules;
     }
@@ -84,7 +87,7 @@ class ItemsTable extends Table
 
     protected function contain(): array
     {
-        return ['Characters'];
+        return ['Characters', 'Manatypes'];
     }
 
     protected function orderBy(): array

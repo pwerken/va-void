@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use App\Model\Enum\CharacterStatus;
+use Cake\ORM\TableRegistry;
 
 class Character extends Entity
 {
@@ -22,9 +23,9 @@ class Character extends Entity
 
         $this->setCompact(['plin', 'chin', 'name', 'status']);
 
-        $this->setVirtual(['faction', 'xp_available']);
+        $this->setVirtual(['faction', 'mana', 'xp_available']);
 
-        $this->setHidden(['id', 'xp_available'], true);
+        $this->setHidden(['id', 'mana', 'xp_available'], true);
         $this->setHidden(['faction_id', 'faction_object'], true);
     }
 
@@ -36,6 +37,31 @@ class Character extends Entity
     protected function _getFaction(): ?string
     {
         return $this->get('faction_object')?->name;
+    }
+
+    protected function _getMana(): array
+    {
+        $sources = $this->get('skills');
+        $sources = array_merge($sources, $this->get('powers'));
+        $sources = array_merge($sources, $this->get('conditions'));
+        $sources = array_merge($sources, $this->get('items'));
+
+        $mana = [];
+        $manatypes = TableRegistry::getTableLocator()->get('Manatypes')->find();
+        foreach ($manatypes as $manatype) {
+            $mana[$manatype->get('name')] = 0;
+        }
+
+        foreach ($sources as $source) {
+            $type = $source->get('manatype')?->get('name');
+            if (is_null($type)) {
+                continue;
+            }
+            $times = $source->_joinData?->get('times') ?? 1;
+            $mana[$type] += $times * $source->get('mana_amount');
+        }
+
+        return $mana;
     }
 
     protected function _getXpAvailable(): float

@@ -56,6 +56,7 @@ class CharacterLammy extends LammyCard
     protected function _drawBack(): void
     {
         $data = [];
+        $data['skills'] = [];
         $data['xp'] = 0;
         $data['mana'] = [];
         $data['mana']['Elemental'] = 0;
@@ -66,24 +67,19 @@ class CharacterLammy extends LammyCard
         $data['mana']['Willpower'] = 0;
         $data['skills'] = [];
 
+        $data['mana'] = [];
+        $data['mana']['Elemental'] = $data['mana']['Spiritual'] = 0;
+        $data['mana']['Elemental Ritual'] = $data['mana']['Spiritual Ritual'] = 0;
+        $data['mana']['Inspiration'] = $data['mana']['Willpower'] = 0;
+        $data['mana'] = $this->entity->get('mana') + $data['mana'];
+
         foreach ($this->entity->get('skills') as $skill) {
             $relation = $skill->_joinData;
             $times = $relation->get('times');
 
             $data['xp'] += $times * $skill->get('cost');
             $data['skills'][] = $relation->printableName($skill);
-
-            if (is_null($skill->get('manatype'))) {
-                continue;
-            }
-
-            $mana = $skill->get('manatype')->get('name');
-            if (!isset($data['mana'][$mana])) {
-                $data['mana'][$mana] = 0;
-            }
-            $data['mana'][$mana] += $times * $skill->get('mana_amount');
         }
-
         $data['skills'] = SkillNameGroup::group($data['skills']);
 
         $this->cardBack('Skills');

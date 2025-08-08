@@ -16,6 +16,8 @@ class PowersTable extends Table
 
         $this->setPrimaryKey('poin');
 
+        $this->belongsTo('Manatypes');
+
         $this->belongsToManyThrough('Characters', 'CharactersPowers');
     }
 
@@ -25,12 +27,15 @@ class PowersTable extends Table
 
         $rules->addDelete([$this, 'ruleNoAssociation'], ['characters']);
 
+        $rules->add($rules->existsIn('manatype_id', 'Manatypes'));
+        $rules->add([$this, 'ruleManaConsistency']);
+
         return $rules;
     }
 
     protected function contain(): array
     {
-        return ['Characters'];
+        return ['Characters', 'Manatypes'];
     }
 
     protected function orderBy(): array
