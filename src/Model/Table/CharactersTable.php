@@ -86,8 +86,8 @@ class CharactersTable extends Table
         $rules->addUpdate([$this, 'ruleDisallowSetPlinChin']);
 
         $rules->addDelete([$this, 'ruleNoAssociation'], ['skills']);
-        $rules->addDelete([$this, 'ruleNoAssociation'], ['conditions']);
         $rules->addDelete([$this, 'ruleNoAssociation'], ['powers']);
+        $rules->addDelete([$this, 'ruleNoAssociation'], ['conditions']);
         $rules->addDelete([$this, 'ruleNoAssociation'], ['items']);
 
         $rules->add($rules->existsIn('faction_id', 'Factions'));
@@ -137,10 +137,10 @@ class CharactersTable extends Table
         return [
             'Factions',
             'Players',
-            'Items',
-            'Conditions',
-            'Powers',
-            'Skills.Manatypes',
+            'Skills' => ['Manatypes'],
+            'Powers' => ['Manatypes'],
+            'Conditions' => ['Manatypes'],
+            'Items' => ['Manatypes'],
             'MyTeacher' => ['Teacher', 'Skill.Manatypes'],
             'MyStudents' => ['Student.Skills', 'Skill.Manatypes'],
         ];

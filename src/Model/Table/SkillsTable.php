@@ -27,6 +27,7 @@ class SkillsTable extends Table
 
         $rules->addDelete([$this, 'ruleNoAssociation'], ['characters']);
 
+        $rules->add($rules->existsIn('manatype_id', 'Manatypes'));
         $rules->add([$this, 'ruleManaConsistency']);
 
         return $rules;

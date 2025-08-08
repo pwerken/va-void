@@ -17,6 +17,8 @@ class ItemValidator extends Validator
         $this->allowEmptyString('player_text');
         $this->allowEmptyString('referee_notes');
         $this->allowEmptyString('notes');
+        $this->allowEmptyString('mana_amount')->integer('mana_amount');
+        $this->allowEmptyString('manatype_id')->nonNegativeInteger('manatype_id');
         $this->allowEmptyString('character_id')->nonNegativeInteger('character_id');
         $this->allowEmptyDate('expiry')->date('expiry');
         $this->allowEmptyString('deprecated')->boolean('deprecated');

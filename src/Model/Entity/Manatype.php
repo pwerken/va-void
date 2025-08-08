@@ -5,4 +5,5 @@ namespace App\Model\Entity;
 
 class Manatype extends Entity
 {
+    protected array $_compact = [ 'id', 'name', 'deprecated' ];
 }

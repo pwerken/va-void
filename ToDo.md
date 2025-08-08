@@ -19,8 +19,8 @@ ToDo-list:
    - [ ] add new printable lammy (similar to 'power')
    - [ ] char lammy: calculate character.rune/glyph imbue cap
  - Indirect mana
-   - [ ] add mana to imbues/powers/conditions/items
-   - [ ] char lammy: calculate mana from sources
+   - [x] add mana to imbues/powers/conditions/items
+   - [x] char lammy: calculate mana from sources
  - Indirect skills
    - [ ] add skills to imbues/powers/conditions/items
    - [ ] character: skills get a 'source' reference

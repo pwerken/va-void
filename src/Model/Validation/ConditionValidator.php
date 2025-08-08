@@ -17,6 +17,8 @@ class ConditionValidator extends Validator
         $this->notEmptyString('player_text');
         $this->allowEmptyString('notes');
         $this->allowEmptyString('referee_notes');
+        $this->allowEmptyString('mana_amount')->integer('mana_amount');
+        $this->allowEmptyString('manatype_id')->nonNegativeInteger('manatype_id');
         $this->allowEmptyString('deprecated')->boolean('deprecated');
     }
 }
