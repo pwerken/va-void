@@ -81,7 +81,7 @@ class ItemLammy extends LammyCard
         } else {
             $char_id = $character->get('player_id') . ' - ' . $character->get('chin');
         }
-        $this->pdf->SetTextColor(191);
+        $this->pdf->SetTextColor(127);
         $this->font(5);
         $this->text(8, self::$HEIGHT - 1.3, self::$WIDTH, 'L', $char_id);
     }

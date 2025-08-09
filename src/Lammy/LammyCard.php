@@ -111,7 +111,7 @@ abstract class LammyCard
 
     protected function footer(string $text): void
     {
-        $this->pdf->SetTextColor(191);
+        $this->pdf->SetTextColor(127);
         $this->font(5);
         $this->text(0, self::$HEIGHT - 1.3, self::$WIDTH, 'R', $text);
     }
