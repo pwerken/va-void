@@ -1,7 +1,7 @@
 # VOID API specific #
 #####################
 /backups/*.sql
-/printing/log
+/printing/log.*
 /printing/pdfs
 
 # Test related files #

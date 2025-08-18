@@ -2,18 +2,24 @@
 SIDES="single"
 SIDES="double"
 
+HERE="$(dirname "$(readlink -f "$0")")"
+DATE="$(date +"%Y-%m")"
+
+CAKE="$HERE/../bin/cake"
+LOG="$HERE/log.$DATE"
+PDF="$HERE/pdfs/$DATE/$SIDES.$(date +"%F_%T").pdf"
+
 {
-	ID=$(cake queue)
+	ID=$("$CAKE" queue)
 	if [ $ID -eq 0 ]; then
-	#	echo "$(date +"%F_%T") Queue is empty"
+	#	echo "$(date +"%FT%T") Queue is empty"
 		exit 0
 	fi
 
-	mkdir -p pdfs
-	pdf="pdfs/$SIDES.$(date +"%F_%T").pdf"
-	cake queue $SIDES $ID > "$pdf"
-	lpr "$pdf"
+	mkdir -p "$(dirname "$PDF")"
+	"$CAKE" queue $SIDES $ID > "$PDF"
+	lpr "$PDF"
 
-	nr=$(cake queue printed $ID)
-	echo "$(date +"%F_%T") Printed $nr lammies to '$pdf'"
-} 2>&1 | tee -a log
+	nr=$("$CAKE" queue printed $ID)
+	echo "$(date +"%FT%T") Printed $nr lammies to '$(basename "$PDF")'"
+} 2>&1 | tee -a "$LOG"
