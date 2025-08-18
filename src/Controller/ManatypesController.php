@@ -18,7 +18,8 @@ class ManatypesController extends Controller
     public function index(): void
     {
         $query = $this->Manatypes->find()
-                    ->select(['Manatypes.id', 'Manatypes.name'], true);
+                    ->select(['id', 'name'], true)
+                    ->where(['deprecated' => 0]);
         $this->doRawIndex($query, 'Manatypes', '/manatypes/', 'id');
     }
 }
