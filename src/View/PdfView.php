@@ -11,7 +11,7 @@ class PdfView extends View
 {
     // paper margins
     private static float $M_TOP = 8;
-    private static float $M_SIDE = 29;
+    private static float $M_SIDE = 30;
 
     // padding between lammies
     private static float $P_HORZ = 2;
@@ -52,7 +52,7 @@ class PdfView extends View
         }
 
         $pdf = new Rpdf('P', 'mm', 'A4');
-        $pdf->SetMargins(self::$M_SIDE, self::$M_TOP, self::$M_SIDE);
+        $pdf->SetMargins(self::$M_SIDE, self::$M_TOP);
         $pdf->SetTitle('Lammies!');
         $pdf->SetAutoPageBreak(false);
 
