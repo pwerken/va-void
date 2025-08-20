@@ -58,6 +58,6 @@ class LammiesTable extends Table
 
     protected function orderBy(): array
     {
-        return ['id' => 'DESC'];
+        return ['id' => 'ASC'];
     }
 }

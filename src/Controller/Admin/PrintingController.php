@@ -55,6 +55,7 @@ class PrintingController extends AdminController
                 'Lammies.key1 = characters.id',
             ])
             ->where(['Lammies.modified >' => $since->format('Y-m-d')])
+            ->orderBy(['Lammies.id' => 'DESC'], true)
             ->enableHydration(false);
 
         $this->set('printing', $query->all());
