@@ -48,8 +48,8 @@
         "post-create-project-cmd": "App\\Console\\Installer::postInstall",
         "check": [
             "@cs-check",
-            "@test",
-            "@stan"
+            "@stan",
+            "@test"
         ],
         "cs-check": "phpcs --colors -p",
         "cs-fix": "phpcbf --colors -p",
