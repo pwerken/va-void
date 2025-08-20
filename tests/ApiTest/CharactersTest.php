@@ -119,7 +119,7 @@ class CharactersTest extends AuthIntegrationTestCase
         $this->assertArrayHasKey('name', $errors);
     }
 
-    public function testAddCharacterMinimal(): void
+    public function testAddMinimal(): void
     {
         $input = [
 # required fields:
@@ -152,7 +152,7 @@ class CharactersTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
-    public function testAddCharacterComplete(): void
+    public function testAddComplete(): void
     {
         $input = [
 # required fields:
@@ -199,7 +199,7 @@ class CharactersTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
-    public function testEditCharacter(): void
+    public function testEdit(): void
     {
         $input = [
 # disallowed fields:

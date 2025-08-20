@@ -15,6 +15,8 @@ use Cake\Routing\Router;
  */
 class PlayersTable extends Table
 {
+    protected bool $allowSetPrimaryOnCreate = true;
+
     public function initialize(array $config): void
     {
         parent::initialize($config);

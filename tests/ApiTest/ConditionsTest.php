@@ -91,7 +91,7 @@ class ConditionsTest extends AuthIntegrationTestCase
         $this->assertDelete('/conditions/99', 403);
     }
 
-    public function testAddConditionMinimal(): void
+    public function testAddMinimal(): void
     {
         $input = [
 # required fields:
@@ -122,7 +122,7 @@ class ConditionsTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['created']);
     }
 
-    public function testAddConditionComplete(): void
+    public function testAddComplete(): void
     {
         $input = [
 # required fields:
@@ -164,16 +164,47 @@ class ConditionsTest extends AuthIntegrationTestCase
         $this->assertArrayNotHasKey('ignored', $actual);
     }
 
-    public function testRequiredFieldsValidation(): void
+    public function testAddValidation(): void
     {
+        $input = [
+# disallowed fields:
+            'id' => 55,
+# required fields, not allowed empty
+            'name' => '',
+            'player_text' => '',
+        ];
+
         $this->withAuthReferee();
-        $response = $this->assertPut('/conditions', [], 422);
+        $response = $this->assertPut('/conditions', $input, 422);
 
         $errors = $this->assertErrorsResponse('/conditions', $response);
 
         # expected fields with validation errors:
-        $this->assertCount(2, $errors);
+        $this->assertCount(3, $errors);
+        $this->assertArrayHasKey('id', $errors);
         $this->assertArrayHasKey('name', $errors);
         $this->assertArrayHasKey('player_text', $errors);
+    }
+
+    public function testEditValidation(): void
+    {
+        $input = [
+# disallowed fields:
+            'id' => 55,
+# required fields, not allowed empty
+            'name' => '',
+            'player_text' => '',
+        ];
+
+        $this->withAuthReferee();
+        $response = $this->assertPut('/conditions/1', $input, 422);
+
+        $errors = $this->assertErrorsResponse('/conditions/1', $response);
+
+        # expected fields with validation errors:
+        $this->assertCount(3, $errors);
+        $this->assertArrayHasKey('name', $errors);
+        $this->assertArrayHasKey('player_text', $errors);
+        $this->assertArrayHasKey('id', $errors);
     }
 }

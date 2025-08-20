@@ -17,6 +17,8 @@ use ReflectionClass;
 
 abstract class Table extends CakeTable
 {
+    protected bool $allowSetPrimaryOnCreate = false;
+
     protected array $consistencyError = ['consistency' => 'Reference(s) present'];
 
     public function initialize(array $config): void
@@ -66,7 +68,7 @@ abstract class Table extends CakeTable
     public function afterMarshal(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
         // disallow modification of primary key field(s)
-        if ($entity->isNew()) {
+        if ($entity->isNew() && $this->allowSetPrimaryOnCreate) {
             return;
         }
 

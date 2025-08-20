@@ -10,6 +10,8 @@ use Cake\ORM\RulesChecker;
 
 class CharactersPowersTable extends Table
 {
+    protected bool $allowSetPrimaryOnCreate = true;
+
     public function initialize(array $config): void
     {
         parent::initialize($config);

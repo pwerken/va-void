@@ -148,7 +148,7 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertArrayHasKey('condition_id', $errors);
     }
 
-    public function testAddCharactersConditionMinimal(): void
+    public function testAddMinimal(): void
     {
         $input = [
 # required fields:
@@ -171,7 +171,7 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
-    public function testAddCharactersConditionComplete(): void
+    public function testAddComplete(): void
     {
         $input = [
 # required fields:
@@ -195,7 +195,7 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
-    public function testEditCharactersCondition(): void
+    public function testEdit(): void
     {
         $input = [
 # optional fields:
@@ -218,7 +218,7 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
-    public function testDeleteCharacterSkill(): void
+    public function testDelete(): void
     {
         $this->withAuthReferee();
         $this->assertGet('/characters/1/1/conditions/1');

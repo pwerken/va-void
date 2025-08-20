@@ -148,7 +148,7 @@ class CharactersPowersTest extends AuthIntegrationTestCase
         $this->assertArrayHasKey('power_id', $errors);
     }
 
-    public function testAddCharactersPowerMinimal(): void
+    public function testAddMinimal(): void
     {
         $input = [
 # required fields:
@@ -171,7 +171,7 @@ class CharactersPowersTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
-    public function testAddCharactersPowerComplete(): void
+    public function testAddComplete(): void
     {
         $input = [
 # required fields:
@@ -195,7 +195,7 @@ class CharactersPowersTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
-    public function testEditCharactersPower(): void
+    public function testEdit(): void
     {
         $input = [
 # optional fields:
@@ -218,7 +218,7 @@ class CharactersPowersTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
-    public function testDeleteCharacterSkill(): void
+    public function testDelete(): void
     {
         $this->withAuthReferee();
         $this->assertGet('/characters/1/1/powers/1');

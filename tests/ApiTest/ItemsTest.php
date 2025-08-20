@@ -70,7 +70,7 @@ class ItemsTest extends AuthIntegrationTestCase
         $this->assertDelete('/items/99', 403);
     }
 
-    public function testAddItemMinimal(): void
+    public function testAddMinimal(): void
     {
         $input = [
 # only required fields:
@@ -106,7 +106,7 @@ class ItemsTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['created']);
     }
 
-    public function testAddItemComplete(): void
+    public function testAddComplete(): void
     {
         $input = [
 # required fields:

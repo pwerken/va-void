@@ -14,6 +14,8 @@ use Cake\ORM\RulesChecker;
  */
 class CharactersSkillsTable extends Table
 {
+    protected bool $allowSetPrimaryOnCreate = true;
+
     public function initialize(array $config): void
     {
         parent::initialize($config);

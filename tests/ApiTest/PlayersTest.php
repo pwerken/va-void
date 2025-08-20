@@ -152,7 +152,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertArrayHasKey('last_name', $errors);
     }
 
-    public function testAddPlayerMinimal(): void
+    public function testAddMinimal(): void
     {
         $input = [
 # only required fields:
@@ -182,7 +182,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
-    public function testAddPlayerComplete(): void
+    public function testAddComplete(): void
     {
         $input = [
 # required fields:
@@ -224,7 +224,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertArrayNotHasKey('ignored', $actual);
     }
 
-    public function testEditOwnPlayer(): void
+    public function testEditOwn(): void
     {
         $input = [
 # disallowed fields:
@@ -274,7 +274,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertArrayNotHasKey('ignored', $actual);
     }
 
-    public function testEditPlayer(): void
+    public function testEdit(): void
     {
         $input = [
 # disallowed fields:

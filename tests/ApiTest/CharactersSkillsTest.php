@@ -145,7 +145,7 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
         $this->assertArrayHasKey('skill_id', $errors);
     }
 
-    public function testAddCharactersSkillMinimal(): void
+    public function testAddMinimal(): void
     {
         $input = [
 # required fields:
@@ -168,7 +168,7 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
-    public function testAddCharactersSkillComplete(): void
+    public function testAddComplete(): void
     {
         $input = [
 # required fields:
@@ -192,7 +192,7 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
-    public function testEditCharacterSkill(): void
+    public function testEdit(): void
     {
         $input = [
 # optional fields:
@@ -215,7 +215,7 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
-    public function testDeleteCharacterSkill(): void
+    public function testDelete(): void
     {
         $this->withAuthReferee();
         $this->assertGet('/characters/1/1/skills/1');
