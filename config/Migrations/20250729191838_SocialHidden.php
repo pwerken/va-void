@@ -8,7 +8,7 @@ class SocialHidden extends Migration
     public function up(): void
     {
         $this->table('social_profiles')
-            ->addColumnBoolean('hidden', [ 'after' => 'user_id', 'default' => false])
+            ->addColumnBoolean('hidden', ['after' => 'user_id'])
             ->addIndex(['provider', 'identifier'], ['unique' => true])
             ->update();
     }

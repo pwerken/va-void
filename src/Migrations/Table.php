@@ -46,7 +46,7 @@ class Table extends BaseTable
         return $this->addColumn(
             $name,
             'boolean',
-            array_merge($this->columnDefaults, $options),
+            array_merge($this->columnDefaults, ['default' => false], $options),
         );
     }
 

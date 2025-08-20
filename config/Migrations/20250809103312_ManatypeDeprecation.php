@@ -8,7 +8,7 @@ class ManatypeDeprecation extends Migration
     public function up(): void
     {
         $this->table('manatypes')
-            ->addColumnBoolean('deprecated', [ 'after' => 'name', 'default' => false])
+            ->addColumnBoolean('deprecated', ['after' => 'name'])
             ->update();
     }
 
