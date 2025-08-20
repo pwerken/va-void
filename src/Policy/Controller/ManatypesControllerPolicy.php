@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Policy\Controller;
 
+use App\Model\Enum\Authorization;
+
 class ManatypesControllerPolicy extends ControllerPolicy
 {
     /**
@@ -10,7 +12,7 @@ class ManatypesControllerPolicy extends ControllerPolicy
      */
     public function index(): bool
     {
-        return $this->hasAuth('player');
+        return $this->hasAuth(Authorization::Player);
     }
 
     /**
@@ -18,7 +20,7 @@ class ManatypesControllerPolicy extends ControllerPolicy
      */
     public function add(): bool
     {
-        return false; //$this->hasAuth('super');
+        return $this->hasAuth(Authorization::Super);
     }
 
     /**

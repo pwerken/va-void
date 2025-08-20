@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Policy\Controller;
 
+use App\Model\Enum\Authorization;
+
 class PlayersSocialsControllerPolicy extends ControllerPolicy
 {
     /**
@@ -10,7 +12,7 @@ class PlayersSocialsControllerPolicy extends ControllerPolicy
      */
     public function playersIndex(): bool
     {
-        return $this->hasAuth(['user', 'infobalie']);
+        return $this->hasAuth(Authorization::Infobalie, Authorization::Owner);
     }
 
     /**

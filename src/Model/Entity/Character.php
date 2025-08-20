@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Model\Enum\CharacterStatus;
 use Cake\ORM\Locator\LocatorAwareTrait;
 
 class Character extends Entity
@@ -11,7 +12,7 @@ class Character extends Entity
 
     protected array $_defaults = [
         'xp' => 15,
-        'status' => 'inactive',
+        'status' => CharacterStatus::Inactive,
         'belief' => '-',
         'group' => '-',
         'faction_id' => 1,
@@ -28,16 +29,6 @@ class Character extends Entity
 
         $this->setHidden(['id', 'xp_available'], true);
         $this->setHidden(['faction_id', 'faction_object'], true);
-    }
-
-    public static function statusValues(): array
-    {
-        static $data = null;
-        if (is_null($data)) {
-            $data = ['dead', 'inactive', 'active'];
-        }
-
-        return $data;
     }
 
     public function getUrl(): string

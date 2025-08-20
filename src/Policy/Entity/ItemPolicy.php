@@ -5,6 +5,7 @@ namespace App\Policy\Entity;
 
 use App\Model\Entity\Entity;
 use App\Model\Entity\Item;
+use App\Model\Enum\Authorization;
 use Authorization\IdentityInterface as User;
 use Cake\ORM\Locator\LocatorAwareTrait;
 
@@ -16,19 +17,19 @@ class ItemPolicy extends EntityPolicy
     {
         parent::__construct();
 
-        $this->showFieldAuth('attributes', ['read-only']);
-        $this->showFieldAuth('notes', ['read-only']);
-        $this->showFieldAuth('referee_notes', ['read-only']);
+        $this->showFieldAuth('attributes', Authorization::ReadOnly);
+        $this->showFieldAuth('notes', Authorization::ReadOnly);
+        $this->showFieldAuth('referee_notes', Authorization::ReadOnly);
     }
 
     public function canAdd(User $identity, Item $obj): bool
     {
-        return $this->hasAuth(['referee'], $obj);
+        return $this->hasAuthObj($obj, Authorization::Referee);
     }
 
     public function canDelete(User $identity, Item $obj): bool
     {
-        return $this->hasAuth(['super'], $obj);
+        return $this->hasAuthObj($obj, Authorization::Super);
     }
 
     public function canEdit(User $identity, Item $obj): bool
@@ -38,7 +39,7 @@ class ItemPolicy extends EntityPolicy
 
     public function canView(User $identity, Item $obj): bool
     {
-        return $this->hasAuth(['read-only', 'user'], $obj);
+        return $this->hasAuthObj($obj, Authorization::ReadOnly, Authorization::Owner);
     }
 
     protected function hasRoleUser(int $plin, ?Entity $obj): bool

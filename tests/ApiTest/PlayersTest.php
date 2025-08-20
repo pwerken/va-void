@@ -44,7 +44,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertArrayKeyValue('url', $ref->getUrl(), $data);
         $this->assertArrayKeyValue('plin', $ref->getIdentifier(), $data);
 
-        $this->assertArrayKeyValue('role', $ref->get('role'), $data);
+        $this->assertArrayKeyValue('role', $ref->get('role')->value, $data);
         $this->assertArrayKeyValue('password', $ref->has('password'), $data);
         $this->assertArrayKeyValue('first_name', $ref->get('first_name'), $data);
         $this->assertArrayKeyValue('insertion', $ref->get('insertion'), $data);

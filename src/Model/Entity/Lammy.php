@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use App\Lammy\LammyCard;
+use App\Model\Enum\LammyStatus;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 
@@ -12,7 +13,9 @@ class Lammy extends Entity
     private ?Entity $target = null;
     private ?LammyCard $lammy = null;
 
-    protected array $_defaults = [ 'status' => 'Queued' ];
+    protected array $_defaults = [
+        'status' => LammyStatus::Queued,
+    ];
 
     public function __construct(array $properties = [], array $options = [])
     {
@@ -21,16 +24,6 @@ class Lammy extends Entity
         $this->setCompact(['entity', 'key1', 'key2', 'status', 'modified']);
         $this->setVirtual(['target', 'lammy']);
         $this->setHidden(['lammy'], true);
-    }
-
-    public static function statusValues(): array
-    {
-        static $data = null;
-        if (is_null($data)) {
-            $data = ['Queued', 'Failed', 'Printing', 'Printed'];
-        }
-
-        return $data;
     }
 
     protected function _getTarget(): Entity

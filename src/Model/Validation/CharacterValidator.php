@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Validation;
 
-use App\Model\Entity\Character;
+use App\Model\Enum\CharacterStatus;
 
 class CharacterValidator extends Validator
 {
@@ -24,6 +24,6 @@ class CharacterValidator extends Validator
         $this->allowEmptyString('belief');
         $this->allowEmptyString('group');
         $this->allowEmptyString('world');
-        $this->inList('status', Character::statusValues());
+        $this->enum('status', CharacterStatus::class);
     }
 }

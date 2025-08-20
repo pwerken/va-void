@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Policy\Controller;
 
+use App\Model\Enum\Authorization;
+
 class CharactersSkillsControllerPolicy extends ControllerPolicy
 {
     /**
@@ -10,7 +12,7 @@ class CharactersSkillsControllerPolicy extends ControllerPolicy
      */
     public function charactersIndex(): bool
     {
-        return $this->hasAuth(['user', 'read-only']);
+        return $this->hasAuth(Authorization::ReadOnly, Authorization::Owner);
     }
 
     /**
@@ -18,7 +20,7 @@ class CharactersSkillsControllerPolicy extends ControllerPolicy
      */
     public function charactersAdd(): bool
     {
-        return $this->hasAuth('referee');
+        return $this->hasAuth(Authorization::Referee);
     }
 
     /**
@@ -50,6 +52,6 @@ class CharactersSkillsControllerPolicy extends ControllerPolicy
      */
     public function skillsIndex(): bool
     {
-        return $this->hasAuth('read-only');
+        return $this->hasAuth(Authorization::ReadOnly);
     }
 }

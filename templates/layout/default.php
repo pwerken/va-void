@@ -1,14 +1,17 @@
 <?php
+
+use App\Model\Enum\Authorization;
+
 /**
  * @var \Cake\View\View $this
  * @var ?\App\Model\Entity\Player $user
  */
 $site = 'VOID-API';
 
-$hasAuthPlayer = $user?->hasAuth('Player');
-$hasAuthReadOnly = $user?->hasAuth('Read-only');
-#$hasAuthReferee = $user?->hasAuth('Referee');
-$hasAuthInfobalie = $user?->hasAuth('Infobalie');
+$hasAuthPlayer = $user?->hasAuth(Authorization::Player);
+$hasAuthReadOnly = $user?->hasAuth(Authorization::ReadOnly);
+#$hasAuthReferee = $user?->hasAuth(Authorization::Referee);
+$hasAuthInfobalie = $user?->hasAuth(Authorization::Infobalie);
 
 ?>
 <!DOCTYPE html>
@@ -57,7 +60,7 @@ $hasAuthInfobalie = $user?->hasAuth('Infobalie');
                 <a href="/admin">
                     <small>
                         <?= $user?->get('full_name') ?><br/>
-                        <em><?= $user?->get('role') ?></em>
+                        <em><?= $user?->get('role')->label() ?></em>
                     </small>
                 </a>
             </div>

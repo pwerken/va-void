@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Policy\Controller;
 
+use App\Model\Enum\Authorization;
+
 class PlayersControllerPolicy extends ControllerPolicy
 {
     /**
@@ -10,7 +12,7 @@ class PlayersControllerPolicy extends ControllerPolicy
      */
     public function index(): bool
     {
-        return $this->hasAuth('player');
+        return $this->hasAuth(Authorization::Player);
     }
 
     /**
@@ -18,7 +20,7 @@ class PlayersControllerPolicy extends ControllerPolicy
      */
     public function add(): bool
     {
-        return $this->hasAuth('infobalie');
+        return $this->hasAuth(Authorization::Infobalie);
     }
 
     /**
@@ -34,7 +36,7 @@ class PlayersControllerPolicy extends ControllerPolicy
      */
     public function edit(): bool
     {
-        return $this->hasAuth('player');
+        return $this->hasAuth(Authorization::Player);
     }
 
     /**

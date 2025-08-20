@@ -1,9 +1,12 @@
 <?php
 declare(strict_types=1);
+
+use App\Model\Enum\Authorization;
+
 /**
  * @var \Cake\View\View $this
  * @var ?\App\Model\Entity\Player $user
- * @var list<string> $roles
+ * @var list<\App\Model\Enum\PlayerRole> $roles
  * @var array $permissions
  */
 ?>
@@ -26,10 +29,10 @@ $descriptions = [
 
 $options = [];
 foreach ($roles as $role) {
-    $options[$role] = $role;
+    $options[$role->value] = $role->label();
 }
 
-if ($user?->hasAuth('referee')) {
+if ($user?->hasAuth(Authorization::Referee)) {
     echo $this->Form->create(null, ['url' => ['controller' => 'Authorization', 'action' => 'edit']])
         . $this->Form->control('plin', [
             'label' => 'Plin',
@@ -46,24 +49,24 @@ if ($user?->hasAuth('referee')) {
 
 echo "<table>\n";
 foreach (array_reverse($roles) as $role) {
-    echo '<tr><th colspan="2">' . $role .
-        '<br/><small>Permissions: ' . $descriptions[$role] . '</small>' .
+    echo '<tr><th colspan="2">' . $role->label() .
+        '<br/><small>Permissions: ' . $descriptions[$role->value] . '</small>' .
         "</th></tr>\n";
 
-    if (!isset($permissions[$role])) {
+    if (!isset($permissions[$role->value])) {
         echo '<tr><td/><td>'
             . 'There are <em>NO</em> accounts with this role.'
             . "</td></tr>\n";
         continue;
     }
-    if (count($permissions[$role]) > 100) {
+    if (count($permissions[$role->value]) > 100) {
         echo '<tr><td/><td>'
-            . 'A total of <em>' . count($permissions[$role]) . '</em> accounts with this role.'
+            . 'A total of <em>' . count($permissions[$role->value]) . '</em> accounts with this role.'
             . "</td></tr>\n";
         continue;
     }
 
-    foreach ($permissions[$role] as $plin => $name) {
+    foreach ($permissions[$role->value] as $plin => $name) {
         $url = ['controller' => 'History', 'action' => 'player', $plin];
         echo '<tr><td>'
             . $this->Html->link((string)$plin, $url)

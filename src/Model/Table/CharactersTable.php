@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Enum\CharacterStatus;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
@@ -20,6 +21,8 @@ class CharactersTable extends Table
     public function initialize(array $config): void
     {
         parent::initialize($config);
+
+        $this->setColumnEnumType('status', CharacterStatus::class);
 
         $this->belongsTo('Players');
         $this->belongsTo('Factions')->setProperty('faction_object');

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Validation;
 
-use App\Model\Entity\Player;
+use App\Model\Enum\PlayerRole;
 
 class PlayerValidator extends Validator
 {
@@ -16,7 +16,7 @@ class PlayerValidator extends Validator
         $this->requirePresence('last_name', 'create');
 
         $this->nonNegativeInteger('id');
-        $this->inList('role', Player::roleValues());
+        $this->enum('role', PlayerRole::class);
         $this->allowEmptyString('password');
         $this->notEmptyString('first_name');
         $this->allowEmptyString('insertion');

@@ -70,7 +70,7 @@ foreach ($characters as $c) {
 <tr>
     <td><?= $c['player_id'] . '-' . $c['chin'] ?></td>
     <td><?= $this->Html->link($c['name'], $link) ?></td>
-    <td><?= $c['status'] ?></td>
+    <td><?= $c['status']->name ?></td>
     <td><?= $c['modified']->i18nFormat('yyyy-MM-dd HH:mm:ss') ?></td>
     <?php
     foreach ($selected as $s) {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Command\Traits\CommandAuthorizationTrait;
-use App\Model\Entity\Player;
+use App\Model\Enum\PlayerRole;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -34,7 +34,7 @@ class AdminAuthCommand extends Command
             'role',
             [ 'help' => 'Role to assign to player.'
                     , 'required' => false
-                    , 'choices' => Player::roleValues(),
+                    , 'choices' => PlayerRole::values(),
             ],
         );
 
@@ -52,17 +52,23 @@ class AdminAuthCommand extends Command
             return $this->authPlayer($io, $plin, $role);
         }
 
-        $query = $this->fetchTable()->find('list', valueField: 'id', groupField: 'role');
-        $perms = $query->toArray();
+        $grouper = function ($value, $key) {
+            return $value->role->value;
+        };
 
-        foreach (array_reverse(Player::roleValues()) as $role) {
-            $count = isset($perms[$role]) ? count($perms[$role]) : 0;
-            $io->out(sprintf('<warning>%s</warning> (%d)', $role, $count));
+        $perms = $this->fetchTable()
+                    ->find('list', valueField: 'id', groupField: $grouper)
+                    ->all()
+                    ->toArray();
+
+        foreach (array_reverse(PlayerRole::cases()) as $role) {
+            $count = isset($perms[$role->value]) ? count($perms[$role->value]) : 0;
+            $io->out(sprintf('<warning>%s</warning> (%d)', $role->label(), $count));
             if ($count == 0 || $count > 100) {
                 continue;
             }
 
-            foreach ($perms[$role] as $plin) {
+            foreach ($perms[$role->value] as $plin) {
                 $player = $this->fetchTable()->get($plin);
                 $io->out(sprintf('<info>%4d</info> %s', $plin, $player->get('full_name')));
             }
@@ -80,7 +86,7 @@ class AdminAuthCommand extends Command
         }
 
         if (isset($role)) {
-            $table->patchEntity($player, ['role' => $role]);
+            $table->patchEntity($player, ['role' => PlayerRole::tryFrom($role)]);
             $table->save($player);
 
             $errors = $player->getError('role');
@@ -96,7 +102,7 @@ class AdminAuthCommand extends Command
             '<info>%04d</info> %s: <warning>%s</warning>',
             $player->get('id'),
             $player->get('full_name'),
-            $player->get('role'),
+            $player->get('role')->label(),
         ));
 
         return static::CODE_SUCCESS;

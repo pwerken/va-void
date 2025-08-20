@@ -1,5 +1,9 @@
 <?php
 declare(strict_types=1);
+
+use App\Model\Enum\Authorization;
+use App\Model\Enum\LammyStatus;
+
 /**
  * @var \Cake\View\View $this
  * @var ?\App\Model\Entity\Player $user
@@ -9,13 +13,13 @@ declare(strict_types=1);
 <h3>Printing Queue</h3>
 <?php
 
-$isInfobalie = $user?->hasAuth('infobalie');
+$isInfobalie = $user?->hasAuth(Authorization::Infobalie);
 
 $uniq = [];
 $duplicates = 0;
 $queued = 0;
 foreach ($printing as $row) {
-    if ($row['status'] != 'Queued') {
+    if ($row['status'] != LammyStatus::Queued) {
         continue;
     }
     $queued++;
@@ -120,7 +124,7 @@ foreach ($printing as $row) {
 
     echo "<tr>\n"
         . '<td>' . $checkbox . "</td>\n"
-        . '<td class="not-on-mobile">' . $row['status'] . ($duplicate ? ' (D)' : '') . "</td>\n"
+        . '<td class="not-on-mobile">' . $row['status']->label() . ($duplicate ? ' (D)' : '') . "</td>\n"
         . '<td class="not-on-mobile">' . $row['creator_id'] . "</td>\n"
         . '<td>' . $row['entity'] . ' ' . $key1 . ' ' . $key2 . "</td>\n"
         . '<td>' . $row['modified'] . "</td>\n"

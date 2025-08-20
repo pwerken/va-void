@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Policy\Entity;
 
 use App\Model\Entity\CharactersCondition;
+use App\Model\Enum\Authorization;
 use Authorization\IdentityInterface as User;
 use RuntimeException;
 
@@ -11,7 +12,7 @@ class CharactersConditionPolicy extends EntityPolicy
 {
     public function canAdd(User $identity, CharactersCondition $obj): bool
     {
-        return $this->hasAuth(['referee'], $obj);
+        return $this->hasAuthObj($obj, Authorization::Referee);
     }
 
     public function canView(User $identity, CharactersCondition $obj): bool

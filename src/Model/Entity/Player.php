@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Model\Enum\Authorization;
+use App\Model\Enum\PlayerRole;
 use ArrayAccess;
 use Authentication\IdentityInterface as AuthenticationIdentity;
 use Authentication\PasswordHasher\DefaultPasswordHasher;
@@ -12,7 +14,9 @@ use Authorization\Policy\ResultInterface;
 
 class Player extends Entity implements AuthenticationIdentity, AuthorizationIdentity
 {
-    protected array $_defaults = [ 'role' => 'Player' ];
+    protected array $_defaults = [
+        'role' => PlayerRole::Player,
+    ];
 
     protected AuthorizationServiceInterface $authorization;
 
@@ -38,16 +42,6 @@ class Player extends Entity implements AuthenticationIdentity, AuthorizationIden
         return isset($value);
     }
 
-    public static function roleValues(): array
-    {
-        static $data = null;
-        if (is_null($data)) {
-            $data = ['Player', 'Read-only', 'Referee', 'Infobalie', 'Event Control', 'Super'];
-        }
-
-        return $data;
-    }
-
     protected function _getFullName(): string
     {
         $name = [$this->get('first_name'), $this->get('insertion'), $this->get('last_name')];
@@ -55,23 +49,9 @@ class Player extends Entity implements AuthenticationIdentity, AuthorizationIden
         return implode(' ', array_filter($name));
     }
 
-    public function hasAuth(string $role): bool
+    public function hasAuth(Authorization $role): bool
     {
-        $want = self::roleToInt($role);
-        $have = self::roleToInt($this->get('role'));
-
-        return $want > 0 && $want <= $have;
-    }
-
-    private function roleToInt(string $role): int
-    {
-        foreach (self::roleValues() as $key => $value) {
-            if (strcasecmp($role, $value) == 0) {
-                return $key + 1;
-            }
-        }
-
-        return 0;
+        return $this->get('role')->toAuth()->hasAuth($role);
     }
 
     public function setAuthorization(AuthorizationServiceInterface $service): self

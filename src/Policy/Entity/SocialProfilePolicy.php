@@ -5,6 +5,7 @@ namespace App\Policy\Entity;
 
 use App\Model\Entity\Entity;
 use App\Model\Entity\SocialProfile;
+use App\Model\Enum\Authorization;
 use Authorization\IdentityInterface as User;
 
 class SocialProfilePolicy extends EntityPolicy
@@ -13,7 +14,7 @@ class SocialProfilePolicy extends EntityPolicy
     {
         parent::__construct();
 
-        $this->showFieldAuth('identifier', 'super');
+        $this->showFieldAuth('identifier', Authorization::Super);
     }
 
     public function canAdd(User $identity, SocialProfile $obj): bool
@@ -33,7 +34,7 @@ class SocialProfilePolicy extends EntityPolicy
 
     public function canView(User $identity, SocialProfile $obj): bool
     {
-        return $this->hasAuth(['infobalie', 'user'], $obj);
+        return $this->hasAuthObj($obj, Authorization::Infobalie, Authorization::Owner);
     }
 
     protected function hasRoleUser(int $plin, ?Entity $obj): bool

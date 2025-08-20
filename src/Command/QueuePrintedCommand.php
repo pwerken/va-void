@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Command\Traits\CommandAuthorizationTrait;
+use App\Model\Enum\LammyStatus;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -44,7 +45,7 @@ class QueuePrintedCommand extends Command
                         ->where(['Lammies.id <=' => $id])
                         ->all();
 
-        $this->fetchTable()->setStatuses($lammies, 'Printed');
+        $this->fetchTable()->setStatuses($lammies, LammyStatus::Printed);
 
         $io->out((string)$lammies->count());
 

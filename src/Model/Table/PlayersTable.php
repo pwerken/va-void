@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Enum\PlayerRole;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
@@ -17,6 +18,8 @@ class PlayersTable extends Table
     public function initialize(array $config): void
     {
         parent::initialize($config);
+
+        $this->setColumnEnumType('role', PlayerRole::class);
 
         $this->hasMany('Characters');
         $this->hasMany('SocialProfiles')
@@ -52,13 +55,14 @@ class PlayersTable extends Table
         }
 
         $user = Router::getRequest()->getAttribute('identity');
-        if (!$user->hasAuth($entity->getOriginal('role'))) {
+        $prevAuth = $entity->getOriginal('role')->toAuth();
+        if (!$user->hasAuth($prevAuth)) {
             $entity->setError('role', ['authorization' => 'Cannot demote user with more authorization than you']);
 
             return false;
         }
 
-        if (!$user->hasAuth($entity->get('role'))) {
+        if (!$user->hasAuth($entity->get('role')->toAuth())) {
             $entity->setError('role', ['authorization' => 'Cannot promote user above your own authorization']);
 
             return false;

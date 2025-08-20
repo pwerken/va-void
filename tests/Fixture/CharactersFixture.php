@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\Fixture;
 
+use App\Model\Enum\CharacterStatus;
 use Cake\TestSuite\Fixture\TestFixture;
 
 class CharactersFixture extends TestFixture
@@ -20,7 +21,7 @@ class CharactersFixture extends TestFixture
                 'belief' => '-',
                 'group' => '-',
                 'world' => '-',
-                'status' => 'Active',
+                'status' => CharacterStatus::Active,
                 'referee_notes' => '',
                 'notes' => '',
                 'modified' => null,
@@ -36,7 +37,7 @@ class CharactersFixture extends TestFixture
                 'belief' => 'Self',
                 'group' => 'The Gang',
                 'world' => 'Home',
-                'status' => 'Active',
+                'status' => CharacterStatus::Active,
                 'referee_notes' => '',
                 'notes' => '',
                 'modified' => null,

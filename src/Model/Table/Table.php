@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use ArrayObject;
+use Cake\Database\Type\EnumType;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\EventInterface;
@@ -140,6 +141,11 @@ abstract class Table extends CakeTable
         }
 
         return $this->findAll($query);
+    }
+
+    protected function setColumnEnumType(string $column, string $enumClass): void
+    {
+        $this->getSchema()->setColumnType($column, EnumType::from($enumClass));
     }
 
     protected function belongsToManyThrough(string $associated, string $linktable): void

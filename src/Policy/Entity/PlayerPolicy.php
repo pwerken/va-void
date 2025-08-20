@@ -5,6 +5,7 @@ namespace App\Policy\Entity;
 
 use App\Model\Entity\Entity;
 use App\Model\Entity\Player;
+use App\Model\Enum\Authorization;
 use Authorization\IdentityInterface as User;
 
 class PlayerPolicy extends EntityPolicy
@@ -13,16 +14,16 @@ class PlayerPolicy extends EntityPolicy
     {
         parent::__construct();
 
-        $this->showFieldAuth('password', ['user', 'infobalie']);
-        $this->showFieldAuth('socials', ['user', 'infobalie']);
+        $this->showFieldAuth('password', Authorization::Infobalie, Authorization::Owner);
+        $this->showFieldAuth('socials', Authorization::Infobalie, Authorization::Owner);
 
-        $this->editFieldAuth('role', 'referee');
-        $this->editFieldAuth('password', ['user', 'infobalie']);
+        $this->editFieldAuth('role', Authorization::Referee);
+        $this->editFieldAuth('password', Authorization::Infobalie, Authorization::Owner);
     }
 
     public function canAdd(User $identity, Player $obj): bool
     {
-        return $this->hasAuth(['infobalie'], $obj);
+        return $this->hasAuthObj($obj, Authorization::Infobalie);
     }
 
     public function canDelete(User $identity, Player $obj): bool
@@ -32,17 +33,17 @@ class PlayerPolicy extends EntityPolicy
 
     public function canEdit(User $identity, Player $obj): bool
     {
-        return $this->hasAuth(['infobalie', 'user'], $obj);
+        return $this->hasAuthObj($obj, Authorization::Infobalie, Authorization::Owner);
     }
 
     public function canView(User $identity, Player $obj): bool
     {
-        return $this->hasAuth(['read-only', 'user'], $obj);
+        return $this->hasAuthObj($obj, Authorization::ReadOnly, Authorization::Owner);
     }
 
     public function canCharactersIndex(User $identity, Player $obj): bool
     {
-        return $this->hasAuth(['read-only', 'user'], $obj);
+        return $this->canView($identity, $obj);
     }
 
     protected function hasRoleUser(int $plin, ?Entity $obj): bool

@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Model\Entity\Player;
+use App\Model\Enum\Authorization;
+use App\Model\Enum\PlayerRole;
 use Cake\Http\Response;
 
 class AuthorizationController extends AdminController
@@ -15,8 +16,8 @@ class AuthorizationController extends AdminController
     {
         $user = $this->getRequest()->getAttribute('identity');
 
-        $roles = Player::roleValues();
-        if (!$user->hasAuth('Super')) {
+        $roles = PlayerRole::cases();
+        if (!$user->hasAuth(Authorization::Super)) {
             # hide 'Super' to prevent authorization envy
             array_pop($roles);
         }
@@ -29,9 +30,9 @@ class AuthorizationController extends AdminController
             $query = $players
                     ->find()
                     ->where(['Players.role LIKE' => $role]);
-            $permissions[$role] = [];
+            $permissions[$role->value] = [];
             foreach ($query->all() as $player) {
-                $permissions[$role][$player->get('id')] = $player->get('full_name');
+                $permissions[$role->value][$player->get('id')] = $player->get('full_name');
             }
         }
         $this->set('permissions', $permissions);

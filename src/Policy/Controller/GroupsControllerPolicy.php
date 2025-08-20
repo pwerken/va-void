@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Policy\Controller;
 
+use App\Model\Enum\Authorization;
+
 class GroupsControllerPolicy extends ControllerPolicy
 {
     /**
@@ -10,6 +12,6 @@ class GroupsControllerPolicy extends ControllerPolicy
      */
     public function index(): bool
     {
-        return $this->hasAuth('player');
+        return $this->hasAuth(Authorization::Player);
     }
 }

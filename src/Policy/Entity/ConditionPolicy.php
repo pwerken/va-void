@@ -5,6 +5,7 @@ namespace App\Policy\Entity;
 
 use App\Model\Entity\Condition;
 use App\Model\Entity\Entity;
+use App\Model\Enum\Authorization;
 use Authorization\IdentityInterface as User;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\Query;
@@ -17,14 +18,14 @@ class ConditionPolicy extends EntityPolicy
     {
         parent::__construct();
 
-        $this->showFieldAuth('notes', ['read-only']);
-        $this->showFieldAuth('referee_notes', ['read-only']);
-        $this->showFieldAuth('characters', ['read-only']);
+        $this->showFieldAuth('notes', Authorization::ReadOnly);
+        $this->showFieldAuth('referee_notes', Authorization::ReadOnly);
+        $this->showFieldAuth('characters', Authorization::ReadOnly);
     }
 
     public function canAdd(User $identity, Condition $obj): bool
     {
-        return $this->hasAuth(['referee'], $obj);
+        return $this->hasAuthObj($obj, Authorization::Referee);
     }
 
     public function canDelete(User $identity, Condition $obj): bool
@@ -39,7 +40,7 @@ class ConditionPolicy extends EntityPolicy
 
     public function canView(User $identity, Condition $obj): bool
     {
-        return $this->hasAuth(['read-only', 'user'], $obj);
+        return $this->hasAuthObj($obj, Authorization::ReadOnly, Authorization::Owner);
     }
 
     protected function hasRoleUser(int $plin, ?Entity $obj): bool

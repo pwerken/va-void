@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 if (isset($user)) {
     echo '<p>Logged in as: ' . $user['full_name'] . '<br/>';
-    echo 'With auth level: ' . $user['role'] . '</p>';
+    echo 'With auth level: ' . $user['role']->label() . '</p>';
     echo $this->Html->link(__('Click here to logout.'), ['controller' => 'Logout']);
 
     return;

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Policy\Controller;
 
+use App\Model\Enum\Authorization;
+
 class PowersControllerPolicy extends ControllerPolicy
 {
     /**
@@ -10,7 +12,7 @@ class PowersControllerPolicy extends ControllerPolicy
      */
     public function index(): bool
     {
-        return $this->hasAuth('player');
+        return $this->hasAuth(Authorization::Player);
     }
 
     /**
@@ -18,7 +20,7 @@ class PowersControllerPolicy extends ControllerPolicy
      */
     public function add(): bool
     {
-        return $this->hasAuth('referee');
+        return $this->hasAuth(Authorization::Referee);
     }
 
     /**
@@ -42,7 +44,7 @@ class PowersControllerPolicy extends ControllerPolicy
      */
     public function delete(): bool
     {
-        return $this->hasAuth('super');
+        return $this->hasAuth(Authorization::Super);
     }
 
     /**
@@ -50,7 +52,7 @@ class PowersControllerPolicy extends ControllerPolicy
      */
     public function pdf(): bool
     {
-        return $this->hasAuth('read-only');
+        return $this->hasAuth(Authorization::ReadOnly);
     }
 
     /**
@@ -58,6 +60,6 @@ class PowersControllerPolicy extends ControllerPolicy
      */
     public function queue(): bool
     {
-        return $this->hasAuth('referee');
+        return $this->hasAuth(Authorization::Referee);
     }
 }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\Fixture;
 
+use App\Model\Enum\LammyStatus;
 use Cake\TestSuite\Fixture\TestFixture;
 
 class LammiesFixture extends TestFixture
@@ -12,7 +13,7 @@ class LammiesFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'status' => 'Queued',
+                'status' => LammyStatus::Queued,
                 'entity' => 'Character',
                 'key1' => 1,
                 'key2' => 1,
@@ -22,7 +23,7 @@ class LammiesFixture extends TestFixture
             ],
             [
                 'id' => 2,
-                'status' => 'Queued',
+                'status' => LammyStatus::Queued,
                 'entity' => 'CharactersCondition',
                 'key1' => 1,
                 'key2' => 1,
@@ -32,7 +33,7 @@ class LammiesFixture extends TestFixture
             ],
             [
                 'id' => 3,
-                'status' => 'Queued',
+                'status' => LammyStatus::Queued,
                 'entity' => 'CharactersPower',
                 'key1' => 1,
                 'key2' => 1,
@@ -42,7 +43,7 @@ class LammiesFixture extends TestFixture
             ],
             [
                 'id' => 4,
-                'status' => 'Queued',
+                'status' => LammyStatus::Queued,
                 'entity' => 'Condition',
                 'key1' => 1,
                 'key2' => null,
@@ -52,7 +53,7 @@ class LammiesFixture extends TestFixture
             ],
             [
                 'id' => 5,
-                'status' => 'Queued',
+                'status' => LammyStatus::Queued,
                 'entity' => 'Power',
                 'key1' => 1,
                 'key2' => null,
@@ -62,7 +63,7 @@ class LammiesFixture extends TestFixture
             ],
             [
                 'id' => 6,
-                'status' => 'Queued',
+                'status' => LammyStatus::Queued,
                 'entity' => 'Item',
                 'key1' => 1,
                 'key2' => null,
@@ -72,7 +73,7 @@ class LammiesFixture extends TestFixture
             ],
             [
                 'id' => 7,
-                'status' => 'Queued',
+                'status' => LammyStatus::Queued,
                 'entity' => 'Teaching',
                 'key1' => 1,
                 'key2' => 1,

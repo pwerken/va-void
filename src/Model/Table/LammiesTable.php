@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Enum\LammyStatus;
 use ArrayObject;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
@@ -12,6 +13,13 @@ use Cake\ORM\Query\SelectQuery;
 
 class LammiesTable extends Table
 {
+    public function initialize(array $config): void
+    {
+        parent::initialize($config);
+
+        $this->setColumnEnumType('status', LammyStatus::class);
+    }
+
     public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
     }
@@ -33,8 +41,8 @@ class LammiesTable extends Table
     {
         $query = $this->findWithContain($query);
         $query->where(function (QueryExpression $exp) {
-            return $exp->or(['status LIKE' => 'Queued'])
-                        ->eq('status', 'Printing');
+            return $exp->or(['status LIKE' => LammyStatus::Queued])
+                        ->eq('status', LammyStatus::Printing);
         });
 
         return $query;
@@ -43,15 +51,15 @@ class LammiesTable extends Table
     public function findPrinting(SelectQuery $query): SelectQuery
     {
         $query = $this->findWithContain($query);
-        $query->where(['status LIKE' => 'Printing']);
+        $query->where(['status LIKE' => LammyStatus::Printing]);
 
         return $query;
     }
 
-    public function setStatuses(ResultSetInterface $set, string $status): void
+    public function setStatuses(ResultSetInterface $set, LammyStatus $status): void
     {
         foreach ($set as $lammy) {
-            $lammy->status = (is_null($lammy->lammy) ? 'Failed' : $status);
+            $lammy->status = (is_null($lammy->lammy) ? LammyStatus::Failed : $status);
             $this->save($lammy);
         }
     }

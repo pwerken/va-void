@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Model\Enum\Authorization;
+use App\Model\Enum\LammyStatus;
 use DateInterval;
 use DateTime;
 
@@ -22,7 +24,7 @@ class PrintingController extends AdminController
         $lammies = $this->fetchTable('Lammies');
         $user = $this->getRequest()->getAttribute('identity');
 
-        if ($this->request->is('post') && $user->hasAuth('Infobalie')) {
+        if ($this->request->is('post') && $user->hasAuth(Authorization::Infobalie)) {
             $ids = $this->request->getData('delete');
             if (!empty($ids)) {
                 $nr = $lammies->deleteAll(['id IN' => $ids]);
@@ -75,7 +77,7 @@ class PrintingController extends AdminController
         $this->set('lammies', $queued);
         $this->set('viewVar', 'lammies');
 
-        $lammies->setStatuses($queued, 'Printed');
+        $lammies->setStatuses($queued, LammyStatus::Printed);
     }
 
     /**

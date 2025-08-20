@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Policy\Entity;
 
 use App\Model\Entity\Faction;
+use App\Model\Enum\Authorization;
 use Authorization\IdentityInterface as User;
 
 class FactionPolicy extends EntityPolicy
@@ -12,12 +13,12 @@ class FactionPolicy extends EntityPolicy
     {
         parent::__construct();
 
-        $this->showFieldAuth('characters', ['read-only']);
+        $this->showFieldAuth('characters', Authorization::ReadOnly);
     }
 
     public function canAdd(User $identity, Faction $obj): bool
     {
-        return $this->hasAuth(['super'], $obj);
+        return $this->hasAuthObj($obj, Authorization::Super);
     }
 
     public function canDelete(User $identity, Faction $obj): bool
@@ -32,11 +33,11 @@ class FactionPolicy extends EntityPolicy
 
     public function canView(User $identity, Faction $obj): bool
     {
-        return $this->hasAuth(['player'], $obj);
+        return $this->hasAuthObj($obj, Authorization::Player);
     }
 
     public function canCharactersIndex(User $identity, Faction $obj): bool
     {
-        return $this->hasAuth(['read-only'], $obj);
+        return $this->hasAuthObj($obj, Authorization::ReadOnly);
     }
 }

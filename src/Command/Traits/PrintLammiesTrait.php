@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Command\Traits;
 
+use App\Model\Enum\LammyStatus;
 use App\View\PdfView;
 
 trait PrintLammiesTrait
@@ -18,7 +19,7 @@ trait PrintLammiesTrait
             return null;
         }
 
-        $this->fetchTable()->setStatuses($queue, 'Printing');
+        $this->fetchTable()->setStatuses($queue, LammyStatus::Printing);
 
         $lammies = [];
         foreach ($queue as $queued) {

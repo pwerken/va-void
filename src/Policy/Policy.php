@@ -5,6 +5,7 @@ namespace App\Policy;
 
 use App\Model\Entity\Entity;
 use App\Model\Entity\Player;
+use App\Model\Enum\Authorization;
 use Authorization\IdentityInterface as User;
 use Authorization\Policy\BeforePolicyInterface;
 use Authorization\Policy\BeforeScopeInterface;
@@ -37,22 +38,24 @@ abstract class Policy implements BeforePolicyInterface, BeforeScopeInterface
         }
     }
 
-    protected function hasAuth(string|array $roles, ?Entity $obj = null): bool
+    protected function hasAuth(Authorization ...$roles): bool
+    {
+        return $this->hasAuthObj(null, ...$roles);
+    }
+
+    protected function hasAuthObj(?Entity $obj, Authorization ...$roles): bool
     {
         if (is_null($this->identity)) {
             return false;
         }
 
-        if (is_string($roles)) {
-            $roles = [$roles];
-        }
-
+        $authorization = $this->identity->get('role')->toAuth();
         foreach ($roles as $role) {
-            if (strcasecmp($role, 'user') == 0) {
+            if ($role === Authorization::Owner) {
                 if ($this->hasRoleUser($this->getPlin(), $obj)) {
                     return true;
                 }
-            } elseif ($this->identity->hasAuth($role)) {
+            } elseif ($authorization->hasAuth($role)) {
                 return true;
             }
         }

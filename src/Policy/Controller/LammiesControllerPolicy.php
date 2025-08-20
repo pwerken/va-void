@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Policy\Controller;
 
+use App\Model\Enum\Authorization;
+
 class LammiesControllerPolicy extends ControllerPolicy
 {
     /**
@@ -10,7 +12,7 @@ class LammiesControllerPolicy extends ControllerPolicy
      */
     public function index(): bool
     {
-        return $this->hasAuth('read-only');
+        return $this->hasAuth(Authorization::ReadOnly);
     }
 
     /**
@@ -18,7 +20,7 @@ class LammiesControllerPolicy extends ControllerPolicy
      */
     public function add(): bool
     {
-        return $this->hasAuth('super');
+        return $this->hasAuth(Authorization::Super);
     }
 
     /**
@@ -50,7 +52,7 @@ class LammiesControllerPolicy extends ControllerPolicy
      */
     public function queue(): bool
     {
-        return $this->hasAuth('infobalie');
+        return $this->hasAuth(Authorization::Infobalie);
     }
 
     /**
