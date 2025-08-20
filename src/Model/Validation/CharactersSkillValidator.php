@@ -14,6 +14,6 @@ class CharactersSkillValidator extends Validator
 
         $this->nonNegativeInteger('character_id');
         $this->nonNegativeInteger('skill_id');
-        $this->nonNegativeInteger('times');
+        $this->integer('times')->greaterThanOrEqual('times', 1);
     }
 }

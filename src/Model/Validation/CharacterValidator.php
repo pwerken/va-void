@@ -17,7 +17,7 @@ class CharacterValidator extends Validator
 
         $this->nonNegativeInteger('id');
         $this->nonNegativeInteger('player_id');
-        $this->naturalNumber('chin');
+        $this->nonNegativeInteger('chin');
         $this->notEmptyString('name');
         $this->numeric('xp')->regex('xp', '/^\d+([.,](0|25|5|75)0*)?$/');
         $this->nonNegativeInteger('faction_id');

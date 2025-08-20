@@ -14,7 +14,7 @@ class SkillValidator extends Validator
 
         $this->nonNegativeInteger('id');
         $this->notEmptyString('name');
-        $this->nonNegativeInteger('cost');
+        $this->integer('cost')->greaterThanOrEqual('times', 1);
         $this->nonNegativeInteger('manatype_id')->allowEmptyString('manatype_id');
         $this->nonNegativeInteger('mana_amount');
         $this->nonNegativeInteger('sort_order');
