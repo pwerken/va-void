@@ -134,8 +134,6 @@ class CharactersTable extends Table
 
     public function ruleNoConditions(EntityInterface $entity, array $options): bool
     {
-        $this->loadInto($entity, ['Conditions']);
-
         if (count($entity->get('conditions')) > 0) {
             $entity->setError('conditions', $this->consistencyError);
 
@@ -147,8 +145,6 @@ class CharactersTable extends Table
 
     public function ruleNoItems(EntityInterface $entity, array $options): bool
     {
-        $this->loadInto($entity, ['Items']);
-
         if (count($entity->get('items')) > 0) {
             $entity->setError('items', $this->consistencyError);
 
@@ -160,8 +156,6 @@ class CharactersTable extends Table
 
     public function ruleNoPowers(EntityInterface $entity, array $options): bool
     {
-        $this->loadInto($entity, ['Powers']);
-
         if (count($entity->get('powers')) > 0) {
             $entity->setError('powers', $this->consistencyError);
 
@@ -173,8 +167,6 @@ class CharactersTable extends Table
 
     public function ruleNoSkills(EntityInterface $entity, array $options): bool
     {
-        $this->loadInto($entity, ['Skills']);
-
         if (count($entity->get('skills')) > 0) {
             $entity->setError('skills', $this->consistencyError);
 

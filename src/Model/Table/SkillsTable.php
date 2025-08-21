@@ -29,8 +29,6 @@ class SkillsTable extends Table
 
     public function ruleNoCharacters(EntityInterface $entity, array $options): bool
     {
-        $this->loadInto($entity, ['Characters']);
-
         if (count($entity->get('characters')) > 0) {
             $entity->setError('characters', $this->consistencyError);
 

@@ -6,9 +6,12 @@ namespace App\Model\Entity;
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\Entity as CakeEntity;
 use Cake\ORM\TableRegistry;
+use JeremyHarris\LazyLoad\ORM\LazyLoadEntityTrait;
 
 abstract class Entity extends CakeEntity
 {
+    use LazyLoadEntityTrait;
+
     protected array $_defaults = [ ];
     protected array $_compact = [ 'id', 'name' ];
 
@@ -39,8 +42,8 @@ abstract class Entity extends CakeEntity
 
     protected function getRelationUrl(string $first, string $second): string
     {
-        $a = $this->{strtolower($first)}?->getUrl();
-        $b = $this->{strtolower($second)}?->getUrl();
+        $a = $this->get(strtolower($first))->getUrl();
+        $b = $this->get(strtolower($second))->getUrl();
 
         return $a . $b;
     }

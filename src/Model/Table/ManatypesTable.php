@@ -27,8 +27,6 @@ class ManatypesTable extends Table
 
     public function ruleNoSkills(EntityInterface $entity, array $options): bool
     {
-        $this->loadInto($entity, ['Skills']);
-
         if (count($entity->get('skills')) > 0) {
             $entity->setError('skills', $this->consistencyError);
 

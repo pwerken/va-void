@@ -13,6 +13,7 @@
         "cakephp/migrations": "@stable",
         "cakephp/plugin-installer": "^2.0",
         "firebase/php-jwt": "^6.5",
+        "jeremyharris/cakephp-lazyload": "^5.0",
         "setasign/fpdf": "^1.8",
         "socialconnect/auth": "^3.3"
     },

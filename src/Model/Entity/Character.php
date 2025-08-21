@@ -4,12 +4,9 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use App\Model\Enum\CharacterStatus;
-use Cake\ORM\Locator\LocatorAwareTrait;
 
 class Character extends Entity
 {
-    use LocatorAwareTrait;
-
     protected array $_defaults = [
         'xp' => 15,
         'status' => CharacterStatus::Inactive,
@@ -43,10 +40,6 @@ class Character extends Entity
 
     protected function _getXpAvailable(): float
     {
-        if (empty($this->get('skills')) && $this->getSource()) {
-            $this->getTableLocator()->get($this->getSource())->loadInto($this, ['Skills']);
-        }
-
         $used = 0;
         foreach ($this->get('skills') as $skill) {
             $times = $skill->_joinData->get('times');
