@@ -11,7 +11,6 @@ use Cake\Utility\Inflector;
  * @property \App\Controller\Component\AddComponent $Add
  * @property \App\Controller\Component\EditComponent $Edit
  * @property \App\Controller\Component\LammyComponent $Lammy
- * @property \App\Model\Table\ItemsTable $Items;
  */
 class ItemsController extends Controller
 {
@@ -23,7 +22,7 @@ class ItemsController extends Controller
      */
     public function index(): void
     {
-        $query = $this->Items->find()
+        $query = $this->fetchTable()->find()
                     ->select([], true)
                     ->select('Items.id')
                     ->select('Items.name')
@@ -42,7 +41,7 @@ class ItemsController extends Controller
         $hasParent = isset($this->parent);
         if ($hasParent) {
             $a = Inflector::camelize($this->parent->getSource());
-            $key = $this->Items->getAssociation($a)->getForeignKey();
+            $key = $this->fetchTable()->getAssociation($a)->getForeignKey();
             $value = $this->parent->id;
 
             $query = $query->andWhere(["Items.$key" => $value]);

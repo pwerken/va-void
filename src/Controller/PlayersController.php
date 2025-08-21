@@ -8,9 +8,6 @@ use App\Controller\Traits\DeleteTrait;
 use App\Controller\Traits\EditTrait;
 use App\Controller\Traits\ViewTrait;
 
-/**
- * @property \App\Model\Table\PlayersTable $Players;
- */
 class PlayersController extends Controller
 {
     use AddTrait; // PUT /players
@@ -23,7 +20,7 @@ class PlayersController extends Controller
      */
     public function index(): void
     {
-        $query = $this->Players->find()
+        $query = $this->fetchTable()->find()
                     ->select([], true)
                     ->select('Players.id')
                     ->select('Players.first_name')

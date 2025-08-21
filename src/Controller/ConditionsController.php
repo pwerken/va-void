@@ -10,7 +10,6 @@ use App\Controller\Traits\ViewTrait;
 
 /**
  * @property \App\Controller\Component\LammyComponent $Lammy
- * @property \App\Model\Table\ConditionsTable $Conditions;
  */
 class ConditionsController extends Controller
 {
@@ -24,7 +23,7 @@ class ConditionsController extends Controller
      */
     public function index(): void
     {
-        $query = $this->Conditions->find()
+        $query = $this->fetchTable()->find()
                     ->select([], true)
                     ->select('Conditions.id')
                     ->select('Conditions.name')

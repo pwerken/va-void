@@ -9,7 +9,6 @@ namespace App\Controller;
  * @property \App\Controller\Component\IndexRelationComponent $IndexRelation;
  * @property \App\Controller\Component\LammyComponent $Lammy
  * @property \App\Controller\Component\ViewComponent $View;
- * @property \App\Model\Table\TeachingsTable $Teachings;
  */
 class TeachingsController extends Controller
 {

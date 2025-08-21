@@ -8,7 +8,6 @@ use Cake\Http\Exception\NotFoundException;
 /**
  * @property \App\Controller\Component\DeleteComponent $Delete;
  * @property \App\Controller\Component\IndexRelationComponent $IndexRelation;
- * @property \App\Model\Table\SocialProfilesTable $SocialProfiles;
  */
 class PlayersSocialsController extends Controller
 {
@@ -23,7 +22,7 @@ class PlayersSocialsController extends Controller
 
         $parent = $this->fetchTable('Players')->get($plin);
 
-        $query = $this->SocialProfiles->find('withContain');
+        $query = $this->fetchTable()->find('withContain');
         $query->andWhere(['user_id' => $plin]);
 
         $this->IndexRelation->action($parent, $query, 'edit');
@@ -34,7 +33,7 @@ class PlayersSocialsController extends Controller
      */
     public function playersView(int $plin, int $id): void
     {
-        $obj = $this->SocialProfiles->get($id, 'withContain');
+        $obj = $this->fetchTable()->get($id, 'withContain');
         if ($obj->get('user_id') != $plin) {
             throw new NotFoundException();
         }

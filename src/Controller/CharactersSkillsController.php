@@ -9,7 +9,6 @@ namespace App\Controller;
  * @property \App\Controller\Component\EditComponent $Edit
  * @property \App\Controller\Component\IndexRelationComponent $IndexRelation
  * @property \App\Controller\Component\ViewComponent $View
- * @property \App\Model\Table\CharactersSkillsTable $CharactersSkills;
  */
 class CharactersSkillsController extends Controller
 {
@@ -20,7 +19,7 @@ class CharactersSkillsController extends Controller
     {
         $parent = $this->fetchTable('Characters')->get($char_id);
 
-        $query = $this->CharactersSkills->find('withContain');
+        $query = $this->fetchTable()->find('withContain');
         $query->andWhere(['CharactersSkills.character_id' => $char_id]);
 
         $this->loadComponent('IndexRelation');
@@ -77,7 +76,7 @@ class CharactersSkillsController extends Controller
     {
         $parent = $this->fetchTable('Skills')->get($skill_id);
 
-        $query = $this->CharactersSkills->find('withContain');
+        $query = $this->fetchTable()->find('withContain');
         $query->andWhere(['CharactersSkills.skill_id' => $skill_id]);
 
         $this->loadComponent('IndexRelation');

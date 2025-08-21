@@ -10,7 +10,6 @@ use App\Controller\Traits\ViewTrait;
 
 /**
  * @property \App\Controller\Component\LammyComponent $Lammy
- * @property \App\Model\Table\PowersTable $Powers;
  */
 class PowersController extends Controller
 {
@@ -24,7 +23,7 @@ class PowersController extends Controller
      */
     public function index(): void
     {
-        $query = $this->Powers->find()
+        $query = $this->fetchTable()->find()
                     ->select([], true)
                     ->select('Powers.id')
                     ->select('Powers.name')

@@ -10,7 +10,6 @@ namespace App\Controller;
  * @property \App\Controller\Component\IndexRelationComponent $IndexRelation
  * @property \App\Controller\Component\LammyComponent $Lammy
  * @property \App\Controller\Component\ViewComponent $View
- * @property \App\Model\Table\CharactersPowersTable $CharactersPowers;
  */
 class CharactersPowersController extends Controller
 {
@@ -21,7 +20,7 @@ class CharactersPowersController extends Controller
     {
         $parent = $this->fetchTable('Characters')->get($char_id);
 
-        $query = $this->CharactersPowers->find('withContain');
+        $query = $this->fetchTable()->find('withContain');
         $query->andWhere(['CharactersPowers.character_id' => $char_id]);
 
         $this->loadComponent('IndexRelation');
@@ -96,7 +95,7 @@ class CharactersPowersController extends Controller
     {
         $parent = $this->fetchTable('Powers')->get($poin);
 
-        $query = $this->CharactersPowers->find('withContain');
+        $query = $this->fetchTable()->find('withContain');
         $query->andWhere(['CharactersPowers.power_id' => $poin]);
 
         $this->loadComponent('IndexRelation');

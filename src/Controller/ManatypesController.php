@@ -5,9 +5,6 @@ namespace App\Controller;
 
 use App\Controller\Traits\ViewTrait;
 
-/**
- * @property \App\Model\Table\ManatypesTable $Manatypes;
- */
 class ManatypesController extends Controller
 {
     use ViewTrait; // GET /manatypes/{id}
@@ -17,7 +14,7 @@ class ManatypesController extends Controller
      */
     public function index(): void
     {
-        $query = $this->Manatypes->find()
+        $query = $this->fetchTable()->find()
                     ->select(['id', 'name'], true)
                     ->where(['deprecated' => 0]);
         $this->doRawIndex($query, 'Manatypes', '/manatypes/', 'id');

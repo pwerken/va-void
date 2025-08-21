@@ -8,9 +8,6 @@ use App\Controller\Traits\DeleteTrait;
 use App\Controller\Traits\EditTrait;
 use App\Controller\Traits\ViewTrait;
 
-/**
- * @property \App\Model\Table\FactionsTable $Factions;
- */
 class FactionsController extends Controller
 {
     use AddTrait; // PUT /factions
@@ -23,7 +20,7 @@ class FactionsController extends Controller
      */
     public function index(): void
     {
-        $query = $this->Factions->find();
+        $query = $this->fetchTable()->find();
         $this->doRawIndex($query, 'Factions', '/factions/', 'id');
     }
 }

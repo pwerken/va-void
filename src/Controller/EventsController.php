@@ -8,9 +8,6 @@ use App\Controller\Traits\DeleteTrait;
 use App\Controller\Traits\EditTrait;
 use App\Controller\Traits\ViewTrait;
 
-/**
- * @property \App\Model\Table\EventsTable $Events;
- */
 class EventsController extends Controller
 {
     use AddTrait; // PUT /events
@@ -23,7 +20,7 @@ class EventsController extends Controller
      */
     public function index(): void
     {
-        $query = $this->Events->find();
+        $query = $this->fetchTable()->find();
         $this->doRawIndex($query, 'Events', '/events/', 'id');
     }
 }

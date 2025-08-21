@@ -8,9 +8,6 @@ use App\Controller\Traits\EditTrait;
 use App\Controller\Traits\ViewTrait;
 use App\Model\Enum\LammyStatus;
 
-/**
- * @property \App\Model\Table\LammiesTable $Lammies;
- */
 class LammiesController extends Controller
 {
     use DeleteTrait; // DELETE /lammies/{id}
@@ -22,7 +19,7 @@ class LammiesController extends Controller
      */
     public function index(): void
     {
-        $query = $this->Lammies->find()
+        $query = $this->fetchTable()->find()
                     ->select([], true)
                     ->select('Lammies.id')
                     ->select('Lammies.status')
@@ -56,7 +53,7 @@ class LammiesController extends Controller
      */
     public function queue(): void
     {
-        $last = $this->Lammies
+        $last = $this->fetchTable()
                 ->find('lastInQueue')
                 ->disableHydration()
                 ->select(['id'])
@@ -91,11 +88,11 @@ class LammiesController extends Controller
      */
     public function printed(): void
     {
-        $lammies = $this->Lammies
+        $lammies = $this->fetchTable()
                     ->find('printing')
                     ->where(['Lammies.id <=' => $this->intFromBody()])
                     ->all();
-        $this->Lammies->setStatuses($lammies, LammyStatus::Printed);
+        $this->fetchTable()->setStatuses($lammies, LammyStatus::Printed);
 
         $this->set('_serialize', count($lammies));
     }
@@ -105,12 +102,12 @@ class LammiesController extends Controller
      */
     private function pdfOutput(int $max_id, ?bool $double = false): void
     {
-        $lammies = $this->Lammies
+        $lammies = $this->fetchTable()
                     ->find('queued')
                     ->where(['Lammies.id <=' => $max_id])
                     ->all();
 
-        $this->Lammies->setStatuses($lammies, LammyStatus::Printing);
+        $this->fetchTable()->setStatuses($lammies, LammyStatus::Printing);
 
         $this->viewBuilder()->setClassName('Pdf');
         $this->set('viewVar', 'lammies');

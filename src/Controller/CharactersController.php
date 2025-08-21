@@ -11,7 +11,6 @@ use Cake\Utility\Inflector;
 /**
  * @property \App\Controller\Component\AddComponent $Add
  * @property \App\Controller\Component\LammyComponent $Lammy
- * @property \App\Model\Table\CharactersTable $Characters;
  */
 class CharactersController extends Controller
 {
@@ -24,7 +23,7 @@ class CharactersController extends Controller
      */
     public function index(): void
     {
-        $query = $this->Characters->find()
+        $query = $this->fetchTable()->find()
                     ->select([], true)
                     ->select('Characters.player_id')
                     ->select('Characters.chin')
@@ -36,7 +35,7 @@ class CharactersController extends Controller
             $this->Authorization->authorize($this->parent, 'charactersIndex');
 
             $a = Inflector::camelize($this->parent->getSource());
-            $key = $this->Characters->getAssociation($a)->getForeignKey();
+            $key = $this->fetchTable()->getAssociation($a)->getForeignKey();
             $value = $this->parent->id;
 
             $query = $query->andWhere(["Characters.$key" => $value]);
@@ -122,7 +121,7 @@ class CharactersController extends Controller
     {
         $this->loadComponent('Lammy');
 
-        $char = $this->Characters->get($char_id, 'withContain');
+        $char = $this->fetchTable()->get($char_id, 'withContain');
         $objs = [$this->Lammy->createLammy($char)];
 
         if ($all) {

@@ -5,9 +5,6 @@ namespace App\Controller;
 
 use App\Controller\Traits\ViewTrait;
 
-/**
- * @property \App\Model\Table\SkillsTable $Skills
- */
 class SkillsController extends Controller
 {
     use ViewTrait; // GET /skills/{id}
@@ -17,6 +14,6 @@ class SkillsController extends Controller
      */
     public function index(): void
     {
-        $this->set('_serialize', $this->Skills->find('withContain')->all());
+        $this->set('_serialize', $this->fetchTable()->find('withContain')->all());
     }
 }
