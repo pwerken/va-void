@@ -47,7 +47,7 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/1/2/skills/2', 404);
         $this->assertGet('/characters/2/1/skills');
         $this->assertGet('/characters/2/1/skills/1', 404);
-        $this->assertGet('/characters/2/1/skills/2', 404);
+        $this->assertGet('/characters/2/1/skills/2');
         $this->assertGet('/characters/99/1/skills', 404);
         $this->assertGet('/characters/99/1/skills/1', 404);
         $this->assertGet('/characters/99/1/skills/2', 404);

@@ -8,7 +8,7 @@ use App\Test\TestSuite\AuthIntegrationTestCase;
 
 class CharactersTest extends AuthIntegrationTestCase
 {
-    public function testAuthorization(): void
+    public function testAuthorizationGet(): void
     {
         $this->withoutAuth();
         $this->assertGet('/characters', 401);
@@ -25,10 +25,6 @@ class CharactersTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/99', 401);
         $this->assertGet('/characters/99/1', 401);
         $this->assertGet('/characters/99/1/items', 401);
-        $this->assertDelete('/characters/1/1', 401);
-        $this->assertDelete('/characters/1/2', 401);
-        $this->assertDelete('/characters/2/1', 401);
-        $this->assertDelete('/characters/99/1', 401);
 
         $this->withAuthPlayer();
         $this->assertGet('/characters');
@@ -43,10 +39,6 @@ class CharactersTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/99', 403);
         $this->assertGet('/characters/99/1', 403);
         $this->assertGet('/characters/99/1/items', 403);
-        $this->assertDelete('/characters/1/1', 403);
-        $this->assertDelete('/characters/1/2', 403);
-        $this->assertDelete('/characters/2/1', 403);
-        $this->assertDelete('/characters/99/1', 403);
 
         $this->withAuthReadOnly();
         $this->assertGet('/characters');
@@ -61,6 +53,23 @@ class CharactersTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/99', 404);
         $this->assertGet('/characters/99/1', 404);
         $this->assertGet('/characters/99/1/items', 404);
+    }
+
+    public function testAuthorizationDelete(): void
+    {
+        $this->withoutAuth();
+        $this->assertDelete('/characters/1/1', 401);
+        $this->assertDelete('/characters/1/2', 401);
+        $this->assertDelete('/characters/2/1', 401);
+        $this->assertDelete('/characters/99/1', 401);
+
+        $this->withAuthPlayer();
+        $this->assertDelete('/characters/1/1', 403);
+        $this->assertDelete('/characters/1/2', 403);
+        $this->assertDelete('/characters/2/1', 403);
+        $this->assertDelete('/characters/99/1', 403);
+
+        $this->withAuthReadOnly();
         $this->assertDelete('/characters/1/1', 403);
         $this->assertDelete('/characters/1/2', 403);
         $this->assertDelete('/characters/2/1', 403);

@@ -7,7 +7,7 @@ use App\Test\TestSuite\AuthIntegrationTestCase;
 
 class FactionsTest extends AuthIntegrationTestCase
 {
-    public function testAuthorization(): void
+    public function testAuthorizationGet(): void
     {
         $this->withoutAuth();
         $this->assertGet('/factions', 401);
@@ -15,9 +15,6 @@ class FactionsTest extends AuthIntegrationTestCase
         $this->assertGet('/factions/1/characters', 401);
         $this->assertGet('/factions/99', 401);
         $this->assertGet('/factions/99/characters', 401);
-        $this->assertPut('/factions', [], 401);
-        $this->assertPut('/factions/1', [], 401);
-        $this->assertDelete('/factions/1', 401);
 
         $this->withAuthPlayer();
         $this->assertGet('/factions');
@@ -25,9 +22,6 @@ class FactionsTest extends AuthIntegrationTestCase
         $this->assertGet('/factions/1/characters', 403);
         $this->assertGet('/factions/99', 404);
         $this->assertGet('/factions/99/characters', 403);
-        $this->assertPut('/factions', [], 403);
-        $this->assertPut('/factions/1', [], 403);
-        $this->assertDelete('/factions/1', 403);
 
         $this->withAuthReadOnly();
         $this->assertGet('/factions');
@@ -35,9 +29,6 @@ class FactionsTest extends AuthIntegrationTestCase
         $this->assertGet('/factions/1/characters');
         $this->assertGet('/factions/99', 404);
         $this->assertGet('/factions/99/characters', 404);
-        $this->assertPut('/factions', [], 403);
-        $this->assertPut('/factions/1', [], 403);
-        $this->assertDelete('/factions/1', 403);
 
         $this->withAuthReferee();
         $this->assertGet('/factions');
@@ -45,9 +36,6 @@ class FactionsTest extends AuthIntegrationTestCase
         $this->assertGet('/factions/1/characters');
         $this->assertGet('/factions/99', 404);
         $this->assertGet('/factions/99/characters', 404);
-        $this->assertPut('/factions', [], 403);
-        $this->assertPut('/factions/1', [], 403);
-        $this->assertDelete('/factions/1', 403);
 
         $this->withAuthInfobalie();
         $this->assertGet('/factions');
@@ -55,8 +43,46 @@ class FactionsTest extends AuthIntegrationTestCase
         $this->assertGet('/factions/1/characters');
         $this->assertGet('/factions/99', 404);
         $this->assertGet('/factions/99/characters', 404);
+    }
+
+    public function testAuthorizationPut(): void
+    {
+        $this->withoutAuth();
+        $this->assertPut('/factions', [], 401);
+        $this->assertPut('/factions/1', [], 401);
+
+        $this->withAuthPlayer();
         $this->assertPut('/factions', [], 403);
         $this->assertPut('/factions/1', [], 403);
+
+        $this->withAuthReadOnly();
+        $this->assertPut('/factions', [], 403);
+        $this->assertPut('/factions/1', [], 403);
+
+        $this->withAuthReferee();
+        $this->assertPut('/factions', [], 403);
+        $this->assertPut('/factions/1', [], 403);
+
+        $this->withAuthInfobalie();
+        $this->assertPut('/factions', [], 403);
+        $this->assertPut('/factions/1', [], 403);
+    }
+
+    public function testAuthorizationDelete(): void
+    {
+        $this->withoutAuth();
+        $this->assertDelete('/factions/1', 401);
+
+        $this->withAuthPlayer();
+        $this->assertDelete('/factions/1', 403);
+
+        $this->withAuthReadOnly();
+        $this->assertDelete('/factions/1', 403);
+
+        $this->withAuthReferee();
+        $this->assertDelete('/factions/1', 403);
+
+        $this->withAuthInfobalie();
         $this->assertDelete('/factions/1', 403);
     }
 

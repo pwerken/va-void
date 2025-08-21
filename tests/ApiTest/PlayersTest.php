@@ -57,7 +57,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertArrayHasKey('socials', $data);
     }
 
-    public function testAuthorization(): void
+    public function testAuthorizationGet(): void
     {
         $this->withoutAuth();
         $this->assertGet('/players', 401);
@@ -67,16 +67,6 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertGet('/players/2/characters', 401);
         $this->assertGet('/players/99', 401);
         $this->assertGet('/players/99/characters', 401);
-        $this->assertPut('/players', [], 401);
-        $this->assertPut('/players/1', [], 401);
-        $this->assertPut('/players/1/characters', [], 401);
-        $this->assertPut('/players/2', [], 401);
-        $this->assertPut('/players/2/characters', [], 401);
-        $this->assertPut('/players/99', [], 401);
-        $this->assertPut('/players/99/characters', [], 401);
-        $this->assertDelete('/players/1', 401);
-        $this->assertDelete('/players/2', 401);
-        $this->assertDelete('/players/99', 401);
 
         $this->withAuthPlayer();
         $this->assertGet('/players');
@@ -88,16 +78,6 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertGet('/players/99', 404);
         $this->assertGet('/players/99/characters', 403);
         $this->assertGet('/players/99/socials', 403);
-        $this->assertPut('/players', [], 403);
-        $this->assertPut('/players/1', []);
-        $this->assertPut('/players/1/characters', [], 403);
-        $this->assertPut('/players/2', [], 403);
-        $this->assertPut('/players/2/characters', [], 403);
-        $this->assertPut('/players/99', [], 404);
-        $this->assertPut('/players/99/characters', [], 403);
-        $this->assertDelete('/players/1', 403);
-        $this->assertDelete('/players/2', 403);
-        $this->assertDelete('/players/99', 403);
 
         $this->withAuthReadOnly();
         $this->assertGet('/players');
@@ -107,16 +87,6 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertGet('/players/2/characters');
         $this->assertGet('/players/99', 404);
         $this->assertGet('/players/99/characters', 404);
-        $this->assertPut('/players', [], 403);
-        $this->assertPut('/players/1', [], 403);
-        $this->assertPut('/players/1/characters', [], 403);
-        $this->assertPut('/players/2', []);
-        $this->assertPut('/players/2/characters', [], 403);
-        $this->assertPut('/players/99', [], 404);
-        $this->assertPut('/players/99/characters', [], 403);
-        $this->assertDelete('/players/1', 403);
-        $this->assertDelete('/players/2', 403);
-        $this->assertDelete('/players/99', 403);
 
         $this->withAuthReferee();
         $this->assertGet('/players');
@@ -126,6 +96,38 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertGet('/players/2/characters');
         $this->assertGet('/players/99', 404);
         $this->assertGet('/players/99/characters', 404);
+    }
+
+    public function testAuthorizationPut(): void
+    {
+        $this->withoutAuth();
+        $this->assertPut('/players', [], 401);
+        $this->assertPut('/players/1', [], 401);
+        $this->assertPut('/players/1/characters', [], 401);
+        $this->assertPut('/players/2', [], 401);
+        $this->assertPut('/players/2/characters', [], 401);
+        $this->assertPut('/players/99', [], 401);
+        $this->assertPut('/players/99/characters', [], 401);
+
+        $this->withAuthPlayer();
+        $this->assertPut('/players', [], 403);
+        $this->assertPut('/players/1', []);
+        $this->assertPut('/players/1/characters', [], 403);
+        $this->assertPut('/players/2', [], 403);
+        $this->assertPut('/players/2/characters', [], 403);
+        $this->assertPut('/players/99', [], 404);
+        $this->assertPut('/players/99/characters', [], 403);
+
+        $this->withAuthReadOnly();
+        $this->assertPut('/players', [], 403);
+        $this->assertPut('/players/1', [], 403);
+        $this->assertPut('/players/1/characters', [], 403);
+        $this->assertPut('/players/2', []);
+        $this->assertPut('/players/2/characters', [], 403);
+        $this->assertPut('/players/99', [], 404);
+        $this->assertPut('/players/99/characters', [], 403);
+
+        $this->withAuthReferee();
         $this->assertPut('/players', [], 403);
         $this->assertPut('/players/1', [], 403);
         $this->assertPut('/players/1/characters', [], 422);
@@ -133,6 +135,26 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertPut('/players/2/characters', [], 422);
         $this->assertPut('/players/99', [], 404);
         $this->assertPut('/players/99/characters', [], 422); // FIXME -> 404
+    }
+
+    public function testAuthorizationDelete(): void
+    {
+        $this->withoutAuth();
+        $this->assertDelete('/players/1', 401);
+        $this->assertDelete('/players/2', 401);
+        $this->assertDelete('/players/99', 401);
+
+        $this->withAuthPlayer();
+        $this->assertDelete('/players/1', 403);
+        $this->assertDelete('/players/2', 403);
+        $this->assertDelete('/players/99', 403);
+
+        $this->withAuthReadOnly();
+        $this->assertDelete('/players/1', 403);
+        $this->assertDelete('/players/2', 403);
+        $this->assertDelete('/players/99', 403);
+
+        $this->withAuthReferee();
         $this->assertDelete('/players/1', 403);
         $this->assertDelete('/players/2', 403);
         $this->assertDelete('/players/99', 403);
