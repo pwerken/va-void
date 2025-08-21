@@ -46,8 +46,14 @@ foreach ($history as $row) {
     unset($prev['modified']);
     unset($data['modifier_id']);
     unset($prev['modifier_id']);
-    unset($data['skill_id']);
-    unset($prev['skill_id']);
+    if ($row->get('entity') == 'Teaching') {
+        unset($data['skill_id']);
+        unset($prev['skill_id']);
+    }
+    if (in_array($row->get('entity'), ['CharactersGlyphImbue', 'CharactersRuneImbue'])) {
+        unset($data['type']);
+        unset($prev['type']);
+    }
 
     if (is_null($row->get('data'))) {
         // removed entity

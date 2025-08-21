@@ -84,7 +84,7 @@ class ManatypesTest extends AuthIntegrationTestCase
 
         $expected = [
             'class' => 'Manatype',
-            'url' => '/manatypes/2',
+            'url' => '/manatypes/3',
             'name' => 'Test',
             'deprecated' => false,
         ];
@@ -94,11 +94,11 @@ class ManatypesTest extends AuthIntegrationTestCase
         }
 
         $expected['name'] = 'Edit';
-        $actual = $this->assertPut('/manatypes/2', ['name' => 'Edit']);
+        $actual = $this->assertPut('/manatypes/3', ['name' => 'Edit']);
         foreach ($expected as $key => $value) {
             $this->assertArrayKeyValue($key, $value, $actual);
         }
 
-        $this->assertDelete('/manatypes/2');
+        $this->assertDelete('/manatypes/3');
     }
 }

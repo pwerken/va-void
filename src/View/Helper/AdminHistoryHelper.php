@@ -103,6 +103,20 @@ class AdminHistoryHelper extends Helper
         $link['controller'] = 'History';
 
         switch ($entity) {
+            case 'CharactersImbue':
+            case 'CharactersGlyphImbue':
+            case 'CharactersRuneImbue':
+                if ($rhs) {
+                    $link['action'] = strtolower(substr($entity, -5));
+                    $link[] = $h->get('key2');
+                } else {
+                    $obj = $this->getCharacter($h->get('key1'));
+                    $link['action'] = 'character';
+                    $link[] = $obj->get('plin');
+                    $link[] = $obj->get('chin');
+                }
+
+                return $link;
             case 'CharactersPower':
             case 'CharactersCondition':
                 if ($rhs) {

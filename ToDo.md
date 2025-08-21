@@ -14,10 +14,10 @@ ToDo-list:
    - [ ] limit access to the "base" skills
    - [ ] don't track changes when status='concept'
  - Glyph/Rune character imbue
-   - [ ] add table 'imbues', similar to 'powers'
-   - [ ] add characters relation table
-   - [ ] add new printable lammy (similar to 'power')
-   - [ ] char lammy: calculate character.rune/glyph imbue cap
+   - [x] add table 'imbues', similar to 'powers'
+   - [x] add characters relation table
+   - [x] add new printable lammy (similar to 'power')
+   - [x] char lammy: calculate character.rune/glyph imbue cap
  - Indirect mana
    - [x] add mana to imbues/powers/conditions/items
    - [x] char lammy: calculate mana from sources

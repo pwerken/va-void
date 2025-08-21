@@ -23,9 +23,10 @@ $options['options'] = [
     '' => 'All',
     'Players' => 'Players',
     'Characters' => 'Characters',
-    'Items' => 'Items',
-    'Conditions' => 'Conditions',
+    'Imbues' => 'Imbues',
     'Powers' => 'Powers',
+    'Conditions' => 'Conditions',
+    'Items' => 'Items',
 ];
 echo $this->Form->control('what', $options);
 

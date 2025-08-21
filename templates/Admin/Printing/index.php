@@ -109,7 +109,9 @@ foreach ($printing as $row) {
     if (substr($row['entity'], 0, 9) === 'Character' || $row['entity'] === 'Teaching') {
         $link = ['controller' => 'History', 'action' => 'character'] + explode('/', $key1, 2);
         $key1 = $this->Html->link((string)$key1, $link);
-        if (substr($row['entity'], -5, 5) === 'Power') {
+        if (substr($row['entity'], -5, 5) === 'Imbue') {
+            $key2 = $this->Html->link(sprintf('%04d', $key2), ['controller' => 'History', 'action' => 'imbue', $key2]);
+        } elseif (substr($row['entity'], -5, 5) === 'Power') {
             $key2 = $this->Html->link((string)$key2, ['controller' => 'History', 'action' => 'power', $key2]);
         } elseif (substr($row['entity'], -9, 9) === 'Condition') {
             $key2 = $this->Html->link((string)$key2, ['controller' => 'History', 'action' => 'condition', $key2]);

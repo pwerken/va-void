@@ -45,6 +45,7 @@ class HistoryTable extends Table
         $tbls = [
             'Players',
             'Characters',
+            'Imbues',
             'Powers',
             'Conditions',
             'Items',
@@ -102,17 +103,20 @@ class HistoryTable extends Table
             case 'characters':
                 $where['entity'] = 'character';
                 break;
-            case 'items':
-                $where['entity'] = 'item';
-                break;
-            case 'conditions':
-                $where['entity'] = 'condition';
+            case 'imbues':
+                $where['entity'] = 'imbue';
                 break;
             case 'powers':
                 $where['entity'] = 'power';
                 break;
+            case 'conditions':
+                $where['entity'] = 'condition';
+                break;
+            case 'items':
+                $where['entity'] = 'item';
+                break;
             default:
-                $where['entity IN'] = ['player', 'character', 'item', 'condition', 'power'];
+                $where['entity IN'] = ['player', 'character', 'imbue', 'power', 'condition', 'item'];
                 break;
         }
 
@@ -131,6 +135,7 @@ class HistoryTable extends Table
         $list = match (strtolower($entity)) {
             'player' => $this->getPlayerHistory($k1),
             'character' => $this->getCharacterHistory($k1, $k2),
+            'imbue' => $this->getImbueHistory($k1),
             'power' => $this->getPowerHistory($k1),
             'condition' => $this->getConditionHistory($k1),
             'item' => $this->getItemHistory($k1),
@@ -178,12 +183,14 @@ class HistoryTable extends Table
         $related = [
             'Character',
             'CharactersSkill',
+            'CharactersGlyphImbue',
+            'CharactersRuneImbue',
             'CharactersPower',
             'CharactersCondition',
             'Teaching',
         ];
         $list = $this->find()
-            ->where(['entity in' => $related, 'key1' => $entity->id])
+            ->where(['entity IN' => $related, 'key1' => $entity->id])
             ->all()
             ->toList();
 
@@ -191,6 +198,24 @@ class HistoryTable extends Table
 
         if ($entity->teacher) {
             $list[] = History::fromEntity($entity->teacher);
+        }
+
+        foreach ($entity->glyphimbues as $imbue) {
+            $relation = $imbue->_joinData;
+            $relation->imbue = $imbue;
+            $list[] = History::fromEntity($relation);
+        }
+
+        foreach ($entity->runeimbues as $imbue) {
+            $relation = $imbue->_joinData;
+            $relation->imbue = $imbue;
+            $list[] = History::fromEntity($relation);
+        }
+
+        foreach ($entity->skills as $skill) {
+            $relation = $skill->_joinData;
+            $relation->skill = $skill;
+            $list[] = History::fromEntity($relation);
         }
 
         foreach ($entity->conditions as $condition) {
@@ -205,10 +230,32 @@ class HistoryTable extends Table
             $list[] = History::fromEntity($relation);
         }
 
-        foreach ($entity->skills as $skill) {
-            $relation = $skill->_joinData;
-            $relation->skill = $skill;
-            $list[] = History::fromEntity($relation);
+        return $list;
+    }
+
+    private function getImbueHistory(int $id): array
+    {
+        $list = $this->find()
+            ->where(function (QueryExpression $exp) use ($id) {
+                $a = $exp->and(['entity' => 'Imbue', 'key1' => $id]);
+                $b = $exp->and(['entity LIKE' => 'Characters%Imbue', 'key2' => $id]);
+
+                return $exp->or([$a, $b]);
+            })
+            ->all()
+            ->toList();
+
+        $entity = $this->getTableLocator()->get('Imbues')->find('withContain')
+            ->where(['Imbues.id' => $id])
+            ->first();
+        if (!is_null($entity)) {
+            $list[] = History::fromEntity($entity);
+
+            foreach ($entity->characters as $character) {
+                $relation = $character->_joinData;
+                $relation->character = $character;
+                $list[] = History::fromEntity($relation);
+            }
         }
 
         return $list;

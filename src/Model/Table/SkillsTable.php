@@ -16,9 +16,9 @@ class SkillsTable extends Table
     {
         parent::initialize($config);
 
-        $this->belongsTo('Manatypes');
-
         $this->belongsToManyThrough('Characters', 'CharactersSkills');
+
+        $this->belongsTo('Manatypes');
     }
 
     public function buildRules(RulesChecker $rules): RulesChecker

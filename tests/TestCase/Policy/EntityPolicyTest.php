@@ -15,6 +15,8 @@ class EntityPolicyTest extends TestCase
     {
         return [
             ['CharactersSkill'],
+            ['CharactersGlyphImbue'],
+            ['CharactersRuneImbue'],
             ['CharactersPower'],
             ['CharactersCondition'],
         ];
@@ -61,6 +63,7 @@ class EntityPolicyTest extends TestCase
     public static function hasRoleUserEntities(): array
     {
         return [
+            ['Imbue'],
             ['Power'],
             ['Condition'],
             ['Item'],

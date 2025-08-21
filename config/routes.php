@@ -217,7 +217,8 @@ return function (RouteBuilder $routes): void {
                 }
             }
 
-            if ($controller == 'CharactersConditions' || $controller == 'CharactersPowers') {
+            $printables = ['CharactersGlyphImbues', 'CharactersRuneImbues', 'CharactersConditions', 'CharactersPowers'];
+            if (in_array($controller, $printables)) {
                 $defaults['_method'] = 'GET';
                 $defaults['controller'] = $controller;
                 $defaults['action'] = 'charactersPdf';
@@ -276,8 +277,9 @@ return function (RouteBuilder $routes): void {
      * Rest API
      */
     $rest($routes, 'Players', ['Characters'], [], ['Socials']);
-    $rest($routes, 'Characters', ['Items'], [], ['Conditions', 'Powers', 'Skills']);
+    $rest($routes, 'Characters', ['Items'], [], ['RuneImbues', 'GlyphImbues', 'Conditions', 'Powers', 'Skills']);
 
+    $rest($routes, 'Imbues', [], ['Characters']);
     $rest($routes, 'Conditions', [], ['Characters']);
     $rest($routes, 'Powers', [], ['Characters']);
     $rest($routes, 'Skills', [], ['Characters']);

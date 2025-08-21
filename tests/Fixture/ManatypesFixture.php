@@ -14,6 +14,10 @@ class ManatypesFixture extends TestFixture
                 'id' => 1,
                 'name' => 'Mana',
             ],
+            [
+                'id' => 2,
+                'name' => 'Imbue Cap',
+            ],
         ];
         parent::init();
     }

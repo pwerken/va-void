@@ -56,21 +56,26 @@ class CharacterLammy extends LammyCard
     protected function _drawBack(): void
     {
         $data = [];
-        $data['skills'] = [];
         $data['xp'] = 0;
+        $data['imbue'] = [];
         $data['mana'] = [];
-        $data['mana']['Elemental'] = 0;
-        $data['mana']['Elemental Ritual'] = 0;
-        $data['mana']['Spiritual'] = 0;
-        $data['mana']['Spiritual Ritual'] = 0;
-        $data['mana']['Inspiration'] = 0;
-        $data['mana']['Willpower'] = 0;
         $data['skills'] = [];
 
-        $data['mana'] = [];
-        $data['mana']['Elemental'] = $data['mana']['Spiritual'] = 0;
-        $data['mana']['Elemental Ritual'] = $data['mana']['Spiritual Ritual'] = 0;
+        $data['imbue']['Glyph'] = 0;
+        $data['imbue']['Rune'] = 0;
+        foreach ($this->entity->get('glyphimbues') as $imbue) {
+            $relation = $imbue->_joinData;
+            $data['imbue']['Glyph'] += $imbue->get('cost') * $relation->get('times');
+        }
+        foreach ($this->entity->get('runeimbues') as $imbue) {
+            $relation = $imbue->_joinData;
+            $data['imbue']['Rune'] += $imbue->get('cost') * $relation->get('times');
+        }
+
+        $data['mana']['Elemental'] = $data['mana']['Elemental Ritual'] = 0;
+        $data['mana']['Spiritual'] = $data['mana']['Spiritual Ritual'] = 0;
         $data['mana']['Inspiration'] = $data['mana']['Willpower'] = 0;
+        $data['mana']['Glyph Imbue Cap'] = $data['mana']['Rune Imbue Cap'] = 0;
         $data['mana'] = $this->entity->get('mana') + $data['mana'];
 
         foreach ($this->entity->get('skills') as $skill) {
@@ -84,38 +89,56 @@ class CharacterLammy extends LammyCard
 
         $this->cardBack('Skills');
 
-        $this->square(8, 5, 72, 36);
-        $this->square(8, 36, 56, 42);
-        $this->square(56, 36, 72, 42);
+        $this->square(8, 5, 72, 33);
+        $this->square(8, 33, 72, 42);
+        $this->square(40, 33, 57, 42);
 
         $this->font(6);
         $this->pdf->SetTextColor(0);
 
-        $this->textarea(8, 7, 63.5, 31, implode(', ', $data['skills']));
+        $this->textarea(8, 7, 63.5, 28, implode(', ', $data['skills']));
 
-        $this->text(56, 37.7, 16, 'C', 'Experience');
-        $this->text(56, 40.7, 16, 'C', $data['xp'] . ' / ' . $this->entity->get('xp'));
+        $this->text(57, 34.7, 15, 'C', 'Experience');
+        $this->text(57, 39.0, 15, 'C', $data['xp'] . ' / ' . $this->entity->get('xp'));
 
         $g = 159;
         $this->pdf->SetTextColor($data['mana']['Elemental'] > 0 ? 0 : $g);
-        $this->text(9.5, 37.7, 5, 'R', $data['mana']['Elemental']);
-        $this->text(13, 37.7, 13, 'L', 'Elemental');
+        $this->text(7.5, 34.7, 6.5, 'R', $data['mana']['Elemental']);
+        $this->text(12.5, 34.7, 10, 'L', 'Elemental');
         $this->pdf->SetTextColor($data['mana']['Elemental Ritual'] > 0 ? 0 : $g);
-        $this->text(9.5, 40.7, 5, 'R', $data['mana']['Elemental Ritual']);
-        $this->text(13, 40.7, 13, 'L', 'Elem.Rit.');
+        $this->text(7.5, 37.7, 6.5, 'R', $data['mana']['Elemental Ritual']);
+        $this->text(12.5, 37.7, 10, 'L', 'Elem.Rit.');
+        $this->pdf->SetTextColor($data['mana']['Inspiration'] > 0 ? 0 : $g);
+        $this->text(7.5, 40.7, 6.5, 'R', $data['mana']['Inspiration']);
+        $this->text(12.5, 40.7, 10, 'L', 'Inspiration');
 
         $this->pdf->SetTextColor($data['mana']['Spiritual'] > 0 ? 0 : $g);
-        $this->text(26.5, 37.7, 5, 'R', $data['mana']['Spiritual']);
-        $this->text(30, 37.7, 13, 'L', 'Spiritual');
+        $this->text(23.5, 34.7, 6.5, 'R', $data['mana']['Spiritual']);
+        $this->text(28.5, 34.7, 10, 'L', 'Spiritual');
         $this->pdf->SetTextColor($data['mana']['Spiritual Ritual'] > 0 ? 0 : $g);
-        $this->text(26.5, 40.7, 5, 'R', $data['mana']['Spiritual Ritual']);
-        $this->text(30, 40.7, 13, 'L', 'Spir.Rit.');
-
-        $this->pdf->SetTextColor($data['mana']['Inspiration'] > 0 ? 0 : $g);
-        $this->text(40.5, 37.7, 5, 'R', $data['mana']['Inspiration']);
-        $this->text(44, 37.7, 13, 'L', 'Inspiration');
+        $this->text(23.5, 37.7, 6.5, 'R', $data['mana']['Spiritual Ritual']);
+        $this->text(28.5, 37.7, 10, 'L', 'Spir.Rit.');
         $this->pdf->SetTextColor($data['mana']['Willpower'] > 0 ? 0 : $g);
-        $this->text(40.5, 40.7, 5, 'R', $data['mana']['Willpower']);
-        $this->text(44, 40.7, 13, 'L', 'Willpower');
+        $this->text(23.5, 40.7, 6.5, 'R', $data['mana']['Willpower']);
+        $this->text(28.5, 40.7, 10, 'L', 'Willpower');
+
+        /** @var int $glyph */
+        $glyph = $data['mana']['Glyph Imbue Cap'];
+        /** @var int $rune */
+        $rune = $data['mana']['Rune Imbue Cap'];
+
+        $this->pdf->SetTextColor($glyph + $rune > 0 ? 0 : $g);
+        $this->pdf->SetTextColor(0);
+        $this->text(40, 34.7, 17, 'C', 'Imbue Cap.');
+        $this->pdf->SetTextColor($glyph > 0 ? 0 : $g);
+        $this->text(42, 37.7, 4, 'R', $data['imbue']['Glyph']);
+        $this->text(47, 37.7, 4, 'R', $glyph);
+        $this->text(45, 37.7, 1.5, 'C', '/');
+        $this->text(49.5, 37.7, 6, 'L', 'Glyph');
+        $this->pdf->SetTextColor($rune > 0 ? 0 : $g);
+        $this->text(42, 40.7, 4, 'R', $data['imbue']['Rune']);
+        $this->text(47, 40.7, 4, 'R', $rune);
+        $this->text(45, 40.7, 1.5, 'C', '/');
+        $this->text(49.5, 40.7, 6, 'L', 'Rune');
     }
 }

@@ -73,12 +73,23 @@ class HistoryController extends AdminController
     }
 
     /**
-     * GET /admin/history/item/$itin
+     * GET /admin/history/imbue/$id
      */
-    public function item(int ...$ids): void
+    public function imbue(int ...$ids): void
     {
         $this->checkParams($ids);
-        $this->entityHistory('item', ...$ids);
+        $this->entityHistory('imbue', ...$ids);
+        $this->set('rhs', false);
+    }
+
+    /**
+     * GET /admin/history/power/$poin
+     */
+    public function power(int ...$ids): void
+    {
+        $this->checkParams($ids);
+        $this->entityHistory('power', ...$ids);
+        $this->set('rhs', false);
     }
 
     /**
@@ -92,13 +103,12 @@ class HistoryController extends AdminController
     }
 
     /**
-     * GET /admin/history/power/$poin
+     * GET /admin/history/item/$itin
      */
-    public function power(int ...$ids): void
+    public function item(int ...$ids): void
     {
         $this->checkParams($ids);
-        $this->entityHistory('power', ...$ids);
-        $this->set('rhs', false);
+        $this->entityHistory('item', ...$ids);
     }
 
     protected function checkParams(array $ids, int $expected = 1): void

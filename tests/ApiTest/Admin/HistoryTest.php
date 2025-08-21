@@ -19,6 +19,8 @@ class HistoryTest extends AuthIntegrationTestCase
         $this->assertGet($this->url . '/player/99', 302);
         $this->assertGet($this->url . '/character/1/1', 302);
         $this->assertGet($this->url . '/character/99/1', 302);
+        $this->assertGet($this->url . '/imbue/1', 302);
+        $this->assertGet($this->url . '/imbue/99', 302);
         $this->assertGet($this->url . '/power/1', 302);
         $this->assertGet($this->url . '/power/99', 302);
         $this->assertGet($this->url . '/condition/1', 302);
@@ -35,6 +37,8 @@ class HistoryTest extends AuthIntegrationTestCase
         $this->assertGet($this->url . '/player/99', 403);
         $this->assertGet($this->url . '/character/1/1', 403);
         $this->assertGet($this->url . '/character/99/1', 403);
+        $this->assertGet($this->url . '/imbue/1', 403);
+        $this->assertGet($this->url . '/imbue/99', 403);
         $this->assertGet($this->url . '/power/1', 403);
         $this->assertGet($this->url . '/power/99', 403);
         $this->assertGet($this->url . '/condition/1', 403);
@@ -52,6 +56,8 @@ class HistoryTest extends AuthIntegrationTestCase
         $this->assertGet($this->url . '/player/99', 404);
         $this->assertGet($this->url . '/character/1/1');
         $this->assertGet($this->url . '/character/99/1', 404);
+        $this->assertGet($this->url . '/imbue/1');
+        $this->assertGet($this->url . '/imbue/99', 404);
         $this->assertGet($this->url . '/power/1');
         $this->assertGet($this->url . '/power/99', 404);
         $this->assertGet($this->url . '/condition/1');

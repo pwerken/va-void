@@ -19,11 +19,13 @@ class AuthIntegrationTestCase extends TestCase
         return [
             'app.Characters',
             'app.CharactersConditions',
+            'app.CharactersImbues',
             'app.CharactersPowers',
             'app.CharactersSkills',
             'app.Conditions',
             'app.Events',
             'app.Factions',
+            'app.Imbues',
             'app.Items',
             'app.Lammies',
             'app.Manatypes',

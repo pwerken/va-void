@@ -13,7 +13,7 @@ class CrudTest extends AuthIntegrationTestCase
         return [
             ['events', 1],
             ['factions', 2],
-            ['manatypes', 1],
+            ['manatypes', 2],
             ['skills', 2],
         ];
     }

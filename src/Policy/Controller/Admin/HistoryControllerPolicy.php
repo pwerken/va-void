@@ -33,9 +33,17 @@ class HistoryControllerPolicy extends ControllerPolicy
     }
 
     /**
-     * GET /admin/history/item/$itin
+     * GET /admin/history/imbue/$id
      */
-    public function item(): bool
+    public function imbue(): bool
+    {
+        return $this->index();
+    }
+
+    /**
+     * GET /admin/history/power/$poin
+     */
+    public function power(): bool
     {
         return $this->index();
     }
@@ -49,9 +57,9 @@ class HistoryControllerPolicy extends ControllerPolicy
     }
 
     /**
-     * GET /admin/history/power/$poin
+     * GET /admin/history/item/$itin
      */
-    public function power(): bool
+    public function item(): bool
     {
         return $this->index();
     }

@@ -42,6 +42,7 @@ class Character extends Entity
     protected function _getMana(): array
     {
         $sources = $this->get('skills');
+        $sources = array_merge($sources, $this->get('imbues'));
         $sources = array_merge($sources, $this->get('powers'));
         $sources = array_merge($sources, $this->get('conditions'));
         $sources = array_merge($sources, $this->get('items'));

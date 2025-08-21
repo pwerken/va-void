@@ -10,12 +10,6 @@ use Cake\Event\EventInterface;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 
-/**
- * @property \App\Model\Table\CharactersConditionsTable $CharactersConditions;
- * @property \App\Model\Table\CharactersPowersTable $CharactersPowers;
- * @property \App\Model\Table\CharactersSkillsTable $CharactersSkills;
- * @property \App\Model\Table\ItemsTable $Items;
- */
 class CharactersTable extends Table
 {
     public function initialize(array $config): void
@@ -28,9 +22,24 @@ class CharactersTable extends Table
         $this->belongsTo('Factions')->setProperty('faction_object');
 
         $this->hasMany('Items');
-        $this->belongsToManyThrough('Conditions', 'CharactersConditions');
-        $this->belongsToManyThrough('Powers', 'CharactersPowers');
+
         $this->belongsToManyThrough('Skills', 'CharactersSkills');
+        $this->belongsToManyThrough('Imbues', 'CharactersImbues');
+        $this->belongsToManyThrough('Powers', 'CharactersPowers');
+        $this->belongsToManyThrough('Conditions', 'CharactersConditions');
+
+        $this->belongsToMany('RuneImbues', [
+            'propertyName' => 'runeimbues',
+            'className' => 'Imbues',
+            'targetForeignKey' => 'imbue_id',
+            'through' => 'CharactersRuneImbues',
+        ]);
+        $this->belongsToMany('GlyphImbues', [
+            'propertyName' => 'glyphimbues',
+            'className' => 'Imbues',
+            'targetForeignKey' => 'imbue_id',
+            'through' => 'CharactersGlyphImbues',
+        ]);
 
         $this->hasOne('MyTeacher', [
             'className' => 'Teachings',
@@ -138,6 +147,8 @@ class CharactersTable extends Table
             'Factions',
             'Players',
             'Skills' => ['Manatypes'],
+            'GlyphImbues' => ['Manatypes'],
+            'RuneImbues' => ['Manatypes'],
             'Powers' => ['Manatypes'],
             'Conditions' => ['Manatypes'],
             'Items' => ['Manatypes'],

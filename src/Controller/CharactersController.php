@@ -103,6 +103,18 @@ class CharactersController extends Controller
                 $t->student = $char;
                 $objs[] = $this->Lammy->createLammy($t);
             }
+            foreach ($char->get('glyphimbues') as $imbue) {
+                $c = $imbue->_joinData;
+                $c->character = $char;
+                $c->imbue = $imbue;
+                $objs[] = $this->Lammy->createLammy($c);
+            }
+            foreach ($char->get('runeimbues') as $imbue) {
+                $c = $imbue->_joinData;
+                $c->character = $char;
+                $c->imbue = $imbue;
+                $objs[] = $this->Lammy->createLammy($c);
+            }
             foreach ($char->get('powers') as $power) {
                 $c = $power->_joinData;
                 $c->character = $char;

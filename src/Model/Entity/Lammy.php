@@ -43,7 +43,9 @@ class Lammy extends Entity
 
             $where = [];
             foreach ($primary as $i => $id) {
-                $where[$name . '.' . $id] = $keys[$i];
+                if (isset($keys[$i])) {
+                    $where[$name . '.' . $id] = $keys[$i];
+                }
             }
 
             $this->target = $table->find('withContain')->where($where)->first();
