@@ -103,10 +103,10 @@ class CharactersTable extends Table
 
         $rules->add($rules->existsIn('faction_id', 'Factions'));
 
-        $rules->addDelete([$this, 'ruleNoSkills']);
-        $rules->addDelete([$this, 'ruleNoItems']);
-        $rules->addDelete([$this, 'ruleNoConditions']);
-        $rules->addDelete([$this, 'ruleNoPowers']);
+        $rules->addDelete([$this, 'ruleNoAssociation'], ['skills']);
+        $rules->addDelete([$this, 'ruleNoAssociation'], ['conditions']);
+        $rules->addDelete([$this, 'ruleNoAssociation'], ['powers']);
+        $rules->addDelete([$this, 'ruleNoAssociation'], ['items']);
 
         return $rules;
     }
@@ -130,50 +130,6 @@ class CharactersTable extends Table
         return $query->select(['name' => 'world'])
                     ->distinct(['world'])
                     ->orderBy(['world'], true);
-    }
-
-    public function ruleNoConditions(EntityInterface $entity, array $options): bool
-    {
-        if (count($entity->get('conditions')) > 0) {
-            $entity->setError('conditions', $this->consistencyError);
-
-            return false;
-        }
-
-        return true;
-    }
-
-    public function ruleNoItems(EntityInterface $entity, array $options): bool
-    {
-        if (count($entity->get('items')) > 0) {
-            $entity->setError('items', $this->consistencyError);
-
-            return false;
-        }
-
-        return true;
-    }
-
-    public function ruleNoPowers(EntityInterface $entity, array $options): bool
-    {
-        if (count($entity->get('powers')) > 0) {
-            $entity->setError('powers', $this->consistencyError);
-
-            return false;
-        }
-
-        return true;
-    }
-
-    public function ruleNoSkills(EntityInterface $entity, array $options): bool
-    {
-        if (count($entity->get('skills')) > 0) {
-            $entity->setError('skills', $this->consistencyError);
-
-            return false;
-        }
-
-        return true;
     }
 
     protected function contain(): array

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\Datasource\EntityInterface;
 use Cake\ORM\RulesChecker;
 
 /**
@@ -20,20 +19,9 @@ class ManatypesTable extends Table
 
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->addDelete([$this, 'ruleNoSkills']);
+        $rules->addDelete([$this, 'ruleNoAssociation'], ['skills']);
 
         return $rules;
-    }
-
-    public function ruleNoSkills(EntityInterface $entity, array $options): bool
-    {
-        if (count($entity->get('skills')) > 0) {
-            $entity->setError('skills', $this->consistencyError);
-
-            return false;
-        }
-
-        return true;
     }
 
     protected function orderBy(): array

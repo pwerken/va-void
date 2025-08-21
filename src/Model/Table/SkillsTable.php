@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\Datasource\EntityInterface;
 use Cake\ORM\RulesChecker;
 
 /**
@@ -22,20 +21,9 @@ class SkillsTable extends Table
 
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->addDelete([$this, 'ruleNoCharacters']);
+        $rules->addDelete([$this, 'ruleNoAssociation'], ['characters']);
 
         return $rules;
-    }
-
-    public function ruleNoCharacters(EntityInterface $entity, array $options): bool
-    {
-        if (count($entity->get('characters')) > 0) {
-            $entity->setError('characters', $this->consistencyError);
-
-            return false;
-        }
-
-        return true;
     }
 
     protected function contain(): array

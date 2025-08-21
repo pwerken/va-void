@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\Datasource\EntityInterface;
 use Cake\ORM\RulesChecker;
 
 /**
@@ -22,20 +21,9 @@ class FactionsTable extends Table
     {
         $rules->add($rules->isUnique(['name']));
 
-        $rules->addDelete([$this, 'ruleNoCharacters']);
+        $rules->addDelete([$this, 'ruleNoAssociation'], ['characters']);
 
         return $rules;
-    }
-
-    public function ruleNoCharacters(EntityInterface $entity, array $options): bool
-    {
-        if (count($entity->get('characters')) > 0) {
-            $entity->setError('characters', $this->consistencyError);
-
-            return false;
-        }
-
-        return true;
     }
 
     protected function contain(): array

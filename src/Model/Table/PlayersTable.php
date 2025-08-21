@@ -45,7 +45,7 @@ class PlayersTable extends Table
 
         $rules->add([$this, 'ruleAuthCheck']);
 
-        $rules->addDelete([$this, 'ruleNoCharacters']);
+        $rules->addDelete([$this, 'ruleNoAssociation'], ['characters']);
 
         return $rules;
     }
@@ -66,17 +66,6 @@ class PlayersTable extends Table
 
         if (!$user->hasAuth($entity->get('role')->toAuth())) {
             $entity->setError('role', ['authorization' => 'Cannot promote user above your own authorization']);
-
-            return false;
-        }
-
-        return true;
-    }
-
-    public function ruleNoCharacters(EntityInterface $entity, array $options): bool
-    {
-        if (count($entity->get('characters')) > 0) {
-            $entity->setError('characters', $this->consistencyError);
 
             return false;
         }

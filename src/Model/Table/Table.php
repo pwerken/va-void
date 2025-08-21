@@ -145,6 +145,20 @@ abstract class Table extends CakeTable
         return $this->findAll($query);
     }
 
+    public function ruleNoAssociation(EntityInterface $entity, array $options): bool
+    {
+        $field = $options[0];
+        $value = $entity->get($field);
+
+        if (!is_null($value) && count($value) > 0) {
+            $entity->setError($field, $this->consistencyError);
+
+            return false;
+        }
+
+        return true;
+    }
+
     protected function setColumnEnumType(string $column, string $enumClass): void
     {
         $this->getSchema()->setColumnType($column, EnumType::from($enumClass));
