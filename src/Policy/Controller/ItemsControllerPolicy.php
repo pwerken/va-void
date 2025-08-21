@@ -28,7 +28,7 @@ class ItemsControllerPolicy extends ControllerPolicy
      */
     public function view(): bool
     {
-        return $this->hasAuth(Authorization::Player);
+        return $this->index();
     }
 
     /**
