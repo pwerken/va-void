@@ -2,6 +2,10 @@
 declare(strict_types=1);
 
 use Cake\Routing\Router;
+
+/**
+ * @var \App\View\AdminView $this
+ */
 ?>
 <h3>Configured Routes</h3>
 

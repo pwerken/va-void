@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 /**
- * @var \Cake\View\View $this
+ * @var \App\View\AdminView $this
  * @var array $queries
  * @var string $selected
  * @var string $since

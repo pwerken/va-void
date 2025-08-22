@@ -16,14 +16,14 @@ class Json
         return json_decode($data, true);
     }
 
-    public static function encode(mixed $data): ?string
+    public static function encode(mixed $data, bool $pretty = true): ?string
     {
         if ($data === null) {
             return null;
         }
 
         $jsonOptions = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT;
-        if (Configure::read('debug')) {
+        if (Configure::read('debug') && $pretty) {
             $jsonOptions = $jsonOptions | JSON_PRETTY_PRINT;
         }
 

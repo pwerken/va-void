@@ -4,7 +4,7 @@ declare(strict_types=1);
 use App\Model\Enum\Authorization;
 
 /**
- * @var \Cake\View\View $this
+ * @var \App\View\AdminView $this
  * @var ?\App\Model\Entity\Player $user
  * @var list<\App\Model\Enum\PlayerRole> $roles
  * @var array $permissions

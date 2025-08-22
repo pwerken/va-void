@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 /**
- * @var \Cake\View\View $this
+ * @var \App\View\AdminView $this
  */
 ?>
 <h3>Legacy Authentication</h3>

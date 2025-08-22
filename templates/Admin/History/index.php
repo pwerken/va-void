@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 /**
- * @var \Cake\View\View $this
+ * @var \App\View\AdminView $this
  * @var array $list
+ * @var array $lookup
  * @var string $what
  * @var string $since
  * @var string $plin
@@ -15,8 +16,8 @@ echo $this->Form->create(null, ['type' => 'get']);
 
 $options = [];
 $options['type'] = 'select';
-$optionp['label'] = 'What';
-$optoins['value'] = $what;
+$options['label'] = 'What';
+$options['value'] = $what;
 $options['options'] = [
     '' => 'All',
     'Players' => 'Players',
@@ -47,29 +48,18 @@ echo $this->Form->button(__('Select'));
 echo $this->Form->end() . "\n";
 
 foreach ($list as $row) {
-    $link = ['controller' => 'History', 'action' => strtolower($row['entity']), $row['key1']];
-    $name = $row['entity'] . '/' . $row['key1'];
-    if (!is_null($row['key2'])) {
-        $name .= '/' . $row['key2'];
-        $link[] = $row['key2'];
-    }
-    $name .= ': ' . $row['name'];
+    $link = $this->Helper->makeLink($row);
+    $name = $row->makeKey() . ': ' . $this->Helper->getName($row);
 
-    $modifier = $modifier_id = $row['modifier_id'];
-    if (is_null($modifier)) {
-        $modifier = '(??)';
-    }
-    if ($modifier < 0) {
-        $modifier = '_cli';
-    }
     $tooltip = '';
-    if (isset($modifier_names[$modifier_id])) {
-        $tooltip = ' title="' . $modifier_names[$modifier_id] . '"';
+    $modifier_id = $row['modifier_id'];
+    if (isset($lookup[$modifier_id])) {
+        $tooltip = ' title="' . $lookup[$modifier_id]->get('name') . '"';
     }
 
     echo '<samp' . $tooltip . '>'
-        . str_pad($row['modified'], 19, '_', STR_PAD_BOTH) . ' '
-        . str_pad((string)$modifier, 4, '0', STR_PAD_LEFT)
+        . str_pad($row->modifiedString(), 19, '_', STR_PAD_BOTH) . ' '
+        . str_pad($row->modifierString(), 4, '0', STR_PAD_LEFT)
         . '</samp> '
         . $this->Html->link($name, $link) . "<br/>\n";
 }

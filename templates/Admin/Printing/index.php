@@ -5,7 +5,7 @@ use App\Model\Enum\Authorization;
 use App\Model\Enum\LammyStatus;
 
 /**
- * @var \Cake\View\View $this
+ * @var \App\View\AdminView $this
  * @var ?\App\Model\Entity\Player $user
  * @var array $printing
  */

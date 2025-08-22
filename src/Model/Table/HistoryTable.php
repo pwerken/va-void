@@ -4,35 +4,17 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Entity\History;
-use App\Utility\Json;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
-use Cake\I18n\DateTime;
-use Cake\ORM\Locator\LocatorInterface;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 
 class HistoryTable extends Table
 {
-    private LocatorInterface $locator;
+    use LocatorAwareTrait;
 
     public function initialize(array $config): void
     {
         parent::initialize($config);
-
-        $this->belongsTo('Characters')->setForeignKey('key1')
-            ->setConditions(['History.entity LIKE' => 'Characters%']);
-        $this->belongsTo('Conditions')->setForeignKey('key2')
-            ->setConditions(['History.entity' => 'CharactersCondition']);
-        $this->belongsTo('Powers')->setForeignKey('key2')
-            ->setConditions(['History.entity' => 'CharactersPower']);
-        $this->belongsTo('Skills')->setForeignKey('key2')
-            ->setConditions(['History.entity' => 'CharactersSkill']);
-        $this->belongsTo('Items')->setForeignKey('key2')
-            ->setConditions(['History.entity LIKE' => '%sItem']);
-        $this->belongsTo('Teachings')->setForeignKey('key1')
-            ->setConditions(['History.entity' => 'Teaching']);
-
-        $this->locator = TableRegistry::getTableLocator();
     }
 
     public function logChange(EntityInterface $entity): History
@@ -60,6 +42,18 @@ class HistoryTable extends Table
 
     public function getAllLastModified(?int $byPlin = null, ?string $since = null, ?string $what = null): array
     {
+        $tbls = [
+            'Players',
+            'Characters',
+            'Powers',
+            'Conditions',
+            'Items',
+        ];
+
+        if (empty($what) || !in_array($what, $tbls)) {
+            $what = null;
+        }
+
         $where = [];
         if (is_null($since)) {
             $where['modified IS NOT'] = 'NULL';
@@ -70,85 +64,21 @@ class HistoryTable extends Table
             $where['modifier_id'] = $byPlin;
         }
 
-        $tbls = [
-            'Players' => [
-                'key1' => 'id',
-                'key2' => 'id',
-                'name' => 'first_name', 'first_name', 'insertion', 'last_name', 'modified', 'modifier_id',
-            ],
-            'Characters' => [
-                'key1' => 'player_id',
-                'key2' => 'chin',
-                'name', 'modified', 'modifier_id',
-            ],
-            'Conditions' => [
-                'key1' => 'id',
-                'key2' => 'id',
-                'name', 'modified', 'modifier_id',
-            ],
-            'Powers' => [
-                'key1' => 'id',
-                'key2' => 'id',
-                'name', 'modified', 'modifier_id',
-            ],
-            'Items' => [
-                'key1' => 'id',
-                'key2' => 'id',
-                'name', 'modified', 'modifier_id',
-            ],
-        ];
-        if (empty($what) || !array_key_exists($what, $tbls)) {
-            $what = null;
-        }
-
         $list = [];
-        foreach ($tbls as $tbl => $select) {
+        foreach ($tbls as $tbl) {
             if (!is_null($what) && $tbl != $what) {
                 continue;
             }
 
-            switch (strtolower($tbl)) {
-                case 'players':
-                    $entity = 'Player';
-                    break;
-                case 'characters':
-                    $entity = 'Character';
-                    break;
-                case 'items':
-                    $entity = 'Item';
-                    break;
-                case 'conditions':
-                    $entity = 'Condition';
-                    break;
-                case 'powers':
-                    $entity = 'Power';
-                    break;
-                default:
-                    $entity = '';
-                    break;
-            }
-
-            $result = $this->locator->get($tbl)->find()
-                ->select($select)
+            $query = $this->getTableLocator()->get($tbl)->find()
                 ->where($where)
-                ->orderBy(['modified' => 'DESC'])
-                ->enableHydration(false)
-                ->all();
+                ->orderBy(['modified' => 'DESC'], true);
 
-            foreach ($result as $row) {
-                if ($select['key1'] == $select['key2']) {
-                    $row['key2'] = null;
-                }
-                if ($tbl == 'Players') {
-                    $name = [$row['first_name'], $row['insertion'], $row['last_name']];
-                    $row['name'] = implode(' ', array_filter($name));
-                }
-                $row['entity'] = $entity;
-                $row['modified'] = (string)(new DateTime($row['modified']));
-                $list[] = $row;
+            foreach ($query->all() as $row) {
+                $list[] = History::fromEntity($row);
             }
         }
-        usort($list, [$this, 'compare']);
+        usort($list, [History::class, 'compare']);
 
         return $list;
     }
@@ -186,56 +116,30 @@ class HistoryTable extends Table
                 break;
         }
 
-        $result = $this->find()
+        $list = $this->find()
             ->where($where)
-            ->all();
+            ->all()
+            ->toList();
 
-        $list = [];
-        foreach ($result as $obj) {
-            $row = [];
-            $row['entity'] = $obj->entity;
-            $row['key1'] = $obj->key1;
-            $row['key2'] = $obj->key2;
-            $row['modified'] = $obj->modifiedString();
-            $row['modifier_id'] = $obj->modifier_id;
-
-            $data = Json::decode($obj->data);
-            if ($obj->entity == 'Character') {
-                $row['key1'] = $data['player_id'];
-                $row['key2'] = $data['chin'];
-            }
-
-            if (isset($data['name']) && !is_null($data['name'])) {
-                $row['name'] = $data['name'];
-            } elseif ($obj->entity == 'Player') {
-                $name = [$data['first_name'], $data['insertion'], $data['last_name']];
-                $row['name'] = implode(' ', array_filter($name));
-            } else {
-                $row['name'] = null;
-            }
-            $list[] = $row;
-        }
-        usort($list, [$this, 'compare']);
+        usort($list, [History::class, 'compare']);
 
         return $list;
     }
 
-    public function getEntityHistory(string $entity, int $key1, ?int $key2): array
+    public function getEntityHistory(string $entity, int $k1, ?int $k2): array
     {
-        switch (strtolower($entity)) {
-            case 'player':
-                return $this->getPlayerHistory($key1);
-            case 'character':
-                return $this->getCharacterHistory($key1, $key2);
-            case 'condition':
-                return $this->getConditionHistory($key1);
-            case 'power':
-                return $this->getPowerHistory($key1);
-            case 'item':
-                return $this->getItemHistory($key1);
-            default:
-                return [];
-        }
+        $list = match (strtolower($entity)) {
+            'player' => $this->getPlayerHistory($k1),
+            'character' => $this->getCharacterHistory($k1, $k2),
+            'power' => $this->getPowerHistory($k1),
+            'condition' => $this->getConditionHistory($k1),
+            'item' => $this->getItemHistory($k1),
+            default => [],
+        };
+
+        usort($list, [History::class, 'compare']);
+
+        return $list;
     }
 
     protected function orderBy(): array
@@ -245,28 +149,24 @@ class HistoryTable extends Table
 
     private function getPlayerHistory(int $plin): array
     {
-        $entity = $this->locator->get('Players')->find()
-            ->where(['id' => $plin])
-            ->first();
-
-        if (is_null($entity)) {
-            return [];
-        }
-
-        $history = $this->find()
+        $list = $this->find()
             ->where(['entity' => 'Player', 'key1' => $plin])
             ->all()
             ->toList();
 
-        $history[] = History::fromEntity($entity);
-        usort($history, ['App\Model\Entity\History', 'compare']);
+        $entity = $this->getTableLocator()->get('Players')->find()
+            ->where(['id' => $plin])
+            ->first();
+        if (!is_null($entity)) {
+            $list[] = History::fromEntity($entity);
+        }
 
-        return $history;
+        return $list;
     }
 
     private function getCharacterHistory(int $plin, int $chin): array
     {
-        $entity = $this->locator->get('Characters')->find('withContain')
+        $entity = $this->getTableLocator()->get('Characters')->find('withContain')
             ->where(['Characters.player_id' => $plin])
             ->where(['Characters.chin' => $chin])
             ->first();
@@ -275,7 +175,19 @@ class HistoryTable extends Table
             return [];
         }
 
-        $list = [History::fromEntity($entity)];
+        $related = [
+            'Character',
+            'CharactersSkill',
+            'CharactersPower',
+            'CharactersCondition',
+            'Teaching',
+        ];
+        $list = $this->find()
+            ->where(['entity in' => $related, 'key1' => $entity->id])
+            ->all()
+            ->toList();
+
+        $list[] = History::fromEntity($entity);
 
         if ($entity->teacher) {
             $list[] = History::fromEntity($entity->teacher);
@@ -299,144 +211,79 @@ class HistoryTable extends Table
             $list[] = History::fromEntity($relation);
         }
 
-        $related = [
-            'Character',
-            'CharactersCondition',
-            'CharactersPower',
-            'CharactersSkill',
-            'Teaching',
-        ];
-
-        $history = $this->find()
-            ->where(['entity in' => $related, 'key1' => $entity->id])
-            ->contain(['Conditions', 'Powers', 'Skills', 'Teachings.Teacher', 'Teachings.Skill'])
-            ->all()
-            ->toList();
-
-        $list = array_merge($list, $history);
-        usort($list, ['App\Model\Entity\History', 'compare']);
-
-        return $list;
-    }
-
-    private function getConditionHistory(int $coin): array
-    {
-        $entity = $this->locator->get('Conditions')->find('withContain')
-            ->where(['Conditions.id' => $coin])
-            ->first();
-
-        if (is_null($entity)) {
-            return [];
-        }
-
-        $list = [History::fromEntity($entity)];
-
-        foreach ($entity->characters as $character) {
-            $relation = $character->_joinData;
-            $relation->character = $character;
-            $list[] = History::fromEntity($relation);
-        }
-
-        $history = $this->find()
-            ->where(function (QueryExpression $exp) use ($coin) {
-                $a = $exp->and(['entity' => 'Condition', 'key1' => $coin]);
-                $b = $exp->and(['entity' => 'CharactersCondition', 'key2' => $coin]);
-
-                return $exp->or([$a, $b]);
-            })
-            ->contain(['Characters'])
-            ->all()
-            ->toList();
-
-        $list = array_merge($list, $history);
-        usort($list, ['App\Model\Entity\History', 'compare']);
-
         return $list;
     }
 
     private function getPowerHistory(int $poin): array
     {
-        $entity = $this->locator->get('Powers')->find('withContain')
-            ->where(['Powers.id' => $poin])
-            ->first();
-
-        if (is_null($entity)) {
-            return [];
-        }
-
-        $list = [History::fromEntity($entity)];
-
-        foreach ($entity->characters as $character) {
-            $relation = $character->_joinData;
-            $relation->character = $character;
-            $list[] = History::fromEntity($relation);
-        }
-
-        $history = $this->find()
+        $list = $this->find()
             ->where(function (QueryExpression $exp) use ($poin) {
                 $a = $exp->and(['entity' => 'Power', 'key1' => $poin]);
                 $b = $exp->and(['entity' => 'CharactersPower', 'key2' => $poin]);
 
                 return $exp->or([$a, $b]);
             })
-            ->contain(['Characters'])
             ->all()
             ->toList();
 
-        $list = array_merge($list, $history);
-        usort($list, ['App\Model\Entity\History', 'compare']);
+        $entity = $this->getTableLocator()->get('Powers')->find('withContain')
+            ->where(['Powers.id' => $poin])
+            ->first();
+        if (!is_null($entity)) {
+            $list[] = History::fromEntity($entity);
+
+            foreach ($entity->characters as $character) {
+                $relation = $character->_joinData;
+                $relation->character = $character;
+                $list[] = History::fromEntity($relation);
+            }
+        }
+
+        return $list;
+    }
+
+    private function getConditionHistory(int $coin): array
+    {
+        $list = $this->find()
+            ->where(function (QueryExpression $exp) use ($coin) {
+                $a = $exp->and(['entity' => 'Condition', 'key1' => $coin]);
+                $b = $exp->and(['entity' => 'CharactersCondition', 'key2' => $coin]);
+
+                return $exp->or([$a, $b]);
+            })
+            ->all()
+            ->toList();
+
+        $entity = $this->getTableLocator()->get('Conditions')->find('withContain')
+            ->where(['Conditions.id' => $coin])
+            ->first();
+        if (!is_null($entity)) {
+            $list[] = History::fromEntity($entity);
+
+            foreach ($entity->characters as $character) {
+                $relation = $character->_joinData;
+                $relation->character = $character;
+                $list[] = History::fromEntity($relation);
+            }
+        }
 
         return $list;
     }
 
     private function getItemHistory(int $itin): array
     {
-        $entity = $this->locator->get('Items')->find('withContain')
-            ->where(['Items.id' => $itin])
-            ->first();
-
-        if (is_null($entity)) {
-            return [];
-        }
-
-        $list = [History::fromEntity($entity)];
-
-        $history = $this->find()
+        $list = $this->find()
             ->where(['entity' => 'Item', 'key1' => $itin])
             ->all()
             ->toList();
 
-        $list = array_merge($list, $history);
-        usort($list, ['App\Model\Entity\History', 'compare']);
+        $entity = $this->getTableLocator()->get('Items')->find('withContain')
+            ->where(['Items.id' => $itin])
+            ->first();
+        if (!is_null($entity)) {
+            $list[] = History::fromEntity($entity);
+        }
 
         return $list;
-    }
-
-    public static function compare(History|array|null $a, History|array|null $b): int
-    {
-        if (is_null($a) && is_null($b)) {
-            return 0;
-        } elseif (is_null($a)) {
-            return 1;
-        } elseif (is_null($b)) {
-            return -1;
-        }
-
-        $cmp = strcmp($b['modified'], $a['modified']);
-        if ($cmp != 0) {
-            return $cmp;
-        }
-
-        $cmp = strcmp($a['entity'], $b['entity']);
-        if ($cmp != 0) {
-            return -$cmp;
-        }
-
-        $cmp = $a['key1'] - $b['key1'];
-        if ($cmp != 0) {
-            return $cmp;
-        }
-
-        return $a['key2'] - $b['key2'];
     }
 }

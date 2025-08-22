@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \Cake\View\View $this
+ * @var \App\View\AdminView $this
  * @var array $backups
  */
 ?>

@@ -41,7 +41,8 @@ class Character extends Entity
     protected function _getXpAvailable(): float
     {
         $used = 0;
-        foreach ($this->get('skills') as $skill) {
+        $skills = $this->get('skills') ?? [];
+        foreach ($skills as $skill) {
             $times = $skill->_joinData->get('times');
             $used += $times * $skill->get('cost');
         }

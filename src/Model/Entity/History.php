@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Utility\Json;
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\Entity as CakeEntity;
 use Cake\ORM\TableRegistry;
@@ -27,12 +28,17 @@ class History extends CakeEntity
 
         $history = new History();
         $history->set('entity', (new ReflectionClass($entity))->getShortName());
-        foreach ($primary as $key => $field) {
-            $history->set('key' . ($key + 1), $data[$field]);
-            unset($data[$field]);
+
+        $history->set('key1', $data[$primary[0]]);
+        unset($data[$primary[0]]);
+
+        if (isset($primary[1])) {
+            $history->set('key2', $data[$primary[1]]);
+            unset($data[$primary[1]]);
         }
+
         if (isset($data['modified'])) {
-            $history->set('modified', $data['modified']);
+            $history->set('modified', (string)$data['modified']);
             unset($data['modified']);
         }
 
@@ -42,32 +48,43 @@ class History extends CakeEntity
         }
 
         if ($history->get('entity') == 'SocialProfile') {
-            $history->set('key12', $data['user_id']);
+            $history->set('key2', $data['user_id']);
         }
 
         if (empty($data)) {
             $history->set('data', '{}');
         } else {
-            $history->set('data', json_encode($data));
-        }
-
-        if ($history->get('entity') != 'Item' && $entity->get('character')) {
-            $history->set('character', $entity->get('character'));
-        }
-        if ($entity->get('condition')) {
-            $history->set('condition', $entity->get('condition'));
-        }
-        if ($entity->get('power')) {
-            $history->set('power', $entity->get('power'));
-        }
-        if ($entity->get('skill')) {
-            $history->set('skill', $entity->get('skill'));
-        }
-        if ($entity->get('item')) {
-            $history->set('item', $entity->get('item'));
+            $history->set('data', Json::encode($data, false));
         }
 
         return $history;
+    }
+
+    public function toEntity(): ?EntityInterface
+    {
+        $tbl = $this->get('entity') . 's';
+        $table = TableRegistry::getTableLocator()->get($tbl);
+
+        $primary = $table->getPrimaryKey();
+        if (!is_array($primary)) {
+            $primary = [$primary];
+        }
+
+        $data[$primary[0]] = $this->get('key1');
+        if (!is_null($this->get('key2'))) {
+            $data[$primary[1]] = $this->get('key2');
+        }
+
+        $data = $this->decode();
+        $data['modified'] = $this->get('modified');
+        $data['modifier_id'] = $this->get('modifier_id');
+
+        return $table->newEntity($data);
+    }
+
+    public function decode(): array
+    {
+        return Json::decode($this->get('data') ?? '{}');
     }
 
     public static function compare(?History $a, ?History $b): int
@@ -85,23 +102,17 @@ class History extends CakeEntity
             return $cmp;
         }
 
-        $aE = $a->get('entity');
-        $bE = $b->get('entity');
-        $cmp = strcmp($aE, $bE);
+        $cmp = strcmp($a->get('entity'), $b->get('entity'));
         if ($cmp != 0) {
             // count upper-case letters
-            $aE = strlen(preg_replace('![^A-Z]+!', '', $aE));
-            $bE = strlen(preg_replace('![^A-Z]+!', '', $bE));
+            $aE = strlen(preg_replace('![^A-Z]+!', '', $a->get('entity')));
+            $bE = strlen(preg_replace('![^A-Z]+!', '', $b->get('entity')));
 
-            return $aE != $bE ? $bE - $aE : -$cmp;
-        }
+            if ($aE != $bE) {
+                return $bE - $aE;
+            }
 
-        if (!is_null($a->get('id')) && !is_null($b->get('id'))) {
-            return $b->get('id') - $a->get('id');
-        } elseif (!is_null($a->get('id'))) {
-            return 1;
-        } elseif (!is_null($b->get('id'))) {
-            return -1;
+            return -$cmp;
         }
 
         $cmp = $a->get('key1') - $b->get('key1');
@@ -109,13 +120,21 @@ class History extends CakeEntity
             return $cmp;
         }
 
-        return $a->get('key2') - $b->get('key2');
+        return $b->get('key2') - $a->get('key2');
     }
 
-    public function keyString(): string
+    public function makeKey(): string
     {
-        $key = $this->get('entity') . '/' . $this->get('key1');
-        if (!is_null($this->get('key2'))) {
+        $entity = $this->get('entity');
+
+        if ($entity === 'Character') {
+            $data = $this->decode();
+
+            return $entity . '/' . $data['player_id'] . '/' . $data['chin'];
+        }
+
+        $key = $entity . '/' . $this->get('key1');
+        if ($this->get('key2')) {
             $key .= '/' . $this->get('key2');
         }
 
@@ -143,27 +162,5 @@ class History extends CakeEntity
         }
 
         return sprintf('%04d', $modifier);
-    }
-
-    public function relation(): ?Entity
-    {
-        $relation = $this->get('character');
-        if (!is_null($relation)) {
-            return $relation;
-        }
-
-        switch ($this->get('entity')) {
-            case 'CharactersCondition':
-                $relation = $this->get('condition');
-                break;
-            case 'CharactersPower':
-                $relation = $this->get('power');
-                break;
-            case 'CharactersSkill':
-                $relation = $this->get('skill');
-                break;
-        }
-
-        return $relation;
     }
 }

@@ -24,6 +24,8 @@ abstract class AdminController extends CakeController
         $this->loadComponent('Authorization.Authorization');
         $this->loadComponent('SocialAuth');
 
+        $this->viewBuilder()->setClassName('Admin');
+
         $this->set('user', $this->Authentication->getResult()?->getData());
 
         $this->SocialAuth->setCallbackUri([
