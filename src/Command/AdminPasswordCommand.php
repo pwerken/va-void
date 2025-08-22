@@ -83,7 +83,7 @@ class AdminPasswordCommand extends Command
         $io->out(sprintf(
             '<info>%04d</info> %s: <warning>%s</warning>',
             $player->get('id'),
-            $player->get('full_name'),
+            $player->get('name'),
             $msg,
         ));
 

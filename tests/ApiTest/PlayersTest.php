@@ -30,7 +30,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertArrayKeyValue('class', (new ReflectionClass($ref))->getShortName(), $data);
         $this->assertArrayKeyValue('url', $ref->getUrl(), $data);
         $this->assertArrayKeyValue('plin', $ref->getIdentifier(), $data);
-        $this->assertArrayKeyValue('full_name', $ref->get('full_name'), $data);
+        $this->assertArrayKeyValue('name', $ref->get('name'), $data);
     }
 
     public function checkPlayer(string $url, int $id): void
@@ -51,7 +51,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertArrayKeyValue('last_name', $ref->get('last_name'), $data);
         $this->assertArrayKeyValue('email', $ref->get('email'), $data);
         $this->assertArrayKeyValue('modified', $ref->get('modified'), $data);
-        $this->assertArrayKeyValue('full_name', $ref->get('full_name'), $data);
+        $this->assertArrayKeyValue('name', $ref->get('name'), $data);
 
         $this->assertArrayHasKey('characters', $data);
         $this->assertArrayHasKey('socials', $data);
@@ -190,7 +190,7 @@ class PlayersTest extends AuthIntegrationTestCase
             'first_name' => $input['first_name'],
             'insertion' => null,
             'last_name' => $input['last_name'],
-            'full_name' => $input['first_name'] . ' ' . $input['last_name'],
+            'name' => $input['first_name'] . ' ' . $input['last_name'],
             'email' => null,
             'modifier_id' => TestAccount::Infobalie->value,
         ];
@@ -230,7 +230,7 @@ class PlayersTest extends AuthIntegrationTestCase
             'first_name' => $input['first_name'],
             'insertion' => $input['insertion'],
             'last_name' => $input['last_name'],
-            'full_name' => $input['first_name'] . ' ' . $input['insertion'] . ' ' . $input['last_name'],
+            'name' => $input['first_name'] . ' ' . $input['insertion'] . ' ' . $input['last_name'],
             'email' => $input['email'],
             'modifier_id' => TestAccount::Infobalie->value,
         ];
@@ -282,7 +282,7 @@ class PlayersTest extends AuthIntegrationTestCase
             'first_name' => $input['first_name'],
             'insertion' => $input['insertion'],
             'last_name' => $input['last_name'],
-            'full_name' => $input['first_name'] . ' ' . $input['insertion'] . ' ' . $input['last_name'],
+            'name' => $input['first_name'] . ' ' . $input['insertion'] . ' ' . $input['last_name'],
             'email' => $input['email'],
         ];
 
@@ -332,7 +332,7 @@ class PlayersTest extends AuthIntegrationTestCase
             'first_name' => $input['first_name'],
             'insertion' => $input['insertion'],
             'last_name' => $input['last_name'],
-            'full_name' => $input['first_name'] . ' ' . $input['insertion'] . ' ' . $input['last_name'],
+            'name' => $input['first_name'] . ' ' . $input['insertion'] . ' ' . $input['last_name'],
             'email' => $input['email'],
             'modifier_id' => TestAccount::Infobalie->value,
         ];

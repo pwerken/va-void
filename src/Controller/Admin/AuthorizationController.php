@@ -32,7 +32,7 @@ class AuthorizationController extends AdminController
                     ->where(['Players.role LIKE' => $role]);
             $permissions[$role->value] = [];
             foreach ($query->all() as $player) {
-                $permissions[$role->value][$player->get('id')] = $player->get('full_name');
+                $permissions[$role->value][$player->get('id')] = $player->get('name');
             }
         }
         $this->set('permissions', $permissions);
@@ -60,7 +60,7 @@ class AuthorizationController extends AdminController
             return $response;
         }
 
-        $who = $player->get('full_name');
+        $who = $player->get('name');
         if ($player->get('role') == $role) {
             $this->Flash->success("$who (#$plin) already as `$role` authorization");
 

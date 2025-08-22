@@ -59,7 +59,7 @@ $hasAuthInfobalie = $user?->hasAuth(Authorization::Infobalie);
             <div class="navigation-item not-on-mobile">
                 <a href="/admin">
                     <small>
-                        <?= $user?->get('full_name') ?><br/>
+                        <?= $user?->get('name') ?><br/>
                         <em><?= $user?->get('role')->label() ?></em>
                     </small>
                 </a>

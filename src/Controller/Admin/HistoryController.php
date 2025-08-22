@@ -290,7 +290,7 @@ class HistoryController extends AdminController
         $result = [];
         $query = $this->fetchTable('Players')->find('all')->where(['id IN' => $plins]);
         foreach ($query->all() as $row) {
-            $result[$row->id] = $row->full_name;
+            $result[$row->id] = $row->get('name');
         }
 
         return $result;

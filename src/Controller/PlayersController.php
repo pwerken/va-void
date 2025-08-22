@@ -40,7 +40,7 @@ class PlayersController extends Controller
                 'class' => 'Player',
                 'url' => '/players/' . $row[0],
                 'plin' => (int)$row[0],
-                'full_name' => $name,
+                'name' => $name,
             ];
         }
 

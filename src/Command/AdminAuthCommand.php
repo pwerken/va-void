@@ -70,7 +70,7 @@ class AdminAuthCommand extends Command
 
             foreach ($perms[$role->value] as $plin) {
                 $player = $this->fetchTable()->get($plin);
-                $io->out(sprintf('<info>%4d</info> %s', $plin, $player->get('full_name')));
+                $io->out(sprintf('<info>%4d</info> %s', $plin, $player->get('name')));
             }
         }
 
@@ -101,7 +101,7 @@ class AdminAuthCommand extends Command
         $io->out(sprintf(
             '<info>%04d</info> %s: <warning>%s</warning>',
             $player->get('id'),
-            $player->get('full_name'),
+            $player->get('name'),
             $player->get('role')->label(),
         ));
 

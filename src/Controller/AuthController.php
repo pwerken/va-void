@@ -131,7 +131,7 @@ class AuthController extends Controller
             'token' => JWT::encode([
                     'sub' => $user['id'],
                     'exp' => time() + 60 * 60 * 24 * 7,
-                    'name' => $user['full_name'],
+                    'name' => $user['name'],
                     'role' => $user['role'],
                 ], Security::getSalt(), 'HS256'),
             'player' => '/players/' . $user['id'],

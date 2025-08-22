@@ -24,8 +24,7 @@ class Player extends Entity implements AuthenticationIdentity, AuthorizationIden
     {
         parent::__construct($properties, $options);
 
-        $this->setCompact(['id', 'full_name']);
-        $this->setVirtual(['full_name']);
+        $this->setVirtual(['name']);
     }
 
     protected function _setPassword(?string $password): ?string
@@ -42,7 +41,7 @@ class Player extends Entity implements AuthenticationIdentity, AuthorizationIden
         return isset($value);
     }
 
-    protected function _getFullName(): string
+    protected function _getName(): string
     {
         $name = [$this->get('first_name'), $this->get('insertion'), $this->get('last_name')];
 
