@@ -28,7 +28,7 @@ abstract class Policy implements BeforePolicyInterface, BeforeScopeInterface
 
     protected function getPlin(): int
     {
-        return $this->identity->id;
+        return $this->identity->get('plin');
     }
 
     protected function setIdentity(?User $identity): void

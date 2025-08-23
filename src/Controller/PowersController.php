@@ -25,7 +25,7 @@ class PowersController extends Controller
     {
         $query = $this->fetchTable()->find()
                     ->select([], true)
-                    ->select('Powers.id')
+                    ->select('Powers.poin')
                     ->select('Powers.name')
                     ->select('Powers.deprecated');
         $this->Authorization->applyScope($query);

@@ -18,11 +18,7 @@ use ReflectionClass;
 class ApiView extends View
 {
     protected array $aliases = [
-        'Condition' => ['id' => 'coin'],
-        'Item' => ['id' => 'itin'],
         'Lammy' => ['lammy' => 'pdf_page'],
-        'Player' => ['id' => 'plin'],
-        'Power' => ['id' => 'poin'],
     ];
 
     public function initialize(): void

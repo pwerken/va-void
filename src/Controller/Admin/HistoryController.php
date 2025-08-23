@@ -155,11 +155,11 @@ class HistoryController extends AdminController
         }
 
         $query = $this->fetchTable('Players')->find()
-                ->where(['id IN' => $plins]);
+                ->where(['plin IN' => $plins]);
 
         $lookup = [];
         foreach ($query->all() as $row) {
-            $lookup[$row->get('id')] = $row;
+            $lookup[$row->get('plin')] = $row;
         }
 
         return $lookup;

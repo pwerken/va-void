@@ -14,6 +14,8 @@ class PowersTable extends Table
     {
         parent::initialize($config);
 
+        $this->setPrimaryKey('poin');
+
         $this->belongsToManyThrough('Characters', 'CharactersPowers');
     }
 
@@ -31,6 +33,6 @@ class PowersTable extends Table
 
     protected function orderBy(): array
     {
-        return ['id' => 'ASC'];
+        return ['poin' => 'ASC'];
     }
 }

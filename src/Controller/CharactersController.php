@@ -6,7 +6,6 @@ namespace App\Controller;
 use App\Controller\Traits\DeleteTrait;
 use App\Controller\Traits\EditTrait;
 use App\Controller\Traits\ViewTrait;
-use Cake\Utility\Inflector;
 
 /**
  * @property \App\Controller\Component\AddComponent $Add
@@ -32,11 +31,12 @@ class CharactersController extends Controller
         $this->Authorization->applyScope($query);
 
         if (isset($this->parent)) {
+            //FIXME missing 'parent' in output
             $this->Authorization->authorize($this->parent, 'charactersIndex');
 
-            $a = Inflector::camelize($this->parent->getSource());
-            $key = $this->fetchTable()->getAssociation($a)->getForeignKey();
-            $value = $this->parent->id;
+            $assoc = $this->fetchTable()->getAssociation($this->parent->getSource());
+            $key = $assoc->getForeignKey();
+            $value = $this->parent->get($assoc->getBindingKey());
 
             $query = $query->andWhere(["Characters.$key" => $value]);
             $this->set('parent', $this->parent);

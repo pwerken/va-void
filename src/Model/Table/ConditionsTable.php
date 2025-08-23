@@ -14,6 +14,8 @@ class ConditionsTable extends Table
     {
         parent::initialize($config);
 
+        $this->setPrimaryKey('coin');
+
         $this->belongsToManyThrough('Characters', 'CharactersConditions');
     }
 
@@ -31,6 +33,6 @@ class ConditionsTable extends Table
 
     protected function orderBy(): array
     {
-        return ['id' => 'ASC'];
+        return ['coin' => 'ASC'];
     }
 }

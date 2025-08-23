@@ -187,7 +187,7 @@ class SocialController extends AdminController
         }
 
         $user = $this->SocialAuth->loginCallback($providerName);
-        if ($user && $user->id) {
+        if ($user && $user->get('plin')) {
             $this->request->getSession()->write('Auth', $user);
 
             // redirect back to page from before login

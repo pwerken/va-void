@@ -16,11 +16,11 @@ class PowersTablePolicy extends Policy
             $query->where(['Characters.plin' => $this->getPlin()])
               ->leftJoin(
                   ['CharactersPowers' => 'characters_powers'],
-                  ['CharactersPowers.power_id = Powers.id'],
+                  ['CharactersPowers.power_id' => 'Powers.poin'],
               )
               ->leftJoin(
                   ['Characters' => 'characters'],
-                  ['Characters.id = CharactersPowers.character_id'],
+                  ['Characters.id' => 'CharactersPowers.character_id'],
               );
         }
     }

@@ -26,7 +26,7 @@ class ItemsController extends Controller
     {
         $query = $this->fetchTable()->find()
                     ->select([], true)
-                    ->select('Items.id')
+                    ->select('Items.itin')
                     ->select('Items.name')
                     ->select('Items.expiry')
                     ->select('Items.deprecated')

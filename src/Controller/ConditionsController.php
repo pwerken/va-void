@@ -25,7 +25,7 @@ class ConditionsController extends Controller
     {
         $query = $this->fetchTable()->find()
                     ->select([], true)
-                    ->select('Conditions.id')
+                    ->select('Conditions.coin')
                     ->select('Conditions.name')
                     ->select('Conditions.deprecated');
         $this->Authorization->applyScope($query);

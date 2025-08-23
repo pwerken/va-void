@@ -5,5 +5,10 @@ namespace App\Model\Entity;
 
 class Condition extends Entity
 {
-    protected array $_compact = [ 'id', 'name', 'deprecated' ];
+    protected array $_compact = [ 'coin', 'name', 'deprecated' ];
+
+    public function getUrl(): string
+    {
+        return '/' . $this->getBaseUrl() . '/' . $this->get('coin');
+    }
 }

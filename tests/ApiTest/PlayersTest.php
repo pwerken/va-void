@@ -29,7 +29,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertCount(4, $data);
         $this->assertArrayKeyValue('class', (new ReflectionClass($ref))->getShortName(), $data);
         $this->assertArrayKeyValue('url', $ref->getUrl(), $data);
-        $this->assertArrayKeyValue('plin', $ref->getIdentifier(), $data);
+        $this->assertArrayKeyValue('plin', $ref->get('plin'), $data);
         $this->assertArrayKeyValue('name', $ref->get('name'), $data);
     }
 
@@ -42,7 +42,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertCount(13, $data);
         $this->assertArrayKeyValue('class', (new ReflectionClass($ref))->getShortName(), $data);
         $this->assertArrayKeyValue('url', $ref->getUrl(), $data);
-        $this->assertArrayKeyValue('plin', $ref->getIdentifier(), $data);
+        $this->assertArrayKeyValue('plin', $ref->get('plin'), $data);
 
         $this->assertArrayKeyValue('role', $ref->get('role')->value, $data);
         $this->assertArrayKeyValue('password', $ref->has('password'), $data);
@@ -169,7 +169,7 @@ class PlayersTest extends AuthIntegrationTestCase
 
         # expected fields with validation errors:
         $this->assertCount(3, $errors);
-        $this->assertArrayHasKey('id', $errors); // FIXME? -> plin
+        $this->assertArrayHasKey('plin', $errors);
         $this->assertArrayHasKey('first_name', $errors);
         $this->assertArrayHasKey('last_name', $errors);
     }
@@ -270,7 +270,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $errors = $this->assertErrorsResponse('/players/1', $actual);
         # expected fields with validation errors:
         $this->assertCount(1, $errors);
-        $this->assertArrayHasKey('id', $errors); // FIXME? -> plin
+        $this->assertArrayHasKey('plin', $errors);
 
         unset($input['plin']);
         $expected = [
@@ -320,7 +320,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $errors = $this->assertErrorsResponse('/players/1', $actual);
         # expected fields with validation errors:
         $this->assertCount(1, $errors);
-        $this->assertArrayHasKey('id', $errors); // FIXME? -> plin
+        $this->assertArrayHasKey('plin', $errors);
 
         unset($input['plin']);
         $expected = [

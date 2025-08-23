@@ -90,7 +90,7 @@ class StatsController extends AdminController
                 'Characters.plin',
                 'Characters.chin',
                 'Characters.name',
-                'total' => $query->func()->count('Items.id'),
+                'total' => $query->func()->count('Items.itin'),
             ])
             ->where(['Characters.modified >' => $since])
             ->andWhere(['Characters.status' => 'active'])

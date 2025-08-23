@@ -57,7 +57,7 @@ class AdminAuthCommand extends Command
         };
 
         $perms = $this->fetchTable()
-                    ->find('list', valueField: 'id', groupField: $grouper)
+                    ->find('list', valueField: 'plin', groupField: $grouper)
                     ->all()
                     ->toArray();
 
@@ -81,7 +81,7 @@ class AdminAuthCommand extends Command
     {
         $table = $this->fetchTable();
         $player = $table->getMaybe($plin);
-        if ($plin !== (string)$player?->get('id')) {
+        if ($plin !== (string)$player?->get('plin')) {
             $io->abort(sprintf('No player found with plin `%s`.', $plin));
         }
 
@@ -100,7 +100,7 @@ class AdminAuthCommand extends Command
 
         $io->out(sprintf(
             '<info>%04d</info> %s: <warning>%s</warning>',
-            $player->get('id'),
+            $player->get('plin'),
             $player->get('name'),
             $player->get('role')->label(),
         ));

@@ -21,10 +21,10 @@ class LoginWithPlinMiddleware implements MiddlewareInterface
             /** @var array $body */
             $body = $request->getParsedBody();
 
-            $id = Hash::get($body, 'id');
-            $plin = Hash::get($body, 'plin', $id);
+            $plin = Hash::get($body, 'plin');
+            $new = Hash::get($body, 'id', $plin);
 
-            $request = $request->withParsedBody(Hash::insert($body, 'id', $plin));
+            $request = $request->withParsedBody(Hash::insert($body, 'plin', $new));
         }
 
         return $handler->handle($request);

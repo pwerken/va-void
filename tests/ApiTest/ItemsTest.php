@@ -147,7 +147,7 @@ class ItemsTest extends AuthIntegrationTestCase
             'plin' => '1',
             'chin' => '1',
 # ignored fields:
-            'itin' => '66',
+            'id' => '66',
             'modifier_id' => '9',
             'creator_id' => '9',
             'ignored' => 'ignored',

@@ -11,11 +11,11 @@ class PlayerValidator extends Validator
     {
         parent::__construct();
 
-        $this->requirePresence('id', 'create');
+        $this->requirePresence('plin', 'create');
         $this->requirePresence('first_name', 'create');
         $this->requirePresence('last_name', 'create');
 
-        $this->nonNegativeInteger('id');
+        $this->nonNegativeInteger('plin');
         $this->enum('role', PlayerRole::class);
         $this->allowEmptyString('password');
         $this->notEmptyString('first_name');

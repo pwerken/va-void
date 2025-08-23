@@ -16,11 +16,11 @@ class ConditionsTablePolicy extends Policy
             $query->where(['Characters.plin' => $this->getPlin()])
               ->leftJoin(
                   ['CharactersConditions' => 'characters_conditions'],
-                  ['CharactersConditions.condition_id = Conditions.id'],
+                  ['CharactersConditions.condition_id' => 'Conditions.coin'],
               )
               ->leftJoin(
                   ['Characters' => 'characters'],
-                  ['Characters.id = CharactersConditions.character_id'],
+                  ['Characters.id' => 'CharactersConditions.character_id'],
               );
         }
     }

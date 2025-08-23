@@ -50,7 +50,7 @@ abstract class Entity extends CakeEntity
 
     public function getUrl(): string
     {
-        return '/' . $this->getBaseUrl() . '/' . $this->id;
+        return '/' . $this->getBaseUrl() . '/' . $this->get('id');
     }
 
     public function setCompact(array $properties, bool $merge = false): static

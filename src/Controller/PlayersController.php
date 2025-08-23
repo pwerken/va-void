@@ -22,7 +22,7 @@ class PlayersController extends Controller
     {
         $query = $this->fetchTable()->find()
                     ->select([], true)
-                    ->select('Players.id')
+                    ->select('Players.plin')
                     ->select('Players.first_name')
                     ->select('Players.insertion')
                     ->select('Players.last_name');

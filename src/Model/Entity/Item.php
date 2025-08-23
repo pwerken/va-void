@@ -5,13 +5,19 @@ namespace App\Model\Entity;
 
 class Item extends Entity
 {
+    protected array $_compact = ['itin', 'name', 'expiry', 'character', 'deprecated'];
+
     public function __construct(array $properties = [], array $options = [])
     {
         parent::__construct($properties, $options);
 
-        $this->setCompact(['expiry', 'character', 'deprecated'], true);
         $this->setVirtual(['plin', 'chin']);
         $this->setHidden(['character_id'], true);
+    }
+
+    public function getUrl(): string
+    {
+        return '/' . $this->getBaseUrl() . '/' . $this->get('itin');
     }
 
     protected function _getPlin(): ?int

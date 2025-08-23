@@ -49,7 +49,7 @@ class ConditionPolicy extends EntityPolicy
             return false;
         }
 
-        $coin = $obj->id;
+        $coin = $obj->get('coin');
 
         $query = $this->getTableLocator()->get('Characters')->find();
         $query->where(['Characters.plin' => $plin]);

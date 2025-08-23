@@ -32,7 +32,7 @@ class AuthorizationController extends AdminController
                     ->where(['Players.role LIKE' => $role]);
             $permissions[$role->value] = [];
             foreach ($query->all() as $player) {
-                $permissions[$role->value][$player->get('id')] = $player->get('name');
+                $permissions[$role->value][$player->get('plin')] = $player->get('name');
             }
         }
         $this->set('permissions', $permissions);

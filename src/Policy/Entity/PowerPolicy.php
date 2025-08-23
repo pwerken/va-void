@@ -49,7 +49,7 @@ class PowerPolicy extends EntityPolicy
             return false;
         }
 
-        $poin = $obj->id;
+        $poin = $obj->get('poin');
 
         $query = $this->getTableLocator()->get('Characters')->find();
         $query->where(['Characters.plin' => $plin]);

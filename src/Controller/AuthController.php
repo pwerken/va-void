@@ -129,13 +129,13 @@ class AuthController extends Controller
         return [
             'class' => 'Auth',
             'token' => JWT::encode([
-                    'sub' => $user['id'],
+                    'sub' => $user['plin'],
                     'exp' => time() + 60 * 60 * 24 * 7,
                     'name' => $user['name'],
                     'role' => $user['role'],
                 ], Security::getSalt(), 'HS256'),
-            'player' => '/players/' . $user['id'],
-            'plin' => $user['id'],
+            'player' => '/players/' . $user['plin'],
+            'plin' => $user['plin'],
         ];
     }
 }

@@ -16,6 +16,6 @@ class PlayersTablePolicy extends Policy
             return;
         }
 
-        $query->where(['Players.id' => $this->getPlin()]);
+        $query->where(['Players.plin' => $this->getPlin()]);
     }
 }

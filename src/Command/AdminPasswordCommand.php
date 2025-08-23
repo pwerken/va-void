@@ -50,7 +50,7 @@ class AdminPasswordCommand extends Command
         $table = $this->fetchTable();
         $player = $table->getMaybe($plin);
 
-        if ($plin !== (string)$player?->get('id')) {
+        if ($plin !== (string)$player?->get('plin')) {
             $io->abort(sprintf('No player found with plin `%s`.', $plin));
         }
 
@@ -82,7 +82,7 @@ class AdminPasswordCommand extends Command
 
         $io->out(sprintf(
             '<info>%04d</info> %s: <warning>%s</warning>',
-            $player->get('id'),
+            $player->get('plin'),
             $player->get('name'),
             $msg,
         ));

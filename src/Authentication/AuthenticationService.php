@@ -19,7 +19,7 @@ class AuthenticationService extends BaseAuthenticationService
     public function __construct(bool $isAdmin, array $config = [])
     {
         $fields = [
-            AbstractIdentifier::CREDENTIAL_USERNAME => 'id',
+            AbstractIdentifier::CREDENTIAL_USERNAME => 'plin',
             AbstractIdentifier::CREDENTIAL_PASSWORD => 'password',
         ];
 
@@ -34,9 +34,10 @@ class AuthenticationService extends BaseAuthenticationService
                 'identifier' => [
                     JwtSubjectIdentifier::class => [
                         'resolver' => $resolver,
+                        'tokenField' => 'plin',
                     ],
                 ],
-                'fields' => [ 'sub' => 'id' ],
+                'fields' => [ 'sub' => 'plin' ],
                 'identify' => true,
             ];
         }
@@ -44,6 +45,7 @@ class AuthenticationService extends BaseAuthenticationService
             'identifier' => [
                 JwtSubjectIdentifier::class => [
                     'resolver' => $resolver,
+                    'tokenField' => 'plin',
                 ],
             ],
             'returnPayload' => false,

@@ -14,6 +14,8 @@ use Authorization\Policy\ResultInterface;
 
 class Player extends Entity implements AuthenticationIdentity, AuthorizationIdentity
 {
+    protected array $_compact = ['plin', 'name'];
+
     protected array $_defaults = [
         'role' => PlayerRole::Player,
     ];
@@ -25,6 +27,11 @@ class Player extends Entity implements AuthenticationIdentity, AuthorizationIden
         parent::__construct($properties, $options);
 
         $this->setVirtual(['name']);
+    }
+
+    public function getUrl(): string
+    {
+        return '/' . $this->getBaseUrl() . '/' . $this->get('plin');
     }
 
     protected function _setPassword(?string $password): ?string
@@ -62,7 +69,7 @@ class Player extends Entity implements AuthenticationIdentity, AuthorizationIden
 
     public function getIdentifier(): int
     {
-        return $this->id;
+        return $this->get('plin');
     }
 
     public function can(string $action, mixed $resource): bool

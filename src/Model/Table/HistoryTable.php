@@ -155,7 +155,7 @@ class HistoryTable extends Table
             ->toList();
 
         $entity = $this->getTableLocator()->get('Players')->find()
-            ->where(['id' => $plin])
+            ->where(['plin' => $plin])
             ->first();
         if (!is_null($entity)) {
             $list[] = History::fromEntity($entity);
@@ -227,7 +227,7 @@ class HistoryTable extends Table
             ->toList();
 
         $entity = $this->getTableLocator()->get('Powers')->find('withContain')
-            ->where(['Powers.id' => $poin])
+            ->where(['Powers.poin' => $poin])
             ->first();
         if (!is_null($entity)) {
             $list[] = History::fromEntity($entity);
@@ -255,7 +255,7 @@ class HistoryTable extends Table
             ->toList();
 
         $entity = $this->getTableLocator()->get('Conditions')->find('withContain')
-            ->where(['Conditions.id' => $coin])
+            ->where(['Conditions.coin' => $coin])
             ->first();
         if (!is_null($entity)) {
             $list[] = History::fromEntity($entity);
@@ -278,7 +278,7 @@ class HistoryTable extends Table
             ->toList();
 
         $entity = $this->getTableLocator()->get('Items')->find('withContain')
-            ->where(['Items.id' => $itin])
+            ->where(['Items.itin' => $itin])
             ->first();
         if (!is_null($entity)) {
             $list[] = History::fromEntity($entity);

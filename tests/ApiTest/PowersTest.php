@@ -159,7 +159,7 @@ class PowersTest extends AuthIntegrationTestCase
             'notes' => 'infobalie notes',
             'deprecated' => true,
 # ignored fields:
-            'poin' => 66,
+            'id' => 66,
             'modifier_id' => 9,
             'creator_id' => 9,
             'ignored' => 'ignored',
@@ -194,7 +194,7 @@ class PowersTest extends AuthIntegrationTestCase
     {
         $input = [
 # disallowed fields:
-            'id' => 55,
+            'poin' => 55,
 # required fields, not allowed empty
             'name' => '',
             'player_text' => '',
@@ -207,7 +207,7 @@ class PowersTest extends AuthIntegrationTestCase
 
         # expected fields with validation errors:
         $this->assertCount(3, $errors);
-        $this->assertArrayHasKey('id', $errors);
+        $this->assertArrayHasKey('poin', $errors);
         $this->assertArrayHasKey('name', $errors);
         $this->assertArrayHasKey('player_text', $errors);
     }
@@ -216,7 +216,7 @@ class PowersTest extends AuthIntegrationTestCase
     {
         $input = [
 # disallowed fields:
-            'id' => 55,
+            'poin' => 55,
 # required fields, not allowed empty
             'name' => '',
             'player_text' => '',
@@ -229,8 +229,8 @@ class PowersTest extends AuthIntegrationTestCase
 
         # expected fields with validation errors:
         $this->assertCount(3, $errors);
+        $this->assertArrayHasKey('poin', $errors);
         $this->assertArrayHasKey('name', $errors);
         $this->assertArrayHasKey('player_text', $errors);
-        $this->assertArrayHasKey('id', $errors);
     }
 }

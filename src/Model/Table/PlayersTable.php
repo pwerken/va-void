@@ -4,9 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Enum\PlayerRole;
-use ArrayObject;
 use Cake\Datasource\EntityInterface;
-use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
 use Cake\Routing\Router;
 
@@ -21,6 +19,8 @@ class PlayersTable extends Table
     {
         parent::initialize($config);
 
+        $this->setPrimaryKey('plin');
+
         $this->setColumnEnumType('role', PlayerRole::class);
 
         $this->hasMany('Characters')->setForeignKey('plin');
@@ -29,19 +29,9 @@ class PlayersTable extends Table
                 ->setForeignKey('user_id');
     }
 
-    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
-    {
-        if (isset($data['plin'])) {
-            $data['id'] = $data['plin'];
-            unset($data['plin']);
-        }
-
-        parent::beforeMarshal($event, $data, $options);
-    }
-
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->addCreate($rules->isUnique(['id']));
+        $rules->addCreate($rules->isUnique(['plin']));
 
         $rules->add([$this, 'ruleAuthCheck']);
 
@@ -80,6 +70,6 @@ class PlayersTable extends Table
 
     protected function orderBy(): array
     {
-        return ['id' => 'ASC'];
+        return ['plin' => 'ASC'];
     }
 }

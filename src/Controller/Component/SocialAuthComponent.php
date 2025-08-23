@@ -232,12 +232,12 @@ class SocialAuthComponent extends Component
             // new login, look for player based on known email
             $result = $this->_playerModel
                 ->find()
-                ->select('id', true)
+                ->select('plin', true)
                 ->where(['email' => $email])
                 ->disableHydration()
                 ->first();
             if ($result) {
-                $id = $result['id'];
+                $id = $result['plin'];
             }
         }
         if (!$id) {

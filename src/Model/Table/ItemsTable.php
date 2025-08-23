@@ -15,6 +15,8 @@ class ItemsTable extends Table
     {
         parent::initialize($config);
 
+        $this->setPrimaryKey('itin');
+
         $this->belongsTo('Characters');
     }
 
@@ -58,12 +60,12 @@ class ItemsTable extends Table
     {
         $holes = [ 1980, 2201, 2300, 8001, 8888, 9000, 9999, -1 ];
         foreach ($holes as $max) {
-            $query = $this->find()->enableHydration(false)->select(['id' => 'MAX(id)']);
+            $query = $this->find()->enableHydration(false)->select(['itin' => 'MAX(itin)']);
             if ($max > 0) {
-                $query->where(['id <' => $max]);
+                $query->where(['itin <' => $max]);
             }
 
-            $newID = $query->first()['id'] + 1;
+            $newID = $query->first()['itin'] + 1;
             if ($newID < $max || $max < 0) {
                 return (string)$newID;
             }
@@ -79,6 +81,6 @@ class ItemsTable extends Table
 
     protected function orderBy(): array
     {
-        return ['id' => 'ASC'];
+        return ['itin' => 'ASC'];
     }
 }

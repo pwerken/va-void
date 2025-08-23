@@ -48,7 +48,7 @@ foreach ($socials as $social) {
 <?= $this->Form->create() ?>
 <?= $this->Form->control('id', [
         'label' => 'Plin',
-        'name' => 'id',
+        'name' => 'plin',
         'class' => 'plin',
         'type' => 'number',
         'value' => '',
