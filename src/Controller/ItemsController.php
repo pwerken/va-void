@@ -30,7 +30,7 @@ class ItemsController extends Controller
                     ->select('Items.name')
                     ->select('Items.expiry')
                     ->select('Items.deprecated')
-                    ->select('Characters.player_id')
+                    ->select('Characters.plin')
                     ->select('Characters.chin')
                     ->select('Characters.name')
                     ->select('Characters.status')

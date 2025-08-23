@@ -16,7 +16,7 @@ class CharactersPowerLammy extends CharactersConditionLammy
         $data['id'] = $this->entity->get('power_id');
         $data['name'] = $power->get('name');
         $data['text'] = $power->get('player_text');
-        $data['plin'] = $character->get('player_id') . ' - ' . $character->get('chin');
+        $data['plin'] = $character->get('plin') . ' - ' . $character->get('chin');
         $data['char'] = $character->get('name');
 
         $expiry = $this->entity->get('expiry') ?: 'Until death';

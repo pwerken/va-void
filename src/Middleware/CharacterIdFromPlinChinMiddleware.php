@@ -21,7 +21,7 @@ class CharacterIdFromPlinChinMiddleware implements MiddlewareInterface
         $pass = $params['pass'];
         if ($hasPlinChin && count($pass) >= 2) {
             $table = TableRegistry::getTableLocator()->get('Characters');
-            $char = $table->findByPlayerIdAndChin($pass[0], $pass[1])->first()?->id;
+            $char = $table->findByPlinAndChin($pass[0], $pass[1])->first()?->id;
             $params['character_id'] = $char;
 
             array_shift($pass);

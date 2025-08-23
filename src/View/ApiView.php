@@ -18,7 +18,6 @@ use ReflectionClass;
 class ApiView extends View
 {
     protected array $aliases = [
-        'Character' => ['player_id' => 'plin'],
         'Condition' => ['id' => 'coin'],
         'Item' => ['id' => 'itin'],
         'Lammy' => ['lammy' => 'pdf_page'],

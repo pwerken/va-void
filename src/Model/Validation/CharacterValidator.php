@@ -11,12 +11,12 @@ class CharacterValidator extends Validator
     {
         parent::__construct();
 
-        $this->requirePresence('player_id', 'create');
+        $this->requirePresence('plin', 'create');
         $this->requirePresence('chin', 'create');
         $this->requirePresence('name', 'create');
 
         $this->nonNegativeInteger('id');
-        $this->nonNegativeInteger('player_id');
+        $this->nonNegativeInteger('plin');
         $this->nonNegativeInteger('chin');
         $this->notEmptyString('name');
         $this->numeric('xp')->regex('xp', '/^\d+([.,](0|25|5|75)0*)?$/');

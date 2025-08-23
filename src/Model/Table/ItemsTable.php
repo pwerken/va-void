@@ -26,7 +26,7 @@ class ItemsTable extends Table
                 $data['character_id'] = null;
             } else {
                 $table = TableRegistry::getTableLocator()->get('Characters');
-                $char = $table->findByPlayerIdAndChin($data['plin'], $data['chin'])->first();
+                $char = $table->findByPlinAndChin($data['plin'], $data['chin'])->first();
                 $data['character_id'] = ($char ? $char['id'] : -1);
             }
         }

@@ -61,7 +61,7 @@ class ItemLammy extends LammyCard
         if ($character === null) {
             $owner = 'unknown';
         } else {
-            $owner = $character->get('player_id') . ' - ' . $character->get('chin');
+            $owner = $character->get('plin') . ' - ' . $character->get('chin');
         }
         $this->inMargin('owner: ' . $owner);
     }
@@ -79,7 +79,7 @@ class ItemLammy extends LammyCard
         if ($character === null) {
             $char_id = 'PLIN';
         } else {
-            $char_id = $character->get('player_id') . ' - ' . $character->get('chin');
+            $char_id = $character->get('plin') . ' - ' . $character->get('chin');
         }
         $this->pdf->SetTextColor(127);
         $this->font(5);

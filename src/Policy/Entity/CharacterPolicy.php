@@ -40,6 +40,6 @@ class CharacterPolicy extends EntityPolicy
 
     protected function hasRoleUser(int $plin, ?Entity $obj): bool
     {
-        return $obj?->get('player_id') == $plin;
+        return $obj?->get('plin') == $plin;
     }
 }

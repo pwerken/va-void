@@ -24,7 +24,7 @@ class AdminHistoryHelper extends Helper
             $char = $this->getCharacter((int)$value);
             if ($char) {
                 $value .= ' = '
-                    . $char->get('player_id') . '/' . $char->get('chin')
+                    . $char->get('plin') . '/' . $char->get('chin')
                     . ' ' . $char->get('name');
             }
         }
@@ -58,11 +58,9 @@ class AdminHistoryHelper extends Helper
 
         if (str_starts_with($entity, 'Characters')) {
             if ($rhs) {
-                $tbl = substr($entity, 10) . 's';
-                $obj = $this->getTableLocator()->get($tbl)
-                        ->find()
-                        ->where(['id' => $h->get('key2')])
-                        ->first();
+                $table = $this->getTableLocator()->get(substr($entity, 10) . 's');
+                $key = $table->getPrimaryKey();
+                $obj = $table->find()->where([$key => $h->get('key2')])->first();
 
                 return $obj?->get('name') ?? '(removed)';
             }
@@ -72,7 +70,7 @@ class AdminHistoryHelper extends Helper
                 return '(removed)';
             }
 
-            return $obj->get('player_id') . '/' . $obj->get('chin')
+            return $obj->get('plin') . '/' . $obj->get('chin')
                 . ' ' . $obj->get('name');
         }
 
@@ -88,7 +86,7 @@ class AdminHistoryHelper extends Helper
         $link['action'] = strtolower($entity);
         if ($entity === 'Character') {
             $data = $h->decode();
-            $link[] = $data['player_id'];
+            $link[] = $data['plin'];
             $link[] = $data['chin'];
         } else {
             $link[] = $h->get('key1');
@@ -113,7 +111,7 @@ class AdminHistoryHelper extends Helper
                 } else {
                     $obj = $this->getCharacter($h->get('key1'));
                     $link['action'] = 'character';
-                    $link[] = $obj->get('player_id');
+                    $link[] = $obj->get('plin');
                     $link[] = $obj->get('chin');
                 }
 

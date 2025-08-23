@@ -52,7 +52,7 @@ class PowerPolicy extends EntityPolicy
         $poin = $obj->id;
 
         $query = $this->getTableLocator()->get('Characters')->find();
-        $query->where(['Characters.player_id' => $plin]);
+        $query->where(['Characters.plin' => $plin]);
         $query->matching(
             'CharactersPowers',
             function (Query $query) use ($poin) {

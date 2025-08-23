@@ -25,7 +25,7 @@ class CharactersController extends Controller
     {
         $query = $this->fetchTable()->find()
                     ->select([], true)
-                    ->select('Characters.player_id')
+                    ->select('Characters.plin')
                     ->select('Characters.chin')
                     ->select('Characters.name')
                     ->select('Characters.status');

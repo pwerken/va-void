@@ -167,7 +167,7 @@ class HistoryTable extends Table
     private function getCharacterHistory(int $plin, int $chin): array
     {
         $entity = $this->getTableLocator()->get('Characters')->find('withContain')
-            ->where(['Characters.player_id' => $plin])
+            ->where(['Characters.plin' => $plin])
             ->where(['Characters.chin' => $chin])
             ->first();
 

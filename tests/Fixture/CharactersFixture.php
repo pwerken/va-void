@@ -13,7 +13,7 @@ class CharactersFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'player_id' => 1,
+                'plin' => 1,
                 'chin' => 1,
                 'name' => 'Sir Killalot',
                 'xp' => 15.0,
@@ -29,7 +29,7 @@ class CharactersFixture extends TestFixture
             ],
             [
                 'id' => 2,
-                'player_id' => 2,
+                'plin' => 2,
                 'chin' => 1,
                 'name' => 'Mathilda',
                 'xp' => 15.0,

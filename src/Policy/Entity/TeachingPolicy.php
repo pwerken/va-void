@@ -32,6 +32,6 @@ class TeachingPolicy extends EntityPolicy
 
     protected function hasRoleUser(int $plin, ?Entity $obj): bool
     {
-        return $obj?->get('student')->get('player_id') == $plin;
+        return $obj?->get('student')->get('plin') == $plin;
     }
 }

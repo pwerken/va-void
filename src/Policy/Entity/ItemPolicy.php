@@ -51,6 +51,6 @@ class ItemPolicy extends EntityPolicy
 
         $char = $this->getTableLocator()->get('Characters')->get($char_id);
 
-        return $char->get('player_id') == $plin;
+        return $char->get('plin') == $plin;
     }
 }

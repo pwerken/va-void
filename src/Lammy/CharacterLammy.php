@@ -42,7 +42,7 @@ class CharacterLammy extends LammyCard
 
         $this->pdf->SetTextColor(0);
         $this->font(11, 'B');
-        $this->text(52, 5, 10, 'R', $this->entity->get('player_id'));
+        $this->text(52, 5, 10, 'R', $this->entity->get('plin'));
         $this->text(61, 5, 7, 'C', sprintf('%02d', $this->entity->get('chin')));
         $this->text(12, 10, 60, 'L', $this->entity->get('player')->get('name'));
         $this->text(12, 16, 60, 'L', $this->entity->get('name'));

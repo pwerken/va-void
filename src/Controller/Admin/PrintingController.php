@@ -37,9 +37,11 @@ class PrintingController extends AdminController
 
         $related = [
             'Character',
-            'CharactersCondition',
-            'CharactersPower',
+            'CharactersGlyphImbue',
+            'CharactersRuneImbue',
             'CharactersSkill',
+            'CharactersPower',
+            'CharactersCondition',
             'Teaching',
         ];
 
@@ -48,7 +50,7 @@ class PrintingController extends AdminController
         $query
             ->select($lammies)
             ->select(['character_str' => $query->func()->concat([
-                'characters.player_id' => 'identifier',
+                'characters.plin' => 'identifier',
                 '/',
                 'characters.chin' => 'identifier',
             ])])

@@ -24,7 +24,7 @@ class CharactersTable extends Table
 
         $this->setColumnEnumType('status', CharacterStatus::class);
 
-        $this->belongsTo('Players');
+        $this->belongsTo('Players')->setForeignKey('plin');
         $this->belongsTo('Factions')->setProperty('faction_object');
 
         $this->hasMany('Items');
@@ -46,19 +46,13 @@ class CharactersTable extends Table
 
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
-        if (isset($data['plin'])) {
-            $plin = $data['player_id'] = $data['plin'];
-            unset($data['plin']);
-
-            if (!isset($data['chin'])) {
-                $chin = $this->find()
-                            ->select(['maxChin' => 'MAX(chin)'])
-                            ->where(['player_id' => $plin])
-                            ->enableHydration(false)
-                            ->first();
-                $chin = $chin ? $chin['maxChin'] + 1 : 1;
-                $data['chin'] = $chin;
-            }
+        if (isset($data['plin']) && !isset($data['chin'])) {
+            $query = $this->find();
+            $chin = $query->select(['maxChin' => $query->func()->max('chin')])
+                        ->where(['plin' => $data['plin']])
+                        ->enableHydration(false)
+                        ->first();
+            $data['chin'] = ($chin ? $chin['maxChin'] + 1 : 1);
         }
 
         if (isset($data['faction'])) {
@@ -73,8 +67,8 @@ class CharactersTable extends Table
         parent::afterMarshal($event, $entity, $options);
 
         if (!$entity->isNew()) {
-            if ($entity->isDirty('player_id')) {
-                $entity->setError('player_id', ['key' => 'Cannot change primary key field']);
+            if ($entity->isDirty('plin')) {
+                $entity->setError('plin', ['key' => 'Cannot change primary key field']);
             }
             if ($entity->isDirty('chin')) {
                 $entity->setError('chin', ['key' => 'Cannot change primary key field']);
@@ -85,7 +79,7 @@ class CharactersTable extends Table
     public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
         if ($entity->isDirty('status') && $entity->get('status') === 'active') {
-            $chars = $this->findByPlayerId($entity->get('player_id'));
+            $chars = $this->findByPlin($entity->get('plin'));
             foreach ($chars as $char) {
                 if ($char->id === $entity->get('id') || $char->status !== 'active') {
                     continue;
@@ -98,8 +92,8 @@ class CharactersTable extends Table
 
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->addCreate($rules->isUnique(['chin', 'player_id']));
-        $rules->addCreate($rules->isUnique(['name', 'player_id']));
+        $rules->addCreate($rules->isUnique(['plin', 'chin']));
+        $rules->addCreate($rules->isUnique(['plin', 'name']));
 
         $rules->add($rules->existsIn('faction_id', 'Factions'));
 
@@ -148,7 +142,7 @@ class CharactersTable extends Table
 
     protected function orderBy(): array
     {
-        return ['player_id' => 'ASC', 'chin' => 'DESC'];
+        return ['plin' => 'ASC', 'chin' => 'DESC'];
     }
 
     protected function nameToId(string $model, string $name): int

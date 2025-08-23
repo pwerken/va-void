@@ -52,7 +52,7 @@ class ConditionPolicy extends EntityPolicy
         $coin = $obj->id;
 
         $query = $this->getTableLocator()->get('Characters')->find();
-        $query->where(['Characters.player_id' => $plin]);
+        $query->where(['Characters.plin' => $plin]);
         $query->matching(
             'CharactersConditions',
             function (Query $query) use ($coin) {

@@ -47,7 +47,7 @@ class TeachingsTable extends Table
     {
         if (isset($data['plin']) && isset($data['chin'])) {
             $table = TableRegistry::getTableLocator()->get('Characters');
-            $char = $table->findByPlayerIdAndChin($data['plin'], $data['chin'])->first();
+            $char = $table->findByPlinAndChin($data['plin'], $data['chin'])->first();
             $data['teacher_id'] = ($char ? $char['id'] : -1);
         }
 

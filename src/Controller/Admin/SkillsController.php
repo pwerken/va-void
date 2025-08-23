@@ -44,7 +44,7 @@ class SkillsController extends AdminController
             });
             $query->select([
                 'Characters.id',
-                'Characters.player_id',
+                'Characters.plin',
                 'Characters.chin',
                 'Characters.name',
                 'Characters.status',

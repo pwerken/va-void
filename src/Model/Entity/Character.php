@@ -20,7 +20,7 @@ class Character extends Entity
     {
         parent::__construct($properties, $options);
 
-        $this->setCompact(['player_id', 'chin', 'name', 'status']);
+        $this->setCompact(['plin', 'chin', 'name', 'status']);
 
         $this->setVirtual(['faction', 'xp_available']);
 
@@ -30,7 +30,7 @@ class Character extends Entity
 
     public function getUrl(): string
     {
-        return '/' . $this->getBaseUrl() . '/' . $this->get('player_id') . '/' . $this->get('chin');
+        return '/' . $this->getBaseUrl() . '/' . $this->get('plin') . '/' . $this->get('chin');
     }
 
     protected function _getFaction(): ?string

@@ -69,7 +69,7 @@ class StatsController extends AdminController
         $rows = [];
         foreach ($query->all() as $character) {
             $rows[] = [
-                'plin' => $character->player_id,
+                'plin' => $character->plin,
                 'chin' => $character->chin,
                 'name' => $character->name,
                 'value' => round((float)$character->xp),
@@ -87,7 +87,7 @@ class StatsController extends AdminController
 
         $query = $this->fetchTable('Items')->find('withContain');
         $query->select([
-                'Characters.player_id',
+                'Characters.plin',
                 'Characters.chin',
                 'Characters.name',
                 'total' => $query->func()->count('Items.id'),
@@ -96,13 +96,13 @@ class StatsController extends AdminController
             ->andWhere(['Characters.status' => 'active'])
             ->groupBy('character_id')
             ->orderByDesc('total', true)
-            ->orderByAsc('player_id')
+            ->orderByAsc('plin')
             ->orderByDesc('chin');
 
         $rows = [];
         foreach ($query->all() as $item) {
             $rows[] = [
-                'plin' => $item->character->player_id,
+                'plin' => $item->character->plin,
                 'chin' => $item->character->chin,
                 'name' => $item->character->name,
                 'value' => $item->total,
@@ -145,13 +145,13 @@ class StatsController extends AdminController
             ])
             ->groupBy('c.id')
             ->orderByDesc('total', true)
-            ->orderByAsc('Characters.player_id')
+            ->orderByAsc('Characters.plin')
             ->orderByDesc('Characters.chin');
 
         $rows = [];
         foreach ($query->all() as $character) {
             $rows[] = [
-                'plin' => $character->player_id,
+                'plin' => $character->plin,
                 'chin' => $character->chin,
                 'name' => $character->name,
                 'value' => $character->total,
@@ -171,7 +171,7 @@ class StatsController extends AdminController
 
         $query = $this->fetchTable('CharactersSkills')->find('withContain');
         $query->select([
-                'Characters.player_id',
+                'Characters.plin',
                 'Characters.chin',
                 'Characters.name',
                 'total' => $query->func()->sum('times'),
@@ -183,13 +183,13 @@ class StatsController extends AdminController
             ])
             ->groupBy('character_id')
             ->orderByDesc('total', true)
-            ->orderByAsc('Characters.player_id')
+            ->orderByAsc('Characters.plin')
             ->orderByDesc('Characters.chin');
 
         $rows = [];
         foreach ($query->all() as $charSkill) {
             $rows[] = [
-                'plin' => $charSkill->character->player_id,
+                'plin' => $charSkill->character->plin,
                 'chin' => $charSkill->character->chin,
                 'name' => $charSkill->character->name,
                 'value' => $charSkill->total,
@@ -208,7 +208,7 @@ class StatsController extends AdminController
 
         $query = $this->fetchTable('CharactersPowers')->find('withContain');
         $query->select([
-                'Characters.player_id',
+                'Characters.plin',
                 'Characters.chin',
                 'Characters.name',
                 'total' => $query->func()->count('power_id'),
@@ -223,13 +223,13 @@ class StatsController extends AdminController
             ])
             ->groupBy('character_id')
             ->orderByDesc('total')
-            ->orderByAsc('Characters.player_id')
+            ->orderByAsc('Characters.plin')
             ->orderByDesc('Characters.chin');
 
         $rows = [];
         foreach ($query->all() as $charPower) {
             $rows[] = [
-                'plin' => $charPower->character->player_id,
+                'plin' => $charPower->character->plin,
                 'chin' => $charPower->character->chin,
                 'name' => $charPower->character->name,
                 'value' => $charPower->total,

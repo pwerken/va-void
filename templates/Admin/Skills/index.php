@@ -65,10 +65,10 @@ foreach ($selected as $s) {
 <?php
 
 foreach ($characters as $c) {
-    $link = [ 'controller' => 'History', 'action' => 'character', $c['player_id'] , $c['chin']]
+    $link = [ 'controller' => 'History', 'action' => 'character', $c['plin'] , $c['chin']]
     ?>
 <tr>
-    <td><?= $c['player_id'] . '-' . $c['chin'] ?></td>
+    <td><?= $c['plin'] . '-' . $c['chin'] ?></td>
     <td><?= $this->Html->link($c['name'], $link) ?></td>
     <td><?= $c['status']->name ?></td>
     <td><?= $c['modified']->i18nFormat('yyyy-MM-dd HH:mm:ss') ?></td>

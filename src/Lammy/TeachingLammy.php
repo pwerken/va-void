@@ -47,14 +47,14 @@ class TeachingLammy extends LammyCard
         $this->font(11, 'B');
 
         $p = $this->entity->get('teacher');
-        $this->text(10, 13, 12, 'R', $p->player_id);
+        $this->text(10, 13, 12, 'R', $p->plin);
         $this->text(21, 13, 7, 'C', sprintf('%02d', $p->chin));
         $this->text(28, 13, 47, 'L', $p->name);
 
         $p = $this->entity->get('student');
-        $this->text(52, 5, 10, 'R', $p->player_id);
+        $this->text(52, 5, 10, 'R', $p->plin);
         $this->text(61, 5, 7, 'C', sprintf('%02d', $p->chin));
-        $this->text(10, 20, 12, 'R', $p->player_id);
+        $this->text(10, 20, 12, 'R', $p->plin);
         $this->text(21, 20, 7, 'C', sprintf('%02d', $p->chin));
         $this->text(28, 20, 47, 'L', $p->name);
 

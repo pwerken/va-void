@@ -15,12 +15,12 @@ class TeachingsController extends Controller
     /**
      * GET /characters/{plin}/{chin}/students
      */
-    public function charactersIndex(int $char_id): void
+    public function charactersIndex(int $student_id): void
     {
-        $parent = $this->fetchTable('Characters')->get($char_id);
+        $parent = $this->fetchTable('Characters')->get($student_id);
 
         $query = $this->fetchTable()->find('withContain');
-        $query->where(['teacher_id' => $char_id]);
+        $query->where(['teacher_id' => $student_id]);
 
         $this->loadComponent('IndexRelation');
         $this->IndexRelation->action($parent, $query);
@@ -29,13 +29,13 @@ class TeachingsController extends Controller
     /**
      * GET /characters/{plin}/{chin}/teacher
      */
-    public function charactersView(int $char_id): void
+    public function charactersView(int $student_id): void
     {
-        $char = $this->fetchTable('Characters')->get($char_id);
-        $this->Authorization->authorize($char, 'view');
+        $parent = $this->fetchTable('Characters')->get($student_id);
+        $this->Authorization->authorize($parent, 'view');
 
         $this->loadComponent('View');
-        $this->View->action($char_id);
+        $this->View->action($student_id);
     }
 
     /**

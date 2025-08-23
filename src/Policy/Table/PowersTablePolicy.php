@@ -13,7 +13,7 @@ class PowersTablePolicy extends Policy
     public function scopeIndex(User $identity, Query $query): void
     {
         if (!$this->hasAuth(Authorization::ReadOnly)) {
-            $query->where(['Characters.player_id' => $this->getPlin()])
+            $query->where(['Characters.plin' => $this->getPlin()])
               ->leftJoin(
                   ['CharactersPowers' => 'characters_powers'],
                   ['CharactersPowers.power_id = Powers.id'],

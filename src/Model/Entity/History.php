@@ -130,7 +130,7 @@ class History extends CakeEntity
         if ($entity === 'Character') {
             $data = $this->decode();
 
-            return $entity . '/' . $data['player_id'] . '/' . $data['chin'];
+            return $entity . '/' . $data['plin'] . '/' . $data['chin'];
         }
 
         $key = $entity . '/' . $this->get('key1');

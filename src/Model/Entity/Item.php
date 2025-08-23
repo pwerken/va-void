@@ -16,11 +16,11 @@ class Item extends Entity
 
     protected function _getPlin(): ?int
     {
-        return $this->get('character')?->player_id;
+        return $this->get('character')?->get('plin');
     }
 
     protected function _getChin(): ?int
     {
-        return $this->get('character')?->chin;
+        return $this->get('character')?->get('chin');
     }
 }

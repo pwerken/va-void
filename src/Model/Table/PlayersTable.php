@@ -23,7 +23,7 @@ class PlayersTable extends Table
 
         $this->setColumnEnumType('role', PlayerRole::class);
 
-        $this->hasMany('Characters');
+        $this->hasMany('Characters')->setForeignKey('plin');
         $this->hasMany('SocialProfiles')
                 ->setProperty('socials')
                 ->setForeignKey('user_id');

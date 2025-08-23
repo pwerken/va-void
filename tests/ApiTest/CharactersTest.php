@@ -236,7 +236,7 @@ class CharactersTest extends AuthIntegrationTestCase
         $errors = $this->assertErrorsResponse('/characters/1/1', $actual);
         # expected fields with validation errors:
         $this->assertCount(2, $errors);
-        $this->assertArrayHasKey('player_id', $errors); # FIXME? -> plin
+        $this->assertArrayHasKey('plin', $errors);
         $this->assertArrayHasKey('chin', $errors);
 
         unset($input['plin']);

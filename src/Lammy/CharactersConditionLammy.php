@@ -17,7 +17,7 @@ class CharactersConditionLammy extends LammyCard
             $data['id'] = $this->entity->get('condition_id');
             $data['name'] = $condition->get('name');
             $data['text'] = $condition->get('player_text');
-            $data['plin'] = $character->get('player_id') . ' - ' . $character->get('chin');
+            $data['plin'] = $character->get('plin') . ' - ' . $character->get('chin');
             $data['char'] = $character->get('name');
 
             $expiry = $this->entity->get('expiry') ?: 'Until death';
