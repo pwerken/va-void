@@ -7,6 +7,7 @@ use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
+use Cake\ORM\TableRegistry;
 
 class TeachingsTable extends Table
 {
@@ -40,6 +41,17 @@ class TeachingsTable extends Table
     public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
         $this->touchEntity('Characters', $entity->get('student_id'));
+    }
+
+    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
+    {
+        if (isset($data['plin']) && isset($data['chin'])) {
+            $table = TableRegistry::getTableLocator()->get('Characters');
+            $char = $table->findByPlayerIdAndChin($data['plin'], $data['chin'])->first();
+            $data['teacher_id'] = ($char ? $char['id'] : -1);
+        }
+
+        parent::beforeMarshal($event, $data, $options);
     }
 
     public function buildRules(RulesChecker $rules): RulesChecker

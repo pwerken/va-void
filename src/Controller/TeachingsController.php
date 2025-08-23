@@ -45,14 +45,6 @@ class TeachingsController extends Controller
     {
         $request = $this->getRequest();
         $request = $request->withData('student_id', $student_id);
-
-        $data = $request->getData();
-        if (isset($data['plin']) && isset($data['chin'])) {
-            $teacher_id = $this->fetchTable('Characters')
-                            ->findByPlayerIdAndChin($data['plin'], $data['chin'])
-                            ->first()?->id;
-            $request = $request->withData('teacher_id', $teacher_id);
-        }
         $this->setRequest($request);
 
         $this->loadComponent('Add');

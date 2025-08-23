@@ -3,18 +3,20 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Traits\AddTrait;
 use App\Controller\Traits\DeleteTrait;
+use App\Controller\Traits\EditTrait;
 use App\Controller\Traits\ViewTrait;
 use Cake\Utility\Inflector;
 
 /**
- * @property \App\Controller\Component\AddComponent $Add
- * @property \App\Controller\Component\EditComponent $Edit
  * @property \App\Controller\Component\LammyComponent $Lammy
  */
 class ItemsController extends Controller
 {
+    use AddTrait; // PUT /items
     use DeleteTrait; // DELETE /items/{itin}
+    use EditTrait; // PUT /items/{itin}
     use ViewTrait; // GET /items/{itin}
 
     /**
@@ -84,26 +86,6 @@ class ItemsController extends Controller
     }
 
     /**
-     * PUT /items
-     */
-    public function add(): void
-    {
-        $this->loadComponent('Add');
-        $this->setCharacterId();
-        $this->Add->action();
-    }
-
-    /**
-     * PUT /items/{itin}
-     */
-    public function edit(int $itin): void
-    {
-        $this->loadComponent('Edit');
-        $this->setCharacterId();
-        $this->Edit->action($itin);
-    }
-
-    /**
      * POST /items/{itin}/print
      */
     public function queue(int $itin): void
@@ -121,25 +103,5 @@ class ItemsController extends Controller
         $this->Authorization->authorize($this->parent, 'view');
 
         $this->index();
-    }
-
-    /**
-     * Helper to convert posted plin/chin to character_id.
-     */
-    protected function setCharacterId(): void
-    {
-        $plin = $this->request->getData('plin');
-        $chin = $this->request->getData('chin');
-        $this->request = $this->request->withoutData('plin');
-        $this->request = $this->request->withoutData('chin');
-
-        if ($plin || $chin) {
-            $characters = $this->fetchTable('Characters');
-            $char = $characters->findByPlayerIdAndChin($plin, $chin)->first();
-            $char_id = $char ? $char->id : -1;
-            $this->request = $this->request->withData('character_id', $char_id);
-        } else {
-            $this->request = $this->request->withData('character_id', null);
-        }
     }
 }
