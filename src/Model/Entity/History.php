@@ -80,6 +80,14 @@ class History extends CakeEntity
             return $cmp;
         }
 
+        if (is_null($b->get('id'))) {
+            return 1;
+        }
+
+        if (is_null($a->get('id'))) {
+            return -1;
+        }
+
         $cmp = strcmp($a->get('entity'), $b->get('entity'));
         if ($cmp != 0) {
             // count upper-case letters
@@ -93,12 +101,7 @@ class History extends CakeEntity
             return -$cmp;
         }
 
-        $cmp = $a->get('key1') - $b->get('key1');
-        if ($cmp != 0) {
-            return $cmp;
-        }
-
-        return $b->get('key2') - $a->get('key2');
+        return $b->get('id') - $a->get('id');
     }
 
     public function makeKey(): string
