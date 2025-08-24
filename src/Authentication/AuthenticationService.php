@@ -82,8 +82,8 @@ class AuthenticationService extends BaseAuthenticationService
         }
 
         $this->setConfig('queryParam', 'redirect');
-        $this->setConfig('unauthenticatedRedirect', Router::url('/admin'));
+        $this->setConfig('unauthenticatedRedirect', '/admin');
 
-        return parent::getUnauthenticatedRedirectUrl($request);
+        return Router::url(parent::getUnauthenticatedRedirectUrl($request), true);
     }
 }

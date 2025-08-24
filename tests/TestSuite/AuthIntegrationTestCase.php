@@ -102,6 +102,11 @@ class AuthIntegrationTestCase extends TestCase
         return $response['errors'];
     }
 
+    public function assertRedirect(string $url): void
+    {
+        $this->assertRedirectEquals('http://localhost' . $url);
+    }
+
     protected function withoutAuth(): void
     {
         $this->token = null;
