@@ -1,50 +1,40 @@
 ToDo-list:
  - Error handling
    - [ ] check error responses on failed social authentication
-   - [X] uniform error messages (when debug=false ?)
-         i.e. 404 should always be "Not found"
- - Datastructure cleanup:
-   - [x] condition/power/item: add 'deprecated' property
-   - [x] add skill.base property
-   - [x] add skill relation 'times' property
-   - [x] remove spells
-   - [x] remove attributes and attributes-items
-   - [x] remove character.soulpath property
-   - [x] belief/group/world: de-normalize and remove tables
  - /Admin
    - [ ] check all the pages on a mobile device
-   - [ ] CRUD-operations page(s) for Factions
-   - [ ] CRUD-operations page(s) for Skills
+   - [ ] CRUD-operations page for Events
+   - [ ] CRUD-operations page for Factions
+   - [ ] CRUD-operations page for Manatypes
+   - [ ] CRUD-operations page for Skills
  - Player editable concept character
    - [ ] add character status 'concept'
    - [ ] allow player to add 'concept' character (max 1)
    - [ ] allow (limited) editing by the player
    - [ ] limit access to the "base" skills
    - [ ] don't track changes when status='concept'
- - Glyph/Rune attunement
-   - [ ] add table, fields similar to 'powers'
+ - Glyph/Rune character imbue
+   - [ ] add table 'imbues', similar to 'powers'
    - [ ] add characters relation table
    - [ ] add new printable lammy (similar to 'power')
-   - [ ] char lammy: calculate character.rune/glyph attunement cap
- - Item crafting and imbues
+   - [ ] char lammy: calculate character.rune/glyph imbue cap
+ - Indirect mana
+   - [ ] add mana to imbues/powers/conditions/items
+   - [ ] char lammy: calculate mana from sources
+ - Indirect skills
+   - [ ] add skills to imbues/powers/conditions/items
+   - [ ] character: skills get a 'source' reference
+ - Item crafting
    - [ ] add item.imbuecap property
    - [ ] add goods table
    - [ ] add relation between items and goods
    - [ ] /admin CRUD-operations page for Goods
- - Indirect skills and mana
-   - [ ] add relation between items and skills
-   - [ ] add relation between conditions and skills
-   - [ ] add relation between powers and skills
-   - [ ] add relation between attunement and skills
-   - [ ] character: skills get a 'source' property/reference
-   - [ ] char lammy: calculate mana from sources
  - Ruleset reference sheets
    - [ ] store spell-lists / add all the individual spells
    - [ ] store loresheets or links to pdf's?
    - [ ] store imbue recipes
  - Auditing
-   - [ ] /admin: add heuristic to compact history
-   - [x] /admin: human-readible shorthand log of changes
+   - [ ] /admin: add heuristic to compact/cleanup history table
    - [ ] api .../history routes: with shorthand log of changes
  - Optimizations
    - [ ] headers: add Last-Modified / ETag
