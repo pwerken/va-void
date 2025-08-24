@@ -7,9 +7,12 @@ use App\Model\Entity\Entity;
 use App\Model\Enum\Authorization;
 use App\Policy\Policy;
 use Authorization\IdentityInterface as User;
+use Cake\ORM\Locator\LocatorAwareTrait;
 
 abstract class EntityPolicy extends Policy
 {
+    use LocatorAwareTrait;
+
     private array $showFieldAuth = [];
     private array $editFieldAuth = [];
 

@@ -7,12 +7,9 @@ use App\Model\Entity\Entity;
 use App\Model\Entity\Item;
 use App\Model\Enum\Authorization;
 use Authorization\IdentityInterface as User;
-use Cake\ORM\Locator\LocatorAwareTrait;
 
 class ItemPolicy extends EntityPolicy
 {
-    use LocatorAwareTrait;
-
     public function __construct()
     {
         parent::__construct();
@@ -49,7 +46,7 @@ class ItemPolicy extends EntityPolicy
             return false;
         }
 
-        $char = $this->getTableLocator()->get('Characters')->get($char_id);
+        $char = $this->fetchTable('Characters')->get($char_id);
 
         return $char->get('plin') == $plin;
     }

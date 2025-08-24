@@ -9,14 +9,16 @@ use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\EventInterface;
 use Cake\I18n\DateTime;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table as CakeTable;
-use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use ReflectionClass;
 
 abstract class Table extends CakeTable
 {
+    use LocatorAwareTrait;
+
     protected bool $allowSetPrimaryOnCreate = false;
 
     protected array $consistencyError = ['consistency' => 'Reference(s) present'];
@@ -97,12 +99,12 @@ abstract class Table extends CakeTable
             return;
         }
 
-        TableRegistry::getTableLocator()->get('History')->logChange($entity);
+        $this->fetchTable('History')->logChange($entity);
     }
 
     public function beforeDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
-        TableRegistry::getTableLocator()->get('History')->logDeletion($entity);
+        $this->fetchTable('History')->logDeletion($entity);
     }
 
     public function getMaybe(mixed $id): ?EntityInterface
@@ -186,7 +188,7 @@ abstract class Table extends CakeTable
 
     protected function touchEntity(string $model, int $id): void
     {
-        $table = TableRegistry::getTableLocator()->get($model);
+        $table = $this->fetchTable($model);
         $entity = $table->get($id);
 
         if ($table->hasField('modified')) {

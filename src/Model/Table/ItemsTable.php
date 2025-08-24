@@ -8,7 +8,6 @@ use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
-use Cake\ORM\TableRegistry;
 
 class ItemsTable extends Table
 {
@@ -28,8 +27,9 @@ class ItemsTable extends Table
             if (is_null($data['plin']) || is_null($data['chin'])) {
                 $data['character_id'] = null;
             } else {
-                $table = TableRegistry::getTableLocator()->get('Characters');
-                $char = $table->findByPlinAndChin($data['plin'], $data['chin'])->first();
+                $char = $this->fetchTable('Characters')
+                            ->findByPlinAndChin($data['plin'], $data['chin'])
+                            ->first();
                 $data['character_id'] = ($char ? $char['id'] : -1);
             }
         }

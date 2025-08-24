@@ -5,11 +5,13 @@ namespace App\Model\Entity;
 
 use App\Lammy\LammyCard;
 use App\Model\Enum\LammyStatus;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\Utility\Inflector;
 
 class Lammy extends Entity
 {
+    use LocatorAwareTrait;
+
     private ?Entity $target = null;
     private ?LammyCard $lammy = null;
 
@@ -30,7 +32,7 @@ class Lammy extends Entity
     {
         if (is_null($this->target)) {
             $name = Inflector::pluralize($this->get('entity'));
-            $table = TableRegistry::getTableLocator()->get($name);
+            $table = $this->fetchTable($name);
 
             $keys = [$this->get('key1'), $this->get('key2')];
             $primary = $table->getPrimaryKey();
@@ -55,7 +57,7 @@ class Lammy extends Entity
             return;
         }
 
-        $table = TableRegistry::getTableLocator()->get($target->getSource());
+        $table = $this->fetchTable($target->getSource());
         $class = $table->getEntityClass();
         $pos = strrpos($class, '\\');
         if ($pos > 0) {

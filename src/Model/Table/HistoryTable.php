@@ -70,7 +70,7 @@ class HistoryTable extends Table
                 continue;
             }
 
-            $query = $this->getTableLocator()->get($tbl)->find()
+            $query = $this->fetchTable($tbl)->find()
                 ->where($where)
                 ->orderBy(['modified' => 'DESC'], true);
 
@@ -154,7 +154,7 @@ class HistoryTable extends Table
             ->all()
             ->toList();
 
-        $entity = $this->getTableLocator()->get('Players')->find()
+        $entity = $this->fetchTable('Players')->find()
             ->where(['plin' => $plin])
             ->first();
         if (!is_null($entity)) {
@@ -166,7 +166,7 @@ class HistoryTable extends Table
 
     private function getCharacterHistory(int $plin, int $chin): array
     {
-        $entity = $this->getTableLocator()->get('Characters')->find('withContain')
+        $entity = $this->fetchTable('Characters')->find('withContain')
             ->where(['Characters.plin' => $plin])
             ->where(['Characters.chin' => $chin])
             ->first();
@@ -226,7 +226,7 @@ class HistoryTable extends Table
             ->all()
             ->toList();
 
-        $entity = $this->getTableLocator()->get('Powers')->find('withContain')
+        $entity = $this->fetchTable('Powers')->find('withContain')
             ->where(['Powers.poin' => $poin])
             ->first();
         if (!is_null($entity)) {
@@ -254,7 +254,7 @@ class HistoryTable extends Table
             ->all()
             ->toList();
 
-        $entity = $this->getTableLocator()->get('Conditions')->find('withContain')
+        $entity = $this->fetchTable('Conditions')->find('withContain')
             ->where(['Conditions.coin' => $coin])
             ->first();
         if (!is_null($entity)) {
@@ -277,7 +277,7 @@ class HistoryTable extends Table
             ->all()
             ->toList();
 
-        $entity = $this->getTableLocator()->get('Items')->find('withContain')
+        $entity = $this->fetchTable('Items')->find('withContain')
             ->where(['Items.itin' => $itin])
             ->first();
         if (!is_null($entity)) {

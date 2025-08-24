@@ -7,7 +7,6 @@ use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
-use Cake\ORM\TableRegistry;
 
 class TeachingsTable extends Table
 {
@@ -46,8 +45,9 @@ class TeachingsTable extends Table
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
         if (isset($data['plin']) && isset($data['chin'])) {
-            $table = TableRegistry::getTableLocator()->get('Characters');
-            $char = $table->findByPlinAndChin($data['plin'], $data['chin'])->first();
+            $char = $this->fetchTable('Characters')
+                        ->findByPlinAndChin($data['plin'], $data['chin'])
+                        ->first();
             $data['teacher_id'] = ($char ? $char['id'] : -1);
         }
 

@@ -7,13 +7,10 @@ use App\Model\Entity\Entity;
 use App\Model\Entity\Power;
 use App\Model\Enum\Authorization;
 use Authorization\IdentityInterface as User;
-use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\Query;
 
 class PowerPolicy extends EntityPolicy
 {
-    use LocatorAwareTrait;
-
     public function __construct()
     {
         parent::__construct();
@@ -51,7 +48,7 @@ class PowerPolicy extends EntityPolicy
 
         $poin = $obj->get('poin');
 
-        $query = $this->getTableLocator()->get('Characters')->find();
+        $query = $this->fetchTable('Characters')->find();
         $query->where(['Characters.plin' => $plin]);
         $query->matching(
             'CharactersPowers',

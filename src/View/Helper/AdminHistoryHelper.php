@@ -48,7 +48,7 @@ class AdminHistoryHelper extends Helper
         }
 
         if ($entity === 'Teaching' && !empty($data)) {
-            $obj = $this->getTableLocator()->get('Skills')
+            $obj = $this->fetchTable('Skills')
                     ->find()
                     ->where(['id' => $data['skill_id']])
                     ->first();
@@ -58,7 +58,7 @@ class AdminHistoryHelper extends Helper
 
         if (str_starts_with($entity, 'Characters')) {
             if ($rhs) {
-                $table = $this->getTableLocator()->get(substr($entity, 10) . 's');
+                $table = $this->fetchTable(substr($entity, 10) . 's');
                 $key = $table->getPrimaryKey();
                 $obj = $table->find()->where([$key => $h->get('key2')])->first();
 
@@ -123,7 +123,7 @@ class AdminHistoryHelper extends Helper
 
     private function getCharacter(int $character_id): ?Character
     {
-        return $this->getTableLocator()->get('Characters')
+        return $this->fetchTable('Characters')
                     ->find()
                     ->where(['id' => $character_id])
                     ->first();
