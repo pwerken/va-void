@@ -28,6 +28,7 @@ class AuthIntegrationTestCase extends TestCase
             'app.Lammies',
             'app.Manatypes',
             'app.Players',
+            'app.SocialProfiles',
             'app.Powers',
             'app.Skills',
             'app.Teachings',
