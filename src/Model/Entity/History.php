@@ -60,28 +60,6 @@ class History extends CakeEntity
         return $history;
     }
 
-    public function toEntity(): ?EntityInterface
-    {
-        $tbl = $this->get('entity') . 's';
-        $table = TableRegistry::getTableLocator()->get($tbl);
-
-        $primary = $table->getPrimaryKey();
-        if (!is_array($primary)) {
-            $primary = [$primary];
-        }
-
-        $data[$primary[0]] = $this->get('key1');
-        if (!is_null($this->get('key2'))) {
-            $data[$primary[1]] = $this->get('key2');
-        }
-
-        $data = $this->decode();
-        $data['modified'] = $this->get('modified');
-        $data['modifier_id'] = $this->get('modifier_id');
-
-        return $table->newEntity($data);
-    }
-
     public function decode(): array
     {
         return Json::decode($this->get('data') ?? '{}');
