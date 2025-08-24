@@ -24,8 +24,8 @@ class CharactersFixture extends TestFixture
                 'status' => CharacterStatus::Active,
                 'referee_notes' => '',
                 'notes' => '',
-                'modified' => null,
-                'modifier_id' => null,
+                'modified' => '2018-06-23 14:38:08',
+                'modifier_id' => 1,
             ],
             [
                 'id' => 2,
@@ -40,8 +40,8 @@ class CharactersFixture extends TestFixture
                 'status' => CharacterStatus::Active,
                 'referee_notes' => '',
                 'notes' => '',
-                'modified' => null,
-                'modifier_id' => null,
+                'modified' => '2018-06-23 14:38:08',
+                'modifier_id' => 1,
             ],
         ];
         parent::init();

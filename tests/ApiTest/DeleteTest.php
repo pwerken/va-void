@@ -24,6 +24,7 @@ class DeleteTest extends AuthIntegrationTestCase
         $this->assertDelete('/characters/2/1/conditions/2');
         $this->assertDelete('/characters/2/1/powers/1');
         $this->assertDelete('/characters/2/1/powers/2');
+        $this->assertDelete('/characters/2/1/skills/1');
         $this->assertDelete('/characters/2/1/skills/2');
 
         $this->withAuthSuper();
