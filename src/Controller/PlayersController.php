@@ -11,43 +11,18 @@ use App\Controller\Traits\ViewTrait;
 class PlayersController extends Controller
 {
     use AddTrait; // PUT /players
-    use DeleteTrait; // DELETE /players/{plin}
-    use EditTrait; // PUT /players/{plin}
     use ViewTrait; // GET /players/{plin}
+    use EditTrait; // PUT /players/{plin}
+    use DeleteTrait; // DELETE /players/{plin}
 
     /**
      * GET /players
      */
     public function index(): void
     {
-        $query = $this->fetchTable()->find()
-                    ->select([], true)
-                    ->select('Players.plin')
-                    ->select('Players.first_name')
-                    ->select('Players.insertion')
-                    ->select('Players.last_name');
+        $query = $this->fetchTable()->find();
         $this->Authorization->applyScope($query);
 
-        $content = [];
-        foreach ($this->doRawQuery($query) as $row) {
-            $name = $row[1];
-            if (!empty($row[2])) {
-                $name .= ' ' . $row[2];
-            }
-            $name .= ' ' . $row[3];
-
-            $content[] = [
-                'class' => 'Player',
-                'url' => '/players/' . $row[0],
-                'plin' => (int)$row[0],
-                'name' => $name,
-            ];
-        }
-
-        $this->set('_serialize', [
-            'class' => 'List',
-            'url' => rtrim($this->request->getPath(), '/'),
-            'list' => $content,
-        ]);
+        $this->set('_serialize', $query->all());
     }
 }

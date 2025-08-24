@@ -6,6 +6,7 @@ namespace App\Model\Table;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
 
@@ -34,6 +35,11 @@ class ItemsTable extends Table
         }
 
         parent::beforeMarshal($event, $data, $options);
+    }
+
+    public function findIndex(SelectQuery $query): SelectQuery
+    {
+        return $this->findWithContain($query);
     }
 
     public function buildRules(RulesChecker $rules): RulesChecker

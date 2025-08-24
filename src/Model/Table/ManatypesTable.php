@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 
 /**
@@ -15,6 +16,13 @@ class ManatypesTable extends Table
         parent::initialize($config);
 
         $this->hasMany('Skills');
+    }
+
+    public function findIndex(SelectQuery $query): SelectQuery
+    {
+        $query->where(['deprecated' => false]);
+
+        return $query;
     }
 
     public function buildRules(RulesChecker $rules): RulesChecker

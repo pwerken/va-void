@@ -5,47 +5,16 @@ namespace App\Controller;
 
 use App\Controller\Traits\DeleteTrait;
 use App\Controller\Traits\EditTrait;
+use App\Controller\Traits\IndexTrait;
 use App\Controller\Traits\ViewTrait;
 use App\Model\Enum\LammyStatus;
 
 class LammiesController extends Controller
 {
-    use DeleteTrait; // DELETE /lammies/{id}
-    use EditTrait; // PUT /lammies/{id}
+    use IndexTrait; // GET /lammies
     use ViewTrait; // GET /lammies/{id}
-
-    /**
-     * GET /lammies
-     */
-    public function index(): void
-    {
-        $query = $this->fetchTable()->find()
-                    ->select([], true)
-                    ->select('Lammies.id')
-                    ->select('Lammies.status')
-                    ->select('Lammies.entity')
-                    ->select('Lammies.key1')
-                    ->select('Lammies.key2')
-                    ->select('Lammies.modified');
-        $content = [];
-        foreach ($this->doRawQuery($query) as $row) {
-            $content[] = [
-                'class' => 'Lammy',
-                'url' => '/lammies/' . $row[0],
-                'status' => $row[1],
-                'entity' => $row[2],
-                'key1' => (int)$row[3],
-                'key2' => (int)$row[4],
-                'modified' => $row[5],
-            ];
-        }
-
-        $this->set('_serialize', [
-            'class' => 'List',
-            'url' => rtrim($this->request->getPath(), '/'),
-            'list' => $content,
-        ]);
-    }
+    use EditTrait; // PUT /lammies/{id}
+    use DeleteTrait; // DELETE /lammies/{id}
 
     /**
      * GET /lammies/queue

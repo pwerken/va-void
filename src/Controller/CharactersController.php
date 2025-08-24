@@ -5,61 +5,20 @@ namespace App\Controller;
 
 use App\Controller\Traits\DeleteTrait;
 use App\Controller\Traits\EditTrait;
+use App\Controller\Traits\IndexTrait;
 use App\Controller\Traits\ViewTrait;
 
 /**
  * @property \App\Controller\Component\AddComponent $Add
+ * @property \App\Controller\Component\IndexRelationComponent $IndexRelation
  * @property \App\Controller\Component\LammyComponent $Lammy
  */
 class CharactersController extends Controller
 {
-    use DeleteTrait; // DELETE /characters/{plin}/{chin}
-    use EditTrait; // PUT /characters/{plin}/{chin}
+    use IndexTrait; // GET /characters
     use ViewTrait; // GET /characters/{plin}/{chin}
-
-    /**
-     * GET /characters
-     */
-    public function index(): void
-    {
-        $query = $this->fetchTable()->find()
-                    ->select([], true)
-                    ->select('Characters.plin')
-                    ->select('Characters.chin')
-                    ->select('Characters.name')
-                    ->select('Characters.status');
-        $this->Authorization->applyScope($query);
-
-        if (isset($this->parent)) {
-            //FIXME missing 'parent' in output
-            $this->Authorization->authorize($this->parent, 'charactersIndex');
-
-            $assoc = $this->fetchTable()->getAssociation($this->parent->getSource());
-            $key = $assoc->getForeignKey();
-            $value = $this->parent->get($assoc->getBindingKey());
-
-            $query = $query->andWhere(["Characters.$key" => $value]);
-            $this->set('parent', $this->parent);
-        }
-
-        $content = [];
-        foreach ($this->doRawQuery($query) as $row) {
-            $content[] = [
-                'class' => 'Character',
-                'url' => '/characters/' . $row[0] . '/' . $row[1],
-                'plin' => (int)$row[0],
-                'chin' => (int)$row[1],
-                'name' => $row[2],
-                'status' => $row[3],
-            ];
-        }
-
-        $this->set('_serialize', [
-            'class' => 'List',
-            'url' => rtrim($this->request->getPath(), '/'),
-            'list' => $content,
-        ]);
-    }
+    use EditTrait; // PUT /characters/{plin}/{chin}
+    use DeleteTrait; // DELETE /characters/{plin}/{chin}
 
     /**
      * PUT /players/{plin}/characters
@@ -101,8 +60,13 @@ class CharactersController extends Controller
      */
     public function factionsIndex(int $faction_id): void
     {
-        $this->parent = $this->fetchTable('Factions')->get($faction_id);
-        $this->index();
+        $parent = $this->fetchTable('Factions')->get($faction_id);
+
+        $query = $this->fetchTable()->find('withContain');
+        $query->andWhere(['Characters.faction_id' => $faction_id]);
+
+        $this->loadComponent('IndexRelation');
+        $this->IndexRelation->action($parent, $query);
     }
 
     /**
@@ -110,8 +74,13 @@ class CharactersController extends Controller
      */
     public function playersIndex(int $plin): void
     {
-        $this->parent = $this->fetchTable('Players')->get($plin);
-        $this->index();
+        $parent = $this->fetchTable('Players')->get($plin);
+
+        $query = $this->fetchTable()->find('withContain');
+        $query->andWhere(['Characters.plin' => $plin]);
+
+        $this->loadComponent('IndexRelation');
+        $this->IndexRelation->action($parent, $query);
     }
 
     /**

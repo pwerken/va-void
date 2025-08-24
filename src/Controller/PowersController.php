@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Controller\Traits\AddTrait;
 use App\Controller\Traits\DeleteTrait;
 use App\Controller\Traits\EditTrait;
+use App\Controller\Traits\IndexTrait;
 use App\Controller\Traits\ViewTrait;
 
 /**
@@ -13,40 +14,11 @@ use App\Controller\Traits\ViewTrait;
  */
 class PowersController extends Controller
 {
+    use IndexTrait; // GET /powers
     use AddTrait; // PUT /powers
-    use DeleteTrait; // DELETE /powers/{poin}
-    use EditTrait; // PUT /powers/{poin}
     use ViewTrait; // GET /powers/{poin}
-
-    /**
-     * GET /powers
-     */
-    public function index(): void
-    {
-        $query = $this->fetchTable()->find()
-                    ->select([], true)
-                    ->select('Powers.poin')
-                    ->select('Powers.name')
-                    ->select('Powers.deprecated');
-        $this->Authorization->applyScope($query);
-
-        $content = [];
-        foreach ($this->doRawQuery($query) as $row) {
-            $content[] = [
-                'class' => 'Power',
-                'url' => '/powers/' . $row[0],
-                'poin' => (int)$row[0],
-                'name' => $row[1],
-                'deprecated' => (bool)$row[2],
-            ];
-        }
-
-        $this->set('_serialize', [
-            'class' => 'List',
-            'url' => rtrim($this->request->getPath(), '/'),
-            'list' => $content,
-        ]);
-    }
+    use EditTrait; // PUT /powers/{poin}
+    use DeleteTrait; // DELETE /powers/{poin}
 
     /**
      * GET /powers/{poin}/print

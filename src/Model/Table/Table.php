@@ -135,6 +135,11 @@ abstract class Table extends CakeTable
         return parent::findAll($query)->orderBy($order);
     }
 
+    public function findIndex(SelectQuery $query): SelectQuery
+    {
+        return $query;
+    }
+
     public function findWithContain(SelectQuery $query): SelectQuery
     {
         $contain = $this->contain();

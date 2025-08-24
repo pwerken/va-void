@@ -38,6 +38,7 @@ class PlayersSocialsController extends Controller
             throw new NotFoundException();
         }
         $this->Authorization->authorize($obj, 'view');
+
         $this->set('_serialize', $obj);
     }
 
@@ -47,7 +48,6 @@ class PlayersSocialsController extends Controller
     public function playersDelete(int $plin, int $id): void
     {
         $this->loadComponent('Delete');
-
         $this->Delete->action($id);
     }
 }

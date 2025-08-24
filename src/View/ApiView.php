@@ -28,14 +28,15 @@ class ApiView extends View
 
     public function render(?string $template = null, string|false|null $layout = null): string
     {
-        $this->response = $this->response->withType('json');
+        $this->setResponse($this->getResponse()->withType('json'));
 
         $data = $this->get('_serialize', $this->viewVars);
         if ($data instanceof Entity) {
             $data = $this->jsonEntity($data);
         } elseif ($data instanceof ResultSet) {
             $parent = $this->get('parent');
-            $data = $this->jsonArray($data->toArray(), $parent);
+            $data = $this->jsonArray($data, $parent);
+            $data['url'] = $this->getRequest()->getPath();
         }
 
         return Json::encode($data);
@@ -74,7 +75,7 @@ class ApiView extends View
         return $result;
     }
 
-    protected function jsonArray(array $list, ?Entity $parent, ?string $key = null): array
+    protected function jsonArray(ResultSet|array $list, ?Entity $parent, ?string $key = null): array
     {
         $result = [];
         $result['class'] = 'List';
@@ -112,7 +113,7 @@ class ApiView extends View
     {
         $class = (new ReflectionClass($obj))->getShortName();
 
-        $skip = '';
+        $skip = null;
         if ($parent) {
             $skip = strtolower((new ReflectionClass($parent))->getShortName());
         }
