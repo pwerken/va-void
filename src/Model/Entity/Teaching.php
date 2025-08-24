@@ -16,20 +16,11 @@ class Teaching extends Entity
 
     public function getUrl(): string
     {
-        if ($this->get('student')) {
-            return $this->get('student')->getUrl() . '/teacher';
-        }
-
-        return '';
+        return $this->get('student')->getUrl() . '/teacher';
     }
 
     protected function _getProgress(): float
     {
-        $student = $this->get('student');
-        if (!$student) {
-            return 0;
-        }
-
-        return $student->get('xp_available');
+        return $this->get('student')->get('xp_available');
     }
 }
