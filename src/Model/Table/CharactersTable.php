@@ -78,15 +78,15 @@ class CharactersTable extends Table
 
     public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
-        if ($entity->isDirty('status') && $entity->get('status') === 'active') {
-            $chars = $this->findByPlin($entity->get('plin'));
-            foreach ($chars as $char) {
-                if ($char->id === $entity->get('id') || $char->status !== 'active') {
-                    continue;
-                }
-                $char->status = 'inactive';
-                $this->save($char);
-            }
+        if ($entity->isDirty('status') && $entity->get('status') === CharacterStatus::Active) {
+            $this->updateQuery()
+                ->set(['status' => CharacterStatus::Inactive])
+                ->where([
+                    'plin' => $entity->get('plin'),
+                    'chin !=' => $entity->get('chin'),
+                    'status' => CharacterStatus::Active,
+                ])
+                ->execute();
         }
     }
 
