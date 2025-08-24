@@ -26,7 +26,7 @@ class SkillsController extends AdminController
         }
         $this->set('since', $since);
 
-        $and = $this->request->getQuery('and', 0);
+        $and = ($this->request->getQuery('and') ? 1 : 0);
         $this->set('and', $and);
 
         $ids = $this->request->getQuery('skills', []);

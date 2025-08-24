@@ -28,32 +28,52 @@ class LammiesTable extends Table
     {
     }
 
+    public function findAdminListing(SelectQuery $query): SelectQuery
+    {
+        $related = [
+            'Character',
+            'CharactersGlyphImbue',
+            'CharactersRuneImbue',
+            'CharactersSkill',
+            'CharactersPower',
+            'CharactersCondition',
+            'Teaching',
+        ];
+
+        return $query
+            ->select($this)
+            ->select(['character_str' => $query->func()->concat([
+                'characters.plin' => 'identifier',
+                '/',
+                'characters.chin' => 'identifier',
+            ])])
+            ->leftJoin('characters', [
+                'Lammies.entity IN' => $related,
+                'Lammies.key1 = characters.id',
+            ])
+            ->orderBy(['Lammies.id' => 'DESC'], true);
+    }
+
     public function findLastInQueue(SelectQuery $query): SelectQuery
     {
-        $query = $this->findQueued($query);
-        $query->orderBy(['Lammies.id' => 'DESC']);
-        $query->limit(1);
-
-        return $query;
+        return $this->findQueued($query)
+            ->orderBy(['Lammies.id' => 'DESC'])
+            ->limit(1);
     }
 
     public function findQueued(SelectQuery $query): SelectQuery
     {
-        $query = $this->findWithContain($query);
-        $query->where(function (QueryExpression $exp) {
-            return $exp->or(['status LIKE' => LammyStatus::Queued])
-                        ->eq('status', LammyStatus::Printing);
-        });
-
-        return $query;
+        return $this->findWithContain($query)
+            ->where(function (QueryExpression $exp) {
+                return $exp->or(['status LIKE' => LammyStatus::Queued])
+                            ->eq('status', LammyStatus::Printing);
+            });
     }
 
     public function findPrinting(SelectQuery $query): SelectQuery
     {
-        $query = $this->findWithContain($query);
-        $query->where(['status LIKE' => LammyStatus::Printing]);
-
-        return $query;
+        return $this->findWithContain($query)
+            ->where(['status LIKE' => LammyStatus::Printing]);
     }
 
     public function setStatuses(ResultSetInterface $set, LammyStatus $status): void

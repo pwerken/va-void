@@ -21,48 +21,39 @@ class PrintingController extends AdminController
      */
     public function index(): void
     {
-        $lammies = $this->fetchTable('Lammies');
-        $user = $this->getRequest()->getAttribute('identity');
+        if ($this->request->is('post')) {
+            $this->index_post();
 
-        if ($this->request->is('post') && $user->hasAuth(Authorization::Infobalie)) {
-            $ids = $this->request->getData('delete');
-            if (!empty($ids)) {
-                $nr = $lammies->deleteAll(['id IN' => $ids]);
-                $this->Flash->success("Removed $nr lammies from queue");
-            }
+            return;
+        }
+
+        $since = (new DateTime())->sub(new DateInterval('P3M'));
+        $query = $this->fetchTable('Lammies')->find('AdminListing')
+            ->where(['Lammies.modified >' => $since->format('Y-m-d')])
+            ->enableHydration(false);
+
+        $this->set('printing', $query->all());
+    }
+
+    protected function index_post(): void
+    {
+        $user = $this->getRequest()->getAttribute('identity');
+        if (!$user->hasAuth(Authorization::Infobalie)) {
+            $this->Flash->error('Not authorized to remove lammies from queue');
             $this->redirect(['controller' => 'Printing']);
 
             return;
         }
 
-        $related = [
-            'Character',
-            'CharactersGlyphImbue',
-            'CharactersRuneImbue',
-            'CharactersSkill',
-            'CharactersPower',
-            'CharactersCondition',
-            'Teaching',
-        ];
+        $ids = $this->request->getData('delete');
+        if (!empty($ids)) {
+            $nr = $this->fetchTable()->deleteAll(['id IN' => $ids]);
+            $this->Flash->success("Removed $nr lammies from queue");
+        } else {
+            $this->Flash->warning('No lammies removed from queue');
+        }
 
-        $since = (new DateTime())->sub(new DateInterval('P3M'));
-        $query = $lammies->find();
-        $query
-            ->select($lammies)
-            ->select(['character_str' => $query->func()->concat([
-                'characters.plin' => 'identifier',
-                '/',
-                'characters.chin' => 'identifier',
-            ])])
-            ->leftJoin('characters', [
-                'Lammies.entity IN' => $related,
-                'Lammies.key1 = characters.id',
-            ])
-            ->where(['Lammies.modified >' => $since->format('Y-m-d')])
-            ->orderBy(['Lammies.id' => 'DESC'], true)
-            ->enableHydration(false);
-
-        $this->set('printing', $query->all());
+        $this->redirect(['controller' => 'Printing']);
     }
 
     /**
