@@ -102,24 +102,24 @@ class CharacterLammy extends LammyCard
 
         $g = 159;
         $this->pdf->SetTextColor($data['mana']['Elemental'] > 0 ? 0 : $g);
-        $this->text(8, 37.7, 13, 'R', 'Elemental:');
-        $this->text(20, 37.7, 5, 'C', $data['mana']['Elemental']);
+        $this->text(9.5, 37.7, 5, 'R', $data['mana']['Elemental']);
+        $this->text(13, 37.7, 13, 'L', 'Elemental');
         $this->pdf->SetTextColor($data['mana']['Elemental Ritual'] > 0 ? 0 : $g);
-        $this->text(8, 40.7, 13, 'R', 'Elem.Rit.:');
-        $this->text(20, 40.7, 5, 'C', $data['mana']['Elemental Ritual']);
+        $this->text(9.5, 40.7, 5, 'R', $data['mana']['Elemental Ritual']);
+        $this->text(13, 40.7, 13, 'L', 'Elem.Rit.');
 
         $this->pdf->SetTextColor($data['mana']['Spiritual'] > 0 ? 0 : $g);
-        $this->text(24, 37.7, 13, 'R', 'Spiritual:');
-        $this->text(36, 37.7, 5, 'C', $data['mana']['Spiritual']);
+        $this->text(26.5, 37.7, 5, 'R', $data['mana']['Spiritual']);
+        $this->text(30, 37.7, 13, 'L', 'Spiritual');
         $this->pdf->SetTextColor($data['mana']['Spiritual Ritual'] > 0 ? 0 : $g);
-        $this->text(24, 40.7, 13, 'R', 'Spir.Rit.:');
-        $this->text(36, 40.7, 5, 'C', $data['mana']['Spiritual Ritual']);
+        $this->text(26.5, 40.7, 5, 'R', $data['mana']['Spiritual Ritual']);
+        $this->text(30, 40.7, 13, 'L', 'Spir.Rit.');
 
         $this->pdf->SetTextColor($data['mana']['Inspiration'] > 0 ? 0 : $g);
-        $this->text(39, 37.7, 13, 'R', 'Inspiration:');
-        $this->text(51, 37.7, 5, 'C', $data['mana']['Inspiration']);
+        $this->text(40.5, 37.7, 5, 'R', $data['mana']['Inspiration']);
+        $this->text(44, 37.7, 13, 'L', 'Inspiration');
         $this->pdf->SetTextColor($data['mana']['Willpower'] > 0 ? 0 : $g);
-        $this->text(39, 40.7, 13, 'R', 'Willpower:');
-        $this->text(51, 40.7, 5, 'C', $data['mana']['Willpower']);
+        $this->text(40.5, 40.7, 5, 'R', $data['mana']['Willpower']);
+        $this->text(44, 40.7, 13, 'L', 'Willpower');
     }
 }
