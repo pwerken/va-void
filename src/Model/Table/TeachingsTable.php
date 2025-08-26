@@ -56,6 +56,8 @@ class TeachingsTable extends Table
 
     public function buildRules(RulesChecker $rules): RulesChecker
     {
+        $rules = parent::buildRules($rules);
+
         $rules->addCreate($rules->isUnique(['student_id']));
 
         $rules->add($rules->existsIn('student_id', 'Student'));

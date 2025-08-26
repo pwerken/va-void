@@ -31,11 +31,13 @@ class PlayersTable extends Table
 
     public function buildRules(RulesChecker $rules): RulesChecker
     {
+        $rules = parent::buildRules($rules);
+
         $rules->addCreate($rules->isUnique(['plin']));
 
-        $rules->add([$this, 'ruleAuthCheck']);
-
         $rules->addDelete([$this, 'ruleNoAssociation'], ['characters']);
+
+        $rules->add([$this, 'ruleAuthCheck']);
 
         return $rules;
     }

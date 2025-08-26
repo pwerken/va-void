@@ -206,8 +206,7 @@ class PowersTest extends AuthIntegrationTestCase
         $errors = $this->assertErrorsResponse('/powers', $response);
 
         # expected fields with validation errors:
-        $this->assertCount(3, $errors);
-        $this->assertArrayHasKey('poin', $errors);
+        $this->assertCount(2, $errors);
         $this->assertArrayHasKey('name', $errors);
         $this->assertArrayHasKey('player_text', $errors);
     }
@@ -228,8 +227,7 @@ class PowersTest extends AuthIntegrationTestCase
         $errors = $this->assertErrorsResponse('/powers/1', $response);
 
         # expected fields with validation errors:
-        $this->assertCount(3, $errors);
-        $this->assertArrayHasKey('poin', $errors);
+        $this->assertCount(2, $errors);
         $this->assertArrayHasKey('name', $errors);
         $this->assertArrayHasKey('player_text', $errors);
     }

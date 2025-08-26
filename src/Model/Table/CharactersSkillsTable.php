@@ -38,18 +38,21 @@ class CharactersSkillsTable extends Table
 
     public function buildRules(RulesChecker $rules): RulesChecker
     {
+        $rules = parent::buildRules($rules);
+
         $rules->addCreate($rules->isUnique(['skill_id', 'character_id']));
+        $rules->addCreate([$this, 'ruleDisallowDeprecated']);
+        $rules->addCreate([$this, 'ruleLimitTimesToMax']);
+
+        $rules->addUpdate([$this, 'ruleLimitTimesToMax']);
 
         $rules->add($rules->existsIn('character_id', 'Characters'));
         $rules->add($rules->existsIn('skill_id', 'Skills'));
 
-        $rules->addCreate([$this, 'disallowDeprecated']);
-        $rules->add([$this, 'limitTimesToMax']);
-
         return $rules;
     }
 
-    public function disallowDeprecated(EntityInterface $entity, array $options): bool
+    public function ruleDisallowDeprecated(EntityInterface $entity, array $options): bool
     {
         $skill = $this->Skills->getMaybe($entity->get('skill_id'));
         if ($skill?->get('deprecated')) {
@@ -61,7 +64,7 @@ class CharactersSkillsTable extends Table
         return true;
     }
 
-    public function limitTimesToMax(EntityInterface $entity, array $options): bool
+    public function ruleLimitTimesToMax(EntityInterface $entity, array $options): bool
     {
         $skill = $this->Skills->getMaybe($entity->get('skill_id'));
         if (!is_null($skill) && $entity->get('times') > $skill->get('times_max')) {

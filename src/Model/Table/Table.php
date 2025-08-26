@@ -11,6 +11,7 @@ use Cake\Event\EventInterface;
 use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\Query\SelectQuery;
+use Cake\ORM\RulesChecker;
 use Cake\ORM\Table as CakeTable;
 use Cake\Routing\Router;
 use ReflectionClass;
@@ -67,24 +68,6 @@ abstract class Table extends CakeTable
         }
     }
 
-    public function afterMarshal(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
-    {
-        // disallow modification of primary key field(s)
-        if ($entity->isNew() && $this->allowSetPrimaryOnCreate) {
-            return;
-        }
-
-        $keys = $this->getPrimaryKey();
-        if (is_string($keys)) {
-            $keys = [$keys];
-        }
-        foreach ($keys as $key) {
-            if ($entity->isDirty($key)) {
-                $entity->setError($key, ['key' => 'Cannot change primary key field']);
-            }
-        }
-    }
-
     public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
         if ($entity->isNew()) {
@@ -105,6 +88,16 @@ abstract class Table extends CakeTable
     public function beforeDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
         $this->fetchTable('History')->logDeletion($entity);
+    }
+
+    public function buildRules(RulesChecker $rules): RulesChecker
+    {
+        if (!$this->allowSetPrimaryOnCreate) {
+            $rules->addCreate([$this, 'ruleDisallowSetPrimary']);
+        }
+        $rules->addUpdate([$this, 'ruleDisallowSetPrimary']);
+
+        return $rules;
     }
 
     public function getMaybe(mixed $id): ?EntityInterface
@@ -150,6 +143,24 @@ abstract class Table extends CakeTable
         }
 
         return $this->findAll($query);
+    }
+
+    public function ruleDisallowSetPrimary(EntityInterface $entity, array $options): bool
+    {
+        $keys = $this->getPrimaryKey();
+        if (is_string($keys)) {
+            $keys = [$keys];
+        }
+
+        $allowed = true;
+        foreach ($keys as $key) {
+            if ($entity->isDirty($key)) {
+                $entity->setError($key, ['key' => 'Cannot change primary key field']);
+                $allowed = false;
+            }
+        }
+
+        return $allowed;
     }
 
     public function ruleNoAssociation(EntityInterface $entity, array $options): bool

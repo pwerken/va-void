@@ -34,6 +34,8 @@ class CharactersPowersTable extends Table
 
     public function buildRules(RulesChecker $rules): RulesChecker
     {
+        $rules = parent::buildRules($rules);
+
         $rules->addCreate($rules->isUnique(['power_id', 'character_id']));
 
         $rules->add($rules->existsIn('character_id', 'Characters'));

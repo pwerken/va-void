@@ -21,6 +21,8 @@ class ConditionsTable extends Table
 
     public function buildRules(RulesChecker $rules): RulesChecker
     {
+        $rules = parent::buildRules($rules);
+
         $rules->addDelete([$this, 'ruleNoAssociation'], ['characters']);
 
         return $rules;

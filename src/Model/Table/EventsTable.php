@@ -9,6 +9,8 @@ class EventsTable extends Table
 {
     public function buildRules(RulesChecker $rules): RulesChecker
     {
+        $rules = parent::buildRules($rules);
+
         $rules->add($rules->isUnique(['name']));
 
         return $rules;

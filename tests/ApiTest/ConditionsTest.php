@@ -206,8 +206,7 @@ class ConditionsTest extends AuthIntegrationTestCase
         $errors = $this->assertErrorsResponse('/conditions', $response);
 
         # expected fields with validation errors:
-        $this->assertCount(3, $errors);
-        $this->assertArrayHasKey('coin', $errors);
+        $this->assertCount(2, $errors);
         $this->assertArrayHasKey('name', $errors);
         $this->assertArrayHasKey('player_text', $errors);
     }
@@ -228,8 +227,7 @@ class ConditionsTest extends AuthIntegrationTestCase
         $errors = $this->assertErrorsResponse('/conditions/1', $response);
 
         # expected fields with validation errors:
-        $this->assertCount(3, $errors);
-        $this->assertArrayHasKey('coin', $errors);
+        $this->assertCount(2, $errors);
         $this->assertArrayHasKey('name', $errors);
         $this->assertArrayHasKey('player_text', $errors);
     }

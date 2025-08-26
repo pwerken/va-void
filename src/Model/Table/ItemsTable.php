@@ -44,6 +44,8 @@ class ItemsTable extends Table
 
     public function buildRules(RulesChecker $rules): RulesChecker
     {
+        $rules = parent::buildRules($rules);
+
         $rules->add($rules->existsIn('character_id', 'Characters'));
 
         $rules->addDelete([$this, 'ruleNoCharacter']);

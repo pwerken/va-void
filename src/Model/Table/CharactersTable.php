@@ -62,20 +62,6 @@ class CharactersTable extends Table
         parent::beforeMarshal($event, $data, $options);
     }
 
-    public function afterMarshal(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
-    {
-        parent::afterMarshal($event, $entity, $options);
-
-        if (!$entity->isNew()) {
-            if ($entity->isDirty('plin')) {
-                $entity->setError('plin', ['key' => 'Cannot change primary key field']);
-            }
-            if ($entity->isDirty('chin')) {
-                $entity->setError('chin', ['key' => 'Cannot change primary key field']);
-            }
-        }
-    }
-
     public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
         if ($entity->isDirty('status') && $entity->get('status') === CharacterStatus::Active) {
@@ -92,15 +78,19 @@ class CharactersTable extends Table
 
     public function buildRules(RulesChecker $rules): RulesChecker
     {
+        $rules = parent::buildRules($rules);
+
         $rules->addCreate($rules->isUnique(['plin', 'chin']));
         $rules->addCreate($rules->isUnique(['plin', 'name']));
 
-        $rules->add($rules->existsIn('faction_id', 'Factions'));
+        $rules->addUpdate([$this, 'ruleDisallowSetPlinChin']);
 
         $rules->addDelete([$this, 'ruleNoAssociation'], ['skills']);
         $rules->addDelete([$this, 'ruleNoAssociation'], ['conditions']);
         $rules->addDelete([$this, 'ruleNoAssociation'], ['powers']);
         $rules->addDelete([$this, 'ruleNoAssociation'], ['items']);
+
+        $rules->add($rules->existsIn('faction_id', 'Factions'));
 
         return $rules;
     }
@@ -124,6 +114,22 @@ class CharactersTable extends Table
         return $query->select(['name' => 'world'])
                     ->distinct(['world'])
                     ->orderBy(['world'], true);
+    }
+
+    public function ruleDisallowSetPlinChin(EntityInterface $entity, array $options): bool
+    {
+        $allowed = true;
+
+        if ($entity->isDirty('plin')) {
+            $entity->setError('plin', ['key' => 'Cannot change primary key field']);
+            $allowed = false;
+        }
+        if ($entity->isDirty('chin')) {
+            $entity->setError('chin', ['key' => 'Cannot change primary key field']);
+            $allowed = false;
+        }
+
+        return $allowed;
     }
 
     protected function contain(): array

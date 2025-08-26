@@ -19,6 +19,8 @@ class FactionsTable extends Table
 
     public function buildRules(RulesChecker $rules): RulesChecker
     {
+        $rules = parent::buildRules($rules);
+
         $rules->add($rules->isUnique(['name']));
 
         $rules->addDelete([$this, 'ruleNoAssociation'], ['characters']);
