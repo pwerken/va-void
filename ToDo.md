@@ -3,10 +3,10 @@ ToDo-list:
    - [ ] check error responses on failed social authentication
  - /Admin
    - [ ] check all the pages on a mobile device
-   - [ ] CRUD-operations page for Events
-   - [ ] CRUD-operations page for Factions
-   - [ ] CRUD-operations page for Manatypes
-   - [ ] CRUD-operations page for Skills
+   - [x] CRUD-operations page for Events
+   - [x] CRUD-operations page for Factions
+   - [x] CRUD-operations page for Manatypes
+   - [x] CRUD-operations page for Skills
  - Player editable concept character
    - [ ] add character status 'concept'
    - [ ] allow player to add 'concept' character (max 1)

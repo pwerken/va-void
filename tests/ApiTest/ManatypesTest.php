@@ -75,4 +75,30 @@ class ManatypesTest extends AuthIntegrationTestCase
         $this->withAuthInfobalie();
         $this->assertDelete('/manatypes/1', 403);
     }
+
+    public function testSuperPermissions(): void
+    {
+        $this->withAuthSuper();
+        $this->assertPut('/manatypes', [], 422);
+        $this->assertDelete('/manatypes/1', 422);
+
+        $expected = [
+            'class' => 'Manatype',
+            'url' => '/manatypes/2',
+            'name' => 'Test',
+            'deprecated' => false,
+        ];
+        $actual = $this->assertPut('/manatypes', ['name' => 'Test'], 201);
+        foreach ($expected as $key => $value) {
+            $this->assertArrayKeyValue($key, $value, $actual);
+        }
+
+        $expected['name'] = 'Edit';
+        $actual = $this->assertPut('/manatypes/2', ['name' => 'Edit']);
+        foreach ($expected as $key => $value) {
+            $this->assertArrayKeyValue($key, $value, $actual);
+        }
+
+        $this->assertDelete('/manatypes/2');
+    }
 }

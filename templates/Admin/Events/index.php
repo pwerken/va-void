@@ -1,0 +1,37 @@
+<?php
+
+use App\Model\Enum\Authorization;
+
+/**
+ * @var \App\View\AdminView $this
+ * @var ?\App\Model\Entity\Player $user
+ * @var array $objs
+ */
+
+$isSuper = $user?->hasAuth(Authorization::Super);
+?>
+<h3>Events</h3>
+<?php if ($isSuper) : ?>
+<p><?= $this->Html->link('Add Event', ['action' => 'add']) ?></p>
+<?php endif; ?>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <?php if ($isSuper) : ?>
+        <th>Actions</th>
+        <?php endif; ?>
+    </tr>
+    <?php foreach ($objs as $obj) : ?>
+    <tr>
+        <td><?= $obj->get('id') ?></td>
+        <td><?= $obj->get('name') ?></td>
+        <?php if ($isSuper) : ?>
+        <td>
+            <?= $this->Html->link('Edit', ['action' => 'edit', $obj->get('id')]) ?>
+            <?= $this->Form->postLink('Delete', ['action' => 'delete', $obj->get('id')]) ?>
+        </td>
+        <?php endif; ?>
+    </tr>
+    <?php endforeach; ?>
+</table>

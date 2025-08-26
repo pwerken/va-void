@@ -14,9 +14,14 @@ class SkillValidator extends Validator
 
         $this->nonNegativeInteger('id');
         $this->notEmptyString('name');
-        $this->integer('cost')->greaterThanOrEqual('times', 1);
+        $this->integer('base_max')->greaterThanOrEqual('base_max', 1);
+        $this->integer('times_max')->greaterThanOrEqual('times_max', 1);
+        $this->integer('cost')->greaterThanOrEqual('cost', 1);
         $this->nonNegativeInteger('manatype_id')->allowEmptyString('manatype_id');
-        $this->nonNegativeInteger('mana_amount');
+        $this->nonNegativeInteger('mana_amount')->allowEmptyString('mana_amount');
+        $this->boolean('loresheet');
+        $this->boolean('blanks');
+        $this->boolean('deprecated');
         $this->nonNegativeInteger('sort_order');
     }
 }

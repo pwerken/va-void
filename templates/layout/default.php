@@ -44,9 +44,19 @@ $hasAuthInfobalie = $user?->hasAuth(Authorization::Infobalie);
                         <li class="popover-item">
                             <a class="popover-link" href="/admin">Home</a>
                         </li>
+<?php if ($hasAuthInfobalie) : ?>
+                        <li class="popover-item">
+                            <a class="popover-link" href="/admin/backups">Backups</a>
+                        </li>
+<?php endif ?>
                         <li class="popover-item">
                             <a class="popover-link" href="/admin/checks">Config Checks</a>
                         </li>
+<?php if ($hasAuthInfobalie) : ?>
+                        <li class="popover-item">
+                            <a class="popover-link" href="/admin/migrations">Migrations</a>
+                        </li>
+<?php endif ?>
 <?php if ($hasAuthPlayer) : ?>
                         <li class="popover-item">
                             <a class="popover-link" href="/admin/routes">Routes</a>
@@ -90,14 +100,23 @@ $hasAuthInfobalie = $user?->hasAuth(Authorization::Infobalie);
                             <li class="popover-item">
                                 <a class="popover-link" href="/admin/skills_lookup">Skills Lookup</a>
                             </li>
-        <?php if ($hasAuthInfobalie) : ?>
+                            <li class="popover-item popover-header">
+                                TABLES
+                            </li>
+<!--
                             <li class="popover-item">
-                                <a class="popover-link" href="/admin/backups">Backups</a>
+                                <a class="popover-link" href="/admin/events">Events</a>
+                            </li>
+-->
+                            <li class="popover-item">
+                                <a class="popover-link" href="/admin/factions">Factions</a>
                             </li>
                             <li class="popover-item">
-                                <a class="popover-link" href="/admin/migrations">Migrations</a>
+                                <a class="popover-link" href="/admin/manatypes">Manatypes</a>
                             </li>
-        <?php endif ?>
+                            <li class="popover-item">
+                                <a class="popover-link" href="/admin/skills">Skills</a>
+                            </li>
                         </ul>
                     </div>
                 </li>

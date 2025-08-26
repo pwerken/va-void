@@ -5,6 +5,14 @@ namespace App\Model\Entity;
 
 class Skill extends Entity
 {
+    protected array $_defaults = [
+        'base_max' => 1,
+        'times_max' => 1,
+        'loresheet' => false,
+        'blanks' => false,
+        'deprecated' => false,
+    ];
+
     public function __construct(array $properties = [], array $options = [])
     {
         parent::__construct($properties, $options);

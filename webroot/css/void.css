@@ -62,6 +62,13 @@ select,
 	width: auto;
 	margin-bottom: .4rem;
 	margin-right: .4rem;
+	vertical-align: top;
+}
+
+button,
+.input.checkbox
+{
+	vertical-align: bottom;
 }
 
 input[type="number"].plin {
@@ -75,6 +82,10 @@ input::-webkit-inner-spin-button {
 }
 select[multiple] {
 	resize: vertical;
+}
+
+.error-message {
+	font-style: italic;
 }
 
 .navigation {
@@ -189,6 +200,13 @@ select[multiple] {
 .popover .popover-item {
     margin: 0;
     padding: 0;
+}
+.popover .popover-header {
+    text-align: center;
+    border-bottom: 0.1rem solid var(--color-popover-border);
+    background: var(--color-popover-border);
+    font-size: 1.2rem;
+    padding: 0.4rem 2rem;
 }
 .popover .popover-item:first-child .popover-link {
     border-radius: 0.4rem 0.4rem 0 0;

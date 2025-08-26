@@ -70,6 +70,10 @@
         color: var(--color-selected);
     }
 
+    .error-message {
+        color: var(--color-message-error-bg);
+    }
+
     code,
     pre {
         background: var(--color-code-bg);

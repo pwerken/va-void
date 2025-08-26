@@ -16,8 +16,23 @@ class ManatypePolicy extends EntityPolicy
         $this->showFieldAuth('name', Authorization::Player);
     }
 
+    public function canAdd(User $identity, Manatype $obj): bool
+    {
+        return $this->hasAuthObj($obj, Authorization::Super);
+    }
+
     public function canView(User $identity, Manatype $obj): bool
     {
         return $this->hasAuthObj($obj, Authorization::Player);
+    }
+
+    public function canEdit(User $identity, Manatype $obj): bool
+    {
+        return $this->canAdd($identity, $obj);
+    }
+
+    public function canDelete(User $identity, Manatype $obj): bool
+    {
+        return $this->canAdd($identity, $obj);
     }
 }

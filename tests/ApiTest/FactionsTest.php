@@ -86,7 +86,7 @@ class FactionsTest extends AuthIntegrationTestCase
         $this->assertDelete('/factions/1', 403);
     }
 
-    public function testEvents(): void
+    public function testSuperPermissions(): void
     {
         $this->withAuthSuper();
         $this->assertPut('/factions', [], 422);

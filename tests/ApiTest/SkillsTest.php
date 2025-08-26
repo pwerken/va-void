@@ -85,4 +85,45 @@ class SkillsTest extends AuthIntegrationTestCase
         $this->withAuthInfobalie();
         $this->assertDelete('/skills/1', 403);
     }
+
+    public function testSuperPermissions(): void
+    {
+        $this->withAuthSuper();
+        $this->assertPut('/skills', [], 422);
+        $this->assertDelete('/skills/2', 422);
+
+        $input = [
+            'name' => 'testing',
+            'cost' => 99,
+        ];
+        $expected = [
+            'class' => 'Skill',
+            'url' => '/skills/3',
+            'name' => $input['name'],
+            'cost' => $input['cost'],
+            'base_max' => 1,
+            'times_max' => 1,
+            'mana_amount' => null,
+            'manatype' => null,
+            'blanks' => false,
+            'loresheet' => false,
+            'sort_order' => null,
+            'deprecated' => false,
+        ];
+        $actual = $this->assertPut('/skills', $input, 201);
+        foreach ($expected as $key => $value) {
+            $this->assertArrayKeyValue($key, $value, $actual);
+        }
+
+        $input = [
+            'name' => 'editing',
+        ];
+        $expected['name'] = $input['name'];
+        $actual = $this->assertPut('/skills/3', $input);
+        foreach ($expected as $key => $value) {
+            $this->assertArrayKeyValue($key, $value, $actual);
+        }
+
+        $this->assertDelete('/skills/3');
+    }
 }
