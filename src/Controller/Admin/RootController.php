@@ -16,13 +16,13 @@ class RootController extends AdminController
         $this->getRequest()->allowMethod(['get', 'post']);
 
         $result = $this->Authentication->getResult();
-        if ($this->request->is('post')) {
+        if ($this->getRequest()->is('post')) {
             if (!$result->isValid()) {
                 $this->Flash->error('Invalid username or password');
             }
         }
 
-        $redirect = $this->request->getQuery('redirect');
+        $redirect = $this->getRequest()->getQuery('redirect');
         if ($result->isValid()) {
             if (!empty($redirect)) {
                 return $this->redirect($redirect);

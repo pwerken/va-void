@@ -21,14 +21,11 @@ class PasswordController extends AdminController
     public function edit(): Response
     {
         $this->getRequest()->allowMethod(['post']);
+
         $response = $this->redirect(['controller' => 'Password', 'action' => 'index']);
 
-        if (!$this->request->is('post')) {
-            return $response;
-        }
-
-        $plin = $this->request->getData('plin');
-        $pass = $this->request->getData('password');
+        $plin = $this->getRequest()->getData('plin');
+        $pass = $this->getRequest()->getData('password');
 
         $players = $this->fetchTable('Players');
         $player = $players->getMaybe($plin);

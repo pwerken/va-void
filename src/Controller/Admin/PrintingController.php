@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 
 use App\Model\Enum\Authorization;
 use App\Model\Enum\LammyStatus;
+use Cake\Http\Response;
 use DateInterval;
 use DateTime;
 
@@ -19,13 +20,12 @@ class PrintingController extends AdminController
      * GET /printing
      * POST /printing
      */
-    public function index(): void
+    public function index(): ?Response
     {
         $this->getRequest()->allowMethod(['get', 'post']);
-        if ($this->request->is('post')) {
-            $this->index_post();
 
-            return;
+        if ($this->getRequest()->is('post')) {
+            return $this->index_post();
         }
 
         $since = (new DateTime())->sub(new DateInterval('P3M'));
@@ -34,19 +34,20 @@ class PrintingController extends AdminController
             ->enableHydration(false);
 
         $this->set('printing', $query->all());
+
+        return null;
     }
 
-    protected function index_post(): void
+    protected function index_post(): Response
     {
         $user = $this->getRequest()->getAttribute('identity');
         if (!$user->hasAuth(Authorization::Infobalie)) {
             $this->Flash->error('Not authorized to remove lammies from queue');
-            $this->redirect(['controller' => 'Printing']);
 
-            return;
+            return $this->redirect(['controller' => 'Printing']);
         }
 
-        $ids = $this->request->getData('delete');
+        $ids = $this->getRequest()->getData('delete');
         if (!empty($ids)) {
             $nr = $this->fetchTable()->deleteAll(['id IN' => $ids]);
             $this->Flash->success("Removed $nr lammies from queue");
@@ -54,7 +55,7 @@ class PrintingController extends AdminController
             $this->Flash->warning('No lammies removed from queue');
         }
 
-        $this->redirect(['controller' => 'Printing']);
+        return $this->redirect(['controller' => 'Printing']);
     }
 
     /**

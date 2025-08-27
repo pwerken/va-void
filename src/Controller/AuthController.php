@@ -97,7 +97,7 @@ class AuthController extends Controller
             throw new NotFoundException();
         }
 
-        $token = $this->request->getQuery('token');
+        $token = $this->getRequest()->getQuery('token');
         if ($token) {
             $obj = new AccessToken(['access_token' => $token]);
             $user = $this->SocialAuth->accountFromToken($provider, $obj);
@@ -106,12 +106,12 @@ class AuthController extends Controller
             return;
         }
 
-        $code = $this->request->getQuery('code');
+        $code = $this->getRequest()->getQuery('code');
         if (!$code) {
             throw new BadRequestException('Missing `code` query parameter');
         }
 
-        $redirectUri = $this->request->getQuery('redirect_uri');
+        $redirectUri = $this->getRequest()->getQuery('redirect_uri');
         if (!$redirectUri) {
             throw new BadRequestException('Missing `redirect_uri` query parameter');
         }

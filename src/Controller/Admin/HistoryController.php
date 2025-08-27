@@ -16,11 +16,13 @@ class HistoryController extends AdminController
      */
     public function index(): void
     {
-        $plin = $this->request->getQuery('plin');
+        $this->getRequest()->allowMethod(['get']);
+
+        $plin = $this->getRequest()->getQuery('plin');
         $plin = empty($plin) ? null : (int)$plin;
         $this->set('plin', $plin);
 
-        $since = $this->request->getQuery('since', '');
+        $since = $this->getRequest()->getQuery('since', '');
         $date = DateTimeImmutable::createFromFormat('Y-m-d', $since);
         if (!$date) {
             $date = new DateTime();
@@ -29,7 +31,7 @@ class HistoryController extends AdminController
         $since = $date->format('Y-m-d');
         $this->set('since', $since);
 
-        $what = $this->request->getQuery('what');
+        $what = $this->getRequest()->getQuery('what');
         $this->set('what', $what);
 
         $table = $this->fetchTable('History');
@@ -147,7 +149,7 @@ class HistoryController extends AdminController
         $this->set('rhs', true);
     }
 
-    private function lookupPlins(array $plins): array
+    protected function lookupPlins(array $plins): array
     {
         sort($plins);
         $plins = array_unique($plins);

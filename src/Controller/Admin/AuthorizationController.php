@@ -46,14 +46,11 @@ class AuthorizationController extends AdminController
     public function edit(): Response
     {
         $this->getRequest()->allowMethod(['post']);
+
         $response = $this->redirect(['controller' => 'Authorization', 'action' => 'index']);
 
-        if (!$this->request->is('post')) {
-            return $response;
-        }
-
-        $plin = $this->request->getData('plin');
-        $role = $this->request->getData('role');
+        $plin = $this->getRequest()->getData('plin');
+        $role = $this->getRequest()->getData('role');
 
         $players = $this->fetchTable('Players');
         $player = $players->getMaybe($plin);

@@ -19,7 +19,7 @@ class SkillsLookupController extends AdminController
         $skills = $this->fetchTable('Skills');
         $this->set('skills', $skills->find('list')->all()->toArray());
 
-        $since = $this->request->getQuery('since', '');
+        $since = $this->getRequest()->getQuery('since', '');
         $date = DateTimeImmutable::createFromFormat('Y-m-d', $since);
         if (!$date) {
             $date = new DateTime();
@@ -28,10 +28,10 @@ class SkillsLookupController extends AdminController
         }
         $this->set('since', $since);
 
-        $and = ($this->request->getQuery('and') ? 1 : 0);
+        $and = ($this->getRequest()->getQuery('and') ? 1 : 0);
         $this->set('and', $and);
 
-        $ids = $this->request->getQuery('skills', []);
+        $ids = $this->getRequest()->getQuery('skills', []);
         $this->set('selected', $ids);
 
         $characters = [];

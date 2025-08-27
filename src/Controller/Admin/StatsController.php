@@ -15,7 +15,8 @@ class StatsController extends AdminController
     public function index(): void
     {
         $this->getRequest()->allowMethod(['get']);
-        $since = $this->request->getQuery('since', '');
+
+        $since = $this->getRequest()->getQuery('since', '');
         $date = DateTimeImmutable::createFromFormat('Y-m-d', $since);
         if (!$date) {
             $date = new DateTime();
@@ -33,7 +34,7 @@ class StatsController extends AdminController
         ];
         $this->set('queries', $queries);
 
-        $selected = $this->request->getQuery('selected', '');
+        $selected = $this->getRequest()->getQuery('selected', '');
         if (!isset($queries[$selected])) {
             $selected = '';
         }

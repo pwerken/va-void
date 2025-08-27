@@ -14,7 +14,8 @@ class SocialController extends AdminController
     public function index(): void
     {
         $this->getRequest()->allowMethod(['get', 'post']);
-        if ($this->request->is('post')) {
+
+        if ($this->getRequest()->is('post')) {
             $this->index_post();
             $this->redirect(['controller' => 'Social']);
 
@@ -38,7 +39,7 @@ class SocialController extends AdminController
 
     protected function index_post(): void
     {
-        $social = $this->request->getData('social');
+        $social = $this->getRequest()->getData('social');
         if (empty($social)) {
             return;
         }
@@ -52,7 +53,7 @@ class SocialController extends AdminController
         }
 
         // delete login attempt
-        if (!is_null($this->request->getData('delete'))) {
+        if (!is_null($this->getRequest()->getData('delete'))) {
             if (!$profiles->delete($login)) {
                 $this->Flash->error("Failed to delete SocialProfile#$social.");
             } else {
@@ -62,7 +63,7 @@ class SocialController extends AdminController
             return;
         }
 
-        $plin = $this->request->getData('plin');
+        $plin = $this->getRequest()->getData('plin');
         if (empty($plin)) {
             $login->set('user_id', null);
             $login->set('hidden', true);
@@ -102,7 +103,8 @@ class SocialController extends AdminController
     public function all(): void
     {
         $this->getRequest()->allowMethod(['get', 'post']);
-        if ($this->request->is('post')) {
+
+        if ($this->getRequest()->is('post')) {
             $this->all_post();
             $this->redirect(['controller' => 'Social', 'action' => 'all']);
 
@@ -118,7 +120,7 @@ class SocialController extends AdminController
 
     protected function all_post(): void
     {
-        $social = $this->request->getData('social');
+        $social = $this->getRequest()->getData('social');
         if (empty($social)) {
             return;
         }
@@ -132,7 +134,7 @@ class SocialController extends AdminController
         }
 
         // enable login
-        if (!is_null($this->request->getData('enable'))) {
+        if (!is_null($this->getRequest()->getData('enable'))) {
             $login->set('hidden', false);
             if (!$profiles->save($login)) {
                 $this->Flash->error("Failed to enable SocialProfile#$social.");
@@ -144,7 +146,7 @@ class SocialController extends AdminController
         }
 
         // unlink login from plin
-        if (!is_null($this->request->getData('unlink'))) {
+        if (!is_null($this->getRequest()->getData('unlink'))) {
             $plin = $login->get('user_id');
             $login->set('user_id', null);
             if (!$profiles->save($login)) {
@@ -166,8 +168,9 @@ class SocialController extends AdminController
     public function login(string $providerName): Response
     {
         $this->getRequest()->allowMethod(['get', 'post']);
-        $redirect = $this->request->getQuery('redirect', '/admin');
-        $redirect = $this->request->getData('redirect', $redirect);
+
+        $redirect = $this->getRequest()->getQuery('redirect', '/admin');
+        $redirect = $this->getRequest()->getData('redirect', $redirect);
 
         // save redirectUri for after the login callback
         $this->request->getSession()->write('redirect', $redirect);
@@ -187,7 +190,7 @@ class SocialController extends AdminController
         $this->getRequest()->allowMethod(['get']);
 
         // callback from the social site login
-        $providerName = $this->request->getSession()->consume('provider');
+        $providerName = $this->getRequest()->getSession()->consume('provider');
         if (is_null($providerName)) {
             return $this->redirect(['controller' => 'Root']);
         }
@@ -197,7 +200,7 @@ class SocialController extends AdminController
             $this->request->getSession()->write('Auth', $user);
 
             // redirect back to page from before login
-            $redirect = $this->request->getSession()->consume('redirect');
+            $redirect = $this->getRequest()->getSession()->consume('redirect');
             if (!empty($redirect)) {
                 return $this->redirect($redirect);
             }
