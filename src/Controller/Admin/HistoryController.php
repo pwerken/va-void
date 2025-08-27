@@ -101,6 +101,8 @@ class HistoryController extends AdminController
 
     protected function checkParams(array $ids, int $expected = 1): void
     {
+        $this->getRequest()->allowMethod(['get']);
+
         if (count($ids) != $expected) {
             throw new NotFoundException();
         }

@@ -10,6 +10,6 @@ class RoutesController extends AdminController
      */
     public function index(): void
     {
-        // handled by /templates/Admin/routes.php
+        $this->getRequest()->allowMethod(['get']);
     }
 }

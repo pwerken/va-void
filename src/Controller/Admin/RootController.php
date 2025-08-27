@@ -13,6 +13,8 @@ class RootController extends AdminController
      */
     public function index(): ?Response
     {
+        $this->getRequest()->allowMethod(['get', 'post']);
+
         $result = $this->Authentication->getResult();
         if ($this->request->is('post')) {
             if (!$result->isValid()) {

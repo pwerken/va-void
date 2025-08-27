@@ -13,6 +13,7 @@ class SocialController extends AdminController
      */
     public function index(): void
     {
+        $this->getRequest()->allowMethod(['get', 'post']);
         if ($this->request->is('post')) {
             $this->index_post();
             $this->redirect(['controller' => 'Social']);
@@ -100,6 +101,7 @@ class SocialController extends AdminController
      */
     public function all(): void
     {
+        $this->getRequest()->allowMethod(['get', 'post']);
         if ($this->request->is('post')) {
             $this->all_post();
             $this->redirect(['controller' => 'Social', 'action' => 'all']);
@@ -159,9 +161,11 @@ class SocialController extends AdminController
 
     /**
      * GET /admin/social/login/$providerName
+     * POST /admin/social/login/$providerName
      */
     public function login(string $providerName): Response
     {
+        $this->getRequest()->allowMethod(['get', 'post']);
         $redirect = $this->request->getQuery('redirect', '/admin');
         $redirect = $this->request->getData('redirect', $redirect);
 
@@ -180,6 +184,8 @@ class SocialController extends AdminController
      */
     public function callback(): Response
     {
+        $this->getRequest()->allowMethod(['get']);
+
         // callback from the social site login
         $providerName = $this->request->getSession()->consume('provider');
         if (is_null($providerName)) {

@@ -14,6 +14,8 @@ class AuthorizationController extends AdminController
      */
     public function index(): void
     {
+        $this->getRequest()->allowMethod(['get']);
+
         $user = $this->getRequest()->getAttribute('identity');
 
         $roles = PlayerRole::cases();
@@ -43,6 +45,7 @@ class AuthorizationController extends AdminController
      */
     public function edit(): Response
     {
+        $this->getRequest()->allowMethod(['post']);
         $response = $this->redirect(['controller' => 'Authorization', 'action' => 'index']);
 
         if (!$this->request->is('post')) {

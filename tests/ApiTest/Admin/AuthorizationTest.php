@@ -16,9 +16,6 @@ class AuthorizationTest extends AuthIntegrationTestCase
         $this->assertGet($this->url, 302);
         $this->assertRedirect('/admin?redirect=' . urlencode($this->url));
 
-        $this->assertGet($this->url . '/edit', 302);
-        $this->assertRedirect('/admin?redirect=' . urlencode($this->url . '/edit'));
-
         $this->assertPost($this->url . '/edit', [], 302);
         $this->assertRedirect('/admin?redirect=' . urlencode($this->url . '/edit'));
     }
@@ -29,7 +26,6 @@ class AuthorizationTest extends AuthIntegrationTestCase
 
         $this->assertGet($this->url, 403);
 
-        $this->assertGet($this->url . '/edit', 403);
         $this->assertPost($this->url . '/edit', [], 403);
     }
 
@@ -38,9 +34,6 @@ class AuthorizationTest extends AuthIntegrationTestCase
         $this->withAuthReadOnly();
 
         $this->assertGet($this->url);
-
-        $this->assertGet($this->url . '/edit', 302);
-        $this->assertRedirect($this->url);
 
         $this->assertPost($this->url . '/edit', [], 302);
         $this->assertRedirect($this->url);

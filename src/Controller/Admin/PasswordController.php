@@ -12,6 +12,7 @@ class PasswordController extends AdminController
      */
     public function index(): void
     {
+        $this->getRequest()->allowMethod(['get']);
     }
 
     /**
@@ -19,6 +20,7 @@ class PasswordController extends AdminController
      */
     public function edit(): Response
     {
+        $this->getRequest()->allowMethod(['post']);
         $response = $this->redirect(['controller' => 'Password', 'action' => 'index']);
 
         if (!$this->request->is('post')) {

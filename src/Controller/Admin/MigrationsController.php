@@ -12,6 +12,8 @@ class MigrationsController extends AdminController
      */
     public function index(): void
     {
+        $this->getRequest()->allowMethod(['get']);
+
         $migrations = new Migrations();
         $rows = [];
         foreach (array_reverse($migrations->status()) as $migration) {

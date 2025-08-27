@@ -21,6 +21,7 @@ class PrintingController extends AdminController
      */
     public function index(): void
     {
+        $this->getRequest()->allowMethod(['get', 'post']);
         if ($this->request->is('post')) {
             $this->index_post();
 
@@ -61,6 +62,8 @@ class PrintingController extends AdminController
      */
     public function double(): void
     {
+        $this->getRequest()->allowMethod(['get']);
+
         $lammies = $this->fetchTable('Lammies');
         $queued = $lammies->find('queued')->all();
 

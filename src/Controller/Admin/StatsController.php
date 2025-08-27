@@ -14,6 +14,7 @@ class StatsController extends AdminController
      */
     public function index(): void
     {
+        $this->getRequest()->allowMethod(['get']);
         $since = $this->request->getQuery('since', '');
         $date = DateTimeImmutable::createFromFormat('Y-m-d', $since);
         if (!$date) {

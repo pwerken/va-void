@@ -16,9 +16,6 @@ class PasswordTest extends AuthIntegrationTestCase
         $this->assertGet($this->url, 302);
         $this->assertRedirect('/admin?redirect=' . urlencode($this->url));
 
-        $this->assertGet($this->url . '/edit', 302);
-        $this->assertRedirect('/admin?redirect=' . urlencode($this->url . '/edit'));
-
         $this->assertPost($this->url . '/edit', [], 302);
         $this->assertRedirect('/admin?redirect=' . urlencode($this->url . '/edit'));
     }
@@ -28,9 +25,6 @@ class PasswordTest extends AuthIntegrationTestCase
         $this->withAuthPlayer();
 
         $this->assertGet($this->url);
-
-        $this->assertGet($this->url . '/edit', 302);
-        $this->assertRedirect($this->url);
 
         $this->assertPost($this->url . '/edit', [], 302);
         $this->assertRedirect($this->url);
