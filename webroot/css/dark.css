@@ -18,17 +18,17 @@
         --color-popover-border: #323337;
         --color-popover-link: #e3e3e6;
 
-		--color-message-info-bg: #2779bd;
-		--color-message-info-text: #100700;
+        --color-message-info-bg: #2779bd;
+        --color-message-info-text: #100700;
 
-		--color-message-success-bg: #1f9d55;
-		--color-message-success-text: #1b0313;
+        --color-message-success-bg: #1f9d55;
+        --color-message-success-text: #1b0313;
 
-		--color-message-warning-bg: #8d7b00;
-		--color-message-warning-text: #000543;
+        --color-message-warning-bg: #8d7b00;
+        --color-message-warning-text: #000543;
 
-		--color-message-error-bg: #cc1f1a;
-		--color-message-error-text: #031415;
+        --color-message-error-bg: #cc1f1a;
+        --color-message-error-text: #031415;
     }
 
     body {
@@ -57,13 +57,13 @@
         color: var(--color-input-text);
     }
 
-	input[type='checkbox'] {
-		filter: invert(1);
-	}
+    input[type='checkbox'] {
+        filter: invert(1);
+    }
 
-	input[type='checkbox']:checked {
-		filter: invert(0);
-	}
+    input[type='checkbox']:checked {
+        filter: invert(0);
+    }
 
     option[selected] {
         background: var(--color-selected-bg);
@@ -106,20 +106,20 @@
         color: var(--color-popover-link);
     }
 
-	.message {
-		background: var(--color-message-info-bg);
-		color: var(--color-message-info-text);
-	}
-	.message.success {
-		background: var(--color-message-success-bg);
-		color: var(--color-message-success-text);
-	}
-	.message.warning {
-		background: var(--color-message-warning-bg);
-		color: var(--color-message-warning-text);
-	}
-	.message.error {
-		background: var(--color-message-error-bg);
-		color: var(--color-message-error-text);
-	}
+    .message {
+        background: var(--color-message-info-bg);
+        color: var(--color-message-info-text);
+    }
+    .message.success {
+        background: var(--color-message-success-bg);
+        color: var(--color-message-success-text);
+    }
+    .message.warning {
+        background: var(--color-message-warning-bg);
+        color: var(--color-message-warning-text);
+    }
+    .message.error {
+        background: var(--color-message-error-bg);
+        color: var(--color-message-error-text);
+    }
 }

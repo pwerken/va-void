@@ -21,23 +21,23 @@ body > .main {
 }
 
 td, th {
-	padding-top: 0.2rem;
-	padding-bottom: 0.2rem;
-	width: fit-content;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    width: fit-content;
 }
 
 td > input {
-	display: inline-block;
-	margin-right: 0;
+    display: inline-block;
+    margin-right: 0;
 }
 
 td > button {
-	margin-right: 0;
+    margin-right: 0;
 }
 
 th small {
-	font-style: italic;
-	font-weight: normal;
+    font-style: italic;
+    font-weight: normal;
 }
 
 input[type="color"],
@@ -58,34 +58,34 @@ textarea,
 select,
 .input
 {
-	display: inline-block;
-	width: auto;
-	margin-bottom: .4rem;
-	margin-right: .4rem;
-	vertical-align: top;
+    display: inline-block;
+    width: auto;
+    margin-bottom: .4rem;
+    margin-right: .4rem;
+    vertical-align: top;
 }
 
 button,
 .input.checkbox
 {
-	vertical-align: bottom;
+    vertical-align: bottom;
 }
 
 input[type="number"].plin {
-	-moz-appearance: textfield;
-	width: 6rem;
+    -moz-appearance: textfield;
+    width: 6rem;
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 select[multiple] {
-	resize: vertical;
+    resize: vertical;
 }
 
 .error-message {
-	font-style: italic;
+    font-style: italic;
 }
 
 .navigation {
@@ -122,7 +122,7 @@ select[multiple] {
     position: relative;
 }
 .navigation .navigation-item:first-child {
-	margin-left: 0;
+    margin-left: 0;
 }
 
 .navigation img {
@@ -245,13 +245,13 @@ select[multiple] {
 /* Admin: history */
 
 .added {
-	color: #070;
+    color: #070;
 }
 .modified {
-	color: #55F;
+    color: #55F;
 }
 .removed {
-	color: #D00;
+    color: #D00;
 }
 
 /* Admin: checks */
