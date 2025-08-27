@@ -88,7 +88,7 @@ $hasAuthInfobalie = $user?->hasAuth(Authorization::Infobalie);
                                 <a class="popover-link" href="/admin/stats">Statistics</a>
                             </li>
                             <li class="popover-item">
-                                <a class="popover-link" href="/admin/skills">Skills lookup</a>
+                                <a class="popover-link" href="/admin/skills_lookup">Skills Lookup</a>
                             </li>
         <?php if ($hasAuthInfobalie) : ?>
                             <li class="popover-item">

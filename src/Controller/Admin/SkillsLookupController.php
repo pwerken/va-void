@@ -7,13 +7,15 @@ use DateInterval;
 use DateTime;
 use DateTimeImmutable;
 
-class SkillsController extends AdminController
+class SkillsLookupController extends AdminController
 {
     /**
-     * GET /skills
+     * GET /admin/skill_lookup
      */
     public function index(): void
     {
+        $this->request->allowMethod(['get']);
+
         $skills = $this->fetchTable('Skills');
         $this->set('skills', $skills->find('list')->all()->toArray());
 

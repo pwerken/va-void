@@ -6,7 +6,7 @@ namespace App\Policy\Controller\Admin;
 use App\Model\Enum\Authorization;
 use App\Policy\Controller\ControllerPolicy;
 
-class SkillsControllerPolicy extends ControllerPolicy
+class SkillsLookupControllerPolicy extends ControllerPolicy
 {
     /**
      * GET /skills

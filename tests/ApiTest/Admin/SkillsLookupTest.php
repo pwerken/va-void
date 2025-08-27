@@ -5,11 +5,11 @@ namespace App\Test\ApiTest\Admin;
 
 use App\Test\TestSuite\AuthIntegrationTestCase;
 
-class SkillsTest extends AuthIntegrationTestCase
+class SkillsLookupTest extends AuthIntegrationTestCase
 {
     public function testAuthorization(): void
     {
-        $url = '/admin/skills';
+        $url = '/admin/skills_lookup';
 
         $this->withoutAuth();
         $this->assertGet($url, 302);
@@ -31,6 +31,6 @@ class SkillsTest extends AuthIntegrationTestCase
     public function testSelect(): void
     {
         $this->withAuthReadOnly();
-        $this->assertGet('/admin/skills?skills=&skills[]=1&skills[]=2&and=1&since=2018-01-01');
+        $this->assertGet('/admin/skills_lookup?skills=&skills[]=1&skills[]=2&and=1&since=2018-01-01');
     }
 }
