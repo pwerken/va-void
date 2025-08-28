@@ -52,6 +52,9 @@ use Cake\Utility\Security;
  */
 require CAKE . 'functions.php';
 
+// @phpstan-ignore-next-line
+require APP . 'functions.php';
+
 /*
  * See https://github.com/josegonzalez/php-dotenv for API details.
  *

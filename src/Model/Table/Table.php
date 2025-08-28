@@ -14,7 +14,6 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table as CakeTable;
 use Cake\Routing\Router;
-use ReflectionClass;
 
 abstract class Table extends CakeTable
 {
@@ -30,8 +29,8 @@ abstract class Table extends CakeTable
 
         $this->addBehavior('WhoWhen');
 
-        $entityName = (new ReflectionClass($this->getEntityClass()))->getShortName();
-        $this->_validatorClass = "App\\Model\\Validation\\{$entityName}Validator";
+        $class = getShortClassName($this->getEntityClass());
+        $this->_validatorClass = "App\\Model\\Validation\\{$class}Validator";
     }
 
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void

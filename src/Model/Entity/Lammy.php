@@ -58,12 +58,7 @@ class Lammy extends Entity
         }
 
         $table = $this->fetchTable($target->getSource());
-        $class = $table->getEntityClass();
-        $pos = strrpos($class, '\\');
-        if ($pos > 0) {
-            $class = substr($class, $pos + 1);
-        }
-        $this->set('entity', $class);
+        $this->set('entity', getShortClassName($table->getEntityClass()));
 
         $primary = $table->getPrimaryKey();
         if (!is_array($primary)) {

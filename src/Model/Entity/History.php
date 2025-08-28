@@ -7,7 +7,6 @@ use App\Utility\Json;
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\Entity as CakeEntity;
 use Cake\ORM\TableRegistry;
-use ReflectionClass;
 
 class History extends CakeEntity
 {
@@ -27,7 +26,7 @@ class History extends CakeEntity
         }
 
         $history = new History();
-        $history->set('entity', (new ReflectionClass($entity))->getShortName());
+        $history->set('entity', getShortClassName($entity));
 
         $history->set('key1', $data[$primary[0]]);
         unset($data[$primary[0]]);

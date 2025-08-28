@@ -27,12 +27,10 @@ class TablePolicyResolver implements ResolverInterface
             throw new MissingPolicyException($resource ?? 'null');
         }
 
-        $name = get_class($resource);
-        $name = substr($name, strrpos($name, '\\') + 1);
-
-        $policyClass = App::className($name, 'Policy/Table', 'Policy');
+        $class = getShortClassName($resource);
+        $policyClass = App::className($class, 'Policy/Table', 'Policy');
         if (is_null($policyClass)) {
-            throw new MissingPolicyException($name);
+            throw new MissingPolicyException($class);
         }
 
         return new $policyClass();
