@@ -29,7 +29,7 @@ class AdminHistoryHelper extends Helper
             }
         }
 
-        return $prefix . nl2br((string)$value);
+        return $prefix . nl2br(h($value));
     }
 
     public function getName(?History $h, bool $rhs = true): string

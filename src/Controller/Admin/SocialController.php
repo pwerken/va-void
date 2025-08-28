@@ -47,7 +47,7 @@ class SocialController extends AdminController
         $profiles = $this->fetchTable('SocialProfiles');
         $login = $profiles->getMaybe($social);
         if (is_null($login)) {
-            $this->Flash->error("SocialProfile#$social not found.");
+            $this->Flash->error(sprintf('SocialProfile#%d not found', $social));
 
             return;
         }
@@ -55,9 +55,9 @@ class SocialController extends AdminController
         // delete login attempt
         if (!is_null($this->getRequest()->getData('delete'))) {
             if (!$profiles->delete($login)) {
-                $this->Flash->error("Failed to delete SocialProfile#$social.");
+                $this->Flash->error(sprintf('SocialProfile#%d failed to delete', $social));
             } else {
-                $this->Flash->success("Deleted SocialProfile#$social.");
+                $this->Flash->success(sprintf('SocialProfile#%d removed', $social));
             }
 
             return;
@@ -68,9 +68,9 @@ class SocialController extends AdminController
             $login->set('user_id', null);
             $login->set('hidden', true);
             if (!$profiles->save($login)) {
-                $this->Flash->error("Failed to disable SocialProfile#$social.");
+                $this->Flash->error(sprintf('SocialProfile#%d failed to disable', $social));
             } else {
-                $this->Flash->success("Disabled SocialProfile#$social.");
+                $this->Flash->success(sprintf('SocialProfile#%d disabled', $social));
             }
 
             return;
@@ -80,7 +80,11 @@ class SocialController extends AdminController
         $players = $this->fetchTable('Players');
         $player = $players->getMaybe($plin);
         if (is_null($player)) {
-            $this->Flash->error("Failed to link SocialProfile#$social, Player#$plin not found.");
+            $this->Flash->error(sprintf(
+                'SocialProfile#%d failed to link, Player#%d not found',
+                $social,
+                $plin,
+            ));
 
             return;
         }
@@ -88,9 +92,13 @@ class SocialController extends AdminController
         $login->set('user_id', $player->get('id'));
         $login->set('hidden', false);
         if (!$profiles->save($login)) {
-            $this->Flash->error("Failed to link SocialProfile#$social.");
+            $this->Flash->error(sprintf('SocialProfile#%d failed to link', $social));
         } else {
-            $this->Flash->success("SocialProfile#$social linked to Player#$plin.");
+            $this->Flash->success(sprintf(
+                'SocialProfile#%d linked to Player#%d',
+                $social,
+                $plin,
+            ));
         }
 
         $this->redirect(['controller' => 'Social']);
@@ -128,7 +136,7 @@ class SocialController extends AdminController
         $profiles = $this->fetchTable('SocialProfiles');
         $login = $profiles->getMaybe($social);
         if (is_null($login)) {
-            $this->Flash->error("SocialProfile#$social not found.");
+            $this->Flash->error(sprintf('SocialProfile#%d not found.', $social));
 
             return;
         }
@@ -137,9 +145,9 @@ class SocialController extends AdminController
         if (!is_null($this->getRequest()->getData('enable'))) {
             $login->set('hidden', false);
             if (!$profiles->save($login)) {
-                $this->Flash->error("Failed to enable SocialProfile#$social.");
+                $this->Flash->error(sprintf('SocialProfile#%d failed to enable', $social));
             } else {
-                $this->Flash->success("Enabled SocialProfile#$social.");
+                $this->Flash->success(sprintf('SocialProfile#%d enabled', $social));
             }
 
             return;
@@ -150,15 +158,23 @@ class SocialController extends AdminController
             $plin = $login->get('user_id');
             $login->set('user_id', null);
             if (!$profiles->save($login)) {
-                $this->Flash->error("Failed to unlink SocialProfile#$social from Player#$plin.");
+                $this->Flash->error(sprintf(
+                    'SocialProfile#%d failed to unlink from Player#%d',
+                    $social,
+                    $plin,
+                ));
             } else {
-                $this->Flash->success("Unlinked SocialProfile#$social from Player#$plin.");
+                $this->Flash->success(sprintf(
+                    'SocialProfile#%d unlinked from Player#%d',
+                    $social,
+                    $plin,
+                ));
             }
 
             return;
         }
 
-        $this->Flash->error("Unknown action for SocialProfile#$social.");
+        $this->Flash->error('Unknown action');
     }
 
     /**
@@ -205,7 +221,7 @@ class SocialController extends AdminController
                 return $this->redirect($redirect);
             }
         } elseif ($user) {
-            $this->Flash->error('Email is not linked to a plin.');
+            $this->Flash->error('Email is not linked to a plin');
         } else {
             $this->Flash->error('Failed to login');
         }

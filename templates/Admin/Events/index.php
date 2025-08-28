@@ -24,8 +24,8 @@ $isSuper = $user?->hasAuth(Authorization::Super);
     </tr>
     <?php foreach ($objs as $obj) : ?>
     <tr>
-        <td><?= $obj->get('id') ?></td>
-        <td><?= $obj->get('name') ?></td>
+        <td><?= h($obj->get('id')) ?></td>
+        <td><?= h($obj->get('name')) ?></td>
         <?php if ($isSuper) : ?>
         <td>
             <?= $this->Html->link('Edit', ['action' => 'edit', $obj->get('id')]) ?>

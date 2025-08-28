@@ -50,7 +50,7 @@ foreach ($history as $row) {
 
     if (is_null($row->get('data'))) {
         // removed entity
-        $prefix .= '<span class="removed"><strong>' . $old . '</strong> ';
+        $prefix .= '<span class="removed"><strong>' . h($old) . '</strong> ';
         if (empty($prev)) {
             echo $prefix . '<em>(removed)</em>' . $suffix;
             continue;
@@ -63,7 +63,7 @@ foreach ($history as $row) {
 
     if (empty($data)) {
         echo $prefix
-            . '<span class="added"><strong>' . $name . '</strong>'
+            . '<span class="added"><strong>' . h($name) . '</strong>'
             . $suffix;
         continue;
     }
@@ -74,7 +74,7 @@ foreach ($history as $row) {
         }
         $class = (array_key_exists($field, $prev) ? 'modified' : 'added');
         echo $prefix
-            . '<span class="' . $class . '"><strong>' . $name . '</strong> '
+            . '<span class="' . $class . '"><strong>' . h($name) . '</strong> '
             . $this->Helper->formatField($field, $value)
             . $suffix;
     }
@@ -85,7 +85,7 @@ foreach ($history as $row) {
         }
         // removed fields (db changed)
         echo $prefix
-            . '<span class="removed"><strong>' . $name . '</strong> '
+            . '<span class="removed"><strong>' . h($name) . '</strong> '
             . $this->Helper->formatField($field, $value)
             . $suffix;
     }

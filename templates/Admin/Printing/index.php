@@ -124,9 +124,9 @@ foreach ($printing as $row) {
 
     echo "<tr>\n"
         . '<td>' . $checkbox . "</td>\n"
-        . '<td class="not-on-mobile">' . $row['status']->label() . ($duplicate ? ' (D)' : '') . "</td>\n"
-        . '<td class="not-on-mobile">' . $row['creator_id'] . "</td>\n"
-        . '<td>' . $row['entity'] . ' ' . $key1 . ' ' . $key2 . "</td>\n"
+        . '<td class="not-on-mobile">' . h($row['status']->label()) . ($duplicate ? ' (D)' : '') . "</td>\n"
+        . '<td class="not-on-mobile">' . h($row['creator_id']) . "</td>\n"
+        . '<td>' . $row['entity'] . ' ' . h($key1) . ' ' . h($key2) . "</td>\n"
         . '<td>' . $row['modified'] . "</td>\n"
         . "</tr>\n";
 }

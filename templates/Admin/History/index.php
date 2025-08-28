@@ -49,12 +49,12 @@ echo $this->Form->end() . "\n";
 
 foreach ($list as $row) {
     $link = $this->Helper->makeLink($row);
-    $name = $row->makeKey() . ': ' . $this->Helper->getName($row);
+    $name = $row->makeKey() . ': ' . h($this->Helper->getName($row));
 
     $tooltip = '';
     $modifier_id = $row['modifier_id'];
     if (isset($lookup[$modifier_id])) {
-        $tooltip = ' title="' . $lookup[$modifier_id]->get('name') . '"';
+        $tooltip = ' title="' . h($lookup[$modifier_id]->get('name')) . '"';
     }
 
     echo '<samp' . $tooltip . '>'

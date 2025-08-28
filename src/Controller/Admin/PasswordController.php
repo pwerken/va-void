@@ -30,7 +30,7 @@ class PasswordController extends AdminController
         $players = $this->fetchTable('Players');
         $player = $players->getMaybe($plin);
         if (is_null($player)) {
-            $this->Flash->error("Player#$plin not found");
+            $this->Flash->error(sprintf('Player#%d not found', $plin));
 
             return $response;
         }
@@ -48,9 +48,9 @@ class PasswordController extends AdminController
         if (!empty($errors)) {
             $this->Flash->error(reset($errors));
         } elseif (strlen($pass) == 0) {
-            $this->Flash->success("Player#$plin password REMOVED");
+            $this->Flash->success(sprintf('Player#%d password removed', $plin));
         } else {
-            $this->Flash->success("Player#$plin password set");
+            $this->Flash->success(sprintf('Player#%d password set', $plin));
         }
 
         return $response;

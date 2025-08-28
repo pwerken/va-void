@@ -55,14 +55,17 @@ class AuthorizationController extends AdminController
         $players = $this->fetchTable('Players');
         $player = $players->getMaybe($plin);
         if (is_null($player)) {
-            $this->Flash->error("Player#$plin not found");
+            $this->Flash->error(sprintf('Player#%d not found', $plin));
 
             return $response;
         }
 
-        $who = $player->get('name');
         if ($player->get('role') == $role) {
-            $this->Flash->success("$who (#$plin) already as `$role` authorization");
+            $this->Flash->success(sprintf(
+                'Player#%d already has `%s` authorization',
+                $plin,
+                h($role),
+            ));
 
             return $response;
         }
@@ -79,7 +82,11 @@ class AuthorizationController extends AdminController
             $errors = $player->getError('role');
             $this->Flash->error(reset($errors));
         } else {
-            $this->Flash->success("$who (#$plin) now has `$role` authorization");
+            $this->Flash->success(sprintf(
+                'Player#%d now has `%s` authorization',
+                $plin,
+                h($role),
+            ));
         }
 
         return $response;

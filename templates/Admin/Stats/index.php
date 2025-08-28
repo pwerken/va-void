@@ -60,8 +60,8 @@ if ($aggregate !== false) {
         }
 
         echo '<tr>'
-            . '<td>' . $times . '</td>'
-            . '<td>' . $value . '</td>'
+            . '<td>' . h($times) . '</td>'
+            . '<td>' . h($value) . '</td>'
             . '</tr>'
             . PHP_EOL;
 
@@ -70,8 +70,8 @@ if ($aggregate !== false) {
     }
     if (!is_null($value)) {
         echo '<tr>'
-            . '<td>' . $times . '</td>'
-            . '<td>' . $value . '</td>'
+            . '<td>' . h($times) . '</td>'
+            . '<td>' . h($value) . '</td>'
             . '</tr>'
             . PHP_EOL;
     }
@@ -92,9 +92,9 @@ foreach ($data as $row) {
     $link = [ 'controller' => 'History', 'action' => 'character', $row['plin'] , $row['chin']];
 
     echo '<tr>'
-        . '<td>' . $row['plin'] . '-' . $row['chin'] . '</td>'
+        . '<td>' . h($row['plin']) . '-' . h($row['chin']) . '</td>'
         . '<td>' . $this->Html->link($row['name'], $link) . '</td>'
-        . '<td>' . $row['value'] . '</td>'
+        . '<td>' . h($row['value']) . '</td>'
         . '</tr>'
         . PHP_EOL;
 }

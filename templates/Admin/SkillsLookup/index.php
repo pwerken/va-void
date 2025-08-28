@@ -58,7 +58,7 @@ Found <?= count($characters) ?> characters.
     <th>Last Modified</th>
 <?php
 foreach ($selected as $s) {
-    echo "\t<th>" . $skills[$s] . "</th>\n";
+    echo "\t<th>" . h($skills[$s]) . "</th>\n";
 }
 ?>
 </tr>
@@ -68,9 +68,9 @@ foreach ($characters as $c) {
     $link = [ 'controller' => 'History', 'action' => 'character', $c['plin'] , $c['chin']]
     ?>
 <tr>
-    <td><?= $c['plin'] . '-' . $c['chin'] ?></td>
+    <td><?= h($c['plin']) . '-' . h($c['chin']) ?></td>
     <td><?= $this->Html->link($c['name'], $link) ?></td>
-    <td><?= $c['status']->name ?></td>
+    <td><?= h($c['status']->name) ?></td>
     <td><?= $c['modified']->i18nFormat('yyyy-MM-dd HH:mm:ss') ?></td>
     <?php
     foreach ($selected as $s) {

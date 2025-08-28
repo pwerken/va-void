@@ -20,9 +20,9 @@ This pages gives a basic overview of the migration files and their status.</p>
 <?php
 foreach ($migrations as [$status, $id, $name]) {
     echo '<tr>'
-        . '<td>' . $status . '</td>'
-        . '<td>' . $id . '</td>'
-        . '<td>' . $name . '</td>'
+        . '<td>' . h($status) . '</td>'
+        . '<td>' . h($id) . '</td>'
+        . '<td>' . h($name) . '</td>'
         . "</tr>\n";
 }
 ?>

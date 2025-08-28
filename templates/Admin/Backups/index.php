@@ -19,8 +19,8 @@ server.</p>
 <?php
 foreach ($backups as [$file, $size, $date]) {
     echo '<tr>'
-        . '<td>' . $size . '</td>'
-        . '<td>' . $file . '</td>'
+        . '<td>' . h($size) . '</td>'
+        . '<td>' . h($file) . '</td>'
         . "</tr>\n";
 }
 ?>

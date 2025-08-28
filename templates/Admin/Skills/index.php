@@ -28,15 +28,15 @@ $isSuper = $user?->hasAuth(Authorization::Super);
     </tr>
     <?php foreach ($objs as $obj) : ?>
     <tr>
-        <td><?= $obj->get('id') ?></td>
-        <td><?= $obj->get('sort_order') ?></td>
-        <td><?= $obj->get('name') ?> <?= implode(',', array_filter([
-            '(' . $obj->get('cost'),
+        <td><?= h($obj->get('id')) ?></td>
+        <td><?= h($obj->get('sort_order')) ?></td>
+        <td><?= h($obj->get('name')) ?> <?= implode(',', array_filter([
+            '(' . h($obj->get('cost')),
             ($obj->get('loresheet') ? 'L' : null),
             ($obj->get('blanks') ? 'B' : null),
         ])) ?>)</td>
-        <td><?= $obj->get('times_max') ?></td>
-        <td><?= $obj->get('mana_amount') ?> <?= $obj->get('manatype')?->get('name') ?></td>
+        <td><?= h($obj->get('times_max')) ?></td>
+        <td><?= h($obj->get('mana_amount')) ?> <?= h($obj->get('manatype')?->get('name')) ?></td>
         <td><?= $obj->get('deprecated') ? 'True' : 'False' ?></td>
         <?php if ($isSuper) : ?>
         <td>

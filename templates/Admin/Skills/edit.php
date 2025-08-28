@@ -7,7 +7,7 @@
 if ($obj->isNew()) {
     echo '<h3>Add Skill</h3>';
 } else {
-    echo '<h3>Edit Skill #' . $obj->id . '</h3>';
+    echo '<h3>Edit Skill #' . h($obj->get('id')) . '</h3>';
 }
 
 echo $this->Form->create($obj, ['method' => 'post']);
