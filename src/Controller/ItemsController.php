@@ -36,9 +36,11 @@ class ItemsController extends Controller
     public function charactersIndex(int $char_id): void
     {
         $parent = $this->fetchTable('Characters')->get($char_id);
+        $this->Authorization->authorize($parent, 'itemsIndex');
 
         $query = $this->fetchTable()->find();
         $query->andWhere(['Items.character_id' => $char_id]);
+        $this->Authorization->applyScope($query);
 
         $this->loadComponent('IndexRelation');
         $this->IndexRelation->action($parent, $query);

@@ -19,6 +19,5 @@ class ItemsTablePolicy extends Policy
 
     public function scopeCharactersIndex(User $identity, Query $query): void
     {
-        $this->scopeIndex($identity, $query);
     }
 }

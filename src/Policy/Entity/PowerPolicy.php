@@ -42,11 +42,10 @@ class PowerPolicy extends EntityPolicy
 
     protected function hasRoleUser(int $plin, ?Entity $obj): bool
     {
-        if (is_null($obj)) {
+        $poin = $obj?->get('poin');
+        if (is_null($poin)) {
             return false;
         }
-
-        $poin = $obj->get('poin');
 
         $query = $this->fetchTable('Characters')->find();
         $query->where(['Characters.plin' => $plin]);

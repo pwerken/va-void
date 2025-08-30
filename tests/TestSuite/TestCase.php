@@ -7,13 +7,14 @@ use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase as CakeTestCase;
 use Closure;
 use ReflectionClass;
+use ReflectionObject;
 use Throwable;
 
 class TestCase extends CakeTestCase
 {
     protected ?DateTime $now = null;
 
-    public function catchException(Closure $func, ?array $args = [], ?string $message = null): Throwable
+    public function catchException(callable $func, ?array $args = [], ?string $message = null): Throwable
     {
         try {
             call_user_func_array($func, $args);
@@ -23,13 +24,26 @@ class TestCase extends CakeTestCase
         $this->fail($message ?? 'Failed asserting that an exception is thrown.');
     }
 
+    public function protectedMethod(object $obj, string $method): Closure
+    {
+        $c = new ReflectionObject($obj);
+        $m = $c->getMethod($method);
+
+        if (!$m->isProtected() || $m->isStatic() || $m->isAbstract()) {
+            $class = get_class($obj);
+            $this->fail("Not a protected method {$class}::{$method}");
+        }
+
+        return $m->getClosure($obj);
+    }
+
     public function protectedStaticMethod(string $class, string $method): Closure
     {
         $c = new ReflectionClass($class);
         $m = $c->getMethod($method);
 
-        if (!$m->isProtected() || !$m->isStatic()) {
-            $this->fail("Not a protected static method $class::$method");
+        if (!$m->isProtected() || !$m->isStatic() || $m->isAbstract()) {
+            $this->fail("Not a protected static method {$class}::{$method}");
         }
 
         return $m->getClosure();

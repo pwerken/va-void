@@ -96,6 +96,20 @@ class ItemsTest extends AuthIntegrationTestCase
         $this->assertDelete('/items/99', 403);
     }
 
+    public function testCharacterItems(): void
+    {
+        $this->withoutAuth();
+        $this->assertGet('/characters/1/1/items', 401);
+
+        $this->withAuthPlayer();
+        $this->assertGet('/characters/1/1/items');
+        $this->assertGet('/characters/2/1/items', 403);
+
+        $this->withAuthReadOnly();
+        $this->assertGet('/characters/1/1/items');
+        $this->assertGet('/characters/2/1/items');
+    }
+
     public function testAddMinimal(): void
     {
         $input = [

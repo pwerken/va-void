@@ -42,11 +42,10 @@ class ConditionPolicy extends EntityPolicy
 
     protected function hasRoleUser(int $plin, ?Entity $obj): bool
     {
-        if (is_null($obj)) {
+        $coin = $obj?->get('coin');
+        if (is_null($coin)) {
             return false;
         }
-
-        $coin = $obj->get('coin');
 
         $query = $this->fetchTable('Characters')->find();
         $query->where(['Characters.plin' => $plin]);

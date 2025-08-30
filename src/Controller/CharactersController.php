@@ -61,9 +61,11 @@ class CharactersController extends Controller
     public function factionsIndex(int $faction_id): void
     {
         $parent = $this->fetchTable('Factions')->get($faction_id);
+        $this->Authorization->authorize($parent, 'charactersIndex');
 
         $query = $this->fetchTable()->find('withContain');
         $query->andWhere(['Characters.faction_id' => $faction_id]);
+        $this->Authorization->applyScope($query);
 
         $this->loadComponent('IndexRelation');
         $this->IndexRelation->action($parent, $query);
@@ -75,9 +77,11 @@ class CharactersController extends Controller
     public function playersIndex(int $plin): void
     {
         $parent = $this->fetchTable('Players')->get($plin);
+        $this->Authorization->authorize($parent, 'charactersIndex');
 
         $query = $this->fetchTable()->find('withContain');
         $query->andWhere(['Characters.plin' => $plin]);
+        $this->Authorization->applyScope($query);
 
         $this->loadComponent('IndexRelation');
         $this->IndexRelation->action($parent, $query);

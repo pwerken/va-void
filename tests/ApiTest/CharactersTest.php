@@ -14,45 +14,32 @@ class CharactersTest extends AuthIntegrationTestCase
         $this->assertGet('/characters', 401);
         $this->assertGet('/characters/1', 401);
         $this->assertGet('/characters/1/1', 401);
-        $this->assertGet('/characters/1/1/items', 401);
         $this->assertGet('/characters/1/2', 401);
-        $this->assertGet('/characters/1/2/items', 401);
         $this->assertGet('/characters/2', 401);
         $this->assertGet('/characters/2/1', 401);
-        $this->assertGet('/characters/2/1/items', 401);
         $this->assertGet('/characters/2/2', 401);
-        $this->assertGet('/characters/2/2/items', 401);
         $this->assertGet('/characters/99', 401);
         $this->assertGet('/characters/99/1', 401);
-        $this->assertGet('/characters/99/1/items', 401);
 
         $this->withAuthPlayer();
         $this->assertGet('/characters');
         $this->assertGet('/characters/1');
         $this->assertGet('/characters/1/1');
-        $this->assertGet('/characters/1/1/items');
         $this->assertGet('/characters/1/2', 404);
-        $this->assertGet('/characters/1/2/items', 404);
         $this->assertGet('/characters/2', 403);
         $this->assertGet('/characters/2/1', 403);
-        $this->assertGet('/characters/2/1/items', 403);
         $this->assertGet('/characters/99', 403);
         $this->assertGet('/characters/99/1', 403);
-        $this->assertGet('/characters/99/1/items', 403);
 
         $this->withAuthReadOnly();
         $this->assertGet('/characters');
         $this->assertGet('/characters/1');
         $this->assertGet('/characters/1/1');
-        $this->assertGet('/characters/1/1/items');
         $this->assertGet('/characters/1/2', 404);
-        $this->assertGet('/characters/1/2/items', 404);
         $this->assertGet('/characters/2');
         $this->assertGet('/characters/2/1');
-        $this->assertGet('/characters/2/1/items');
         $this->assertGet('/characters/99', 404);
         $this->assertGet('/characters/99/1', 404);
-        $this->assertGet('/characters/99/1/items', 404);
     }
 
     public function testAuthorizationDelete(): void
@@ -113,6 +100,32 @@ class CharactersTest extends AuthIntegrationTestCase
 
         $this->withAuthPlayer();
         $this->assertGet('/worlds');
+    }
+
+    public function testFactionCharacters(): void
+    {
+        $this->withoutAuth();
+        $this->assertGet('/factions/1/characters', 401);
+
+        $this->withAuthPlayer();
+        $this->assertGet('/factions/1/characters', 403);
+
+        $this->withAuthReadOnly();
+        $this->assertGet('/factions/1/characters');
+    }
+
+    public function testPlayerCharacters(): void
+    {
+        $this->withoutAuth();
+        $this->assertGet('/players/1/characters', 401);
+
+        $this->withAuthPlayer();
+        $this->assertGet('/players/1/characters');
+        $this->assertGet('/players/2/characters', 403);
+
+        $this->withAuthReadOnly();
+        $this->assertGet('/players/1/characters');
+        $this->assertGet('/players/2/characters');
     }
 
     public function testRequiredFieldsValidation(): void

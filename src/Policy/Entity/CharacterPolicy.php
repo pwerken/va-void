@@ -38,6 +38,11 @@ class CharacterPolicy extends EntityPolicy
         return $this->hasAuthObj($obj, Authorization::ReadOnly, Authorization::Owner);
     }
 
+    public function canItemsIndex(User $identity, Character $obj): bool
+    {
+        return $this->hasAuthObj($obj, Authorization::ReadOnly, Authorization::Owner);
+    }
+
     protected function hasRoleUser(int $plin, ?Entity $obj): bool
     {
         return $obj?->get('plin') == $plin;

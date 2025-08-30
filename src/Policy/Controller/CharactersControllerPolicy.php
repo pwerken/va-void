@@ -65,6 +65,7 @@ class CharactersControllerPolicy extends ControllerPolicy
 
     /**
      * GET /characters/{plin}
+     * GET /players/{plin}/characters
      */
     public function playersIndex(): bool
     {
