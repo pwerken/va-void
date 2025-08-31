@@ -14,14 +14,11 @@ class MigrationTest extends TestCase
         $migration = new Migration('', 12345678901234);
 
         $reflection = new ReflectionClass($migration);
-        $method = $reflection->getMethod('now');
-        $method->setAccessible(true);
 
         $property = $reflection->getProperty('now');
-        $property->setAccessible(true);
-
         $this->assertNull($property->getValue($migration));
 
+        $method = $reflection->getMethod('now');
         $result = $method->invoke($migration);
         $this->assertStringMatchesFormat('%d-%d-%d %d:%d:%d', $result);
 
