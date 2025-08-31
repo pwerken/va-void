@@ -49,7 +49,7 @@ class PrintingController extends AdminController
 
         $ids = $this->getRequest()->getData('delete');
         if (!empty($ids)) {
-            $nr = $this->fetchTable()->deleteAll(['id IN' => $ids]);
+            $nr = $this->fetchTable('Lammies')->deleteAll(['id IN' => $ids]);
             $this->Flash->success(sprintf('Removed %d lammies from queue', $nr));
         } else {
             $this->Flash->warning('No lammies removed from queue');

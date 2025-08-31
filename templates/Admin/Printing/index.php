@@ -76,7 +76,7 @@ echo ', <span id="checkboxcount"></span> selected)';
 foreach ($printing as $row) {
     $checkbox = '';
     $duplicate = false;
-    if ($row['status'] == 'Queued') {
+    if ($row['status'] === LammyStatus::Queued) {
         $options = [];
         $options['type'] = 'checkbox';
         $options['value'] = $row['id'];

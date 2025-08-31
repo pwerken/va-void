@@ -95,7 +95,7 @@ class Application extends BaseApplication
             // Try to convert url's {plin}/{chin} to {character_id}
             ->add(new CharacterIdFromPlinChinMiddleware())
 
-            // Force PUT/POST to 'Content-Type: application/json'
+            // Force PUT to 'Content-Type: application/json'
             ->add(new JsonInputMiddleware())
 
             // Parse various types of encoded request bodies so that they are

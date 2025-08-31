@@ -64,7 +64,7 @@ class AuthorizationController extends AdminController
             $this->Flash->success(sprintf(
                 'Player#%d already has `%s` authorization',
                 $plin,
-                h($role),
+                $role->label(),
             ));
 
             return $response;
@@ -85,7 +85,7 @@ class AuthorizationController extends AdminController
             $this->Flash->success(sprintf(
                 'Player#%d now has `%s` authorization',
                 $plin,
-                h($role),
+                $role->label(),
             ));
         }
 
