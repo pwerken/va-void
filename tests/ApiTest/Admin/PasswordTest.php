@@ -26,7 +26,24 @@ class PasswordTest extends AuthIntegrationTestCase
 
         $this->assertGet($this->url);
 
-        $this->assertPost($this->url . '/edit', [], 302);
+        $input = ['plin' => 99, 'password' => 'test'];
+        $this->assertPost($this->url . '/edit', $input, 302);
         $this->assertRedirect($this->url);
+        $this->assertFlashMessage('Player#99 not found');
+
+        $input['plin'] = 1;
+        $this->assertPost($this->url . '/edit', $input, 302);
+        $this->assertRedirect($this->url);
+        $this->assertFlashMessage('Player#1 password set');
+
+        $input['password'] = '';
+        $this->assertPost($this->url . '/edit', $input, 302);
+        $this->assertRedirect($this->url);
+        $this->assertFlashMessage('Player#1 password removed');
+
+        $input['plin'] = 2;
+        $this->assertPost($this->url . '/edit', $input, 302);
+        $this->assertRedirect($this->url);
+        $this->assertFlashMessage('Not authorized to change password');
     }
 }

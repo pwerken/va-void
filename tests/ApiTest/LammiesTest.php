@@ -383,7 +383,7 @@ class LammiesTest extends AuthIntegrationTestCase
     {
         $message = "Failed asserting response of `GET` on `$url`.";
 
-        $this->setConfigRequest(false);
+        $this->setConfigRequest();
         $this->_sendRequest($url, 'GET', []);
         $this->assertResponseCode(200, $message);
 

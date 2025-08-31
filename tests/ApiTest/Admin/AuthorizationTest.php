@@ -35,7 +35,39 @@ class AuthorizationTest extends AuthIntegrationTestCase
 
         $this->assertGet($this->url);
 
+        $this->assertPost($this->url . '/edit', ['plin' => 1, 'role' => 'Read-only'], 302);
+        $this->assertRedirect($this->url);
+        $this->assertFlashMessage('Not authorized to change roles');
+    }
+
+    public function testAsReferee(): void
+    {
+        $this->withAuthReferee();
+
+        $input = ['plin' => 1, 'role' => 'role'];
+
+        $this->assertGet($this->url);
+
         $this->assertPost($this->url . '/edit', [], 302);
         $this->assertRedirect($this->url);
+        $this->assertFlashMessage('Player#0 not found');
+
+        $this->assertPost($this->url . '/edit', $input, 302);
+        $this->assertRedirect($this->url);
+        $this->assertFlashMessage('Invalid authorization role provided');
+
+        $input['role'] = 'Referee';
+        $this->assertPost($this->url . '/edit', $input, 302);
+        $this->assertRedirect($this->url);
+        $this->assertFlashMessage('Player#1 now has `Referee` authorization');
+
+        $this->assertPost($this->url . '/edit', $input, 302);
+        $this->assertRedirect($this->url);
+        $this->assertFlashMessage('Player#1 already has `Referee` authorization');
+
+        $input['role'] = 'Infobalie';
+        $this->assertPost($this->url . '/edit', $input, 302);
+        $this->assertRedirect($this->url);
+        $this->assertFlashMessage('Cannot promote user above your own authorization');
     }
 }

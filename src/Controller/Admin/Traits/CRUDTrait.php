@@ -55,9 +55,11 @@ trait CRUDTrait
         if ($this->getRequest()->is('post')) {
             $obj = $model->patchEntity($obj, $this->request->getData());
             if ($model->save($obj)) {
+                $this->Flash->error('Modified id#' . $obj->id);
+
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error('Failed to save');
+            $this->Flash->error('Failed to edit id#' . $obj->id);
         }
 
         foreach ($model->associations()->getByType('BelongsTo') as $assoc) {

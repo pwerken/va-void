@@ -86,7 +86,11 @@ class AuthIntegrationTestCase extends TestCase
         $name = $this->account->name ?? 'Unauthenticated';
         $message = "Failed `$method` request on url `$url` with authorization `$name`";
 
-        $this->setConfigRequest($method == 'POST');
+        if (str_starts_with($url, '/admin')) {
+            $this->enableRetainFlashMessages();
+        }
+
+        $this->setConfigRequest();
         $this->_sendRequest($url, $method, $data);
         $this->assertResponseCode($code, $message);
 

@@ -50,12 +50,18 @@ class AuthorizationController extends AdminController
         $response = $this->redirect(['controller' => 'Authorization', 'action' => 'index']);
 
         $plin = $this->getRequest()->getData('plin');
-        $role = $this->getRequest()->getData('role');
 
         $players = $this->fetchTable('Players');
         $player = $players->getMaybe($plin);
         if (is_null($player)) {
             $this->Flash->error(sprintf('Player#%d not found', $plin));
+
+            return $response;
+        }
+
+        $role = PlayerRole::tryFrom($this->getRequest()->getData('role') ?? '');
+        if (is_null($role)) {
+            $this->Flash->error('Invalid authorization role provided');
 
             return $response;
         }

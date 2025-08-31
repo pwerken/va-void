@@ -19,6 +19,8 @@ class RootController extends AdminController
         if ($this->getRequest()->is('post')) {
             if (!$result->isValid()) {
                 $this->Flash->error('Invalid username or password');
+            } else {
+                $this->Flash->success('Logged in as ' . $result->getData()['name']);
             }
         }
 

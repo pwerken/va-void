@@ -46,6 +46,7 @@ class PrintingTest extends AuthIntegrationTestCase
 
         $this->assertPost($this->url, [], 302);
         $this->assertRedirect($this->url);
+        $this->assertFlashMessage('Not authorized to remove lammies from queue');
 
         $this->assertGet($this->url . '/single', 403);
         $this->assertGet($this->url . '/double', 403);
@@ -59,6 +60,7 @@ class PrintingTest extends AuthIntegrationTestCase
 
         $this->assertPost($this->url, [], 302);
         $this->assertRedirect($this->url);
+        $this->assertFlashMessage('Not authorized to remove lammies from queue');
 
         $this->assertGet($this->url . '/single', 403);
         $this->assertGet($this->url . '/double', 403);
@@ -72,6 +74,11 @@ class PrintingTest extends AuthIntegrationTestCase
 
         $this->assertPost($this->url, [], 302);
         $this->assertRedirect($this->url);
+        $this->assertFlashMessage('No lammies removed from queue');
+
+        $this->assertPost($this->url, ['delete' => [1]], 302);
+        $this->assertRedirect($this->url);
+        $this->assertFlashMessage('Removed 1 lammies from queue');
 
         $this->assertGet($this->url . '/single');
         $this->assertGet($this->url . '/double');
