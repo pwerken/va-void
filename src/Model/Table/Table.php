@@ -33,6 +33,20 @@ abstract class Table extends CakeTable
         $this->_validatorClass = "App\\Model\\Validation\\{$class}Validator";
     }
 
+    public function afterRules(
+        EventInterface $event,
+        EntityInterface $entity,
+        ArrayObject $options,
+        bool $result,
+        string $operation,
+    ): void {
+        // CakePHP 5.2.7 no longer supports invisible validation rules, it adds
+        // '_rule' to prevent silent failures.  Our validation rules are
+        // intentionally invisible, they call setErrors on the entity directly.
+        $entity->setDirty('_rule');
+        $entity->setDirty('_rule', false);
+    }
+
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
         // drop association data from input
