@@ -104,7 +104,7 @@ foreach ($printing as $row) {
     }
 
     $key1 = $row['character_str'] ?: $row['key1'];
-    $key2 = $row['key2'];
+    $key2 = $row['key2'] ?? '';
 
     if (substr($row['entity'], 0, 9) === 'Character' || $row['entity'] === 'Teaching') {
         $link = ['controller' => 'History', 'action' => 'character'] + explode('/', $key1, 2);
@@ -120,13 +120,16 @@ foreach ($printing as $row) {
         $key1 = $this->Html->link((string)$key1, ['controller' => 'History', 'action' => 'power', $key1]);
     } elseif ($row['entity'] === 'Condition') {
         $key1 = $this->Html->link((string)$key1, ['controller' => 'History', 'action' => 'condition', $key1]);
+    } else {
+        $key1 = h($key1);
+        $key2 = h($key2);
     }
 
     echo "<tr>\n"
         . '<td>' . $checkbox . "</td>\n"
         . '<td class="not-on-mobile">' . h($row['status']->label()) . ($duplicate ? ' (D)' : '') . "</td>\n"
         . '<td class="not-on-mobile">' . h($row['creator_id']) . "</td>\n"
-        . '<td>' . $row['entity'] . ' ' . h($key1) . ' ' . h($key2) . "</td>\n"
+        . '<td>' . $row['entity'] . ' ' . $key1 . ' ' . $key2 . "</td>\n"
         . '<td>' . $row['modified'] . "</td>\n"
         . "</tr>\n";
 }

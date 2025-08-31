@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Traits\AddTrait;
 use App\Controller\Traits\DeleteTrait;
 use App\Controller\Traits\EditTrait;
 use App\Controller\Traits\IndexTrait;
@@ -12,6 +13,7 @@ use App\Model\Enum\LammyStatus;
 class LammiesController extends Controller
 {
     use IndexTrait; // GET /lammies
+    use AddTrait; // PUT /lammies
     use ViewTrait; // GET /lammies/{id}
     use EditTrait; // PUT /lammies/{id}
     use DeleteTrait; // DELETE /lammies/{id}

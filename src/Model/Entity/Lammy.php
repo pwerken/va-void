@@ -5,6 +5,7 @@ namespace App\Model\Entity;
 
 use App\Lammy\LammyCard;
 use App\Model\Enum\LammyStatus;
+use Cake\Core\App;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\Utility\Inflector;
 
@@ -28,7 +29,7 @@ class Lammy extends Entity
         $this->setHidden(['lammy'], true);
     }
 
-    protected function _getTarget(): Entity
+    protected function _getTarget(): ?Entity
     {
         if (is_null($this->target)) {
             $name = Inflector::pluralize($this->get('entity'));
@@ -72,9 +73,10 @@ class Lammy extends Entity
 
     protected function _getLammy(): ?LammyCard
     {
-        if (is_null($this->lammy)) {
-            $class = 'App\\Lammy\\' . $this->get('entity') . 'Lammy';
-            $this->lammy = new $class($this->_getTarget());
+        $target = $this->get('target');
+        if (is_null($this->lammy) && !is_null($target)) {
+            $class = App::className($this->get('entity'), 'Lammy', 'Lammy');
+            $this->lammy = new $class($target);
             $this->lammy->printedBy($this->get('creator_id'));
         }
 

@@ -406,4 +406,19 @@ class LammiesTest extends AuthIntegrationTestCase
         $message = "Failed asserting response of `POST` on `$url`.";
         $this->assertEquals($expected, $actual, $message);
     }
+
+    public function testSuperPermissions(): void
+    {
+        $data = [
+            'entity' => 'Character',
+            'key1' => 1,
+            'status' => 'Queued',
+        ];
+
+        $this->withAuthSuper();
+        $this->assertPut('/lammies', [], 422);
+        $this->assertPut('/lammies', $data, 201);
+        $this->assertPut('/lammies/1', ['status' => 'Printing']);
+        $this->assertDelete('/lammies/1');
+    }
 }
