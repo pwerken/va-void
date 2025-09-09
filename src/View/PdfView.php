@@ -5,7 +5,7 @@ namespace App\View;
 
 use App\Lammy\LammyCard;
 use Cake\View\View;
-use RPDF\Rpdf;
+use Mpdf\Mpdf;
 
 class PdfView extends View
 {
@@ -51,8 +51,8 @@ class PdfView extends View
             $layout = $this->makeLayout2P($lammies);
         }
 
-        $pdf = new Rpdf('P', 'mm', 'A4');
-        $pdf->SetMargins(self::$M_SIDE, self::$M_TOP);
+        $pdf = new Mpdf(['tempDir' => TMP]);
+        $pdf->SetMargins(self::$M_SIDE, self::$M_SIDE, self::$M_TOP);
         $pdf->SetTitle('Lammies!');
         $pdf->SetAutoPageBreak(false);
 
@@ -66,7 +66,7 @@ class PdfView extends View
             }
         }
 
-        return $pdf->Output('s');
+        return $pdf->OutputBinaryData();
     }
 
     /**

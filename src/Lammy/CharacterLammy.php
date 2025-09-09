@@ -95,7 +95,7 @@ class CharacterLammy extends LammyCard
         $this->font(6);
         $this->pdf->SetTextColor(0);
 
-        $this->textarea(8, 7, 64, 31, implode(', ', $data['skills']));
+        $this->textarea(8, 7, 63.5, 31, implode(', ', $data['skills']));
 
         $this->text(56, 37.7, 16, 'C', 'Experience');
         $this->text(56, 40.7, 16, 'C', $data['xp'] . ' / ' . $this->entity->get('xp'));

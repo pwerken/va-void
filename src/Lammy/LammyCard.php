@@ -6,7 +6,7 @@ namespace App\Lammy;
 use App\Model\Entity\Entity;
 use BaconQrCode\Common\ErrorCorrectionLevel;
 use BaconQrCode\Encoder\Encoder;
-use RPDF\Rpdf;
+use Mpdf\Mpdf;
 
 /**
  *  Contains all the basics for making a lammy.
@@ -19,7 +19,7 @@ abstract class LammyCard
     public int $single = 0;
     public int $double = 0;
     protected ?Entity $entity = null;
-    protected ?Rpdf $pdf = null;
+    protected ?Mpdf $pdf = null;
     private float $xPos = 0;
     private float $yPos = 0;
     private float $size = 0;
@@ -67,7 +67,7 @@ abstract class LammyCard
      *
      *  This method called by LammySheet.
      */
-    public function preDraw(Rpdf $pdf, float $x, float $y): void
+    public function preDraw(Mpdf $pdf, float $x, float $y): void
     {
         $this->pdf = $pdf;
         $this->xPos = $x;
@@ -125,7 +125,7 @@ abstract class LammyCard
     protected function font(float $size, string $style = ''): void
     {
         $this->size = $size;
-        $this->pdf->SetFont('Arial', $style, $size);
+        $this->pdf->SetFont('FreeSans', $style, $size);
     }
 
     protected function image(string $filename, float $x, float $y, float $w, float $h): void
@@ -174,8 +174,6 @@ abstract class LammyCard
             return;
         }
 
-        $text = mb_convert_encoding((string)$text, 'ISO-8859-1', 'UTF-8');
-
         while ($this->pdf->GetStringWidth($text) > $w) {
             $text = substr($text, 0, -1);
         }
@@ -186,8 +184,6 @@ abstract class LammyCard
 
     protected function textarea(float $x, float $y, float $w, float $h, string $text): void
     {
-        $text = mb_convert_encoding($text, 'ISO-8859-1', 'UTF-8');
-
         preg_match_all('/\s*[^\s]+/', $text, $matches);
         $matches = $matches[0];
 
@@ -223,8 +219,6 @@ abstract class LammyCard
 
     protected function textblock(float $x, float $y, float $w, string $align, string $text, int $border = 0): void
     {
-        $text = mb_convert_encoding($text, 'ISO-8859-1', 'UTF-8');
-
         $h = $this->size / 2;
         $this->pdf->SetXY($this->xPos + $x, $this->yPos + $y - $h / 2);
         $this->pdf->MultiCell($w, $h, $text, $border, $align);
@@ -235,21 +229,23 @@ abstract class LammyCard
     {
         $this->font(9);
 
-        $text = mb_convert_encoding($text, 'ISO-8859-1', 'UTF-8');
         $w = $this->pdf->GetStringWidth($text);
 
-        $x = -5;
-        $y = (self::$HEIGHT - $w) / 2;
-        $a = 'D';
-
-        if ($this->xPos > self::$WIDTH) {
-            $x = self::$WIDTH + 5;
+        if ($this->xPos < self::$WIDTH) {
+            $x = -5;
             $y = (self::$HEIGHT + $w) / 2;
-            $a = 'U';
+            $a = 90;
+        } else {
+            $x = self::$WIDTH + 5;
+            $y = (self::$HEIGHT - $w) / 2;
+            $a = 270;
         }
+
         $x += $this->xPos;
         $y += $this->yPos;
 
-        $this->pdf->TextWithDirection($x, $y, $text, $a);
+        $this->pdf->Rotate($a, $x, $y);
+        $this->pdf->Text($x, $y, $text);
+        $this->pdf->Rotate(0);
     }
 }

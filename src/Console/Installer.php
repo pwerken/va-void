@@ -44,6 +44,7 @@ class Installer
         'tmp/cache/models',
         'tmp/cache/persistent',
         'tmp/cache/views',
+        'tmp/mpdf',
         'tmp/sessions',
         'tmp/tests',
     ];

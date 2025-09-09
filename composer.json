@@ -14,7 +14,7 @@
         "cakephp/plugin-installer": "^2.0",
         "firebase/php-jwt": "^6.5",
         "jeremyharris/cakephp-lazyload": "^5.0",
-        "setasign/fpdf": "^1.8",
+        "mpdf/mpdf": "^8.2",
         "socialconnect/auth": "^3.3"
     },
     "require-dev": {
@@ -26,8 +26,7 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/",
-            "RPDF\\": "plugins/rpdf/"
+            "App\\": "src/"
         }
     },
     "autoload-dev": {
