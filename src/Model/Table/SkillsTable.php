@@ -5,6 +5,7 @@ namespace App\Model\Table;
 
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\RulesChecker;
+use Cake\ORM\Query\SelectQuery;
 
 /**
  * @property \App\Model\Table\CharactersSkillsTable $CharactersSkills;
@@ -49,6 +50,11 @@ class SkillsTable extends Table
         }
 
         return true;
+    }
+
+    public function findIndex(SelectQuery $query): SelectQuery
+    {
+        return $this->findWithContain($query);
     }
 
     protected function contain(): array

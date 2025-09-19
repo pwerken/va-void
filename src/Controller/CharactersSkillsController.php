@@ -74,7 +74,7 @@ class CharactersSkillsController extends Controller
      */
     public function skillsIndex(int $skill_id): void
     {
-        $parent = $this->fetchTable('Skills')->get($skill_id);
+        $parent = $this->fetchTable('Skills')->get($skill_id, 'withContain');
 
         $query = $this->fetchTable()->find('withContain');
         $query->andWhere(['CharactersSkills.skill_id' => $skill_id]);

@@ -69,7 +69,7 @@ class TeachingsTable extends Table
 
     protected function contain(): array
     {
-        return ['Student', 'Teacher', 'Skill.Manatypes'];
+        return ['Student.Skills', 'Teacher', 'Skill.Manatypes'];
     }
 
     protected function orderBy(): array

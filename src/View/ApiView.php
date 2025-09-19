@@ -3,7 +3,11 @@ declare(strict_types=1);
 
 namespace App\View;
 
+use App\Model\Entity\Character;
+use App\Model\Entity\Condition;
 use App\Model\Entity\Entity;
+use App\Model\Entity\Power;
+use App\Model\Entity\Skill;
 use App\Model\Entity\Teaching;
 use App\Utility\Json;
 use App\View\Helper\AuthorizeHelper;
@@ -54,7 +58,15 @@ class ApiView extends View
             $value = $obj->get($field);
 
             if ($value instanceof Entity) {
+                if ($field === 'teacher') {
+                    $value->student = $obj;
+                }
+
                 $value = $this->jsonCompact($value, $obj);
+
+                if ($field === 'teacher') {
+                    unset($value['teacher']);
+                }
             } elseif (is_array($value)) {
                 $value = $this->jsonArray($value, $obj, $field);
                 unset($value['parent']);
@@ -90,8 +102,11 @@ class ApiView extends View
         foreach ($list as $obj) {
             $value = $obj;
             if ($obj instanceof Entity) {
+                if ($obj instanceof Teaching) {
+                    $isTeaching = true;
+                    $obj->teacher = $parent;
+                }
                 $value = $this->jsonCompact($obj, $parent);
-                $isTeaching |= ($obj instanceof Teaching);
             }
             $result['list'][] = $value;
         }
@@ -110,6 +125,25 @@ class ApiView extends View
 
     protected function jsonCompact(Entity $obj, ?Entity $parent = null): mixed
     {
+        # place _joinData between $parent and $obj
+        # also prevent re-queries for already retrieved (sub/nested) objects
+        if (isset($obj->_joinData) && $parent instanceof Character) {
+            $join = $obj->_joinData;
+            if ($obj instanceof Skill) {
+                $join->skill = $obj;
+            }
+            if ($obj instanceof Power) {
+                $join->power = $obj;
+            }
+            if ($obj instanceof Condition) {
+                $join->condition = $obj;
+            }
+
+            $join->character = $parent;
+            unset($obj->_joinData);
+            $obj = $join;
+        }
+
         $class = getShortClassName($obj);
 
         $skip = null;
@@ -135,20 +169,6 @@ class ApiView extends View
                 $field = $this->aliases[$class][$field];
             }
             $result[$field] = $value;
-        }
-
-        if ($obj instanceof Teaching) {
-            $result['url'] = $parent->getUrl() . '/teacher';
-            if (is_null($result['student'])) {
-                unset($result['student']);
-            }
-        }
-
-        // joinData should be in between $parent en $obj
-        if (isset($obj->_joinData)) {
-            $join = $this->jsonCompact($obj->_joinData, $parent);
-            $join[strtolower($class)] = $result;
-            $result = $join;
         }
 
         return $result;
