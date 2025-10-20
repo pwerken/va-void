@@ -59,7 +59,7 @@ class ApiView extends View
 
             if ($value instanceof Entity) {
                 if ($field === 'teacher') {
-                    $value->student = $obj;
+                    $value->set('student', $obj);
                 }
 
                 $value = $this->jsonCompact($value, $obj);
@@ -104,7 +104,7 @@ class ApiView extends View
             if ($obj instanceof Entity) {
                 if ($obj instanceof Teaching) {
                     $isTeaching = true;
-                    $obj->teacher = $parent;
+                    $obj->set('teacher', $parent);
                 }
                 $value = $this->jsonCompact($obj, $parent);
             }

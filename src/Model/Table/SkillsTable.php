@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use Cake\Datasource\EntityInterface;
-use Cake\ORM\RulesChecker;
 use Cake\ORM\Query\SelectQuery;
+use Cake\ORM\RulesChecker;
 
 /**
  * @property \App\Model\Table\CharactersSkillsTable $CharactersSkills;

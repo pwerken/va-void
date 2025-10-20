@@ -11,15 +11,14 @@ class SocialController extends AdminController
      * GET /admin/social
      * POST /admin/social
      */
-    public function index(): void
+    public function index(): ?Response
     {
         $this->getRequest()->allowMethod(['get', 'post']);
 
         if ($this->getRequest()->is('post')) {
             $this->index_post();
-            $this->redirect(['controller' => 'Social']);
 
-            return;
+            return $this->redirect(['controller' => 'Social']);
         }
 
         $total = $this->fetchTable('SocialProfiles')
@@ -35,13 +34,15 @@ class SocialController extends AdminController
 
         $this->set('logins', $logins);
         $this->set('total', $total);
+
+        return null;
     }
 
-    protected function index_post(): void
+    protected function index_post(): ?Response
     {
         $social = $this->getRequest()->getData('social');
         if (empty($social)) {
-            return;
+            return null;
         }
 
         $profiles = $this->fetchTable('SocialProfiles');
@@ -49,7 +50,7 @@ class SocialController extends AdminController
         if (is_null($login)) {
             $this->Flash->error(sprintf('SocialProfile#%d not found', $social));
 
-            return;
+            return null;
         }
 
         // delete login attempt
@@ -60,7 +61,7 @@ class SocialController extends AdminController
                 $this->Flash->success(sprintf('SocialProfile#%d removed', $social));
             }
 
-            return;
+            return null;
         }
 
         $plin = $this->getRequest()->getData('plin');
@@ -73,7 +74,7 @@ class SocialController extends AdminController
                 $this->Flash->success(sprintf('SocialProfile#%d disabled', $social));
             }
 
-            return;
+            return null;
         }
 
         // link $plin to $social profile
@@ -86,7 +87,7 @@ class SocialController extends AdminController
                 $plin,
             ));
 
-            return;
+            return null;
         }
 
         $login->set('user_id', $player->get('id'));
@@ -101,22 +102,21 @@ class SocialController extends AdminController
             ));
         }
 
-        $this->redirect(['controller' => 'Social']);
+        return $this->redirect(['controller' => 'Social']);
     }
 
     /**
      * GET /admin/social/all
      * POST /admin/social/all
      */
-    public function all(): void
+    public function all(): ?Response
     {
         $this->getRequest()->allowMethod(['get', 'post']);
 
         if ($this->getRequest()->is('post')) {
             $this->all_post();
-            $this->redirect(['controller' => 'Social', 'action' => 'all']);
 
-            return;
+            return $this->redirect(['controller' => 'Social', 'action' => 'all']);
         }
 
         $logins = $this->fetchTable('SocialProfiles')
@@ -124,6 +124,8 @@ class SocialController extends AdminController
             ->all();
 
         $this->set('logins', $logins);
+
+        return null;
     }
 
     protected function all_post(): void

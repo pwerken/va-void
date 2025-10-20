@@ -71,7 +71,7 @@ trait CRUDTrait
         return null;
     }
 
-    public function delete(int $id): void
+    public function delete(int $id): Response
     {
         $this->getRequest()->allowMethod(['post']);
 
@@ -85,6 +85,6 @@ trait CRUDTrait
             $this->Flash->error('Failed to delete id#' . $obj->id);
         }
 
-        $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'index']);
     }
 }
