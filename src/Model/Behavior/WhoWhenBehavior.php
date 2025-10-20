@@ -23,7 +23,7 @@ class WhoWhenBehavior extends Behavior
         }
 
         $when = new DateTime();
-        $who = Router::getRequest()?->getAttribute('identity')->get('plin');
+        $who = Router::getRequest()?->getAttribute('identity')?->get('plin');
 
         if ($entity->isNew()) {
             if ($this->table()->hasField('created')) {
