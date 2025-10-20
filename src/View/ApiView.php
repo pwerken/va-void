@@ -127,19 +127,30 @@ class ApiView extends View
     {
         # place _joinData between $parent and $obj
         # also prevent re-queries for already retrieved (sub/nested) objects
-        if (isset($obj->_joinData) && $parent instanceof Character) {
+        if (isset($obj->_joinData)) {
             $join = $obj->_joinData;
-            if ($obj instanceof Skill) {
-                $join->skill = $obj;
+            if ($parent instanceof Character) {
+                $join->character = $parent;
+                if ($obj instanceof Skill) {
+                    $join->skill = $obj;
+                }
+                if ($obj instanceof Power) {
+                    $join->power = $obj;
+                }
+                if ($obj instanceof Condition) {
+                    $join->condition = $obj;
+                }
+            } elseif ($parent instanceof Power) {
+                $join->power = $parent;
+                if ($obj instanceof Character) {
+                    $join->character = $obj;
+                }
+            } elseif ($parent instanceof Condition) {
+                $join->conditon = $parent;
+                if ($obj instanceof Character) {
+                    $join->character = $obj;
+                }
             }
-            if ($obj instanceof Power) {
-                $join->power = $obj;
-            }
-            if ($obj instanceof Condition) {
-                $join->condition = $obj;
-            }
-
-            $join->character = $parent;
             unset($obj->_joinData);
             $obj = $join;
         }
