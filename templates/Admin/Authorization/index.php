@@ -49,9 +49,11 @@ if ($user?->hasAuth(Authorization::Referee)) {
 
 echo "<table>\n";
 foreach (array_reverse($roles) as $role) {
-    echo '<tr><th colspan="2">' . $role->label() .
-        '<br/><small>Permissions: ' . $descriptions[$role->value] . '</small>' .
-        "</th></tr>\n";
+    echo '<tr><th colspan="2">' . $role->label();
+    if (isset($descriptions[$role->value])) {
+        echo '<br/><small>Permissions: ' . $descriptions[$role->value] . '</small>';
+    }
+    echo "</th></tr>\n";
 
     if (!isset($permissions[$role->value])) {
         echo '<tr><td/><td>'
