@@ -16,8 +16,16 @@ class SkillsLookupController extends AdminController
     {
         $this->request->allowMethod(['get']);
 
-        $skills = $this->fetchTable('Skills');
-        $this->set('skills', $skills->find('list')->all()->toArray());
+        $skills_tbl = $this->fetchTable('Skills');
+        $skills = [];
+        foreach ($skills_tbl->find('all') as $skill) {
+            $name = $skill->get('name');
+            if ($skill->get('deprecated')) {
+                $name .= ' (deprecated)';
+            }
+            $skills[$skill->get('id')] = $name;
+        }
+        $this->set('skills', $skills);
 
         $since = $this->getRequest()->getQuery('since', '');
         $date = DateTimeImmutable::createFromFormat('Y-m-d', $since);
