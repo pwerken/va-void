@@ -71,7 +71,7 @@ foreach (array_reverse($roles) as $role) {
         echo '<tr><td>'
             . $this->Html->link((string)$plin, $url)
             . '</td><td>'
-            . $this->Html->link(h($name), $url)
+            . $this->Html->link($name, $url)
             . "</td></tr>\n";
     }
 }
