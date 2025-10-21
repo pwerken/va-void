@@ -18,6 +18,7 @@ $isSuper = $user?->hasAuth(Authorization::Super);
     <tr>
         <th>Id</th>
         <th>Name</th>
+        <th>Deprecated</th>
         <?php if ($isSuper) : ?>
         <th>Actions</th>
         <?php endif; ?>
@@ -26,6 +27,7 @@ $isSuper = $user?->hasAuth(Authorization::Super);
     <tr>
         <td><?= h($obj->get('id')) ?></td>
         <td><?= h($obj->get('name')) ?></td>
+        <td><?= $obj->get('deprecated') ? 'True' : 'False' ?></td>
         <?php if ($isSuper) : ?>
         <td>
             <?= $this->Html->link('Edit', ['action' => 'edit', $obj->get('id')]) ?>

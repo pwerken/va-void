@@ -22,7 +22,7 @@ class ManatypesTable extends Table
     {
         $query->where(['deprecated' => false]);
 
-        return $query;
+        return parent::findIndex($query);
     }
 
     public function buildRules(RulesChecker $rules): RulesChecker

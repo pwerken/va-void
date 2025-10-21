@@ -35,6 +35,6 @@ class FactionsTable extends Table
 
     protected function orderBy(): array
     {
-        return ['name' => 'ASC'];
+        return ['deprecated' => 'ASC', 'name' => 'ASC'];
     }
 }

@@ -11,5 +11,6 @@ if ($obj->isNew()) {
 
 echo $this->Form->create($obj, ['method' => 'post']);
 echo $this->Form->control('name');
+echo $this->Form->control('deprecated');
 echo $this->Form->button('Save');
 echo $this->Form->end();

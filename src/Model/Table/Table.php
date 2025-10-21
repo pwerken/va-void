@@ -145,7 +145,7 @@ abstract class Table extends CakeTable
 
     public function findIndex(SelectQuery $query): SelectQuery
     {
-        return $query;
+        return $this->findAll($query);
     }
 
     public function findWithContain(SelectQuery $query): SelectQuery
