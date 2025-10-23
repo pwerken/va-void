@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace App\Error;
 
+use App\Error\Exception\ValidationException;
 use Cake\Error\ErrorLogger as CakeErrorLogger;
 use Psr\Http\Message\ServerRequestInterface;
+use Throwable;
 
 class ErrorLogger extends CakeErrorLogger
 {
@@ -23,11 +25,29 @@ class ErrorLogger extends CakeErrorLogger
             $message .= "\nLogged in user: {$plin}";
         }
 
-        $body = $request->getParsedBody();
-        if ($body) {
-            $message .= "\nRequest data: " . var_export($body, true);
+        return substr($message, 1);
+    }
+
+    /**
+     * Generate the message for the exception
+     *
+     * @param \Throwable $exception The exception to log a message for.
+     * @param bool $isPrevious False for original exception, true for previous
+     * @param bool $includeTrace Whether to include a stack trace.
+     * @return string Error message
+     */
+    protected function getMessage(Throwable $exception, bool $isPrevious = false, bool $includeTrace = false): string
+    {
+        $message = parent::getMessage($exception, $isPrevious, $includeTrace);
+        if ($exception instanceof ValidationException) {
+            $message .= "Validation Errors:\n";
+            foreach ($exception->getValidationErrors() as $field => $errors) {
+                foreach ($errors as $rule => $error) {
+                    $message .= '- ' . $field . ': ' . $error . ' (' . $rule . ")\n";
+                }
+            }
         }
 
-        return substr($message, 1);
+        return $message;
     }
 }
