@@ -26,7 +26,7 @@ trait CRUDTrait
         if ($this->getRequest()->is('post')) {
             $obj = $model->patchEntity($obj, $this->request->getData());
             if ($model->save($obj)) {
-                $this->Flash->success('Added id#' . $obj->id);
+                $this->Flash->success('Added id#' . $obj->get('id'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -55,11 +55,11 @@ trait CRUDTrait
         if ($this->getRequest()->is('post')) {
             $obj = $model->patchEntity($obj, $this->request->getData());
             if ($model->save($obj)) {
-                $this->Flash->error('Modified id#' . $obj->id);
+                $this->Flash->error('Modified id#' . $obj->get('id'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error('Failed to edit id#' . $obj->id);
+            $this->Flash->error('Failed to edit id#' . $obj->get('id'));
         }
 
         foreach ($model->associations()->getByType('BelongsTo') as $assoc) {
@@ -80,9 +80,9 @@ trait CRUDTrait
         $this->Authorization->authorize($obj, 'delete');
 
         if ($model->delete($obj)) {
-            $this->Flash->success('Deleted id#' . $obj->id);
+            $this->Flash->success('Deleted id#' . $obj->get('id'));
         } else {
-            $this->Flash->error('Failed to delete id#' . $obj->id);
+            $this->Flash->error('Failed to delete id#' . $obj->get('id'));
         }
 
         return $this->redirect(['action' => 'index']);
