@@ -251,10 +251,15 @@ return function (RouteBuilder $routes): void {
             $defaults['action'] = 'charactersIndex';
             $routes->connect($urlNest, $defaults, $routeOptions);
 
+            $map = [
+                'Add' => 'PUT',
+                'View' => 'GET',
+                'Delete' => 'DELETE',
+            ];
             $urlNest = $url . '/teacher';
-            foreach ($map as $method => $options) {
-                $defaults['_method'] = $options['_method'];
-                $defaults['action'] = 'characters' . $method;
+            foreach ($map as $action => $method) {
+                $defaults['_method'] = $method;
+                $defaults['action'] = 'characters' . $action;
                 $routes->connect($urlNest, $defaults, $routeOptions);
             }
 
