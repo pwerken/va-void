@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * @var \App\View\AdminView $this
  * @var \App\Model\Entity\Event $obj
