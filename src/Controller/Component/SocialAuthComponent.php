@@ -130,15 +130,15 @@ class SocialAuthComponent extends Component
     {
         try {
             $identity = $this->_getProvider($provider)->getIdentity($token);
+            if (!$identity->id) {
+                throw new SocialConnectException("Provider `{$provider}` returned identity with empty `id` field");
+            }
+
+            return $this->_getUser($provider, $identity);
         } catch (SocialConnectException $e) {
             $this->_logException($e);
-            throw new LoginFailedException("Login via `{$provider}` failed");
+            throw new LoginFailedException("Login via `{$provider}` failed", null, $e);
         }
-        if (!$identity->id) {
-            throw new SocialConnectException("Provider `{$provider}` returned identity with empty `id` field");
-        }
-
-        return $this->_getUser($provider, $identity);
     }
 
     /**
@@ -270,7 +270,7 @@ class SocialAuthComponent extends Component
 
     protected function _logException(SocialConnectException $e): void
     {
-        if (!$this->getConfig('logErrors')) {
+        if (!$this->getConfig('serviceConfig.logErrors')) {
             return;
         }
 
@@ -290,7 +290,7 @@ class SocialAuthComponent extends Component
             $message .= ($response ? (string)$response->getBody() : 'n/a');
         }
 
-        $message .= "\nStack Trace:\n" . $e->getTraceAsString() . "\n\n";
+        $message .= "\nStack Trace:\n" . $e->getTraceAsString();
 
         Log::error($message);
     }

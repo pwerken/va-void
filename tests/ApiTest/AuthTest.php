@@ -4,9 +4,14 @@ declare(strict_types=1);
 namespace App\Test\ApiTest;
 
 use App\Test\TestSuite\AuthIntegrationTestCase;
+use Cake\Http\TestSuite\HttpClientTrait;
+use Cake\TestSuite\EmailTrait;
 
 class AuthTest extends AuthIntegrationTestCase
 {
+    use EmailTrait;
+    use HttpClientTrait;
+
     public function testWithoutAuth(): void
     {
         $this->withoutAuth();
@@ -67,12 +72,151 @@ class AuthTest extends AuthIntegrationTestCase
         }
     }
 
-    public function testSocialProvider(): void
+    public function testSocialBadRequests(): void
     {
-        $this->assertGet('/auth/social/f00bar', 404); # Not Found
-        $this->assertGet('/auth/social/google', 400); # Bad Request
-        $this->assertGet('/auth/social/google?token=f4k3', 401); # Login Failed
-        $this->assertGet('/auth/social/google?code=f4k3', 400); # Bad Request
-        $this->assertGet('/auth/social/google?code=f4k3&redirect_uri=f00b4r', 401); # Login Failed
+        $this->assertGet('/auth/social/f00bar', 404);
+        $this->assertGet('/auth/social/google', 400);
+        $this->assertGet('/auth/social/google?code=f4k3', 400);
+    }
+
+    public function testSocialTokenProviderFailure(): void
+    {
+        $this->mockClientGet(
+            'https://www.googleapis.com/oauth2/v1/userinfo?access_token=f4k3',
+            $this->newClientResponse(500),
+        );
+
+        $actual = $this->assertGet('/auth/social/google?token=f4k3', 401);
+
+        $expected = [
+            'class' => 'Error',
+            'code' => 401,
+            'url' => '/auth/social/google?token=f4k3',
+            'message' => 'Login via `google` failed',
+        ];
+        foreach ($expected as $key => $value) {
+            $this->assertArrayKeyValue($key, $value, $actual);
+        }
+    }
+
+    public function testSocialTokenProviderNoId(): void
+    {
+        $this->mockClientGet(
+            'https://www.googleapis.com/oauth2/v1/userinfo?access_token=f4k3',
+            $this->newClientResponse(
+                200,
+                [],
+                json_encode(['id' => 0]),
+            ),
+        );
+
+        $actual = $this->assertGet('/auth/social/google?token=f4k3', 401);
+
+        $expected = [
+            'class' => 'Error',
+            'code' => 401,
+            'url' => '/auth/social/google?token=f4k3',
+            'message' => 'Login via `google` failed',
+        ];
+        foreach ($expected as $key => $value) {
+            $this->assertArrayKeyValue($key, $value, $actual);
+        }
+    }
+
+    public function testSocialTokenProviderNoEmail(): void
+    {
+        $this->mockClientGet(
+            'https://www.googleapis.com/oauth2/v1/userinfo?access_token=f4k3',
+            $this->newClientResponse(
+                200,
+                [],
+                json_encode(['id' => 1, 'email' => null]),
+            ),
+        );
+
+        $actual = $this->assertGet('/auth/social/google?token=f4k3', 401);
+
+        $expected = [
+            'class' => 'Error',
+            'code' => 401,
+            'url' => '/auth/social/google?token=f4k3',
+            'message' => 'Login via `google` failed',
+        ];
+        foreach ($expected as $key => $value) {
+            $this->assertArrayKeyValue($key, $value, $actual);
+        }
+    }
+
+    public function testSocialTokenLoginNew(): void
+    {
+        $this->mockClientGet(
+            'https://www.googleapis.com/oauth2/v1/userinfo?access_token=f4k3',
+            $this->newClientResponse(
+                200,
+                [],
+                json_encode(['id' => 1, 'email' => 'new@example.com']),
+            ),
+        );
+
+        $actual = $this->assertGet('/auth/social/google?token=f4k3', 401);
+
+        $this->assertMailCount(1);
+        $this->assertMailSubjectContains('Social login has no associated plin');
+
+        $expected = [
+            'class' => 'Error',
+            'code' => 401,
+            'url' => '/auth/social/google?token=f4k3',
+            'message' => 'Email has no associated plin. Site admin notified. Expect an email.',
+        ];
+        foreach ($expected as $key => $value) {
+            $this->assertArrayKeyValue($key, $value, $actual);
+        }
+    }
+
+    public function testSocialTokenLoginExisting(): void
+    {
+        $this->mockClientGet(
+            'https://gitlab.com/api/v4/user?access_token=f4k3',
+            $this->newClientResponse(
+                200,
+                [],
+                json_encode(['id' => 1, 'email' => 'test@example.com']),
+            ),
+        );
+        $actual = $this->assertGet('/auth/social/gitlab?token=f4k3');
+
+        $expected = [
+            'class' => 'Auth',
+            'player' => '/players/1',
+            'plin' => 1,
+        ];
+        foreach ($expected as $key => $value) {
+            $this->assertArrayKeyValue($key, $value, $actual);
+        }
+
+        $this->assertArrayHasKey('token', $actual);
+    }
+
+    public function testSocialCallbackFailure(): void
+    {
+        $this->mockClientPost(
+            'https://accounts.google.com/o/oauth2/token',
+            $this->newClientResponse(200, [], json_encode([
+                'access_token' => 'token',
+            ])),
+        );
+
+        $actual = $this->assertGet('/auth/social/google?code=f4k3&redirect_uri=somewhere', 401);
+
+        $expected = [
+            'class' => 'Error',
+            'code' => 401,
+            'url' => '/auth/social/google?code=f4k3&redirect_uri=somewhere',
+            'message' => 'Login via `google` failed',
+        ];
+        foreach ($expected as $key => $value) {
+            $this->assertArrayKeyValue($key, $value, $actual);
+        }
     }
 }

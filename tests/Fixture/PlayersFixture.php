@@ -21,6 +21,7 @@ class PlayersFixture extends TestFixture
                 'first_name' => 'Player',
                 'insertion' => null,
                 'last_name' => 'One',
+                'email' => 'test@example.com',
                 'modified' => null,
                 'modifier_id' => null,
             ],
