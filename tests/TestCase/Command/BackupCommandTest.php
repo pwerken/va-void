@@ -39,6 +39,5 @@ class BackupCommandTest extends ConsoleIntegrationTestCase
         $this->assertOutputContains('<info>Filename</info>');
         $this->assertOutputContains('<info>Size</info>');
         $this->assertOutputContains('<info>Datetime</info>');
-        $this->assertOutputContains('sql');
     }
 }

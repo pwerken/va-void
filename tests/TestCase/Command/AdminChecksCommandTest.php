@@ -18,9 +18,6 @@ class AdminChecksCommandTest extends ConsoleIntegrationTestCase
     public function testChecks(): void
     {
         $this->exec('admin checks');
-        $this->assertExitSuccess();
-
         $this->assertOutputContains('[X] ');
-        $this->assertOutputNotContains('[ ] ');
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\ApiTest;
 
 use App\Test\TestSuite\AuthIntegrationTestCase;
+use Cake\Core\Configure;
 use Cake\Http\TestSuite\HttpClientTrait;
 use Cake\TestSuite\EmailTrait;
 
@@ -12,10 +13,22 @@ class AuthTest extends AuthIntegrationTestCase
     use EmailTrait;
     use HttpClientTrait;
 
-    public function testWithoutAuth(): void
+    protected function setUp(): void
     {
-        $this->withoutAuth();
-        $this->assertNull($this->token, 'JWT should not be set.');
+        parent::setUp();
+
+        $provider = [
+            'google' => [
+                'applicationId' => 'f00',
+                'applicationSecret' => 'bar',
+            ],
+            'gitlab' => [
+                'applicationId' => 'f00',
+                'applicationSecret' => 'bar',
+            ],
+        ];
+
+        Configure::write('SocialAuth', $provider);
     }
 
     public function testValidLogins(): void
@@ -25,6 +38,12 @@ class AuthTest extends AuthIntegrationTestCase
         $this->withAuthReferee();
         $this->withAuthInfobalie();
         $this->withAuthSuper();
+    }
+
+    public function testWithoutAuth(): void
+    {
+        $this->withoutAuth();
+        $this->assertNull($this->token, 'JWT should not be set.');
     }
 
     public function testInvalidUsernamePassword(): void
@@ -52,6 +71,13 @@ class AuthTest extends AuthIntegrationTestCase
 
     public function testSocialListing(): void
     {
+        $configured = [];
+        foreach (Configure::read('SocialAuth') as $provider => $details) {
+            if (!empty($details['applicationId'])) {
+                $configured[] = $provider;
+            }
+        }
+
         $url = '/auth/social';
 
         $this->withoutAuth();
@@ -62,7 +88,7 @@ class AuthTest extends AuthIntegrationTestCase
         $this->assertArrayHasKey('list', $response);
 
         $list = $response['list'];
-        $this->assertCount(3, $list);
+        $this->assertCount(count($configured), $list);
 
         foreach ($list as $socialLogin) {
             $this->assertArrayKeyValue('class', 'SocialLogin', $socialLogin);
@@ -174,14 +200,38 @@ class AuthTest extends AuthIntegrationTestCase
         }
     }
 
-    public function testSocialTokenLoginExisting(): void
+    public function testSocialTokenLoginExistingPlayer(): void
     {
         $this->mockClientGet(
             'https://gitlab.com/api/v4/user?access_token=f4k3',
             $this->newClientResponse(
                 200,
                 [],
-                json_encode(['id' => 1, 'email' => 'test@example.com']),
+                json_encode(['id' => 11, 'email' => 'test@example.com']),
+            ),
+        );
+        $actual = $this->assertGet('/auth/social/gitlab?token=f4k3');
+
+        $expected = [
+            'class' => 'Auth',
+            'player' => '/players/1',
+            'plin' => 1,
+        ];
+        foreach ($expected as $key => $value) {
+            $this->assertArrayKeyValue($key, $value, $actual);
+        }
+
+        $this->assertArrayHasKey('token', $actual);
+    }
+
+    public function testSocialTokenLoginExistingSocial(): void
+    {
+        $this->mockClientGet(
+            'https://gitlab.com/api/v4/user?access_token=f4k3',
+            $this->newClientResponse(
+                200,
+                [],
+                json_encode(['id' => 11, 'email' => 'fake@example.com']),
             ),
         );
         $actual = $this->assertGet('/auth/social/gitlab?token=f4k3');
