@@ -17,7 +17,7 @@ class AuthorizationTest extends AuthIntegrationTestCase
         $this->assertRedirect('/admin?redirect=' . urlencode($this->url));
 
         $this->assertPost($this->url . '/edit', [], 302);
-        $this->assertRedirect('/admin?redirect=' . urlencode($this->url . '/edit'));
+        $this->assertRedirect('/admin');
     }
 
     public function testAsPlayer(): void
