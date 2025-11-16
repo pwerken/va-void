@@ -95,6 +95,9 @@ class HistoryTable extends Table
         if (!is_null($byPlin)) {
             $where['modifier_id'] = $byPlin;
         }
+        if (is_null($what)) {
+            $what = '';
+        }
 
         switch (strtolower($what)) {
             case 'players':
