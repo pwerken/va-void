@@ -30,6 +30,7 @@ require __DIR__ . DIRECTORY_SEPARATOR . 'paths.php';
  * Bootstrap CakePHP
  * Currently all this does is initialize the router (without loading your routes)
  */
+// @phpstan-ignore-next-line
 require CORE_PATH . 'config' . DS . 'bootstrap.php';
 
 use Cake\Cache\Cache;
@@ -50,6 +51,7 @@ use Cake\Utility\Security;
 /*
  * Load global functions for collections, translations, debugging etc.
  */
+// @phpstan-ignore-next-line
 require CAKE . 'functions.php';
 
 // @phpstan-ignore-next-line
