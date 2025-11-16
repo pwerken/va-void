@@ -48,7 +48,7 @@ class ItemLammy extends LammyCard
         }
 
         $this->font(11, 'B');
-        $this->text(52, 5, 16, 'R', $this->entity->get('id'));
+        $this->text(52, 5, 16, 'R', $this->entity->get('itin'));
 
         $this->font(8);
         $this->textarea(12, 15, 60, 24, $this->entity->get('description'));

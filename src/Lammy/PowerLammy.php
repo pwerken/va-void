@@ -10,7 +10,7 @@ class PowerLammy extends ConditionLammy
         $data = [];
         $data['type'] = 'Power';
         $data['key'] = 'POIN';
-        $data['id'] = $this->entity->get('id');
+        $data['id'] = $this->entity->get('poin');
         $data['name'] = $this->entity->get('name');
         $data['text'] = $this->entity->get('player_text');
         $data['plin'] = null;

@@ -10,7 +10,7 @@ class ConditionLammy extends CharactersConditionLammy
         $data = [];
         $data['type'] = 'Condition';
         $data['key'] = 'COIN';
-        $data['id'] = $this->entity->get('id');
+        $data['id'] = $this->entity->get('coin');
         $data['name'] = $this->entity->get('name');
         $data['text'] = $this->entity->get('player_text');
         $data['plin'] = null;
