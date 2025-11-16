@@ -68,12 +68,18 @@ class ItemLammy extends LammyCard
 
     protected function _drawPlayer(): void
     {
+        $text = $this->entity->get('player_text');
+        $ic = $this->entity->get('imbue_capacity');
+        if ($ic > 0) {
+            $text = trim($text . "\nImbue cap: " . $ic . ' mana');
+        }
+
         $this->cardBack('Item Explanation');
 
         $this->pdf->SetTextColor(0);
         $this->square(8, 5, 72, 42);
         $this->font(6);
-        $this->textarea(8, 7, 64, 37, $this->entity->get('player_text'));
+        $this->textarea(8, 7, 64, 37, $text);
 
         $character = $this->entity->get('character');
         if ($character === null) {
