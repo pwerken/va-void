@@ -139,15 +139,40 @@ class Installer
             }
         }
 
+        $www = false;
+        foreach (posix_getgroups() as $gid) {
+            $group = posix_getgrgid($gid);
+            if ($group['name'] == 'www-data') {
+                $www = $gid;
+                $io->write('Group www-data will get write access');
+                break;
+            }
+        }
+
         // Change the permissions on a path and output the results.
-        $changePerms = function (string $path) use ($io): void {
-            $currentPerms = fileperms($path) & 0777;
-            $worldWritable = $currentPerms | 0007;
-            if ($worldWritable == $currentPerms) {
+        $changePerms = function (string $path) use ($io, $www): void {
+            $currentPerms = fileperms($path) & 02777;
+
+            if ($www === false) {
+                $writable = $currentPerms | 00007;
+            } else {
+                $writable = $currentPerms | 02070;
+
+                if (filegroup($path) !== $www) {
+                    $res = chgrp($path, $www);
+                    if ($res) {
+                        $io->write('Group set to www-data on ' . $path);
+                    } else {
+                        $io->write('Failed to set group to www-data on ' . $path);
+                    }
+                }
+            }
+
+            if ($writable == $currentPerms) {
                 return;
             }
 
-            $res = chmod($path, $worldWritable);
+            $res = chmod($path, $writable);
             if ($res) {
                 $io->write('Permissions set on ' . $path);
             } else {
@@ -221,41 +246,5 @@ class Installer
             return;
         }
         $io->write('Unable to update Security.salt value.');
-    }
-
-    /**
-     * Set the APP_NAME value in a given file
-     *
-     * @param string $dir The application's root directory.
-     * @param \Composer\IO\IOInterface $io IO interface to write to console.
-     * @param string $appName app name to set in the file
-     * @param string $file A path to a file relative to the application's root
-     * @return void
-     */
-    public static function setAppNameInFile(string $dir, IOInterface $io, string $appName, string $file): void
-    {
-        $config = $dir . '/config/' . $file;
-        $content = file_get_contents($config);
-        if ($content === false) {
-            $io->write('Config file not readable or not found: config/' . $file);
-
-            return;
-        }
-
-        $content = str_replace('__APP_NAME__', $appName, $content, $count);
-
-        if ($count == 0) {
-            $io->write('No __APP_NAME__ placeholder to replace.');
-
-            return;
-        }
-
-        $result = file_put_contents($config, $content);
-        if ($result) {
-            $io->write('Updated __APP_NAME__ value in config/' . $file);
-
-            return;
-        }
-        $io->write('Unable to update __APP_NAME__ value.');
     }
 }
