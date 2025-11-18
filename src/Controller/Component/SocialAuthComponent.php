@@ -12,6 +12,7 @@ use Cake\Controller\Component;
 use Cake\Controller\ComponentRegistry;
 use Cake\Core\Configure;
 use Cake\Http\Client;
+use Cake\Http\Session;
 use Cake\Log\Log;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\Routing\Router;
@@ -25,7 +26,7 @@ use SocialConnect\Common\HttpStack;
 use SocialConnect\Provider\AbstractBaseProvider as BaseProvider;
 use SocialConnect\Provider\AccessTokenInterface as AccessToken;
 use SocialConnect\Provider\Exception\InvalidResponse;
-use SocialConnect\Provider\Session\Session as SocialConnectSession;
+use SocialConnect\Provider\Session\SessionInterface;
 
 /**
  * @property \App\Controller\Component\MailerComponent $Mailer;
@@ -179,13 +180,44 @@ class SocialAuthComponent extends Component
 
             $this->_service = new Service(
                 $httpStack,
-                new SocialConnectSession(),
+                $this->_wrapSession($session),
                 $this->getConfig('serviceConfig'),
                 $this->_factory,
             );
         }
 
         return $this->_service->getProvider($provider);
+    }
+
+    protected function _wrapSession(Session $session): SessionInterface
+    {
+        return new class ($session) implements SessionInterface
+        {
+            private Session $session;
+
+            public function __construct(Session $session)
+            {
+                $this->session = $session;
+            }
+
+            // phpcs:ignore
+            public function get($key): mixed
+            {
+                return $this->session->read($key);
+            }
+
+            // phpcs:ignore
+            public function set($key, $value): void
+            {
+                $this->session->write($key, $value);
+            }
+
+            // phpcs:ignore
+            public function delete($key): void
+            {
+                $this->session->delete($key);
+            }
+        };
     }
 
     protected function _getUser(string $provider, User $identity): Player
