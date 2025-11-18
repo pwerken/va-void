@@ -71,6 +71,15 @@ class CharactersTable extends Table
         parent::beforeMarshal($event, $data, $options);
     }
 
+    public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    {
+        if ($entity->get('status') === CharacterStatus::Concept) {
+            return;
+        }
+
+        parent::beforeSave($event, $entity, $options);
+    }
+
     public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
         if ($entity->isDirty('status') && $entity->get('status') === CharacterStatus::Active) {
@@ -89,10 +98,12 @@ class CharactersTable extends Table
     {
         $rules = parent::buildRules($rules);
 
-        $rules->addCreate($rules->isUnique(['plin', 'chin']));
-        $rules->addCreate($rules->isUnique(['plin', 'name']));
+        $rules->addCreate($rules->isUnique(['chin', 'plin']));
+        $rules->addCreate($rules->isUnique(['name', 'plin']));
+        $rules->addCreate([$this, 'ruleOnlyOneConcept']);
 
         $rules->addUpdate([$this, 'ruleDisallowSetPlinChin']);
+        $rules->addUpdate([$this, 'ruleNoReturnToConcept']);
 
         $rules->addDelete([$this, 'ruleNoAssociation'], ['skills']);
         $rules->addDelete([$this, 'ruleNoAssociation'], ['powers']);
@@ -100,6 +111,7 @@ class CharactersTable extends Table
         $rules->addDelete([$this, 'ruleNoAssociation'], ['items']);
 
         $rules->add($rules->existsIn('faction_id', 'Factions'));
+        $rules->add([$this, 'ruleConceptCharFaction']);
 
         return $rules;
     }
@@ -125,6 +137,41 @@ class CharactersTable extends Table
                     ->orderBy(['world'], true);
     }
 
+    public function ruleConceptCharFaction(EntityInterface $entity, array $options): bool
+    {
+        if ($entity->get('status') !== CharacterStatus::Concept) {
+            return true;
+        }
+
+        $faction = $this->Factions->get($entity->get('faction_id'));
+        if (!$faction->get('deprecated')) {
+            return true;
+        }
+
+        $entity->setError('faction', ['deprecated' => 'Faction is deprecated']);
+
+        return false;
+    }
+
+    public function ruleOnlyOneConcept(EntityInterface $entity, array $options): bool
+    {
+        if ($entity->get('status') !== CharacterStatus::Concept) {
+            return true;
+        }
+
+        $query = $this->find();
+        $query->where(['plin' => $entity->get('plin')]);
+        $query->where(['status' => CharacterStatus::Concept]);
+
+        if ($query->count() == 0) {
+            return true;
+        }
+
+        $entity->setError('status', ['limit' => 'Only one concept character allowed']);
+
+        return false;
+    }
+
     public function ruleDisallowSetPlinChin(EntityInterface $entity, array $options): bool
     {
         $allowed = true;
@@ -139,6 +186,19 @@ class CharactersTable extends Table
         }
 
         return $allowed;
+    }
+
+    public function ruleNoReturnToConcept(EntityInterface $entity, array $options): bool
+    {
+        if ($entity->get('status') === CharacterStatus::Concept) {
+            if ($entity->getOriginal('status') !== CharacterStatus::Concept) {
+                $entity->setError('status', ['concept' => 'Cannot set character back to concept']);
+
+                return false;
+            }
+        }
+
+        return true;
     }
 
     protected function contain(): array

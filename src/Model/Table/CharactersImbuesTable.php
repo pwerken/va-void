@@ -56,6 +56,8 @@ class CharactersImbuesTable extends Table
         $rules->add($rules->existsIn('character_id', 'Characters'));
         $rules->add($rules->existsIn('imbue_id', 'Imbues'));
 
+        $rules->add([$this, 'ruleDisallowConceptCharacter']);
+
         return $rules;
     }
 

@@ -108,8 +108,8 @@ class ImbuesTest extends AuthIntegrationTestCase
 
         $expected = [
             'class' => 'Imbue',
-            'url' => '/imbues/3',
-            'id' => 3,
+            'url' => '/imbues/4',
+            'id' => 4,
             'name' => $input['name'],
             'description' => $input['description'],
             'notes' => null,
@@ -144,8 +144,8 @@ class ImbuesTest extends AuthIntegrationTestCase
 
         $expected = [
             'class' => 'Imbue',
-            'url' => '/imbues/3',
-            'id' => 3,
+            'url' => '/imbues/4',
+            'id' => 4,
             'name' => $input['name'],
             'description' => $input['description'],
             'notes' => $input['notes'],

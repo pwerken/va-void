@@ -41,6 +41,8 @@ class CharactersPowersTable extends Table
         $rules->add($rules->existsIn('character_id', 'Characters'));
         $rules->add($rules->existsIn('power_id', 'Powers'));
 
+        $rules->add([$this, 'ruleDisallowConceptCharacter']);
+
         return $rules;
     }
 

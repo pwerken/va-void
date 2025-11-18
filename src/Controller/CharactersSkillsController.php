@@ -35,6 +35,9 @@ class CharactersSkillsController extends Controller
         $request = $request->withData('character_id', $char_id);
         $this->setRequest($request);
 
+        $character = $this->fetchTable('Characters')->get($char_id);
+        $this->Authorization->authorize($character, 'edit');
+
         $this->loadComponent('Add');
         $this->Add->action();
     }

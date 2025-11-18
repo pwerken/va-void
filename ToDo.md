@@ -8,11 +8,11 @@ ToDo-list:
    - [x] CRUD-operations page for Manatypes
    - [x] CRUD-operations page for Skills
  - Player editable concept character
-   - [ ] add character status 'concept'
-   - [ ] allow player to add 'concept' character (max 1)
-   - [ ] allow (limited) editing by the player
-   - [ ] limit access to the "base" skills
-   - [ ] don't track changes when status='concept'
+   - [x] add character status 'concept'
+   - [x] allow player to add 'concept' character (max 1)
+   - [x] allow (limited) editing by the player
+   - [x] limit access to the "base" skills
+   - [x] don't track changes when status='concept'
  - Glyph/Rune character imbue
    - [x] add table 'imbues', similar to 'powers'
    - [x] add characters relation table

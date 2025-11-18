@@ -22,16 +22,16 @@ class LammiesTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/1/1/runeimbues/2/print', 401);
         $this->assertGet('/characters/1/1/teacher/print', 401);
 
-        $this->assertGet('/characters/1/2/print', 401);
-        $this->assertGet('/characters/1/2/conditions/1/print', 401);
-        $this->assertGet('/characters/1/2/conditions/2/print', 401);
-        $this->assertGet('/characters/1/2/glyphimbues/1/print', 401);
-        $this->assertGet('/characters/1/2/glyphimbues/2/print', 401);
-        $this->assertGet('/characters/1/2/powers/1/print', 401);
-        $this->assertGet('/characters/1/2/powers/2/print', 401);
-        $this->assertGet('/characters/1/2/runeimbues/1/print', 401);
-        $this->assertGet('/characters/1/2/runeimbues/2/print', 401);
-        $this->assertGet('/characters/1/2/teacher/print', 401);
+        $this->assertGet('/characters/1/99/print', 401);
+        $this->assertGet('/characters/1/99/conditions/1/print', 401);
+        $this->assertGet('/characters/1/99/conditions/2/print', 401);
+        $this->assertGet('/characters/1/99/glyphimbues/1/print', 401);
+        $this->assertGet('/characters/1/99/glyphimbues/2/print', 401);
+        $this->assertGet('/characters/1/99/powers/1/print', 401);
+        $this->assertGet('/characters/1/99/powers/2/print', 401);
+        $this->assertGet('/characters/1/99/runeimbues/1/print', 401);
+        $this->assertGet('/characters/1/99/runeimbues/2/print', 401);
+        $this->assertGet('/characters/1/99/teacher/print', 401);
 
         $this->assertGet('/characters/2/1/print', 401);
         $this->assertGet('/characters/2/1/conditions/1/print', 401);
@@ -81,16 +81,16 @@ class LammiesTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/1/1/runeimbues/2/print', 404);
         $this->assertPdf('/characters/1/1/teacher/print');
 
-        $this->assertGet('/characters/1/2/print', 404);
-        $this->assertGet('/characters/1/2/conditions/1/print', 404);
-        $this->assertGet('/characters/1/2/conditions/2/print', 404);
-        $this->assertGet('/characters/1/2/glyphimbues/1/print', 404);
-        $this->assertGet('/characters/1/2/glyphimbues/2/print', 404);
-        $this->assertGet('/characters/1/2/powers/1/print', 404);
-        $this->assertGet('/characters/1/2/powers/2/print', 404);
-        $this->assertGet('/characters/1/2/runeimbues/1/print', 404);
-        $this->assertGet('/characters/1/2/runeimbues/2/print', 404);
-        $this->assertGet('/characters/1/2/teacher/print', 404);
+        $this->assertGet('/characters/1/99/print', 404);
+        $this->assertGet('/characters/1/99/conditions/1/print', 404);
+        $this->assertGet('/characters/1/99/conditions/2/print', 404);
+        $this->assertGet('/characters/1/99/glyphimbues/1/print', 404);
+        $this->assertGet('/characters/1/99/glyphimbues/2/print', 404);
+        $this->assertGet('/characters/1/99/powers/1/print', 404);
+        $this->assertGet('/characters/1/99/powers/2/print', 404);
+        $this->assertGet('/characters/1/99/runeimbues/1/print', 404);
+        $this->assertGet('/characters/1/99/runeimbues/2/print', 404);
+        $this->assertGet('/characters/1/99/teacher/print', 404);
 
         $this->assertGet('/characters/2/1/print', 403);
         $this->assertGet('/characters/2/1/conditions/1/print', 403);
@@ -137,12 +137,12 @@ class LammiesTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/1/1/runeimbues/2/print', 404);
         $this->assertPdf('/characters/1/1/teacher/print');
 
-        $this->assertGet('/characters/1/2/print', 404);
-        $this->assertGet('/characters/1/2/teacher/print', 404);
-        $this->assertGet('/characters/1/2/conditions/1/print', 404);
-        $this->assertGet('/characters/1/2/conditions/2/print', 404);
-        $this->assertGet('/characters/1/2/powers/1/print', 404);
-        $this->assertGet('/characters/1/2/powers/2/print', 404);
+        $this->assertGet('/characters/1/99/print', 404);
+        $this->assertGet('/characters/1/99/teacher/print', 404);
+        $this->assertGet('/characters/1/99/conditions/1/print', 404);
+        $this->assertGet('/characters/1/99/conditions/2/print', 404);
+        $this->assertGet('/characters/1/99/powers/1/print', 404);
+        $this->assertGet('/characters/1/99/powers/2/print', 404);
 
         $this->assertPdf('/characters/2/1/print');
         $this->assertPdf('/characters/2/1/teacher/print');
@@ -189,16 +189,16 @@ class LammiesTest extends AuthIntegrationTestCase
         $this->assertPost('/characters/1/1/runeimbues/2/print', [], 401);
         $this->assertPost('/characters/1/1/teacher/print', [], 401);
 
-        $this->assertPost('/characters/1/2/print', [], 401);
-        $this->assertPost('/characters/1/2/conditions/1/print', [], 401);
-        $this->assertPost('/characters/1/2/conditions/2/print', [], 401);
-        $this->assertPost('/characters/1/2/glyphimbues/1/print', [], 401);
-        $this->assertPost('/characters/1/2/glyphimbues/2/print', [], 401);
-        $this->assertPost('/characters/1/2/powers/1/print', [], 401);
-        $this->assertPost('/characters/1/2/powers/2/print', [], 401);
-        $this->assertPost('/characters/1/2/runeimbues/1/print', [], 401);
-        $this->assertPost('/characters/1/2/runeimbues/2/print', [], 401);
-        $this->assertPost('/characters/1/2/teacher/print', [], 401);
+        $this->assertPost('/characters/1/99/print', [], 401);
+        $this->assertPost('/characters/1/99/conditions/1/print', [], 401);
+        $this->assertPost('/characters/1/99/conditions/2/print', [], 401);
+        $this->assertPost('/characters/1/99/glyphimbues/1/print', [], 401);
+        $this->assertPost('/characters/1/99/glyphimbues/2/print', [], 401);
+        $this->assertPost('/characters/1/99/powers/1/print', [], 401);
+        $this->assertPost('/characters/1/99/powers/2/print', [], 401);
+        $this->assertPost('/characters/1/99/runeimbues/1/print', [], 401);
+        $this->assertPost('/characters/1/99/runeimbues/2/print', [], 401);
+        $this->assertPost('/characters/1/99/teacher/print', [], 401);
 
         $this->assertPost('/characters/2/1/print', [], 401);
         $this->assertPost('/characters/2/1/conditions/1/print', [], 401);
@@ -246,16 +246,16 @@ class LammiesTest extends AuthIntegrationTestCase
         $this->assertPost('/characters/1/1/runeimbues/2/print', [], 403);
         $this->assertPost('/characters/1/1/teacher/print', [], 403);
 
-        $this->assertPost('/characters/1/2/print', [], 403);
-        $this->assertPost('/characters/1/2/conditions/1/print', [], 403);
-        $this->assertPost('/characters/1/2/conditions/2/print', [], 403);
-        $this->assertPost('/characters/1/2/glyphimbues/1/print', [], 403);
-        $this->assertPost('/characters/1/2/glyphimbues/2/print', [], 403);
-        $this->assertPost('/characters/1/2/powers/1/print', [], 403);
-        $this->assertPost('/characters/1/2/powers/2/print', [], 403);
-        $this->assertPost('/characters/1/2/runeimbues/1/print', [], 403);
-        $this->assertPost('/characters/1/2/runeimbues/2/print', [], 403);
-        $this->assertPost('/characters/1/2/teacher/print', [], 403);
+        $this->assertPost('/characters/1/99/print', [], 403);
+        $this->assertPost('/characters/1/99/conditions/1/print', [], 403);
+        $this->assertPost('/characters/1/99/conditions/2/print', [], 403);
+        $this->assertPost('/characters/1/99/glyphimbues/1/print', [], 403);
+        $this->assertPost('/characters/1/99/glyphimbues/2/print', [], 403);
+        $this->assertPost('/characters/1/99/powers/1/print', [], 403);
+        $this->assertPost('/characters/1/99/powers/2/print', [], 403);
+        $this->assertPost('/characters/1/99/runeimbues/1/print', [], 403);
+        $this->assertPost('/characters/1/99/runeimbues/2/print', [], 403);
+        $this->assertPost('/characters/1/99/teacher/print', [], 403);
 
         $this->assertPost('/characters/2/1/print', [], 403);
         $this->assertPost('/characters/2/1/conditions/1/print', [], 403);
@@ -303,16 +303,16 @@ class LammiesTest extends AuthIntegrationTestCase
         $this->assertPost('/characters/1/1/runeimbues/2/print', [], 404);
         $this->assertPost('/characters/1/1/teacher/print');
 
-        $this->assertPost('/characters/1/2/print', [], 404);
-        $this->assertPost('/characters/1/2/conditions/1/print', [], 404);
-        $this->assertPost('/characters/1/2/conditions/2/print', [], 404);
-        $this->assertPost('/characters/1/2/glyphimbues/1/print', [], 404);
-        $this->assertPost('/characters/1/2/glyphimbues/2/print', [], 404);
-        $this->assertPost('/characters/1/2/powers/1/print', [], 404);
-        $this->assertPost('/characters/1/2/powers/2/print', [], 404);
-        $this->assertPost('/characters/1/2/runeimbues/1/print', [], 404);
-        $this->assertPost('/characters/1/2/runeimbues/2/print', [], 404);
-        $this->assertPost('/characters/1/2/teacher/print', [], 404);
+        $this->assertPost('/characters/1/99/print', [], 404);
+        $this->assertPost('/characters/1/99/conditions/1/print', [], 404);
+        $this->assertPost('/characters/1/99/conditions/2/print', [], 404);
+        $this->assertPost('/characters/1/99/glyphimbues/1/print', [], 404);
+        $this->assertPost('/characters/1/99/glyphimbues/2/print', [], 404);
+        $this->assertPost('/characters/1/99/powers/1/print', [], 404);
+        $this->assertPost('/characters/1/99/powers/2/print', [], 404);
+        $this->assertPost('/characters/1/99/runeimbues/1/print', [], 404);
+        $this->assertPost('/characters/1/99/runeimbues/2/print', [], 404);
+        $this->assertPost('/characters/1/99/teacher/print', [], 404);
 
         $this->assertPost('/characters/2/1/print');
         $this->assertPost('/characters/2/1/conditions/1/print');

@@ -41,6 +41,8 @@ class CharactersConditionsTable extends Table
         $rules->add($rules->existsIn('character_id', 'Characters'));
         $rules->add($rules->existsIn('condition_id', 'Conditions'));
 
+        $rules->add([$this, 'ruleDisallowConceptCharacter']);
+
         return $rules;
     }
 

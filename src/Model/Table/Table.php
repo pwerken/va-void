@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Enum\CharacterStatus;
 use ArrayObject;
 use Cake\Database\Type\EnumType;
 use Cake\Datasource\EntityInterface;
@@ -174,6 +175,18 @@ abstract class Table extends CakeTable
         }
 
         return $allowed;
+    }
+
+    public function ruleDisallowConceptCharacter(EntityInterface $entity, array $options): bool
+    {
+        $character = $this->Characters->get($entity->get('character_id'));
+        if ($character->get('status') !== CharacterStatus::Concept) {
+            return true;
+        }
+
+        $entity->setError('character_id', ['concept' => 'Character is still in concept']);
+
+        return false;
     }
 
     public function ruleNoAssociation(EntityInterface $entity, array $options): bool

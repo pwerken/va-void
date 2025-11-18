@@ -10,7 +10,7 @@ class Character extends Entity
 {
     protected array $_defaults = [
         'xp' => 15,
-        'status' => CharacterStatus::Inactive,
+        'status' => CharacterStatus::Concept,
         'belief' => '-',
         'group' => '-',
         'faction_id' => 1,

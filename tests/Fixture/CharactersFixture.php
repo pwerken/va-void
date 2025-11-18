@@ -43,6 +43,22 @@ class CharactersFixture extends TestFixture
                 'modified' => '2018-06-23 14:38:08',
                 'modifier_id' => 1,
             ],
+            [
+                'id' => 3,
+                'plin' => 1,
+                'chin' => 2,
+                'name' => 'Shunt',
+                'xp' => 15.0,
+                'faction_id' => 1,
+                'belief' => '-',
+                'group' => '-',
+                'world' => '-',
+                'status' => CharacterStatus::Concept,
+                'referee_notes' => '',
+                'notes' => '',
+                'modified' => '2025-11-22 11:44:00',
+                'modifier_id' => 1,
+            ],
         ];
         parent::init();
     }

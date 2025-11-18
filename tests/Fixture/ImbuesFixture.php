@@ -32,6 +32,17 @@ class ImbuesFixture extends TestFixture
                 'modified' => null,
                 'modifier_id' => null,
             ],
+            [
+                'id' => 3,
+                'name' => 'Ancient Horrors',
+                'cost' => 1,
+                'description' => 'No longer...',
+                'notes' => '',
+                'times_max' => 1,
+                'deprecated' => true,
+                'modified' => null,
+                'modifier_id' => null,
+            ],
         ];
         parent::init();
     }

@@ -20,7 +20,7 @@ class CharactersSkillsControllerPolicy extends ControllerPolicy
      */
     public function charactersAdd(): bool
     {
-        return $this->hasAuth(Authorization::Referee);
+        return $this->hasAuth(Authorization::ReadOnly, Authorization::Owner);
     }
 
     /**

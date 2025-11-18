@@ -14,6 +14,8 @@ class TeachingsTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/1/1/teacher', 401);
         $this->assertGet('/characters/1/2/students', 401);
         $this->assertGet('/characters/1/2/teacher', 401);
+        $this->assertGet('/characters/1/99/students', 401);
+        $this->assertGet('/characters/1/99/teacher', 401);
         $this->assertGet('/characters/2/1/students', 401);
         $this->assertGet('/characters/2/1/teacher', 401);
         $this->assertGet('/characters/2/2/students', 401);
@@ -24,8 +26,8 @@ class TeachingsTest extends AuthIntegrationTestCase
         $this->withAuthPlayer();
         $this->assertGet('/characters/1/1/students');
         $this->assertGet('/characters/1/1/teacher');
-        $this->assertGet('/characters/1/2/students', 404);
-        $this->assertGet('/characters/1/2/teacher', 404);
+        $this->assertGet('/characters/1/99/students', 404);
+        $this->assertGet('/characters/1/99/teacher', 404);
         $this->assertGet('/characters/2/1/students', 403);
         $this->assertGet('/characters/2/1/teacher', 403);
         $this->assertGet('/characters/99/1/students', 403);
@@ -34,8 +36,8 @@ class TeachingsTest extends AuthIntegrationTestCase
         $this->withAuthReadOnly();
         $this->assertGet('/characters/1/1/students');
         $this->assertGet('/characters/1/1/teacher');
-        $this->assertGet('/characters/1/2/students', 404);
-        $this->assertGet('/characters/1/2/teacher', 404);
+        $this->assertGet('/characters/1/99/students', 404);
+        $this->assertGet('/characters/1/99/teacher', 404);
         $this->assertGet('/characters/2/1/students');
         $this->assertGet('/characters/2/1/teacher');
         $this->assertGet('/characters/99/1/students', 404);
@@ -46,25 +48,25 @@ class TeachingsTest extends AuthIntegrationTestCase
     {
         $this->withoutAuth();
         $this->assertPut('/characters/1/1/teacher', [], 401);
-        $this->assertPut('/characters/1/2/teacher', [], 401);
+        $this->assertPut('/characters/1/99/teacher', [], 401);
         $this->assertPut('/characters/2/1/teacher', [], 401);
         $this->assertPut('/characters/99/1/teacher', [], 401);
 
         $this->withAuthPlayer();
         $this->assertPut('/characters/1/1/teacher', [], 403);
-        $this->assertPut('/characters/1/2/teacher', [], 403);
+        $this->assertPut('/characters/1/99/teacher', [], 403);
         $this->assertPut('/characters/2/1/teacher', [], 403);
         $this->assertPut('/characters/99/1/teacher', [], 403);
 
         $this->withAuthReadOnly();
         $this->assertPut('/characters/1/1/teacher', [], 403);
-        $this->assertPut('/characters/1/2/teacher', [], 403);
+        $this->assertPut('/characters/1/99/teacher', [], 403);
         $this->assertPut('/characters/2/1/teacher', [], 403);
         $this->assertPut('/characters/99/1/teacher', [], 403);
 
         $this->withAuthReferee();
         $this->assertPut('/characters/1/1/teacher', [], 422);
-        $this->assertPut('/characters/1/2/teacher', [], 404);
+        $this->assertPut('/characters/1/99/teacher', [], 404);
         $this->assertPut('/characters/2/1/teacher', [], 422);
         $this->assertPut('/characters/99/1/teacher', [], 404);
     }
@@ -73,19 +75,19 @@ class TeachingsTest extends AuthIntegrationTestCase
     {
         $this->withoutAuth();
         $this->assertDelete('/characters/1/1/teacher', 401);
-        $this->assertDelete('/characters/1/2/teacher', 401);
+        $this->assertDelete('/characters/1/99/teacher', 401);
         $this->assertDelete('/characters/2/1/teacher', 401);
         $this->assertDelete('/characters/99/1/teacher', 401);
 
         $this->withAuthPlayer();
         $this->assertDelete('/characters/1/1/teacher', 403);
-        $this->assertDelete('/characters/1/2/teacher', 403);
+        $this->assertDelete('/characters/1/99/teacher', 403);
         $this->assertDelete('/characters/2/1/teacher', 403);
         $this->assertDelete('/characters/99/1/teacher', 403);
 
         $this->withAuthReadOnly();
         $this->assertDelete('/characters/1/1/teacher', 403);
-        $this->assertDelete('/characters/1/2/teacher', 403);
+        $this->assertDelete('/characters/1/99/teacher', 403);
         $this->assertDelete('/characters/2/1/teacher', 403);
         $this->assertDelete('/characters/99/1/teacher', 403);
     }

@@ -17,6 +17,9 @@ class CharactersRuneImbuesTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/1/2/runeimbues', 401);
         $this->assertGet('/characters/1/2/runeimbues/1', 401);
         $this->assertGet('/characters/1/2/runeimbues/2', 401);
+        $this->assertGet('/characters/1/99/runeimbues', 401);
+        $this->assertGet('/characters/1/99/runeimbues/1', 401);
+        $this->assertGet('/characters/1/99/runeimbues/2', 401);
         $this->assertGet('/characters/2/1/runeimbues', 401);
         $this->assertGet('/characters/2/1/runeimbues/1', 401);
         $this->assertGet('/characters/2/1/runeimbues/2', 401);
@@ -31,9 +34,12 @@ class CharactersRuneImbuesTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/1/1/runeimbues');
         $this->assertGet('/characters/1/1/runeimbues/1');
         $this->assertGet('/characters/1/1/runeimbues/2', 404);
-        $this->assertGet('/characters/1/2/runeimbues', 404);
+        $this->assertGet('/characters/1/2/runeimbues');
         $this->assertGet('/characters/1/2/runeimbues/1', 404);
         $this->assertGet('/characters/1/2/runeimbues/2', 404);
+        $this->assertGet('/characters/1/99/runeimbues', 404);
+        $this->assertGet('/characters/1/99/runeimbues/1', 404);
+        $this->assertGet('/characters/1/99/runeimbues/2', 404);
         $this->assertGet('/characters/2/1/runeimbues', 403);
         $this->assertGet('/characters/2/1/runeimbues/1', 403);
         $this->assertGet('/characters/2/1/runeimbues/2', 403);
@@ -45,9 +51,12 @@ class CharactersRuneImbuesTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/1/1/runeimbues');
         $this->assertGet('/characters/1/1/runeimbues/1');
         $this->assertGet('/characters/1/1/runeimbues/2', 404);
-        $this->assertGet('/characters/1/2/runeimbues', 404);
+        $this->assertGet('/characters/1/2/runeimbues');
         $this->assertGet('/characters/1/2/runeimbues/1', 404);
         $this->assertGet('/characters/1/2/runeimbues/2', 404);
+        $this->assertGet('/characters/1/99/runeimbues', 404);
+        $this->assertGet('/characters/1/99/runeimbues/1', 404);
+        $this->assertGet('/characters/1/99/runeimbues/2', 404);
         $this->assertGet('/characters/2/1/runeimbues');
         $this->assertGet('/characters/2/1/runeimbues/1', 404);
         $this->assertGet('/characters/2/1/runeimbues/2', 404);
@@ -65,6 +74,9 @@ class CharactersRuneImbuesTest extends AuthIntegrationTestCase
         $this->assertPut('/characters/1/2/runeimbues', [], 401);
         $this->assertPut('/characters/1/2/runeimbues/1', [], 401);
         $this->assertPut('/characters/1/2/runeimbues/2', [], 401);
+        $this->assertPut('/characters/1/99/runeimbues', [], 401);
+        $this->assertPut('/characters/1/99/runeimbues/1', [], 401);
+        $this->assertPut('/characters/1/99/runeimbues/2', [], 401);
         $this->assertPut('/characters/2/1/runeimbues', [], 401);
         $this->assertPut('/characters/2/1/runeimbues/1', [], 401);
         $this->assertPut('/characters/2/1/runeimbues/2', [], 401);
@@ -79,6 +91,9 @@ class CharactersRuneImbuesTest extends AuthIntegrationTestCase
         $this->assertPut('/characters/1/2/runeimbues', [], 403);
         $this->assertPut('/characters/1/2/runeimbues/1', [], 403);
         $this->assertPut('/characters/1/2/runeimbues/2', [], 403);
+        $this->assertPut('/characters/1/99/runeimbues', [], 403);
+        $this->assertPut('/characters/1/99/runeimbues/1', [], 403);
+        $this->assertPut('/characters/1/99/runeimbues/2', [], 403);
         $this->assertPut('/characters/2/1/runeimbues', [], 403);
         $this->assertPut('/characters/2/1/runeimbues/1', [], 403);
         $this->assertPut('/characters/2/1/runeimbues/2', [], 403);
@@ -93,6 +108,9 @@ class CharactersRuneImbuesTest extends AuthIntegrationTestCase
         $this->assertPut('/characters/1/2/runeimbues', [], 403);
         $this->assertPut('/characters/1/2/runeimbues/1', [], 403);
         $this->assertPut('/characters/1/2/runeimbues/2', [], 403);
+        $this->assertPut('/characters/1/99/runeimbues', [], 403);
+        $this->assertPut('/characters/1/99/runeimbues/1', [], 403);
+        $this->assertPut('/characters/1/99/runeimbues/2', [], 403);
         $this->assertPut('/characters/2/1/runeimbues', [], 403);
         $this->assertPut('/characters/2/1/runeimbues/1', [], 403);
         $this->assertPut('/characters/2/1/runeimbues/2', [], 403);
@@ -108,6 +126,8 @@ class CharactersRuneImbuesTest extends AuthIntegrationTestCase
         $this->assertDelete('/characters/1/1/runeimbues/2', 401);
         $this->assertDelete('/characters/1/2/runeimbues/1', 401);
         $this->assertDelete('/characters/1/2/runeimbues/2', 401);
+        $this->assertDelete('/characters/1/99/runeimbues/1', 401);
+        $this->assertDelete('/characters/1/99/runeimbues/2', 401);
         $this->assertDelete('/characters/2/1/runeimbues/1', 401);
         $this->assertDelete('/characters/2/1/runeimbues/2', 401);
         $this->assertDelete('/characters/99/1/runeimbues/1', 401);
@@ -118,6 +138,8 @@ class CharactersRuneImbuesTest extends AuthIntegrationTestCase
         $this->assertDelete('/characters/1/1/runeimbues/2', 403);
         $this->assertDelete('/characters/1/2/runeimbues/1', 403);
         $this->assertDelete('/characters/1/2/runeimbues/2', 403);
+        $this->assertDelete('/characters/1/99/runeimbues/1', 403);
+        $this->assertDelete('/characters/1/99/runeimbues/2', 403);
         $this->assertDelete('/characters/2/1/runeimbues/1', 403);
         $this->assertDelete('/characters/2/1/runeimbues/2', 403);
         $this->assertDelete('/characters/99/1/runeimbues/1', 403);
@@ -128,6 +150,8 @@ class CharactersRuneImbuesTest extends AuthIntegrationTestCase
         $this->assertDelete('/characters/1/1/runeimbues/2', 403);
         $this->assertDelete('/characters/1/2/runeimbues/1', 403);
         $this->assertDelete('/characters/1/2/runeimbues/2', 403);
+        $this->assertDelete('/characters/1/99/runeimbues/1', 403);
+        $this->assertDelete('/characters/1/99/runeimbues/2', 403);
         $this->assertDelete('/characters/2/1/runeimbues/1', 403);
         $this->assertDelete('/characters/2/1/runeimbues/2', 403);
         $this->assertDelete('/characters/99/1/runeimbues/1', 403);
@@ -176,6 +200,7 @@ class CharactersRuneImbuesTest extends AuthIntegrationTestCase
         $input = [
 # required fields:
             'imbue_id' => 2,
+# optional fields:
             'times' => 4,
         ];
 
@@ -193,6 +218,21 @@ class CharactersRuneImbuesTest extends AuthIntegrationTestCase
             $this->assertArrayKeyValue($key, $value, $actual);
         }
         $this->assertDateTimeNow($actual['modified']);
+    }
+
+    public function testAddToConceptCharacter(): void
+    {
+        $input = [
+            'imbue_id' => 2,
+        ];
+
+        $this->withAuthReferee();
+        $actual = $this->assertPut('/characters/1/2/runeimbues', $input, 422);
+
+        $errors = $this->assertErrorsResponse('/characters/1/2/runeimbues', $actual);
+        # expected fields with validation errors:
+        $this->assertCount(1, $errors);
+        $this->assertArrayHasKey('character_id', $errors);
     }
 
     public function testEdit(): void
