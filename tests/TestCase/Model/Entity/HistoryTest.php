@@ -24,9 +24,9 @@ class HistoryTest extends TestCase
 
         $b->set('modified', $a->get('modified'));
         $this->assertGreaterThan(0, History::compare($a, $b));
-        $b->set('id', 2);
+        $a->set('key1', 1);
         $this->assertLessThan(0, History::compare($a, $b));
-        $a->set('id', 1);
+        $b->set('key1', 2);
 
         $a->set('entity', 'someAap');
         $b->set('entity', 'someNootMies');
@@ -40,11 +40,11 @@ class HistoryTest extends TestCase
         $b->set('entity', $a->get('entity'));
         $this->assertGreaterThan(0, History::compare($a, $b));
 
-        $a->set('id', 3);
+        $a->set('key1', 3);
         $this->assertLessThan(0, History::compare($a, $b));
         $this->assertGreaterThan(0, History::compare($b, $a));
 
-        $a->set('id', 2);
+        $a->set('key1', 2);
         $this->assertEquals(0, History::compare($a, $b));
     }
 
