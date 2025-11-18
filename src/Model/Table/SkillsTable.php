@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\Datasource\EntityInterface;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 
@@ -31,26 +30,6 @@ class SkillsTable extends Table
         $rules->add([$this, 'ruleManaConsistency']);
 
         return $rules;
-    }
-
-    public function ruleManaConsistency(EntityInterface $entity, array $options): bool
-    {
-        $amount = $entity->get('mana_amount');
-        $manatype = $entity->get('manatype_id');
-
-        if ($amount > 0 && is_null($manatype)) {
-            $entity->setError('manatype_id', ['consistency' => 'Missing value']);
-
-            return false;
-        }
-
-        if ($amount == 0 && $manatype) {
-            $entity->setError('mana_amount', ['consistency' => 'Missing value']);
-
-            return false;
-        }
-
-        return true;
     }
 
     public function findIndex(SelectQuery $query): SelectQuery
