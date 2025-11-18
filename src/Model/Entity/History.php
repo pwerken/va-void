@@ -79,11 +79,11 @@ class History extends CakeEntity
             return $cmp;
         }
 
-        if (is_null($b->get('id'))) {
+        if (is_null($a->get('key1'))) {
             return 1;
         }
 
-        if (is_null($a->get('id'))) {
+        if (is_null($b->get('key1'))) {
             return -1;
         }
 
@@ -100,7 +100,7 @@ class History extends CakeEntity
             return -$cmp;
         }
 
-        return $b->get('id') - $a->get('id');
+        return $b->get('key1') - $a->get('key1');
     }
 
     public function makeKey(): string
