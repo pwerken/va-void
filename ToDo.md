@@ -24,11 +24,10 @@ ToDo-list:
  - Indirect skills
    - [ ] add skills to imbues/powers/conditions/items
    - [ ] character: skills get a 'source' reference
- - Item crafting
-   - [ ] add item.imbuecap property
-   - [ ] add goods table
-   - [ ] add relation between items and goods
-   - [ ] /admin CRUD-operations page for Goods
+ - Craft+Imbue self-help
+   - [x] add item.imbuecap property
+   - [ ] add endpoints for self-help app actions
+   - [ ] add /admin page for self-help action validation & processing
  - Ruleset reference sheets
    - [ ] store spell-lists / add all the individual spells
    - [ ] store loresheets or links to pdf's?
