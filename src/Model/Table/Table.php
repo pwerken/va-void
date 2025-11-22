@@ -179,7 +179,7 @@ abstract class Table extends CakeTable
 
     public function ruleDisallowConceptCharacter(EntityInterface $entity, array $options): bool
     {
-        $character = $this->Characters->get($entity->get('character_id'));
+        $character = $this->fetchTable('Characters')->get($entity->get('character_id'));
         if ($character->get('status') !== CharacterStatus::Concept) {
             return true;
         }

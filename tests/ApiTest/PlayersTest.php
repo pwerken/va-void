@@ -310,7 +310,7 @@ class PlayersTest extends AuthIntegrationTestCase
         ];
 
         $this->withAuthInfobalie();
-        $errors = $this->assertValidationError('/players/1', $input, 422);
+        $errors = $this->assertValidationError('/players/1', $input);
         # expected fields with validation errors:
         $this->assertCount(1, $errors);
         $this->assertArrayHasKey('plin', $errors);
