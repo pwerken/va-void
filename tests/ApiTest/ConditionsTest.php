@@ -201,9 +201,7 @@ class ConditionsTest extends AuthIntegrationTestCase
         ];
 
         $this->withAuthReferee();
-        $response = $this->assertPut('/conditions', $input, 422);
-
-        $errors = $this->assertErrorsResponse('/conditions', $response);
+        $errors = $this->assertValidationError('/conditions', $input);
 
         # expected fields with validation errors:
         $this->assertCount(2, $errors);
@@ -222,9 +220,7 @@ class ConditionsTest extends AuthIntegrationTestCase
         ];
 
         $this->withAuthReferee();
-        $response = $this->assertPut('/conditions/1', $input, 422);
-
-        $errors = $this->assertErrorsResponse('/conditions/1', $response);
+        $errors = $this->assertValidationError('/conditions/1', $input);
 
         # expected fields with validation errors:
         $this->assertCount(2, $errors);

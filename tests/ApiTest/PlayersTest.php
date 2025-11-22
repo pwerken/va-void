@@ -162,9 +162,7 @@ class PlayersTest extends AuthIntegrationTestCase
     public function testRequiredFieldsValidation(): void
     {
         $this->withAuthInfobalie();
-        $response = $this->assertPut('/players', [], 422);
-
-        $errors = $this->assertErrorsResponse('/players', $response);
+        $errors = $this->assertValidationError('/players', []);
 
         # expected fields with validation errors:
         $this->assertCount(3, $errors);
@@ -264,9 +262,7 @@ class PlayersTest extends AuthIntegrationTestCase
         ];
 
         $this->withAuthPlayer();
-        $actual = $this->assertPut('/players/1', $input, 422);
-
-        $errors = $this->assertErrorsResponse('/players/1', $actual);
+        $errors = $this->assertValidationError('/players/1', $input);
         # expected fields with validation errors:
         $this->assertCount(1, $errors);
         $this->assertArrayHasKey('plin', $errors);
@@ -314,9 +310,7 @@ class PlayersTest extends AuthIntegrationTestCase
         ];
 
         $this->withAuthInfobalie();
-        $actual = $this->assertPut('/players/1', $input, 422);
-
-        $errors = $this->assertErrorsResponse('/players/1', $actual);
+        $errors = $this->assertValidationError('/players/1', $input, 422);
         # expected fields with validation errors:
         $this->assertCount(1, $errors);
         $this->assertArrayHasKey('plin', $errors);

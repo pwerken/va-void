@@ -199,9 +199,7 @@ class ItemsTest extends AuthIntegrationTestCase
     public function testRequiredFieldsValidation(): void
     {
         $this->withAuthReferee();
-        $response = $this->assertPut('/items', [], 422);
-
-        $errors = $this->assertErrorsResponse('/items', $response);
+        $errors = $this->assertValidationError('/items', []);
 
         # expected fields with validation errors:
         $this->assertCount(1, $errors);

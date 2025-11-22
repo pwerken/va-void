@@ -160,9 +160,7 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
         $url = '/characters/1/1/skills';
 
         $this->withAuthReferee();
-        $response = $this->assertPut($url, [], 422);
-
-        $errors = $this->assertErrorsResponse($url, $response);
+        $errors = $this->assertValidationError($url, []);
 
         # expected fields with validation errors:
         $this->assertCount(1, $errors);
@@ -223,9 +221,8 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
         ];
 
         $this->withAuthReferee();
-        $actual = $this->assertPut('/characters/1/1/skills', $input, 422);
+        $errors = $this->assertValidationError('/characters/1/1/skills', $input);
 
-        $errors = $this->assertErrorsResponse('/characters/1/1/skills', $actual);
         # expected fields with validation errors:
         $this->assertCount(1, $errors);
         $this->assertArrayHasKey('skill_id', $errors);
@@ -256,9 +253,7 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
             'times' => 2,
         ];
 
-        $actual = $this->assertPut('/characters/1/2/skills/1', $input, 422);
-
-        $errors = $this->assertErrorsResponse('/characters/1/2/skills/1', $actual);
+        $errors = $this->assertValidationError('/characters/1/2/skills/1', $input);
         # expected fields with validation errors:
         $this->assertCount(1, $errors);
         $this->assertArrayHasKey('times', $errors);
@@ -269,9 +264,7 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
             'times' => 10,
         ];
 
-        $actual = $this->assertPut('/characters/1/2/skills', $input, 422);
-
-        $errors = $this->assertErrorsResponse('/characters/1/2/skills', $actual);
+        $errors = $this->assertValidationError('/characters/1/2/skills', $input);
         # expected fields with validation errors:
         $this->assertCount(1, $errors);
         $this->assertArrayHasKey('skill_id', $errors);
@@ -308,9 +301,8 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
         ];
 
         $this->withAuthReferee();
-        $actual = $this->assertPut('/characters/1/1/skills/1', $input, 422);
+        $errors = $this->assertValidationError('/characters/1/1/skills/1', $input);
 
-        $errors = $this->assertErrorsResponse('/characters/1/1/skills/1', $actual);
         # expected fields with validation errors:
         $this->assertCount(1, $errors);
         $this->assertArrayHasKey('times', $errors);
