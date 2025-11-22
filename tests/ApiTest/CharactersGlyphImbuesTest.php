@@ -220,6 +220,21 @@ class CharactersGlyphImbuesTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
+    public function testAddNoDeprecated(): void
+    {
+        $input = [
+            'imbue_id' => 3,
+        ];
+
+        $this->withAuthReferee();
+        $actual = $this->assertPut('/characters/1/1/glyphimbues', $input, 422);
+
+        $errors = $this->assertErrorsResponse('/characters/1/1/glyphimbues', $actual);
+        # expected fields with validation errors:
+        $this->assertCount(1, $errors);
+        $this->assertArrayHasKey('imbue_id', $errors);
+    }
+
     public function testAddToConceptCharacter(): void
     {
         $input = [
@@ -256,6 +271,22 @@ class CharactersGlyphImbuesTest extends AuthIntegrationTestCase
             $this->assertArrayKeyValue($key, $value, $actual);
         }
         $this->assertDateTimeNow($actual['modified']);
+    }
+
+    public function testEditTimesLimit(): void
+    {
+        $input = [
+# optional fields:
+            'times' => 9999,
+        ];
+
+        $this->withAuthReferee();
+        $actual = $this->assertPut('/characters/1/1/glyphimbues/1', $input, 422);
+
+        $errors = $this->assertErrorsResponse('/characters/1/1/glyphimbues/1', $actual);
+        # expected fields with validation errors:
+        $this->assertCount(1, $errors);
+        $this->assertArrayHasKey('times', $errors);
     }
 
     public function testDelete(): void
