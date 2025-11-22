@@ -163,9 +163,7 @@ class CharactersPowersTest extends AuthIntegrationTestCase
         $url = '/characters/1/1/powers';
 
         $this->withAuthReferee();
-        $response = $this->assertPut($url, [], 422);
-
-        $errors = $this->assertErrorsResponse($url, $response);
+        $errors = $this->assertValidationError($url, []);
 
         # expected fields with validation errors:
         $this->assertCount(1, $errors);
@@ -227,9 +225,8 @@ class CharactersPowersTest extends AuthIntegrationTestCase
         ];
 
         $this->withAuthReferee();
-        $actual = $this->assertPut('/characters/1/2/powers', $input, 422);
+        $errors = $this->assertValidationError('/characters/1/2/powers', $input);
 
-        $errors = $this->assertErrorsResponse('/characters/1/2/powers', $actual);
         # expected fields with validation errors:
         $this->assertCount(1, $errors);
         $this->assertArrayHasKey('character_id', $errors);

@@ -163,9 +163,7 @@ class CharactersGlyphImbuesTest extends AuthIntegrationTestCase
         $url = '/characters/1/1/glyphimbues';
 
         $this->withAuthReferee();
-        $response = $this->assertPut($url, [], 422);
-
-        $errors = $this->assertErrorsResponse($url, $response);
+        $errors = $this->assertValidationError($url, []);
 
         # expected fields with validation errors:
         $this->assertCount(1, $errors);
@@ -227,9 +225,8 @@ class CharactersGlyphImbuesTest extends AuthIntegrationTestCase
         ];
 
         $this->withAuthReferee();
-        $actual = $this->assertPut('/characters/1/1/glyphimbues', $input, 422);
+        $errors = $this->assertValidationError('/characters/1/1/glyphimbues', $input);
 
-        $errors = $this->assertErrorsResponse('/characters/1/1/glyphimbues', $actual);
         # expected fields with validation errors:
         $this->assertCount(1, $errors);
         $this->assertArrayHasKey('imbue_id', $errors);
@@ -242,9 +239,8 @@ class CharactersGlyphImbuesTest extends AuthIntegrationTestCase
         ];
 
         $this->withAuthReferee();
-        $actual = $this->assertPut('/characters/1/2/glyphimbues', $input, 422);
+        $errors = $this->assertValidationError('/characters/1/2/glyphimbues', $input);
 
-        $errors = $this->assertErrorsResponse('/characters/1/2/glyphimbues', $actual);
         # expected fields with validation errors:
         $this->assertCount(1, $errors);
         $this->assertArrayHasKey('character_id', $errors);
@@ -281,9 +277,8 @@ class CharactersGlyphImbuesTest extends AuthIntegrationTestCase
         ];
 
         $this->withAuthReferee();
-        $actual = $this->assertPut('/characters/1/1/glyphimbues/1', $input, 422);
+        $errors = $this->assertValidationError('/characters/1/1/glyphimbues/1', $input);
 
-        $errors = $this->assertErrorsResponse('/characters/1/1/glyphimbues/1', $actual);
         # expected fields with validation errors:
         $this->assertCount(1, $errors);
         $this->assertArrayHasKey('times', $errors);

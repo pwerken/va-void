@@ -201,9 +201,7 @@ class PowersTest extends AuthIntegrationTestCase
         ];
 
         $this->withAuthReferee();
-        $response = $this->assertPut('/powers', $input, 422);
-
-        $errors = $this->assertErrorsResponse('/powers', $response);
+        $errors = $this->assertValidationError('/powers', $input);
 
         # expected fields with validation errors:
         $this->assertCount(2, $errors);
@@ -222,9 +220,7 @@ class PowersTest extends AuthIntegrationTestCase
         ];
 
         $this->withAuthReferee();
-        $response = $this->assertPut('/powers/1', $input, 422);
-
-        $errors = $this->assertErrorsResponse('/powers/1', $response);
+        $errors = $this->assertValidationError('/powers/1', $input);
 
         # expected fields with validation errors:
         $this->assertCount(2, $errors);

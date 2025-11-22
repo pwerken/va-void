@@ -175,9 +175,7 @@ class ImbuesTest extends AuthIntegrationTestCase
         ];
 
         $this->withAuthReferee();
-        $response = $this->assertPut('/imbues', $input, 422);
-
-        $errors = $this->assertErrorsResponse('/imbues', $response);
+        $errors = $this->assertValidationError('/imbues', $input);
 
         # expected fields with validation errors:
         $this->assertCount(3, $errors);
@@ -197,9 +195,7 @@ class ImbuesTest extends AuthIntegrationTestCase
         ];
 
         $this->withAuthReferee();
-        $response = $this->assertPut('/imbues/1', $input, 422);
-
-        $errors = $this->assertErrorsResponse('/imbues/1', $response);
+        $errors = $this->assertValidationError('/imbues/1', $input);
 
         # expected fields with validation errors:
         $this->assertCount(2, $errors);

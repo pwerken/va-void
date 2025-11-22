@@ -99,8 +99,11 @@ class AuthIntegrationTestCase extends TestCase
         return json_decode((string)$this->_response->getBody(), true);
     }
 
-    public function assertErrorsResponse(string $url, array $response): array
+    public function assertValidationError(string $url, array|string $data = []): array
     {
+        $response = $this->_assertRequest($url, 'PUT', 422, json_encode($data));
+
+        $this->assertIsArray($response);
         $this->assertArrayKeyValue('class', 'Error', $response);
         $this->assertArrayKeyValue('code', 422, $response);
         $this->assertArrayKeyValue('url', $url, $response);

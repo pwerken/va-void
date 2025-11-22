@@ -140,9 +140,8 @@ class CharactersTest extends AuthIntegrationTestCase
         $url = '/players/1/characters';
 
         $this->withAuthReferee();
-        $response = $this->assertPut($url, [], 422);
+        $errors = $this->assertValidationError($url, []);
 
-        $errors = $this->assertErrorsResponse($url, $response);
         # expected fields with validation errors:
         $this->assertCount(1, $errors);
         $this->assertArrayHasKey('name', $errors);
@@ -251,9 +250,7 @@ class CharactersTest extends AuthIntegrationTestCase
         ];
 
         $this->withAuthReferee();
-        $actual = $this->assertPut('/characters/1/1', $input, 422);
-
-        $errors = $this->assertErrorsResponse('/characters/1/1', $actual);
+        $errors = $this->assertValidationError('/characters/1/1', $input);
         # expected fields with validation errors:
         $this->assertCount(2, $errors);
         $this->assertArrayHasKey('plin', $errors);
@@ -309,9 +306,7 @@ class CharactersTest extends AuthIntegrationTestCase
         ];
 
         $this->withAuthPlayer();
-        $actual = $this->assertPut('/characters/1/2', $input, 422);
-
-        $errors = $this->assertErrorsResponse('/characters/1/2', $actual);
+        $errors = $this->assertValidationError('/characters/1/2', $input);
         # expected fields with validation errors:
         $this->assertCount(2, $errors);
         $this->assertArrayHasKey('plin', $errors);
@@ -367,9 +362,7 @@ class CharactersTest extends AuthIntegrationTestCase
         ];
         $expected['status'] = $input['status'];
 
-        $actual = $this->assertPut('/characters/1/2', $input, 422);
-
-        $errors = $this->assertErrorsResponse('/characters/1/2', $actual);
+        $errors = $this->assertValidationError('/characters/1/2', $input);
         # expected fields with validation errors:
         $this->assertCount(1, $errors);
         $this->assertArrayHasKey('status', $errors);
