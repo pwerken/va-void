@@ -216,6 +216,21 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
         $this->assertDateTimeNow($actual['modified']);
     }
 
+    public function testAddNoDeprecated(): void
+    {
+        $input = [
+            'skill_id' => 3,
+        ];
+
+        $this->withAuthReferee();
+        $actual = $this->assertPut('/characters/1/1/skills', $input, 422);
+
+        $errors = $this->assertErrorsResponse('/characters/1/1/skills', $actual);
+        # expected fields with validation errors:
+        $this->assertCount(1, $errors);
+        $this->assertArrayHasKey('skill_id', $errors);
+    }
+
     public function testAddToConceptCharacter(): void
     {
         $input = [
@@ -283,6 +298,22 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
             $this->assertArrayKeyValue($key, $value, $actual);
         }
         $this->assertDateTimeNow($actual['modified']);
+    }
+
+    public function testEditTimesLimit(): void
+    {
+        $input = [
+# optional fields:
+            'times' => 9999,
+        ];
+
+        $this->withAuthReferee();
+        $actual = $this->assertPut('/characters/1/1/skills/1', $input, 422);
+
+        $errors = $this->assertErrorsResponse('/characters/1/1/skills/1', $actual);
+        # expected fields with validation errors:
+        $this->assertCount(1, $errors);
+        $this->assertArrayHasKey('times', $errors);
     }
 
     public function testDelete(): void
