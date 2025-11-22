@@ -143,7 +143,7 @@ class CharactersTable extends Table
             return true;
         }
 
-        $faction = $this->Factions->get($entity->get('faction_id'));
+        $faction = $this->fetchTable('Factions')->get($entity->get('faction_id'));
         if (!$faction->get('deprecated')) {
             return true;
         }
