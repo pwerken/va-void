@@ -29,7 +29,12 @@ class CharacterPolicy extends EntityPolicy
 
     public function canDelete(User $identity, Character $obj): bool
     {
-        return $this->canAdd($identity, $obj);
+        $allowed = $this->hasAuthObj($obj, Authorization::Super);
+        if (!$allowed && $obj->get('status') === CharacterStatus::Concept) {
+            $allowed = $this->hasAuthObj($obj, Authorization::Referee, Authorization::Owner);
+        }
+
+        return $allowed;
     }
 
     public function canEdit(User $identity, Character $obj): bool

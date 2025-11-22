@@ -50,15 +50,13 @@ class CharactersTest extends AuthIntegrationTestCase
     {
         $this->withoutAuth();
         $this->assertDelete('/characters/1/1', 401);
-        $this->assertDelete('/characters/1/2', 401);
         $this->assertDelete('/characters/1/99', 401);
         $this->assertDelete('/characters/2/1', 401);
         $this->assertDelete('/characters/99/1', 401);
 
         $this->withAuthPlayer();
         $this->assertDelete('/characters/1/1', 403);
-        $this->assertDelete('/characters/1/2', 403); // FIXME
-        $this->assertDelete('/characters/1/99', 403);
+        $this->assertDelete('/characters/1/99', 404);
         $this->assertDelete('/characters/2/1', 403);
         $this->assertDelete('/characters/99/1', 403);
 
@@ -71,15 +69,15 @@ class CharactersTest extends AuthIntegrationTestCase
 
         $this->withAuthReferee();
         $this->assertDelete('/characters/1/1', 403);
-        $this->assertDelete('/characters/1/99', 403);
+        $this->assertDelete('/characters/1/99', 404);
         $this->assertDelete('/characters/2/1', 403);
-        $this->assertDelete('/characters/99/1', 403);
+        $this->assertDelete('/characters/99/1', 404);
 
         $this->withAuthInfobalie();
         $this->assertDelete('/characters/1/1', 403);
-        $this->assertDelete('/characters/1/99', 403);
+        $this->assertDelete('/characters/1/99', 404);
         $this->assertDelete('/characters/2/1', 403);
-        $this->assertDelete('/characters/99/1', 403);
+        $this->assertDelete('/characters/99/1', 404);
     }
 
     public function testBelieves(): void
@@ -366,5 +364,17 @@ class CharactersTest extends AuthIntegrationTestCase
         # expected fields with validation errors:
         $this->assertCount(1, $errors);
         $this->assertArrayHasKey('status', $errors);
+    }
+
+    public function testDeleteConceptByPlayer(): void
+    {
+        $this->withAuthPlayer();
+        $this->assertDelete('/characters/1/2', 204);
+    }
+
+    public function testDeleteConceptByReferee(): void
+    {
+        $this->withAuthReferee();
+        $this->assertDelete('/characters/1/2', 204);
     }
 }
