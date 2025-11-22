@@ -44,7 +44,7 @@ class CharactersControllerPolicy extends ControllerPolicy
      */
     public function delete(): bool
     {
-        return $this->hasAuth(Authorization::Super);
+        return $this->add();
     }
 
     /**
