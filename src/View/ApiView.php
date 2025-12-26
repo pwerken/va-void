@@ -13,6 +13,7 @@ use App\Utility\Json;
 use App\View\Helper\AuthorizeHelper;
 use Cake\ORM\ResultSet;
 use Cake\Utility\Inflector;
+use Cake\Utility\Security;
 use Cake\View\View;
 
 /**
@@ -41,8 +42,20 @@ class ApiView extends View
             $data = $this->jsonArray($data, $parent);
             $data['url'] = $this->getRequest()->getPath();
         }
+        $json = Json::encode($data);
 
-        return Json::encode($data);
+        // FIXME This is the bad way of doing ETags.
+        // Better to do this in the controller based on the modified date(s).
+        $checksum = Security::hash($json);
+        $response = $this->getResponse()->withEtag($checksum);
+
+        $this->setResponse($response);
+        if ($response->isNotModified($this->getRequest())) {
+            $this->setResponse($response->withNotModified());
+            $json = '';
+        }
+
+        return $json;
     }
 
     protected function jsonEntity(Entity $obj): array

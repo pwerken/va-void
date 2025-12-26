@@ -36,4 +36,5 @@ ToDo-list:
    - [ ] /admin: add heuristic to compact/cleanup history table
    - [ ] api .../history routes: with shorthand log of changes
  - Optimizations
-   - [ ] headers: add Last-Modified / ETag
+   - [x] headers: add Last-Modified / ETag
+   - [ ] ETag based on modified field(s)
