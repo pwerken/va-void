@@ -90,7 +90,7 @@ class SocialController extends AdminController
             return null;
         }
 
-        $login->set('user_id', $player->get('id'));
+        $login->set('user_id', $player->get('plin'));
         $login->set('hidden', false);
         if (!$profiles->save($login)) {
             $this->Flash->error(sprintf('SocialProfile#%d failed to link', $social));
