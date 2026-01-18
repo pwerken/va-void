@@ -35,7 +35,7 @@ class TablePolicyResolverTest extends TestCase
             return $resolver->getPolicy($resource);
         };
 
-        $query = $this->createMock(QueryInterface::class);
+        $query = $this->createStub(QueryInterface::class);
         $this->assertInstanceOf(QueryInterface::class, $query);
         $this->assertNull($query->getRepository());
 
@@ -53,8 +53,8 @@ class TablePolicyResolverTest extends TestCase
             return $resolver->getPolicy($resource);
         };
 
-        $table = $this->createMock(Table::class);
-        $query = $this->createMock(QueryInterface::class);
+        $table = $this->createStub(Table::class);
+        $query = $this->createStub(QueryInterface::class);
         $query->method('getRepository')->willReturn($table);
 
         $this->assertInstanceOf(QueryInterface::class, $query);

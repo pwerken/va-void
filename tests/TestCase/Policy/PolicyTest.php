@@ -10,7 +10,7 @@ class PolicyTest extends TestCase
 {
     public function testHasRoleUserWithNull(): void
     {
-        $policy = $this->createMock(Policy::class);
+        $policy = $this->createStub(Policy::class);
         $hasRoleUser = $this->protectedMethod($policy, 'hasRoleUser');
 
         $this->assertFalse(call_user_func_array($hasRoleUser, [0, null]));

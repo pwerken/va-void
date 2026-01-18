@@ -28,7 +28,7 @@ class EntityPolicyResolverTest extends TestCase
 
     public function testMissingPolicy(): void
     {
-        $entity = $this->createMock(EntityInterface::class);
+        $entity = $this->createStub(EntityInterface::class);
         $this->assertInstanceOf(EntityInterface::class, $entity);
 
         $resolver = new EntityPolicyResolver();

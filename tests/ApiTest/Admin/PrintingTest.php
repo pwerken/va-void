@@ -17,7 +17,7 @@ class PrintingTest extends AuthIntegrationTestCase
         $this->assertRedirect('/admin?redirect=' . urlencode($this->url));
 
         $this->assertPost($this->url, [], 302);
-        $this->assertRedirect('/admin?redirect=' . urlencode($this->url));
+        $this->assertRedirect('/admin');
 
         $this->assertGet($this->url . '/single', 302);
         $this->assertRedirect('/admin?redirect=' . urlencode($this->url . '/single'));

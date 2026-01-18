@@ -15,13 +15,13 @@ class SocialTest extends AuthIntegrationTestCase
         $this->assertRedirect('/admin?redirect=' . urlencode($this->url));
 
         $this->assertPost($this->url, [], 302);
-        $this->assertRedirect('/admin?redirect=' . urlencode($this->url));
+        $this->assertRedirect('/admin');
 
         $this->assertGet($this->url . '/all', 302);
         $this->assertRedirect('/admin?redirect=' . urlencode($this->url . '/all'));
 
         $this->assertPost($this->url . '/all', [], 302);
-        $this->assertRedirect('/admin?redirect=' . urlencode($this->url . '/all'));
+        $this->assertRedirect('/admin');
 
         $this->assertGet($this->url . '/callback', 302);
         $this->assertRedirect('/admin');
