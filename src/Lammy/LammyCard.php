@@ -182,8 +182,12 @@ abstract class LammyCard
         $this->pdf->SetXY($this->xPos, $this->yPos);
     }
 
-    protected function textarea(float $x, float $y, float $w, float $h, string $text): void
+    protected function textarea(float $x, float $y, float $w, float $h, ?string $text): void
     {
+        if (is_null($text)) {
+            return;
+        }
+
         preg_match_all('/\s*[^\s]+/', $text, $matches);
         $matches = $matches[0];
 
