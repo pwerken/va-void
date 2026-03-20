@@ -13,3 +13,5 @@ parameters:
 	ignoreErrors:
 		- identifier: missingType.iterableValue
 		- identifier: missingType.generics
+		- identifier: require.fileNotFound
+		  path: config/bootstrap.php

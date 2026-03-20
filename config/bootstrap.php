@@ -51,8 +51,6 @@ use Cake\Utility\Security;
  * Load global functions for collections, translations, debugging etc.
  */
 require CAKE . 'functions.php';
-
-// @phpstan-ignore-next-line
 require APP . 'functions.php';
 
 /*

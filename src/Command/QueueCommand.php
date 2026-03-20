@@ -28,7 +28,7 @@ class QueueCommand extends Command
         if ($result->count() == 0) {
             $io->out('0');
         } else {
-            $io->out((string)$result->first()->id);
+            $io->out((string)$result->first()->get('id'));
         }
 
         return static::CODE_SUCCESS;

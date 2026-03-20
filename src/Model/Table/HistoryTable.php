@@ -116,6 +116,7 @@ class HistoryTable extends Table
                 break;
         }
 
+        /** @var array<\App\Model\Entity\History> $list */
         $list = $this->find()
             ->where($where)
             ->all()

@@ -191,6 +191,7 @@ class SocialAuthComponent extends Component
     protected function _getUser(string $provider, User $identity): Player
     {
         // first look for SocialProfile in DB
+        /** @var \App\Model\Entity\SocialProfile $profile */
         $profile = $this->_profileModel
             ->find()
             ->where([
@@ -245,7 +246,7 @@ class SocialAuthComponent extends Component
             $result = $this->_profileModel
                 ->find()
                 ->select('user_id', true)
-                ->where(['email' => $profile->email, 'user_id IS NOT NULL'])
+                ->where(['email' => $profile->get('email'), 'user_id IS NOT NULL'])
                 ->disableHydration()
                 ->first();
             if ($result) {

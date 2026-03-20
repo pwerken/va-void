@@ -76,10 +76,13 @@ class LammiesTable extends Table
             ->where(['status LIKE' => LammyStatus::Printing]);
     }
 
+    /**
+     * @param \Cake\Datasource\ResultSetInterface<(int|string), \App\Model\Entity\Lammy> $set
+     */
     public function setStatuses(ResultSetInterface $set, LammyStatus $status): void
     {
         foreach ($set as $lammy) {
-            $lammy->status = (is_null($lammy->lammy) ? LammyStatus::Failed : $status);
+            $lammy->set('status', ($lammy->hasValue('lammy') ? $status : LammyStatus::Failed));
             $this->save($lammy);
         }
     }

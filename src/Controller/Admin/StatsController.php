@@ -71,10 +71,10 @@ class StatsController extends AdminController
         $rows = [];
         foreach ($query->all() as $character) {
             $rows[] = [
-                'plin' => $character->plin,
-                'chin' => $character->chin,
-                'name' => $character->name,
-                'value' => round((float)$character->xp),
+                'plin' => $character->get('plin'),
+                'chin' => $character->get('chin'),
+                'name' => $character->get('name'),
+                'value' => round((float)$character->get('xp')),
             ];
         }
 
@@ -104,10 +104,10 @@ class StatsController extends AdminController
         $rows = [];
         foreach ($query->all() as $item) {
             $rows[] = [
-                'plin' => $item->character->plin,
-                'chin' => $item->character->chin,
-                'name' => $item->character->name,
-                'value' => $item->total,
+                'plin' => $item->get('character')->plin,
+                'chin' => $item->get('character')->chin,
+                'name' => $item->get('character')->name,
+                'value' => $item->get('total'),
             ];
         }
 
@@ -153,10 +153,10 @@ class StatsController extends AdminController
         $rows = [];
         foreach ($query->all() as $character) {
             $rows[] = [
-                'plin' => $character->plin,
-                'chin' => $character->chin,
-                'name' => $character->name,
-                'value' => $character->total,
+                'plin' => $character->get('plin'),
+                'chin' => $character->get('chin'),
+                'name' => $character->get('name'),
+                'value' => $character->get('total'),
             ];
         }
 
@@ -191,10 +191,10 @@ class StatsController extends AdminController
         $rows = [];
         foreach ($query->all() as $charSkill) {
             $rows[] = [
-                'plin' => $charSkill->character->plin,
-                'chin' => $charSkill->character->chin,
-                'name' => $charSkill->character->name,
-                'value' => $charSkill->total,
+                'plin' => $charSkill->get('character')->plin,
+                'chin' => $charSkill->get('character')->chin,
+                'name' => $charSkill->get('character')->name,
+                'value' => $charSkill->get('total'),
             ];
         }
 
@@ -231,10 +231,10 @@ class StatsController extends AdminController
         $rows = [];
         foreach ($query->all() as $charPower) {
             $rows[] = [
-                'plin' => $charPower->character->plin,
-                'chin' => $charPower->character->chin,
-                'name' => $charPower->character->name,
-                'value' => $charPower->total,
+                'plin' => $charPower->get('character')->plin,
+                'chin' => $charPower->get('character')->chin,
+                'name' => $charPower->get('character')->name,
+                'value' => $charPower->get('total'),
             ];
         }
 

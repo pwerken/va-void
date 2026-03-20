@@ -41,6 +41,9 @@ class LammyComponent extends Component
         $controller->set('double', $double);
     }
 
+    /**
+     * @param list<\App\Model\Entity\Lammy> $lammies
+     */
     public function queueLammies(array $lammies): void
     {
         $controller = $this->getController();
