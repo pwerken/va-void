@@ -12,7 +12,7 @@
         "cakephp/cakephp": "5.3.*",
         "cakephp/migrations": "@stable",
         "cakephp/plugin-installer": "^2.0",
-        "firebase/php-jwt": "^6.5",
+        "firebase/php-jwt": "^7.0",
         "jeremyharris/cakephp-lazyload": "^5.0",
         "mpdf/mpdf": "^8.2",
         "socialconnect/auth": "^3.3"
