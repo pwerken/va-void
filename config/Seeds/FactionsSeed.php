@@ -1,11 +1,11 @@
 <?php
 
-use Migrations\AbstractSeed;
+use Migrations\BaseSeed;
 
 /**
  * Factions seed.
  */
-class FactionsSeed extends AbstractSeed
+class FactionsSeed extends BaseSeed
 {
     /**
      * Run Method.

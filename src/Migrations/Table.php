@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 namespace App\Migrations;
 
-use Migrations\Table as BaseTable;
-use Phinx\Db\Table\Table as TableValue;
+use Migrations\Db\Table as BaseTable;
+use Migrations\Db\Table\ForeignKey;
+use Migrations\Db\Table\TableMetadata;
 
 class Table extends BaseTable
 {
@@ -15,8 +16,8 @@ class Table extends BaseTable
     ];
 
     public function addForeignKey(
-        string|array $columns,
-        string|TableValue $referencedTable,
+        string|array|ForeignKey $columns,
+        string|TableMetadata|null $referencedTable = null,
         string|array $referencedColumns = ['id'],
         array $options = [],
     ): static {
@@ -27,18 +28,15 @@ class Table extends BaseTable
         return parent::addForeignKey($columns, $referencedTable, $referencedColumns, $options);
     }
 
-    public function addForeignKeyWithName(
-        string $name,
+    public function dropForeignKey(
         string|array $columns,
-        string|TableValue $referencedTable,
-        string|array $referencedColumns = ['id'],
-        array $options = [],
+        ?string $constraint = null,
     ): static {
         if ($this->getAdapter()->getAdapterType() === 'sqlite') {
             return $this;
         }
 
-        return parent::addForeignKeyWithName($name, $columns, $referencedTable, $referencedColumns, $options);
+        return parent::dropForeignKey($columns, $constraint);
     }
 
     public function addColumnBoolean(string $name, array $options = []): static

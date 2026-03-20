@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace App\Migrations;
 
 use Cake\I18n\DateTime;
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class Migration extends AbstractMigration
+class Migration extends BaseMigration
 {
     protected ?string $now = null;
 

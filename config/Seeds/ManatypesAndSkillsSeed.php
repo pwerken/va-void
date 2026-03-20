@@ -1,11 +1,11 @@
 <?php
 
-use Migrations\AbstractSeed;
+use Migrations\BaseSeed;
 
 /**
  * Manatypes and Skills seed.
  */
-class ManatypesAndSkillsSeed extends AbstractSeed
+class ManatypesAndSkillsSeed extends BaseSeed
 {
     /**
      * Run Method.

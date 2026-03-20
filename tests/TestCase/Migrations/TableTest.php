@@ -5,7 +5,7 @@ namespace App\Test\Migrations;
 
 use App\Migrations\Table;
 use App\Test\TestSuite\TestCase;
-use Phinx\Db\Adapter\AdapterInterface;
+use Migrations\Db\Adapter\AdapterInterface;
 
 class TableTest extends TestCase
 {
@@ -16,17 +16,17 @@ class TableTest extends TestCase
 
         $table = new Table('someTableName', [], $sqlite);
 
-        $this->assertSame($table, $table->addForeignKey('', ''));
+        $this->assertSame($table, $table->addForeignKey(''));
     }
 
-    public function testAddForeignKeyWithName(): void
+    public function testDropForeignKey(): void
     {
         $sqlite = $this->createStub(AdapterInterface::class);
         $sqlite->method('getAdapterType')->willReturn('sqlite');
 
         $table = new Table('someTableName', [], $sqlite);
 
-        $this->assertSame($table, $table->addForeignKeyWithName('', '', ''));
+        $this->assertSame($table, $table->dropForeignKey(''));
     }
 
     public function testAddColumnBoolean(): void

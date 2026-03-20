@@ -1,11 +1,11 @@
 <?php
 
-use Migrations\AbstractSeed;
+use Migrations\BaseSeed;
 
 /**
  * Events seed.
  */
-class EventsSeed extends AbstractSeed
+class EventsSeed extends BaseSeed
 {
     /**
      * Run Method.
