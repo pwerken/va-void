@@ -18,7 +18,7 @@ class WhoWhenBehavior extends Behavior
 {
     public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
-        if ($entity instanceof History && !$entity->isEmpty('data')) {
+        if ($entity instanceof History && $entity->hasValue('data')) {
             return;
         }
 
