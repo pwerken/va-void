@@ -67,11 +67,15 @@ return function (RouteBuilder $routes): void {
     $defaults = [];
     $defaults['_method'] = 'GET';
     $defaults['controller'] = 'Auth';
-    $defaults['action'] = 'social';
-    $routes->connect('/auth/social', $defaults);
-
     $routeOptions = [];
     $routeOptions['pass'][] = 'provider';
+
+    $defaults['action'] = 'oauth2';
+    $routes->connect('/auth/OAuth2', $defaults);
+    $routes->connect('/auth/OAuth2/{provider}', $defaults, $routeOptions);
+
+    $defaults['action'] = 'social';
+    $routes->connect('/auth/social', $defaults);
     $routes->connect('/auth/social/{provider}', $defaults, $routeOptions);
 
     /**

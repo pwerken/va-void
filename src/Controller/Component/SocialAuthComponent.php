@@ -22,6 +22,7 @@ use SocialConnect\Auth\Service;
 use SocialConnect\Common\Entity\User;
 use SocialConnect\Common\Exception as SocialConnectException;
 use SocialConnect\Common\HttpStack;
+use SocialConnect\OAuth2\AbstractProvider as OAuth2Provider;
 use SocialConnect\Provider\AbstractBaseProvider as BaseProvider;
 use SocialConnect\Provider\AccessTokenInterface as AccessToken;
 use SocialConnect\Provider\Exception\InvalidResponse;
@@ -142,19 +143,22 @@ class SocialAuthComponent extends Component
     }
 
     /**
-     * Return list of provider's that are supported and configured.
+     * Return list of OAuth2 provider's that are supported and configured.
      */
-    public function getProviders(): array
+    public function getOAuth2Providers(): array
     {
-        $result = [];
-        $providers = $this->getConfig('serviceConfig.provider');
-        foreach ($providers as $key => $value) {
-            if (!empty($value['applicationId'])) {
-                $result[] = $key;
+        $providers = [];
+        foreach ($this->_factory->getProviders() as $name => $provider) {
+            if (!is_a($provider, OAuth2Provider::class, true)) {
+                continue;
             }
+            if (empty($this->getConfig('serviceConfig.provider.' . $name . '.applicationId'))) {
+                continue;
+            }
+            $providers[] = $name;
         }
 
-        return $result;
+        return $providers;
     }
 
     public function setCallbackUri(array|string $url): void

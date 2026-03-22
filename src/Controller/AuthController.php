@@ -26,6 +26,7 @@ class AuthController extends Controller
         $this->Authentication->allowUnauthenticated([
             'login',
             'social',
+            'oauth2',
         ]);
     }
 
@@ -52,37 +53,53 @@ class AuthController extends Controller
      */
     public function social(?string $provider = null): void
     {
+        $this->oauth2($provider);
+    }
+
+    /**
+     * GET /auth/OAuth2
+     * GET /auth/OAuth2/{provider}?code=...&redirect_uri=...
+     * GET /auth/OAuth2/{provider}?token=...
+     */
+    public function oauth2(?string $provider = null): void
+    {
         if (empty($provider)) {
-            $this->socialListing();
+            $this->oauth2Listing();
         } else {
-            $this->socialLogin($provider);
+            $this->oauth2Login($provider);
         }
     }
 
-    protected function socialListing(): void
+    protected function oauth2Listing(): void
     {
         $result = [];
         $result['class'] = 'List';
         $result['url'] = Router::url([
             'controller' => 'Auth',
-            'action' => 'social',
+            'action' => 'oauth2',
         ]);
         $result['list'] = [];
 
-        foreach ($this->SocialAuth->getProviders() as $provider) {
-            $auth = $this->SocialAuth->authUrl($provider);
+        foreach ($this->SocialAuth->getOauth2Providers() as $name) {
+            $auth = $this->SocialAuth->authUrl($name);
             $auth = preg_replace('/(\&state)=[^&]*/', '\1=STATE', $auth);
 
             $item = [];
-            $item['class'] = 'SocialLogin';
-            $item['name'] = $provider;
-            $item['url'] = Router::url([
+            $item['class'] = 'OAuth2';
+            $item['name'] = $name;
+            $item['loginRedirect'] = $auth;
+            $item['urlLoginCode'] = Router::url([
                 'controller' => 'Auth',
-                'action' => 'social',
-                $provider,
+                'action' => 'oauth2',
+                $name,
                 '?' => ['code' => 'CODE', 'redirect_uri' => 'CALLBACK'],
             ]);
-            $item['authUri'] = $auth;
+            $item['urlAccessToken'] = Router::url([
+                'controller' => 'Auth',
+                'action' => 'oauth2',
+                $name,
+                '?' => ['token' => 'TOKEN'],
+            ]);
 
             $result['list'][] = $item;
         }
@@ -90,17 +107,17 @@ class AuthController extends Controller
         $this->set('_serialize', $result);
     }
 
-    protected function socialLogin(string $provider): void
+    protected function oauth2Login(string $name): void
     {
-        $providers = $this->SocialAuth->getProviders();
-        if (!in_array($provider, $providers)) {
+        $providers = $this->SocialAuth->getOAuth2Providers();
+        if (!in_array($name, $providers)) {
             throw new NotFoundException();
         }
 
         $token = $this->getRequest()->getQuery('token');
         if ($token) {
-            $obj = new AccessToken(['access_token' => $token]);
-            $user = $this->SocialAuth->accountFromToken($provider, $obj);
+            $access = new AccessToken(['access_token' => $token]);
+            $user = $this->SocialAuth->accountFromToken($name, $access);
             $this->set('_serialize', $this->jwt($user));
 
             return;
@@ -116,7 +133,7 @@ class AuthController extends Controller
             throw new BadRequestException('Missing `redirect_uri` query parameter');
         }
 
-        $user = $this->SocialAuth->loginWithCode($provider, $code, $redirectUri);
+        $user = $this->SocialAuth->loginWithCode($name, $code, $redirectUri);
         $this->set('_serialize', $this->jwt($user));
     }
 

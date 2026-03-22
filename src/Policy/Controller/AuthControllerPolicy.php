@@ -23,4 +23,13 @@ class AuthControllerPolicy extends ControllerPolicy
     {
         return true;
     }
+
+    /**
+     * GET /auth/OAuth2
+     * GET /auth/OAuth2/{provider}
+     */
+    public function oauth2(): bool
+    {
+        return true;
+    }
 }

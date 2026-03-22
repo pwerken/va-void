@@ -18,6 +18,10 @@ class AuthTest extends AuthIntegrationTestCase
         parent::setUp();
 
         $provider = [
+            'discord' => [
+                'applicationId' => 'f00',
+                'applicationSecret' => 'bar',
+            ],
             'google' => [
                 'applicationId' => 'f00',
                 'applicationSecret' => 'bar',
@@ -69,7 +73,7 @@ class AuthTest extends AuthIntegrationTestCase
         $this->assertArrayKeyValue('message', $message, $response);
     }
 
-    public function testSocialListing(): void
+    public function testOAuth2Listing(): void
     {
         $configured = [];
         foreach (Configure::read('SocialAuth') as $provider => $details) {
@@ -78,7 +82,7 @@ class AuthTest extends AuthIntegrationTestCase
             }
         }
 
-        $url = '/auth/social';
+        $url = '/auth/OAuth2';
 
         $this->withoutAuth();
         $response = $this->assertGet($url);
@@ -91,33 +95,34 @@ class AuthTest extends AuthIntegrationTestCase
         $this->assertCount(count($configured), $list);
 
         foreach ($list as $socialLogin) {
-            $this->assertArrayKeyValue('class', 'SocialLogin', $socialLogin);
+            $this->assertArrayKeyValue('class', 'OAuth2', $socialLogin);
             $this->assertArrayHasKey('name', $socialLogin);
-            $this->assertArrayHasKey('url', $socialLogin);
-            $this->assertArrayHasKey('authUri', $socialLogin);
+            $this->assertArrayHasKey('loginRedirect', $socialLogin);
+            $this->assertArrayHasKey('urlLoginCode', $socialLogin);
+            $this->assertArrayHasKey('urlAccessToken', $socialLogin);
         }
     }
 
-    public function testSocialBadRequests(): void
+    public function testOAuth2BadRequests(): void
     {
-        $this->assertGet('/auth/social/f00bar', 404);
-        $this->assertGet('/auth/social/google', 400);
-        $this->assertGet('/auth/social/google?code=f4k3', 400);
+        $this->assertGet('/auth/OAuth2/f00bar', 404);
+        $this->assertGet('/auth/OAuth2/google', 400);
+        $this->assertGet('/auth/OAuth2/google?code=f4k3', 400);
     }
 
-    public function testSocialTokenProviderFailure(): void
+    public function testOAuth2TokenProviderFailure(): void
     {
         $this->mockClientGet(
             'https://www.googleapis.com/oauth2/v1/userinfo?access_token=f4k3',
             $this->newClientResponse(500),
         );
 
-        $actual = $this->assertGet('/auth/social/google?token=f4k3', 401);
+        $actual = $this->assertGet('/auth/OAuth2/google?token=f4k3', 401);
 
         $expected = [
             'class' => 'Error',
             'code' => 401,
-            'url' => '/auth/social/google?token=f4k3',
+            'url' => '/auth/OAuth2/google?token=f4k3',
             'message' => 'Login via `google` failed',
         ];
         foreach ($expected as $key => $value) {
@@ -125,7 +130,7 @@ class AuthTest extends AuthIntegrationTestCase
         }
     }
 
-    public function testSocialTokenProviderNoId(): void
+    public function testOAuth2TokenProviderNoId(): void
     {
         $this->mockClientGet(
             'https://www.googleapis.com/oauth2/v1/userinfo?access_token=f4k3',
@@ -136,12 +141,12 @@ class AuthTest extends AuthIntegrationTestCase
             ),
         );
 
-        $actual = $this->assertGet('/auth/social/google?token=f4k3', 401);
+        $actual = $this->assertGet('/auth/OAuth2/google?token=f4k3', 401);
 
         $expected = [
             'class' => 'Error',
             'code' => 401,
-            'url' => '/auth/social/google?token=f4k3',
+            'url' => '/auth/OAuth2/google?token=f4k3',
             'message' => 'Login via `google` failed',
         ];
         foreach ($expected as $key => $value) {
@@ -149,7 +154,7 @@ class AuthTest extends AuthIntegrationTestCase
         }
     }
 
-    public function testSocialTokenProviderNoEmail(): void
+    public function testOAuth2TokenProviderNoEmail(): void
     {
         $this->mockClientGet(
             'https://www.googleapis.com/oauth2/v1/userinfo?access_token=f4k3',
@@ -160,12 +165,12 @@ class AuthTest extends AuthIntegrationTestCase
             ),
         );
 
-        $actual = $this->assertGet('/auth/social/google?token=f4k3', 401);
+        $actual = $this->assertGet('/auth/OAuth2/google?token=f4k3', 401);
 
         $expected = [
             'class' => 'Error',
             'code' => 401,
-            'url' => '/auth/social/google?token=f4k3',
+            'url' => '/auth/OAuth2/google?token=f4k3',
             'message' => 'Login via `google` failed',
         ];
         foreach ($expected as $key => $value) {
@@ -173,7 +178,7 @@ class AuthTest extends AuthIntegrationTestCase
         }
     }
 
-    public function testSocialTokenLoginNew(): void
+    public function testOAuth2TokenLoginNew(): void
     {
         $this->mockClientGet(
             'https://www.googleapis.com/oauth2/v1/userinfo?access_token=f4k3',
@@ -184,7 +189,7 @@ class AuthTest extends AuthIntegrationTestCase
             ),
         );
 
-        $actual = $this->assertGet('/auth/social/google?token=f4k3', 401);
+        $actual = $this->assertGet('/auth/OAuth2/google?token=f4k3', 401);
 
         $this->assertMailCount(1);
         $this->assertMailSubjectContains('Social login has no associated plin');
@@ -192,7 +197,7 @@ class AuthTest extends AuthIntegrationTestCase
         $expected = [
             'class' => 'Error',
             'code' => 401,
-            'url' => '/auth/social/google?token=f4k3',
+            'url' => '/auth/OAuth2/google?token=f4k3',
             'message' => 'Email has no associated plin. Site admin notified. Expect an email.',
         ];
         foreach ($expected as $key => $value) {
@@ -200,7 +205,7 @@ class AuthTest extends AuthIntegrationTestCase
         }
     }
 
-    public function testSocialTokenLoginExistingPlayer(): void
+    public function testOAuth2TokenLoginExistingPlayer(): void
     {
         $this->mockClientGet(
             'https://gitlab.com/api/v4/user?access_token=f4k3',
@@ -210,7 +215,7 @@ class AuthTest extends AuthIntegrationTestCase
                 json_encode(['id' => 11, 'email' => 'test@example.com']),
             ),
         );
-        $actual = $this->assertGet('/auth/social/gitlab?token=f4k3');
+        $actual = $this->assertGet('/auth/OAuth2/gitlab?token=f4k3');
 
         $expected = [
             'class' => 'Auth',
@@ -224,7 +229,7 @@ class AuthTest extends AuthIntegrationTestCase
         $this->assertArrayHasKey('token', $actual);
     }
 
-    public function testSocialTokenLoginExistingSocial(): void
+    public function testOAuth2TokenLoginExistingSocial(): void
     {
         $this->mockClientGet(
             'https://gitlab.com/api/v4/user?access_token=f4k3',
@@ -234,7 +239,7 @@ class AuthTest extends AuthIntegrationTestCase
                 json_encode(['id' => 11, 'email' => 'fake@example.com']),
             ),
         );
-        $actual = $this->assertGet('/auth/social/gitlab?token=f4k3');
+        $actual = $this->assertGet('/auth/OAuth2/gitlab?token=f4k3');
 
         $expected = [
             'class' => 'Auth',
@@ -248,7 +253,7 @@ class AuthTest extends AuthIntegrationTestCase
         $this->assertArrayHasKey('token', $actual);
     }
 
-    public function testSocialCallbackFailure(): void
+    public function testOAuth2CallbackFailure(): void
     {
         $this->mockClientPost(
             'https://accounts.google.com/o/oauth2/token',
@@ -257,12 +262,12 @@ class AuthTest extends AuthIntegrationTestCase
             ])),
         );
 
-        $actual = $this->assertGet('/auth/social/google?code=f4k3&redirect_uri=somewhere', 401);
+        $actual = $this->assertGet('/auth/OAuth2/google?code=f4k3&redirect_uri=somewhere', 401);
 
         $expected = [
             'class' => 'Error',
             'code' => 401,
-            'url' => '/auth/social/google?code=f4k3&redirect_uri=somewhere',
+            'url' => '/auth/OAuth2/google?code=f4k3&redirect_uri=somewhere',
             'message' => 'Login via `google` failed',
         ];
         foreach ($expected as $key => $value) {

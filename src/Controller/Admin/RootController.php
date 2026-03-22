@@ -31,7 +31,7 @@ class RootController extends AdminController
             }
         }
 
-        $this->set('socials', $this->SocialAuth->getProviders());
+        $this->set('socials', $this->SocialAuth->getOAuth2Providers());
         $this->set('redirect', $redirect);
         $this->set('user', $result->getData());
 
