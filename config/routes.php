@@ -74,6 +74,10 @@ return function (RouteBuilder $routes): void {
     $routes->connect('/auth/OAuth2', $defaults);
     $routes->connect('/auth/OAuth2/{provider}', $defaults, $routeOptions);
 
+    $defaults['action'] = 'openIDConnect';
+    $routes->connect('/auth/OpenIDConnect', $defaults);
+    $routes->connect('/auth/OpenIDConnect/{provider}', $defaults, $routeOptions);
+
     $defaults['action'] = 'social';
     $routes->connect('/auth/social', $defaults);
     $routes->connect('/auth/social/{provider}', $defaults, $routeOptions);

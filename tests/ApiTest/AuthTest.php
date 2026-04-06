@@ -274,4 +274,69 @@ class AuthTest extends AuthIntegrationTestCase
             $this->assertArrayKeyValue($key, $value, $actual);
         }
     }
+
+    public function testOpenIDConnectListing(): void
+    {
+        $url = '/auth/OpenIDConnect';
+
+        $this->withoutAuth();
+        $response = $this->assertGet($url);
+
+        $this->assertArrayKeyValue('class', 'List', $response);
+        $this->assertArrayKeyValue('url', $url, $response);
+        $this->assertArrayHasKey('list', $response);
+
+        $list = $response['list'];
+        $this->assertCount(2, $list);
+
+        foreach ($list as $socialLogin) {
+            $this->assertArrayKeyValue('class', 'OpenIDConnect', $socialLogin);
+            $this->assertArrayHasKey('name', $socialLogin);
+            $this->assertArrayHasKey('url', $socialLogin);
+        }
+    }
+
+    public function testOpenIDConnectBadRequests(): void
+    {
+        $this->assertGet('/auth/OpenIDConnect/f00bar', 404);
+        $this->assertGet('/auth/OpenIDConnect/google', 400);
+    }
+
+    public function testAppleLoginKeyFetchFailure(): void
+    {
+        $this->mockClientGet(
+            'https://appleid.apple.com/auth/keys',
+            $this->newClientResponse(500),
+        );
+
+        $actual = $this->assertGet('/auth/OpenIDConnect/google?token=f4k3', 401);
+        $expected = [
+            'class' => 'Error',
+            'code' => 401,
+            'url' => '/auth/OpenIDConnect/google?token=f4k3',
+            'message' => 'API returned data without access_token field',
+        ];
+        foreach ($expected as $key => $value) {
+            $this->assertArrayKeyValue($key, $value, $actual);
+        }
+    }
+
+    public function testGoogleLoginKeyFetchFailure(): void
+    {
+        $this->mockClientGet(
+            'https://accounts.google.com/.well-known/openid-configuration',
+            $this->newClientResponse(500),
+        );
+
+        $actual = $this->assertGet('/auth/OpenIDConnect/google?token=f4k3', 401);
+        $expected = [
+            'class' => 'Error',
+            'code' => 401,
+            'url' => '/auth/OpenIDConnect/google?token=f4k3',
+            'message' => 'API returned data without access_token field',
+        ];
+        foreach ($expected as $key => $value) {
+            $this->assertArrayKeyValue($key, $value, $actual);
+        }
+    }
 }

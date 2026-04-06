@@ -11,6 +11,7 @@ use Cake\Routing\Router;
 use Cake\Utility\Security;
 use Firebase\JWT\JWT;
 use SocialConnect\OAuth2\AccessToken;
+use SocialConnect\Provider\Exception\InvalidAccessToken;
 
 /**
  * @property \App\Controller\Component\SocialAuthComponent $SocialAuth;
@@ -27,6 +28,7 @@ class AuthController extends Controller
             'login',
             'social',
             'oauth2',
+            'openIDConnect',
         ]);
     }
 
@@ -134,6 +136,67 @@ class AuthController extends Controller
         }
 
         $user = $this->SocialAuth->loginWithCode($name, $code, $redirectUri);
+        $this->set('_serialize', $this->jwt($user));
+    }
+
+    /**
+     * GET /auth/OpenIDConnect
+     * GET /auth/OpenIDConnect/{provider}?token=...
+     */
+    public function openIDConnect(?string $provider = null): void
+    {
+        if (is_null($provider)) {
+            $this->openIDConnectListing();
+        } else {
+            $this->openIDConnectLogin($provider);
+        }
+    }
+
+    protected function openIDConnectListing(): void
+    {
+        $result = [];
+        $result['class'] = 'List';
+        $result['url'] = Router::url([
+            'controller' => 'Auth',
+            'action' => 'openIDConnect',
+        ]);
+        $result['list'] = [];
+        foreach ($this->SocialAuth->getOpenIDConnectProviders() as $name) {
+            $item = [];
+            $item['class'] = 'OpenIDConnect';
+            $item['name'] = $name;
+            $item['url'] = Router::url([
+                'controller' => 'Auth',
+                'action' => 'openIDConnect',
+                $name,
+                '?' => ['token' => 'TOKEN'],
+            ]);
+
+            $result['list'][] = $item;
+        }
+        $this->set('_serialize', $result);
+    }
+
+    protected function openIDConnectLogin(string $name): void
+    {
+        $providers = $this->SocialAuth->getOpenIDConnectProviders();
+        if (!in_array($name, $providers)) {
+            throw new NotFoundException();
+        }
+
+        $token = $this->getRequest()->getQuery('token');
+        if (!$token) {
+            throw new BadRequestException('Missing `token` query parameter');
+        }
+
+        try {
+            $provider = $this->SocialAuth->getProvider($name);
+            $access = $provider->createAccessToken(['id_token' => $token]);
+        } catch (InvalidAccessToken $e) {
+            throw new LoginFailedException($e->getMessage(), null, $e);
+        }
+
+        $user = $this->SocialAuth->accountFromToken($name, $access);
         $this->set('_serialize', $this->jwt($user));
     }
 

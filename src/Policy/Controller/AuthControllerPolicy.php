@@ -32,4 +32,13 @@ class AuthControllerPolicy extends ControllerPolicy
     {
         return true;
     }
+
+    /**
+     * GET /auth/OpenIDConnect
+     * GET /auth/OpenIDConnect/{provider}
+     */
+    public function openIDConnect(): bool
+    {
+        return true;
+    }
 }

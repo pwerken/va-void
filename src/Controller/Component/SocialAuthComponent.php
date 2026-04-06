@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Component;
 
-use App\Authentication\Social\GitLabProvider;
+use App\Authentication\Social\CollectionFactory;
 use App\Error\Exception\LoginFailedException;
 use App\Model\Entity\Player;
 use App\Model\Table\PlayersTable;
@@ -17,12 +17,12 @@ use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\Routing\Router;
 use Laminas\Diactoros\RequestFactory;
 use Laminas\Diactoros\StreamFactory;
-use SocialConnect\Auth\CollectionFactory;
 use SocialConnect\Auth\Service;
 use SocialConnect\Common\Entity\User;
 use SocialConnect\Common\Exception as SocialConnectException;
 use SocialConnect\Common\HttpStack;
 use SocialConnect\OAuth2\AbstractProvider as OAuth2Provider;
+use SocialConnect\OpenIDConnect\AbstractProvider as OpenIDConnectProvider;
 use SocialConnect\Provider\AbstractBaseProvider as BaseProvider;
 use SocialConnect\Provider\AccessTokenInterface as AccessToken;
 use SocialConnect\Provider\Exception\InvalidResponse;
@@ -73,7 +73,6 @@ class SocialAuthComponent extends Component
         $this->setConfig('serviceConfig.redirectUri', 'CALLBACK');
 
         $this->_factory = new CollectionFactory();
-        $this->_factory->register(GitLabProvider::NAME, GitLabProvider::class);
 
         $this->_profileModel = $this->fetchTable('SocialProfiles');
         $this->_playerModel = $this->fetchTable('Players');
@@ -84,7 +83,7 @@ class SocialAuthComponent extends Component
      */
     public function authUrl(string $provider): string
     {
-        return $this->_getProvider($provider)->makeAuthUrl();
+        return $this->getProvider($provider)->makeAuthUrl();
     }
 
     /**
@@ -95,7 +94,7 @@ class SocialAuthComponent extends Component
         $query = $this->getController()->getRequest()->getQueryParams();
 
         try {
-            $token = $this->_getProvider($provider)
+            $token = $this->getProvider($provider)
                           ->getAccessTokenByRequestParameters($query);
 
             return $this->accountFromToken($provider, $token);
@@ -130,7 +129,7 @@ class SocialAuthComponent extends Component
     public function accountFromToken(string $provider, AccessToken $token): Player
     {
         try {
-            $identity = $this->_getProvider($provider)->getIdentity($token);
+            $identity = $this->getProvider($provider)->getIdentity($token);
             if (!$identity->id) {
                 throw new SocialConnectException("Provider `{$provider}` returned identity with empty `id` field");
             }
@@ -161,13 +160,29 @@ class SocialAuthComponent extends Component
         return $providers;
     }
 
+    /**
+     * Return list of OpenIDConnect provider's that are supported.
+     */
+    public function getOpenIDConnectProviders(): array
+    {
+        $providers = [];
+        foreach ($this->_factory->getProviders() as $name => $provider) {
+            if (!is_a($provider, OpenIDConnectProvider::class, true)) {
+                continue;
+            }
+            $providers[] = $name;
+        }
+
+        return $providers;
+    }
+
     public function setCallbackUri(array|string $url): void
     {
         $callbackUri = Router::url($url, true);
         $this->setConfig('serviceConfig.redirectUri', $callbackUri);
     }
 
-    protected function _getProvider(string $provider): BaseProvider
+    public function getProvider(string $provider): BaseProvider
     {
         if (is_null($this->_service)) {
             $session = $this->getController()->getRequest()->getSession();
