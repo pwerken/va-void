@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Authentication\Social;
 
 use SocialConnect\Auth\CollectionFactory as BaseCollectionFactory;
-use SocialConnect\OAuth2\Provider\Discord as DiscordProvider;
 use SocialConnect\OpenIDConnect\Provider\Apple as AppleProvider;
 use SocialConnect\OpenIDConnect\Provider\Google as GoogleProvider;
 
