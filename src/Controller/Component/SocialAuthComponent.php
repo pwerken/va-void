@@ -5,6 +5,7 @@ namespace App\Controller\Component;
 
 use App\Authentication\Social\CollectionFactory;
 use App\Error\Exception\LoginFailedException;
+use App\Error\Exception\UnlinkedAccountException;
 use App\Model\Entity\Player;
 use App\Model\Table\PlayersTable;
 use App\Model\Table\SocialProfilesTable;
@@ -245,7 +246,7 @@ class SocialAuthComponent extends Component
         $email = $profile->get('email');
 
         if (!$email) {
-            throw new SocialConnectException('Missing e-mail adres');
+            throw new SocialConnectException('No email provided by social provider');
         }
 
         if (!$id) {
@@ -282,7 +283,7 @@ class SocialAuthComponent extends Component
         }
 
         if (!$id) {
-            throw new LoginFailedException('Email has no associated plin. Site admin notified. Expect an email.');
+            throw new UnlinkedAccountException('Email has no associated plin. Site admin notified. Expect an email.');
         }
 
         return $this->_playerModel->get($id);

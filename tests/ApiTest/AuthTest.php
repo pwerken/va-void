@@ -189,14 +189,14 @@ class AuthTest extends AuthIntegrationTestCase
             ),
         );
 
-        $actual = $this->assertGet('/auth/OAuth2/google?token=f4k3', 401);
+        $actual = $this->assertGet('/auth/OAuth2/google?token=f4k3', 403);
 
         $this->assertMailCount(1);
         $this->assertMailSubjectContains('Social login has no associated plin');
 
         $expected = [
             'class' => 'Error',
-            'code' => 401,
+            'code' => 403,
             'url' => '/auth/OAuth2/google?token=f4k3',
             'message' => 'Email has no associated plin. Site admin notified. Expect an email.',
         ];
