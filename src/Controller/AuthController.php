@@ -191,7 +191,11 @@ class AuthController extends Controller
 
         try {
             $provider = $this->SocialAuth->getProvider($name);
-            $access = $provider->createAccessToken(['id_token' => $token]);
+            // 'access_token' is required by the parent OAuth2\AccessToken constructor but is unused since we provide a id_token
+            $access = $provider->createAccessToken([
+                'access_token' => 'unused',
+                'id_token' => $token,
+            ]);
         } catch (InvalidAccessToken $e) {
             throw new LoginFailedException($e->getMessage(), null, $e);
         }

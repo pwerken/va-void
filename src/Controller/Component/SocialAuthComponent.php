@@ -116,6 +116,17 @@ class SocialAuthComponent extends Component
         $request = $request->withParam('code', $code);
         $this->getController()->setRequest($request);
 
+        // If the client sent a PKCE code_verifier, store it in the session
+        // so the library can include it in the token exchange request.
+        $codeVerifier = $this->getController()->getRequest()->getQuery('code_verifier');
+        if ($codeVerifier) {
+            $session = $this->getController()->getRequest()->getSession();
+            if (!$session->started()) {
+                $session->start();
+            }
+            $session->write('code_verifier', $codeVerifier);
+        }
+
         // skip the state param check, should be handled by front-end
         $this->setConfig("serviceConfig.provider.$provider.options.stateless", true);
         $this->setConfig('serviceConfig.redirectUri', $callbackUri);
@@ -124,13 +135,20 @@ class SocialAuthComponent extends Component
     }
 
     /**
-     * Client did all provider authentication by it self.
-     * We use the provided 'token' to get info from the social provider.
+     * Resolve a player from a provider access token.
+     * For OpenIDConnect tokens (which carry a JWT), the identity is extracted
+     * directly from the JWT payload. For plain OAuth2 tokens the provider's
+     * userinfo endpoint is called instead.
      */
     public function accountFromToken(string $provider, AccessToken $token): Player
     {
         try {
-            $identity = $this->getProvider($provider)->getIdentity($token);
+            $providerInstance = $this->getProvider($provider);
+
+            $identity = ($token instanceof \SocialConnect\OpenIDConnect\AccessToken && $token->getJwt())
+                ? $providerInstance->extractIdentity($token)
+                : $providerInstance->getIdentity($token);
+
             if (!$identity->id) {
                 throw new SocialConnectException("Provider `{$provider}` returned identity with empty `id` field");
             }
@@ -245,7 +263,25 @@ class SocialAuthComponent extends Component
         $id = $profile->get('user_id');
         $email = $profile->get('email');
 
-        if (!$email) {
+        if (!$email && !$id) {
+            // Apple may omit email on subsequent sign-ins. If we already have
+            // a saved profile for this provider+identifier, use its stored email.
+            $existing = $this->_profileModel
+                ->find()
+                ->where([
+                    'provider' => $provider,
+                    'identifier' => $identity->id,
+                ])
+                ->first();
+            if ($existing) {
+                $email = $existing->get('email');
+                $id = $existing->get('user_id');
+                $profile->set('email', $email);
+                $profile->set('user_id', $id);
+            }
+        }
+
+        if (!$email && !$id) {
             throw new SocialConnectException('No email provided by social provider');
         }
 
