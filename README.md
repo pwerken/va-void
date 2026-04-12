@@ -77,23 +77,23 @@ The created backup files are stored in the `backups/` folder.
 
 ## Social provider login
 
-Call the `/auth/social` api endpoint to get the list of all supported social login providers.  For each provider the result contains a `url` and `authUri` link.  Both need to be customized by the front-end before they can be used.
+Call the `/auth/OAuth2` api endpoint to get the list of all supported social login providers.  For each provider the result contains a `loginRedirect` and `urlLoginCode` link.  Both need to be customized by the front-end before they can be used.
 
-1. First in the `authUri` replace the `STATE` and `CALLBACK` strings:
+1. First in the `loginRedirect` replace the `STATE` and `CALLBACK` strings:
    - `STATE` should be a random string used to prevent cross-site request forgery
    - `CALLBACK` is the front-end url where the user gets redirect to after login
 
-2. Now redirect the user to this modified `authUri` to start the login proces.
+2. Now redirect the user to this modified `loginRedirect` to start the login proces.
 
 3. On succesful login the user gets redirected to the `CALLBACK` location.
 
 4. Check that the returned `state` query parameter matches with the earlier provided `STATE` value.
 
-5. In the `url` of the social provider replace `CODE` and `CALLBACK`:
+5. In the `urlLoginCode` of the social provider replace `CODE` and `CALLBACK`:
    - `CODE` with the `code` string we got in the query parameter after the login
-   - `CALLBACK` must be the same as used in the `authUri`
+   - `CALLBACK` must be the same as used in the `loginRedirect`
 
-6. Perform a GET on the modified `url`.  This should yield the same result as a regular user+name password.  The result contains a JWT that can be used for all following interactions with the void api.  Similar, a failed login will result in a 401 error response.
+6. Perform a GET on the modified `urlLoginCode`.  This should yield the same result as a regular user+name password.  The result contains a JWT that can be used for all following interactions with the void api.  Similar, a failed login will result in a 401 error response.
 
 ```mermaid
 sequenceDiagram
@@ -104,19 +104,19 @@ sequenceDiagram
 
 B-)+C: get login page
 activate B
-C-)+A: (0) HTTP GET /auth/social
-A--)-C: list of providers, each with "authUri" and "url"
-C->>C: (1) replace STATE and CALLBACK in "authUri"
+C-)+A: (0) HTTP GET /auth/OAuth2
+A--)-C: list of providers, each with "loginRedirect" and "urlLoginCode"
+C->>C: (1) replace STATE and CALLBACK in "loginRedirect"
 C--)-B: login page
 B->>B: user selects login provider
-B-)+P: (2) redirect to modified "authUri"
+B-)+P: (2) redirect to modified "loginRedirect"
 P--)B: login page
 B-)P: user authenticates
 P--)-B: (3) redirect to CALLBACK with CODE and STATE
 B-)+C: 
 C->>C: (4) check STATE is unmodified
-C->>C: (5) replace CODE and CALLBACK in "url"
-C-)+A: (6) GET "url"
+C->>C: (5) replace CODE and CALLBACK in "urlLoginCode"
+C-)+A: (6) GET "urlLoginCode"
 A-)+P: verify CODE
 P-)-A: user information
 A->>A: find player plin
