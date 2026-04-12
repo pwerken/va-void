@@ -18,6 +18,10 @@ class AuthTest extends AuthIntegrationTestCase
         parent::setUp();
 
         $provider = [
+            'apple' => [
+                'applicationId' => 'f00',
+                'applicationSecret' => 'bar',
+            ],
             'discord' => [
                 'applicationId' => 'f00',
                 'applicationSecret' => 'bar',
@@ -309,12 +313,12 @@ class AuthTest extends AuthIntegrationTestCase
             $this->newClientResponse(500),
         );
 
-        $actual = $this->assertGet('/auth/OpenIDConnect/google?token=f4k3', 401);
+        $actual = $this->assertGet('/auth/OpenIDConnect/apple?token=f4k3', 401);
         $expected = [
             'class' => 'Error',
             'code' => 401,
-            'url' => '/auth/OpenIDConnect/google?token=f4k3',
-            'message' => 'API returned data without access_token field',
+            'url' => '/auth/OpenIDConnect/apple?token=f4k3',
+            'message' => 'API response with error code',
         ];
         foreach ($expected as $key => $value) {
             $this->assertArrayKeyValue($key, $value, $actual);
@@ -333,7 +337,7 @@ class AuthTest extends AuthIntegrationTestCase
             'class' => 'Error',
             'code' => 401,
             'url' => '/auth/OpenIDConnect/google?token=f4k3',
-            'message' => 'API returned data without access_token field',
+            'message' => 'API response with error code',
         ];
         foreach ($expected as $key => $value) {
             $this->assertArrayKeyValue($key, $value, $actual);

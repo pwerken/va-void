@@ -10,8 +10,8 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\Routing\Router;
 use Cake\Utility\Security;
 use Firebase\JWT\JWT;
+use SocialConnect\Common\Exception as SocialConnectException;
 use SocialConnect\OAuth2\AccessToken;
-use SocialConnect\Provider\Exception\InvalidAccessToken;
 
 /**
  * @property \App\Controller\Component\SocialAuthComponent $SocialAuth;
@@ -196,7 +196,7 @@ class AuthController extends Controller
                 'access_token' => 'unused',
                 'id_token' => $token,
             ]);
-        } catch (InvalidAccessToken $e) {
+        } catch (SocialConnectException $e) {
             throw new LoginFailedException($e->getMessage(), null, $e);
         }
 
