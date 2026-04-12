@@ -24,6 +24,7 @@ use SocialConnect\Common\Exception as SocialConnectException;
 use SocialConnect\Common\HttpStack;
 use SocialConnect\OAuth2\AbstractProvider as OAuth2Provider;
 use SocialConnect\OpenIDConnect\AbstractProvider as OpenIDConnectProvider;
+use SocialConnect\OpenIDConnect\AccessToken as OpenIDConnectToken;
 use SocialConnect\Provider\AbstractBaseProvider as BaseProvider;
 use SocialConnect\Provider\AccessTokenInterface as AccessToken;
 use SocialConnect\Provider\Exception\InvalidResponse;
@@ -145,9 +146,15 @@ class SocialAuthComponent extends Component
         try {
             $providerInstance = $this->getProvider($provider);
 
-            $identity = ($token instanceof \SocialConnect\OpenIDConnect\AccessToken && $token->getJwt())
-                ? $providerInstance->extractIdentity($token)
-                : $providerInstance->getIdentity($token);
+            if (
+                $providerInstance instanceof OpenIDConnectProvider
+                && $token instanceof OpenIDConnectToken
+                && $token->getJwt()
+            ) {
+                $identity = $providerInstance->extractIdentity($token);
+            } else {
+                $identity = $providerInstance->getIdentity($token);
+            }
 
             if (!$identity->id) {
                 throw new SocialConnectException("Provider `{$provider}` returned identity with empty `id` field");
