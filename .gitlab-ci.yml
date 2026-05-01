@@ -1,19 +1,62 @@
 stages:
-- deploy
+ - test
+ - deploy
 
-image: debian:stable-slim
+test:
+  stage: test
+  image: chialab/php-pcov:8.4
+  before_script:
+    - |
+      echo -e "\e[0Ksection_start:$(date +%s):composer_setup[collapsed=true]\r\e[0K\e[33mInstalling Dependencies\e[0m"
+      composer install --no-interaction --no-scripts --prefer-dist
+      composer run-script --no-interaction post-install-cmd
+      echo -e "\e[0Ksection_end:$(date +%s):composer_setup\r\e[0K"
+  cache:
+    key:
+      files:
+        - composer.json
+    paths:
+      - vendor/
+  script:
+    - |
+      EXIT_CODE=0
 
-before_script:
-- 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
-- eval $(ssh-agent -s)
-- echo "$SSH_USER_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-- mkdir -p ~/.ssh
-- chmod 700 ~/.ssh
-- cp "$SSH_SERVER_HOSTKEYS" ~/.ssh/known_hosts
-- chmod 644 ~/.ssh/known_hosts
+      echo -e "\e[0Ksection_start:$(date +%s):phpcs\r\e[0K\e[33;1mRunning CodeSniffer...\e[0m"
+      composer cs || EXIT_CODE=$?
+      echo -e "\e[0Ksection_end:$(date +%s):phpcs\r\e[0K"
+
+      echo -e "\e[0Ksection_start:$(date +%s):phpstan\r\e[0K\e[33;1mRunning PHPStan...\e[0m"
+      composer stan || EXIT_CODE=$?
+      echo -e "\e[0Ksection_end:$(date +%s):phpstan\r\e[0K"
+
+      echo -e "\e[0Ksection_start:$(date +%s):phpunit\r\e[0K\e[33;1mRunning Tests...\e[0m"
+      composer test:ci || EXIT_CODE=$?
+      echo -e "\e[0Ksection_end:$(date +%s):phpunit\r\e[0K"
+
+      exit $EXIT_CODE
+  coverage: '/^\s*Lines:\s*(\d+.\d+%)/'
+  artifacts:
+    when: always
+    reports:
+      junit: report.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
 
 hetzner:
   stage: deploy
+  image: debian:stable-slim
+  before_script:
+  - |
+      echo -e "\e[0Ksection_start:$(date +%s):ssh_setup[collapsed=true]\r\e[0K\e[33mSetup SSH\e[0m"
+      which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )
+      eval $(ssh-agent -s)
+      echo "$SSH_USER_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+      mkdir -p ~/.ssh
+      chmod 700 ~/.ssh
+      cp "$SSH_SERVER_HOSTKEYS" ~/.ssh/known_hosts
+      chmod 644 ~/.ssh/known_hosts
+      echo -e "\e[0Ksection_end:$(date +%s):ssh_setup\r\e[0K"
   script:
   - ssh $SSH_USER@$SSH_SERVER ./bin/cicd-void-deploy $CI_COMMIT_BRANCH
   only:

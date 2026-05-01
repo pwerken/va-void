@@ -47,17 +47,18 @@
         "post-install-cmd": "App\\Console\\Installer::postInstall",
         "post-create-project-cmd": "App\\Console\\Installer::postInstall",
         "check": [
-            "@cs-check",
+            "@cs",
             "@stan",
             "@test"
         ],
-        "cs-check": "phpcs --colors -p",
+        "cs": "phpcs --colors -p",
         "cs-fix": "phpcbf --colors -p",
-        "stan": "phpstan analyse",
+        "stan": "phpstan analyse --memory-limit=-1",
         "test": "phpunit --colors=always",
         "test:coverage": [
             "@putenv XDEBUG_MODE=coverage",
-            "@test --coverage-html webroot/coverage"
-        ]
+            "@test --coverage-html webroot/coverage --coverage-text --only-summary-for-coverage-text"
+        ],
+        "test:ci": "phpunit --log-junit report.xml --coverage-cobertura coverage.xml --coverage-text --only-summary-for-coverage-text --colors=never"
     }
 }
