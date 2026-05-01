@@ -5,6 +5,7 @@ namespace App\View\Helper;
 
 use App\Model\Entity\Character;
 use App\Model\Entity\History;
+use App\Model\Entity\Manatype;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\View\Helper;
 
@@ -26,6 +27,13 @@ class AdminHistoryHelper extends Helper
                 $value .= ' = '
                     . $char->get('plin') . '/' . $char->get('chin')
                     . ' ' . $char->get('name');
+            }
+        }
+
+        if ($field === 'manatype_id') {
+            $mana = $this->getManatype((int)$value);
+            if ($mana) {
+                $value .= ' = ' . $mana->get('name');
             }
         }
 
@@ -126,6 +134,14 @@ class AdminHistoryHelper extends Helper
         return $this->fetchTable('Characters')
                     ->find()
                     ->where(['id' => $character_id])
+                    ->first();
+    }
+
+    private function getManatype(int $manatype_id): ?Manatype
+    {
+        return $this->fetchTable('Manatypes')
+                    ->find()
+                    ->where(['id' => $manatype_id])
                     ->first();
     }
 }
