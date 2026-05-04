@@ -24,6 +24,8 @@ class ConditionLammy extends CharactersConditionLammy
     {
         parent::_drawFront($data);
 
-        $this->inMargin('printed by: ' . $this->who);
+        if ($this->who) {
+            $this->inMargin('printed by: ' . $this->who);
+        }
     }
 }

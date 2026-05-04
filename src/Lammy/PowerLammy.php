@@ -19,4 +19,13 @@ class PowerLammy extends CharactersConditionLammy
 
         parent::draw($side, $data);
     }
+
+    protected function _drawFront(array $data): void
+    {
+        parent::_drawFront($data);
+
+        if ($this->who) {
+            $this->inMargin('printed by: ' . $this->who);
+        }
+    }
 }
