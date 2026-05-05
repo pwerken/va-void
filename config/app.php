@@ -3,7 +3,7 @@
 use App\Authentication\UnauthenticatedException;
 use App\Error\ApiExceptionRenderer;
 use App\Error\ErrorLogger;
-use App\Error\Exception\LoginFailedException;
+use App\Error\Exception\UnlinkedAccountException;
 use App\Error\FileLog;
 use Authorization\Exception\ForbiddenException;
 use Authorization\Policy\Exception\MissingPolicyException;
@@ -205,12 +205,12 @@ return [
         'exceptionRenderer' => ApiExceptionRenderer::class,
         'skipLog' => [
             ForbiddenException::class,
-            LoginFailedException::class,
             MissingPolicyException::class,
             MissingRouteException::class,
             NotFoundException::class,
             RecordNotFoundException::class,
             UnauthenticatedException::class,
+            UnlinkedAccountException::class,
         ],
         'logger' => ErrorLogger::class,
         'log' => true,
