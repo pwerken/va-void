@@ -33,4 +33,15 @@
             <file>src/Console/Installer.php</file>
         </exclude>
     </source>
+
+	<!-- Configure code coverage reports -->
+	<coverage>
+		<report>
+			<cobertura outputFile="cobertura-coverage.xml" />
+			<html outputDirectory="webroot/coverage" />
+		</report>
+	</coverage>
+	<logging>
+		<junit outputFile="junit.xml" />
+	</logging>
 </phpunit>

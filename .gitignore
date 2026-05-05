@@ -4,19 +4,23 @@
 /printing/log.*
 /printing/pdfs
 
-# Test related files #
-######################
-/webroot/coverage
-.phpunit.result.cache
-
 # CakePHP specific files #
 ##########################
-/config/app_local.php
+/bin/phpcbf
+/bin/phpcs
+/bin/phpstan
 /config/.env
 /config/Migrations/*.lock
+/config/app_local.php
 /logs/*
 /tmp/*
 /vendor/*
+
+# Test coverage files #
+######################
+cobertura-coverage.xml
+junit.xml
+/webroot/coverage
 
 # OS generated files #
 ######################
@@ -37,6 +41,7 @@ Thumbs.db
 composer.lock
 # PHPUnit
 .phpunit.cache
+.phpunit.result.cache
 # vim
 *~
 *.swp

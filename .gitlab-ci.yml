@@ -30,18 +30,37 @@ test:
       echo -e "\e[0Ksection_end:$(date +%s):phpstan\r\e[0K"
 
       echo -e "\e[0Ksection_start:$(date +%s):phpunit\r\e[0K\e[33;1mRunning Tests...\e[0m"
-      composer test:ci || EXIT_CODE=$?
+      composer test:coverage || EXIT_CODE=$?
       echo -e "\e[0Ksection_end:$(date +%s):phpunit\r\e[0K"
 
       exit $EXIT_CODE
   coverage: '/^\s*Lines:\s*(\d+.\d+%)/'
   artifacts:
     when: always
+    paths:
+      - webroot/coverage
     reports:
-      junit: report.xml
+      junit: junit.xml
       coverage_report:
         coverage_format: cobertura
-        path: coverage.xml
+        path: cobertura-coverage.xml
+
+pages:create:
+  stage: deploy
+  image: debian:stable-slim
+  script:
+    - echo "Deploying test coverage report..."
+  dependencies:
+    - test
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - webroot/coverage
+  pages:
+    publish: webroot/coverage
+    expire_in: never
+  only:
+  - main
 
 hetzner:
   stage: deploy
