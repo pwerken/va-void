@@ -17,6 +17,9 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/1/2/conditions', 401);
         $this->assertGet('/characters/1/2/conditions/1', 401);
         $this->assertGet('/characters/1/2/conditions/2', 401);
+        $this->assertGet('/characters/1/99/conditions', 401);
+        $this->assertGet('/characters/1/99/conditions/1', 401);
+        $this->assertGet('/characters/1/99/conditions/2', 401);
         $this->assertGet('/characters/2/1/conditions', 401);
         $this->assertGet('/characters/2/1/conditions/1', 401);
         $this->assertGet('/characters/2/1/conditions/2', 401);
@@ -31,9 +34,12 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/1/1/conditions');
         $this->assertGet('/characters/1/1/conditions/1');
         $this->assertGet('/characters/1/1/conditions/2', 404);
-        $this->assertGet('/characters/1/2/conditions', 404);
+        $this->assertGet('/characters/1/1/conditions');
         $this->assertGet('/characters/1/2/conditions/1', 404);
         $this->assertGet('/characters/1/2/conditions/2', 404);
+        $this->assertGet('/characters/1/99/conditions', 404);
+        $this->assertGet('/characters/1/99/conditions/1', 404);
+        $this->assertGet('/characters/1/99/conditions/2', 404);
         $this->assertGet('/characters/2/1/conditions', 403);
         $this->assertGet('/characters/2/1/conditions/1', 403);
         $this->assertGet('/characters/2/1/conditions/2', 403);
@@ -45,9 +51,12 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/1/1/conditions');
         $this->assertGet('/characters/1/1/conditions/1');
         $this->assertGet('/characters/1/1/conditions/2', 404);
-        $this->assertGet('/characters/1/2/conditions', 404);
+        $this->assertGet('/characters/1/2/conditions');
         $this->assertGet('/characters/1/2/conditions/1', 404);
         $this->assertGet('/characters/1/2/conditions/2', 404);
+        $this->assertGet('/characters/1/99/conditions', 404);
+        $this->assertGet('/characters/1/99/conditions/1', 404);
+        $this->assertGet('/characters/1/99/conditions/2', 404);
         $this->assertGet('/characters/2/1/conditions');
         $this->assertGet('/characters/2/1/conditions/1');
         $this->assertGet('/characters/2/1/conditions/2');
@@ -65,6 +74,9 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertPut('/characters/1/2/conditions', [], 401);
         $this->assertPut('/characters/1/2/conditions/1', [], 401);
         $this->assertPut('/characters/1/2/conditions/2', [], 401);
+        $this->assertPut('/characters/1/99/conditions', [], 401);
+        $this->assertPut('/characters/1/99/conditions/1', [], 401);
+        $this->assertPut('/characters/1/99/conditions/2', [], 401);
         $this->assertPut('/characters/2/1/conditions', [], 401);
         $this->assertPut('/characters/2/1/conditions/1', [], 401);
         $this->assertPut('/characters/2/1/conditions/2', [], 401);
@@ -79,6 +91,9 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertPut('/characters/1/2/conditions', [], 403);
         $this->assertPut('/characters/1/2/conditions/1', [], 403);
         $this->assertPut('/characters/1/2/conditions/2', [], 403);
+        $this->assertPut('/characters/1/99/conditions', [], 403);
+        $this->assertPut('/characters/1/99/conditions/1', [], 403);
+        $this->assertPut('/characters/1/99/conditions/2', [], 403);
         $this->assertPut('/characters/2/1/conditions', [], 403);
         $this->assertPut('/characters/2/1/conditions/1', [], 403);
         $this->assertPut('/characters/2/1/conditions/2', [], 403);
@@ -93,6 +108,9 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertPut('/characters/1/2/conditions', [], 403);
         $this->assertPut('/characters/1/2/conditions/1', [], 403);
         $this->assertPut('/characters/1/2/conditions/2', [], 403);
+        $this->assertPut('/characters/1/99/conditions', [], 403);
+        $this->assertPut('/characters/1/99/conditions/1', [], 403);
+        $this->assertPut('/characters/1/99/conditions/2', [], 403);
         $this->assertPut('/characters/2/1/conditions', [], 403);
         $this->assertPut('/characters/2/1/conditions/1', [], 403);
         $this->assertPut('/characters/2/1/conditions/2', [], 403);
@@ -108,6 +126,8 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertDelete('/characters/1/1/conditions/2', 401);
         $this->assertDelete('/characters/1/2/conditions/1', 401);
         $this->assertDelete('/characters/1/2/conditions/2', 401);
+        $this->assertDelete('/characters/1/99/conditions/1', 401);
+        $this->assertDelete('/characters/1/99/conditions/2', 401);
         $this->assertDelete('/characters/2/1/conditions/1', 401);
         $this->assertDelete('/characters/2/1/conditions/2', 401);
         $this->assertDelete('/characters/99/1/conditions/1', 401);
@@ -118,6 +138,8 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertDelete('/characters/1/1/conditions/2', 403);
         $this->assertDelete('/characters/1/2/conditions/1', 403);
         $this->assertDelete('/characters/1/2/conditions/2', 403);
+        $this->assertDelete('/characters/1/99/conditions/1', 403);
+        $this->assertDelete('/characters/1/99/conditions/2', 403);
         $this->assertDelete('/characters/2/1/conditions/1', 403);
         $this->assertDelete('/characters/2/1/conditions/2', 403);
         $this->assertDelete('/characters/99/1/conditions/1', 403);
@@ -128,6 +150,8 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $this->assertDelete('/characters/1/1/conditions/2', 403);
         $this->assertDelete('/characters/1/2/conditions/1', 403);
         $this->assertDelete('/characters/1/2/conditions/2', 403);
+        $this->assertDelete('/characters/1/99/conditions/1', 403);
+        $this->assertDelete('/characters/1/99/conditions/2', 403);
         $this->assertDelete('/characters/2/1/conditions/1', 403);
         $this->assertDelete('/characters/2/1/conditions/2', 403);
         $this->assertDelete('/characters/99/1/conditions/1', 403);
@@ -176,6 +200,7 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
         $input = [
 # required fields:
             'condition_id' => 2,
+# optional fields:
             'expiry' => '2025-05-29',
         ];
 
@@ -193,6 +218,21 @@ class CharactersConditionsTest extends AuthIntegrationTestCase
             $this->assertArrayKeyValue($key, $value, $actual);
         }
         $this->assertDateTimeNow($actual['modified']);
+    }
+
+    public function testAddToConceptCharacter(): void
+    {
+        $input = [
+            'condition_id' => 2,
+        ];
+
+        $this->withAuthReferee();
+        $actual = $this->assertPut('/characters/1/2/conditions', $input, 422);
+
+        $errors = $this->assertErrorsResponse('/characters/1/2/conditions', $actual);
+        # expected fields with validation errors:
+        $this->assertCount(1, $errors);
+        $this->assertArrayHasKey('character_id', $errors);
     }
 
     public function testEdit(): void

@@ -111,7 +111,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->withAuthPlayer();
         $this->assertPut('/players', [], 403);
         $this->assertPut('/players/1', []);
-        $this->assertPut('/players/1/characters', [], 403);
+        $this->assertPut('/players/1/characters', [], 422); # concept character
         $this->assertPut('/players/2', [], 403);
         $this->assertPut('/players/2/characters', [], 403);
         $this->assertPut('/players/99', [], 404);
@@ -122,7 +122,7 @@ class PlayersTest extends AuthIntegrationTestCase
         $this->assertPut('/players/1', [], 403);
         $this->assertPut('/players/1/characters', [], 403);
         $this->assertPut('/players/2', []);
-        $this->assertPut('/players/2/characters', [], 403);
+        $this->assertPut('/players/2/characters', [], 422); # concept character
         $this->assertPut('/players/99', [], 404);
         $this->assertPut('/players/99/characters', [], 403);
 

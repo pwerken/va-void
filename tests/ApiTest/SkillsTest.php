@@ -98,7 +98,7 @@ class SkillsTest extends AuthIntegrationTestCase
         ];
         $expected = [
             'class' => 'Skill',
-            'url' => '/skills/3',
+            'url' => '/skills/4',
             'name' => $input['name'],
             'cost' => $input['cost'],
             'base_max' => 1,
@@ -119,11 +119,11 @@ class SkillsTest extends AuthIntegrationTestCase
             'name' => 'editing',
         ];
         $expected['name'] = $input['name'];
-        $actual = $this->assertPut('/skills/3', $input);
+        $actual = $this->assertPut('/skills/4', $input);
         foreach ($expected as $key => $value) {
             $this->assertArrayKeyValue($key, $value, $actual);
         }
 
-        $this->assertDelete('/skills/3');
+        $this->assertDelete('/skills/4');
     }
 }

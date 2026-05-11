@@ -17,6 +17,9 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/1/2/skills', 401);
         $this->assertGet('/characters/1/2/skills/1', 401);
         $this->assertGet('/characters/1/2/skills/2', 401);
+        $this->assertGet('/characters/1/99/skills', 401);
+        $this->assertGet('/characters/1/99/skills/1', 401);
+        $this->assertGet('/characters/1/99/skills/2', 401);
         $this->assertGet('/characters/2/1/skills', 401);
         $this->assertGet('/characters/2/1/skills/1', 401);
         $this->assertGet('/characters/2/1/skills/2', 401);
@@ -28,9 +31,12 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/1/1/skills');
         $this->assertGet('/characters/1/1/skills/1');
         $this->assertGet('/characters/1/1/skills/2', 404);
-        $this->assertGet('/characters/1/2/skills', 404);
+        $this->assertGet('/characters/1/2/skills');
         $this->assertGet('/characters/1/2/skills/1', 404);
         $this->assertGet('/characters/1/2/skills/2', 404);
+        $this->assertGet('/characters/1/99/skills', 404);
+        $this->assertGet('/characters/1/99/skills/1', 404);
+        $this->assertGet('/characters/1/99/skills/2', 404);
         $this->assertGet('/characters/2/1/skills', 403);
         $this->assertGet('/characters/2/1/skills/1', 403);
         $this->assertGet('/characters/2/1/skills/2', 403);
@@ -42,9 +48,12 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
         $this->assertGet('/characters/1/1/skills');
         $this->assertGet('/characters/1/1/skills/1');
         $this->assertGet('/characters/1/1/skills/2', 404);
-        $this->assertGet('/characters/1/2/skills', 404);
+        $this->assertGet('/characters/1/2/skills');
         $this->assertGet('/characters/1/2/skills/1', 404);
         $this->assertGet('/characters/1/2/skills/2', 404);
+        $this->assertGet('/characters/1/99/skills', 404);
+        $this->assertGet('/characters/1/99/skills/1', 404);
+        $this->assertGet('/characters/1/99/skills/2', 404);
         $this->assertGet('/characters/2/1/skills');
         $this->assertGet('/characters/2/1/skills/1');
         $this->assertGet('/characters/2/1/skills/2');
@@ -62,6 +71,9 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
         $this->assertPut('/characters/1/2/skills', [], 401);
         $this->assertPut('/characters/1/2/skills/1', [], 401);
         $this->assertPut('/characters/1/2/skills/2', [], 401);
+        $this->assertPut('/characters/1/99/skills', [], 401);
+        $this->assertPut('/characters/1/99/skills/1', [], 401);
+        $this->assertPut('/characters/1/99/skills/2', [], 401);
         $this->assertPut('/characters/2/1/skills', [], 401);
         $this->assertPut('/characters/2/1/skills/1', [], 401);
         $this->assertPut('/characters/2/1/skills/2', [], 401);
@@ -72,10 +84,13 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
         $this->withAuthPlayer();
         $this->assertPut('/characters/1/1/skills', [], 403);
         $this->assertPut('/characters/1/1/skills/1', [], 403);
-        $this->assertPut('/characters/1/1/skills/2', [], 403);
-        $this->assertPut('/characters/1/2/skills', [], 403);
-        $this->assertPut('/characters/1/2/skills/1', [], 403);
-        $this->assertPut('/characters/1/2/skills/2', [], 403);
+        $this->assertPut('/characters/1/1/skills/2', [], 404);
+        $this->assertPut('/characters/1/2/skills', [], 422);
+        $this->assertPut('/characters/1/2/skills/1', [], 404);
+        $this->assertPut('/characters/1/2/skills/2', [], 404);
+        $this->assertPut('/characters/1/99/skills', [], 404);
+        $this->assertPut('/characters/1/99/skills/1', [], 404);
+        $this->assertPut('/characters/1/99/skills/2', [], 404);
         $this->assertPut('/characters/2/1/skills', [], 403);
         $this->assertPut('/characters/2/1/skills/1', [], 403);
         $this->assertPut('/characters/2/1/skills/2', [], 403);
@@ -86,16 +101,19 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
         $this->withAuthReadOnly();
         $this->assertPut('/characters/1/1/skills', [], 403);
         $this->assertPut('/characters/1/1/skills/1', [], 403);
-        $this->assertPut('/characters/1/1/skills/2', [], 403);
+        $this->assertPut('/characters/1/1/skills/2', [], 404);
         $this->assertPut('/characters/1/2/skills', [], 403);
-        $this->assertPut('/characters/1/2/skills/1', [], 403);
-        $this->assertPut('/characters/1/2/skills/2', [], 403);
+        $this->assertPut('/characters/1/2/skills/1', [], 404);
+        $this->assertPut('/characters/1/2/skills/2', [], 404);
+        $this->assertPut('/characters/1/99/skills', [], 404);
+        $this->assertPut('/characters/1/99/skills/1', [], 404);
+        $this->assertPut('/characters/1/99/skills/2', [], 404);
         $this->assertPut('/characters/2/1/skills', [], 403);
         $this->assertPut('/characters/2/1/skills/1', [], 403);
         $this->assertPut('/characters/2/1/skills/2', [], 403);
-        $this->assertPut('/characters/99/1/skills', [], 403);
-        $this->assertPut('/characters/99/1/skills/1', [], 403);
-        $this->assertPut('/characters/99/1/skills/2', [], 403);
+        $this->assertPut('/characters/99/1/skills', [], 404);
+        $this->assertPut('/characters/99/1/skills/1', [], 404);
+        $this->assertPut('/characters/99/1/skills/2', [], 404);
     }
 
     public function testAuthorizationDelete(): void
@@ -105,6 +123,8 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
         $this->assertDelete('/characters/1/1/skills/2', 401);
         $this->assertDelete('/characters/1/2/skills/1', 401);
         $this->assertDelete('/characters/1/2/skills/2', 401);
+        $this->assertDelete('/characters/1/99/skills/1', 401);
+        $this->assertDelete('/characters/1/99/skills/2', 401);
         $this->assertDelete('/characters/2/1/skills/1', 401);
         $this->assertDelete('/characters/2/1/skills/2', 401);
         $this->assertDelete('/characters/99/1/skills/1', 401);
@@ -112,9 +132,11 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
 
         $this->withAuthPlayer();
         $this->assertDelete('/characters/1/1/skills/1', 403);
-        $this->assertDelete('/characters/1/1/skills/2', 403);
-        $this->assertDelete('/characters/1/2/skills/1', 403);
-        $this->assertDelete('/characters/1/2/skills/2', 403);
+        $this->assertDelete('/characters/1/1/skills/2', 404);
+        $this->assertDelete('/characters/1/2/skills/1', 404);
+        $this->assertDelete('/characters/1/2/skills/2', 404);
+        $this->assertDelete('/characters/1/99/skills/1', 404);
+        $this->assertDelete('/characters/1/99/skills/2', 404);
         $this->assertDelete('/characters/2/1/skills/1', 403);
         $this->assertDelete('/characters/2/1/skills/2', 403);
         $this->assertDelete('/characters/99/1/skills/1', 403);
@@ -122,13 +144,15 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
 
         $this->withAuthReadOnly();
         $this->assertDelete('/characters/1/1/skills/1', 403);
-        $this->assertDelete('/characters/1/1/skills/2', 403);
-        $this->assertDelete('/characters/1/2/skills/1', 403);
-        $this->assertDelete('/characters/1/2/skills/2', 403);
+        $this->assertDelete('/characters/1/1/skills/2', 404);
+        $this->assertDelete('/characters/1/2/skills/1', 404);
+        $this->assertDelete('/characters/1/2/skills/2', 404);
+        $this->assertDelete('/characters/1/99/skills/1', 404);
+        $this->assertDelete('/characters/1/99/skills/2', 404);
         $this->assertDelete('/characters/2/1/skills/1', 403);
         $this->assertDelete('/characters/2/1/skills/2', 403);
-        $this->assertDelete('/characters/99/1/skills/1', 403);
-        $this->assertDelete('/characters/99/1/skills/2', 403);
+        $this->assertDelete('/characters/99/1/skills/1', 404);
+        $this->assertDelete('/characters/99/1/skills/2', 404);
     }
 
     public function testRequiredFieldsValidation(): void
@@ -190,6 +214,52 @@ class CharactersSkillsTest extends AuthIntegrationTestCase
             $this->assertArrayKeyValue($key, $value, $actual);
         }
         $this->assertDateTimeNow($actual['modified']);
+    }
+
+    public function testAddToConceptCharacter(): void
+    {
+        $input = [
+            'skill_id' => 1,
+        ];
+
+        $expected = [
+            'class' => 'CharactersSkill',
+            'url' => '/characters/1/2/skills/1',
+            'times' => 1,
+        ];
+
+        $this->withAuthPlayer();
+        $actual = $this->assertPut('/characters/1/2/skills', $input, 201);
+
+        foreach ($expected as $key => $value) {
+            $this->assertArrayKeyValue($key, $value, $actual);
+        }
+        $this->assertDateTimeNow($actual['modified']);
+
+        # exceed skills.base_max:
+        $input = [
+            'times' => 2,
+        ];
+
+        $actual = $this->assertPut('/characters/1/2/skills/1', $input, 422);
+
+        $errors = $this->assertErrorsResponse('/characters/1/2/skills/1', $actual);
+        # expected fields with validation errors:
+        $this->assertCount(1, $errors);
+        $this->assertArrayHasKey('times', $errors);
+
+        # exceed character xp:
+        $input = [
+            'skill_id' => 2,
+            'times' => 10,
+        ];
+
+        $actual = $this->assertPut('/characters/1/2/skills', $input, 422);
+
+        $errors = $this->assertErrorsResponse('/characters/1/2/skills', $actual);
+        # expected fields with validation errors:
+        $this->assertCount(1, $errors);
+        $this->assertArrayHasKey('skill_id', $errors);
     }
 
     public function testEdit(): void

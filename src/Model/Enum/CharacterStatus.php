@@ -12,5 +12,6 @@ enum CharacterStatus: string implements EnumLabelInterface
 
     case Active = 'active';
     case Inactive = 'inactive';
+    case Concept = 'concept';
     case Dead = 'dead';
 }

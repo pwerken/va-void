@@ -36,6 +36,19 @@ class SkillsFixture extends TestFixture
                 'sort_order' => 1,
                 'deprecated' => false,
             ],
+            [
+                'id' => 3,
+                'name' => 'Walking',
+                'cost' => 0,
+                'base_max' => 1,
+                'times_max' => 1,
+                'manatype_id' => null,
+                'mana_amount' => 0,
+                'loresheet' => false,
+                'blanks' => false,
+                'sort_order' => 10,
+                'deprecated' => true,
+            ],
         ];
         parent::init();
     }
