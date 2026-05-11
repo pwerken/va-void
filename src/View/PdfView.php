@@ -45,7 +45,7 @@ class PdfView extends View
             return '';
         }
 
-        if (!$this->get('double')) {
+        if (!$double) {
             $layout = $this->makeLayout1P($lammies);
         } else {
             $layout = $this->makeLayout2P($lammies);
