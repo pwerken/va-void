@@ -16,6 +16,10 @@ PDF="$HERE/pdfs/$DATE/$SIDES.$(date +"%F_%T").pdf"
 		exit 0
 	fi
 
+	sleep 4
+
+	ID=$("$CAKE" queue)
+
 	mkdir -p "$(dirname "$PDF")"
 	"$CAKE" queue $SIDES $ID > "$PDF"
 	lpr "$PDF"
