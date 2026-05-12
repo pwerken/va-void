@@ -64,7 +64,7 @@ class BackupExportCommand extends Command
         $cmd = $this->config('mysqldump');
         $cmd .= ' --defaults-file=' . $auth;
         $cmd .= ' -t --result-file=' . $filename;
-        $cmd .= ' --ignore-table=' . $connection['database'] . '.phinxlog';
+        $cmd .= ' --ignore-table=' . $connection['database'] . '.cake_migrations';
         $cmd .= ' ' . $connection['database'];
         $io->verbose('exec: ' . $cmd);
 

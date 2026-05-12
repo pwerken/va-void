@@ -407,6 +407,13 @@ return [
     ],
 
     /*
+     * Migrations plugin uses the unified cake_migrations table.
+     */
+    'Migrations' => [
+        'legacyTables',
+    ],
+
+    /*
      * Session configuration.
      *
      * Contains an array of settings to use for session configuration. The
