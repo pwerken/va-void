@@ -77,14 +77,12 @@ trait BackupTrait
     {
         return [
             'social_profiles',
-            'attributes_items',
             'characters_conditions',
             'characters_powers',
             'characters_skills',
             'history',
             'lammies',
             'teachings',
-            'attributes',
             'items',
             'conditions',
             'powers',
@@ -92,11 +90,8 @@ trait BackupTrait
             'events',
             'characters',
             'manatypes',
-            'believes',
             'players',
             'factions',
-            'groups',
-            'worlds',
         ];
     }
 }
