@@ -111,6 +111,11 @@ class AdminHistoryHelper extends Helper
         $link['controller'] = 'History';
 
         switch ($entity) {
+            case 'CharactersItem':
+                $link['action'] = 'item';
+                $link[] = $h->get('key2');
+
+                return $link;
             case 'CharactersPower':
             case 'CharactersCondition':
                 if ($rhs) {

@@ -69,11 +69,27 @@ foreach ($history as $row) {
         continue;
     }
     foreach ($data as $field => $value) {
-        if (array_key_exists($field, $prev) && $value == $prev[$field]) {
+        $prevExists = array_key_exists($field, $prev);
+        if ($prevExists && $value == $prev[$field]) {
             // no change
             continue;
         }
-        $class = (array_key_exists($field, $prev) ? 'modified' : 'added');
+        if ($field == 'character_id') {
+            if (!is_null($value)) {
+                echo $prefix
+                . '<span class="added"><strong>' . h($name) . '</strong> '
+                . $this->Helper->formatField($field, $value)
+                . $suffix;
+            }
+            if ($prevExists && !is_null($prev[$field])) {
+                echo $prefix
+                . '<span class="removed"><strong>' . h($name) . '</strong> '
+                . $this->Helper->formatField($field, $prev[$field])
+                . $suffix;
+            }
+            continue;
+        }
+        $class = ($prevExists ? 'modified' : 'added');
         echo $prefix
             . '<span class="' . $class . '"><strong>' . h($name) . '</strong> '
             . $this->Helper->formatField($field, $value)

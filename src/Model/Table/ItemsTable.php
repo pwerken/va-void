@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\History;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
@@ -36,6 +37,42 @@ class ItemsTable extends Table
         }
 
         parent::beforeMarshal($event, $data, $options);
+    }
+
+    public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    {
+        // store (fake) CharactersItem relation in History table
+        $newCharId = $entity->get('character_id');
+        $oldCharId = $entity->getOriginal('character_id');
+
+        if ($newCharId == $oldCharId) {
+            return;
+        }
+
+        if (!$entity->isNew() && !is_null($oldCharId)) {
+            $unlinkItem = new History();
+            $unlinkItem->set('entity', 'CharactersItem');
+            $unlinkItem->set('key1', $oldCharId);
+            $unlinkItem->set('key2', $entity->get('itin'));
+            $unlinkItem->set('modified', $entity->get('modified'));
+            $unlinkItem->set('modifier_id', $entity->get('modifier_id'));
+
+            $this->fetchTable('History')->save($unlinkItem);
+            $this->touchEntity('Characters', $oldCharId);
+        }
+
+        if (!is_null($newCharId)) {
+            $linkItem = new History();
+            $linkItem->set('entity', 'CharactersItem');
+            $linkItem->set('key1', $newCharId);
+            $linkItem->set('key2', $entity->get('itin'));
+            $linkItem->set('data', '{}');
+            $linkItem->set('modified', $entity->get('modified'));
+            $linkItem->set('modifier_id', $entity->get('modifier_id'));
+
+            $this->fetchTable('History')->save($linkItem);
+            $this->touchEntity('Characters', $newCharId);
+        }
     }
 
     public function findIndex(SelectQuery $query): SelectQuery

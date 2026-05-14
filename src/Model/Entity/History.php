@@ -113,6 +113,10 @@ class History extends CakeEntity
             return $entity . '/' . $data['plin'] . '/' . $data['chin'];
         }
 
+        if ($entity === 'CharactersItem') {
+            return 'Item/' . $this->get('key2');
+        }
+
         $key = $entity . '/' . $this->get('key1');
         if ($this->get('key2')) {
             $key .= '/' . $this->get('key2');

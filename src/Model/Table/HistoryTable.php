@@ -181,9 +181,10 @@ class HistoryTable extends Table
 
         $related = [
             'Character',
-            'CharactersSkill',
-            'CharactersPower',
             'CharactersCondition',
+            'CharactersItem',
+            'CharactersPower',
+            'CharactersSkill',
             'Teaching',
         ];
         $list = $this->find()
