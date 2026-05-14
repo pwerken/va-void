@@ -24,6 +24,46 @@ class MigrationTest extends TestCase
         $this->assertEquals('test', $table->getName());
     }
 
+    public function testRelationTable(): void
+    {
+        $tableName = 'test';
+        $columnName = 'f00';
+
+        $table = $this->getMockBuilder(Table::class)
+            ->setConstructorArgs(['someTableName'])
+            ->onlyMethods(['addColumnInteger', 'addIndex'])
+            ->getMock();
+
+        $table->expects($this->once())
+            ->method('addColumnInteger')
+            ->with(
+                $this->equalTo($columnName),
+            )
+            ->willReturnSelf();
+
+        $table->expects($this->once())
+            ->method('addIndex')
+            ->with(
+                $this->equalTo([$columnName]),
+            )
+            ->willReturnSelf();
+
+        $mock = $this->getMockBuilder(Migration::class)
+            ->onlyMethods(['table'])
+            ->getMock();
+
+        $mock->expects($this->once())
+            ->method('table')
+            ->with(
+                $this->equalTo($tableName),
+                $this->equalTo(['id' => false, 'primary_key' => [$columnName]]),
+            )
+            ->willReturn($table);
+
+        $table = $mock->relationTable($tableName, [$columnName]);
+        $this->assertInstanceOf(Table::class, $table);
+    }
+
     public function testNow(): void
     {
         $migration = new Migration(12345678901234);

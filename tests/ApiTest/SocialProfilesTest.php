@@ -14,30 +14,35 @@ class SocialProfilesTest extends AuthIntegrationTestCase
         $this->assertGet('/players/1/socials/1', 401);
         $this->assertGet('/players/2/socials', 401);
         $this->assertGet('/players/99/socials', 401);
+        $this->assertGet('/players/99/socials/1', 401);
 
         $this->withAuthPlayer();
         $this->assertGet('/players/1/socials');
         $this->assertGet('/players/1/socials/1');
         $this->assertGet('/players/2/socials', 403);
         $this->assertGet('/players/99/socials', 403);
+        $this->assertGet('/players/99/socials/1', 403);
 
         $this->withAuthReadOnly();
         $this->assertGet('/players/1/socials', 403);
         $this->assertGet('/players/1/socials/1', 403);
         $this->assertGet('/players/2/socials');
         $this->assertGet('/players/99/socials', 403);
+        $this->assertGet('/players/99/socials/1', 403);
 
         $this->withAuthReferee();
         $this->assertGet('/players/1/socials', 403);
         $this->assertGet('/players/1/socials/1', 403);
         $this->assertGet('/players/2/socials', 403);
         $this->assertGet('/players/99/socials', 403);
+        $this->assertGet('/players/99/socials/1', 403);
 
         $this->withAuthInfobalie();
         $this->assertGet('/players/1/socials');
         $this->assertGet('/players/1/socials/1');
         $this->assertGet('/players/2/socials');
         $this->assertGet('/players/99/socials', 404);
+        $this->assertGet('/players/99/socials/1', 404);
     }
 
     public function testAuthorizationPut(): void

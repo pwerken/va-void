@@ -6,9 +6,6 @@ namespace App\Test\TestCase\Authentication\Social;
 use App\Authentication\Social\CollectionFactory;
 use App\Test\TestSuite\TestCase;
 
-/**
- * ApplicationTest class
- */
 class ConnectionFactoryTest extends TestCase
 {
     public function testProviders(): void

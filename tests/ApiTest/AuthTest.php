@@ -77,6 +77,18 @@ class AuthTest extends AuthIntegrationTestCase
         $this->assertArrayKeyValue('message', $message, $response);
     }
 
+    public function testSocialListing(): void
+    {
+        $url = '/auth/social';
+
+        $this->withoutAuth();
+        $response = $this->assertGet($url);
+
+        $this->assertArrayKeyValue('class', 'List', $response);
+        $this->assertArrayKeyValue('url', '/auth/OAuth2', $response);
+        $this->assertArrayHasKey('list', $response);
+    }
+
     public function testOAuth2Listing(): void
     {
         $configured = [];
