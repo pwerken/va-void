@@ -89,6 +89,7 @@ class CharactersTable extends Table
     {
         $rules = parent::buildRules($rules);
 
+        $rules->addCreate($rules->existsIn('plin', 'Players'));
         $rules->addCreate($rules->isUnique(['chin', 'plin']));
         $rules->addCreate($rules->isUnique(['name', 'plin']));
         $rules->addCreate([$this, 'ruleOnlyOneConcept']);
