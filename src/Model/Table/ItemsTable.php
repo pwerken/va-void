@@ -88,6 +88,8 @@ class ItemsTable extends Table
 
         $rules->add($rules->existsIn('character_id', 'Characters'));
         $rules->add($rules->existsIn('manatype_id', 'Manatypes'));
+
+        $rules->add([$this, 'ruleDisallowConceptCharacter']);
         $rules->add([$this, 'ruleManaConsistency']);
 
         return $rules;
