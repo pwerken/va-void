@@ -104,11 +104,9 @@ $hasAuthInfobalie = $user?->hasAuth(Authorization::Infobalie);
                             <li class="popover-item popover-header">
                                 TABLES
                             </li>
-<!--
                             <li class="popover-item">
                                 <a class="popover-link" href="/admin/events">Events</a>
                             </li>
--->
                             <li class="popover-item">
                                 <a class="popover-link" href="/admin/factions">Factions</a>
                             </li>

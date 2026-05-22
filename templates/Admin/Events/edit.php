@@ -14,5 +14,7 @@ if ($obj->isNew()) {
 
 echo $this->Form->create($obj, ['method' => 'post']);
 echo $this->Form->control('name');
+echo $this->Form->control('start');
+echo $this->Form->control('end');
 echo $this->Form->button('Save');
 echo $this->Form->end();

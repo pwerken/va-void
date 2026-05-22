@@ -45,6 +45,7 @@
     input[type="checkbox"],
     input[type="date"],
     input[type="datetime"],
+    input[type="datetime-local"],
     input[type="email"],
     input[type="number"],
     input[type="password"],

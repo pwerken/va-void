@@ -19,6 +19,8 @@ $isSuper = $user?->hasAuth(Authorization::Super);
     <tr>
         <th>Id</th>
         <th>Name</th>
+        <th>Start</th>
+        <th>End</th>
         <?php if ($isSuper) : ?>
         <th>Actions</th>
         <?php endif; ?>
@@ -27,6 +29,8 @@ $isSuper = $user?->hasAuth(Authorization::Super);
     <tr>
         <td><?= h($obj->get('id')) ?></td>
         <td><?= h($obj->get('name')) ?></td>
+        <td><?= h($obj->get('start')) ?></td>
+        <td><?= h($obj->get('end')) ?></td>
         <?php if ($isSuper) : ?>
         <td>
             <?= $this->Html->link('Edit', ['action' => 'edit', $obj->get('id')]) ?>

@@ -18,6 +18,6 @@ class EventsTable extends Table
 
     protected function orderBy(): array
     {
-        return ['id' => 'ASC'];
+        return ['id' => 'DESC'];
     }
 }
