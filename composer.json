@@ -51,8 +51,8 @@
             "@stan",
             "@test"
         ],
-        "cs": "phpcs --colors -p",
-        "cs-fix": "phpcbf --colors -p",
+        "cs": "phpcs",
+        "cs-fix": "phpcbf",
         "stan": "phpstan analyse --memory-limit=-1",
         "test": "phpunit --colors=always --no-coverage",
         "test:coverage": [
