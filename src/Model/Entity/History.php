@@ -8,6 +8,15 @@ use Cake\Datasource\EntityInterface;
 use Cake\ORM\Entity as CakeEntity;
 use Cake\ORM\TableRegistry;
 
+/**
+ * @property int                                    $id
+ * @property string                                 $entity
+ * @property int                                    $key1
+ * @property ?int                                   $key2
+ * @property ?string                                $data
+ * @property \Cake\I18n\DateTime|string|null        $modified
+ * @property ?int                                   $modifier_id
+ */
 class History extends CakeEntity
 {
     public static function fromEntity(EntityInterface $entity): ?History
@@ -26,34 +35,34 @@ class History extends CakeEntity
         }
 
         $history = new History();
-        $history->set('entity', getShortClassName($entity));
+        $history->entity = getShortClassName($entity);
 
-        $history->set('key1', $data[$primary[0]]);
+        $history->key1 = $data[$primary[0]];
         unset($data[$primary[0]]);
 
         if (isset($primary[1])) {
-            $history->set('key2', $data[$primary[1]]);
+            $history->key2 = $data[$primary[1]];
             unset($data[$primary[1]]);
         }
 
         if (isset($data['modified'])) {
-            $history->set('modified', (string)$data['modified']);
+            $history->modified = (string)$data['modified'];
             unset($data['modified']);
         }
 
         if (isset($data['modifier_id'])) {
-            $history->set('modifier_id', $data['modifier_id']);
+            $history->modifier_id = $data['modifier_id'];
             unset($data['modifier_id']);
         }
 
-        if ($history->get('entity') == 'SocialProfile') {
-            $history->set('key2', $data['user_id']);
+        if ($history->entity == 'SocialProfile') {
+            $history->key2 = $data['user_id'];
         }
 
         if (empty($data)) {
-            $history->set('data', '{}');
+            $history->data = '{}';
         } else {
-            $history->set('data', Json::encode($data, false));
+            $history->data = Json::encode($data, false);
         }
 
         return $history;
@@ -61,7 +70,7 @@ class History extends CakeEntity
 
     public function decode(): array
     {
-        return Json::decode($this->get('data') ?? '{}');
+        return Json::decode($this->data ?? '{}');
     }
 
     public static function compare(?History $a, ?History $b): int
@@ -79,19 +88,19 @@ class History extends CakeEntity
             return $cmp;
         }
 
-        if (is_null($a->get('key1'))) {
+        if (is_null($a->key1)) {
             return 1;
         }
 
-        if (is_null($b->get('key1'))) {
+        if (is_null($b->key1)) {
             return -1;
         }
 
-        $cmp = strcmp($a->get('entity'), $b->get('entity'));
+        $cmp = strcmp($a->entity, $b->entity);
         if ($cmp != 0) {
             // count upper-case letters
-            $aE = strlen(preg_replace('![^A-Z]+!', '', $a->get('entity')));
-            $bE = strlen(preg_replace('![^A-Z]+!', '', $b->get('entity')));
+            $aE = strlen(preg_replace('![^A-Z]+!', '', $a->entity));
+            $bE = strlen(preg_replace('![^A-Z]+!', '', $b->entity));
 
             if ($aE != $bE) {
                 return $bE - $aE;
@@ -100,12 +109,12 @@ class History extends CakeEntity
             return -$cmp;
         }
 
-        return $b->get('key1') - $a->get('key1');
+        return $b->key1 - $a->key1;
     }
 
     public function makeKey(): string
     {
-        $entity = $this->get('entity');
+        $entity = $this->entity;
 
         if ($entity === 'Character') {
             $data = $this->decode();
@@ -114,12 +123,12 @@ class History extends CakeEntity
         }
 
         if ($entity === 'CharactersItem') {
-            return 'Item/' . $this->get('key2');
+            return 'Item/' . $this->key2;
         }
 
-        $key = $entity . '/' . $this->get('key1');
-        if ($this->get('key2')) {
-            $key .= '/' . $this->get('key2');
+        $key = $entity . '/' . $this->key1;
+        if ($this->key2) {
+            $key .= '/' . $this->key2;
         }
 
         return $key;
@@ -127,24 +136,23 @@ class History extends CakeEntity
 
     public function modifiedString(): string
     {
-        $modified = $this->get('modified');
-        if (is_null($modified)) {
+        if (!$this->hasValue('modified')) {
             return '(??)';
         }
 
-        return (string)$modified;
+        return (string)$this->modified;
     }
 
     public function modifierString(): string
     {
-        $modifier = $this->get('modifier_id');
-        if (is_null($modifier)) {
+        if (!$this->hasValue('modifier_id')) {
             return '(??)';
         }
-        if ($modifier < 0) {
+
+        if ($this->modifier_id < 0) {
             return '_cli';
         }
 
-        return sprintf('%04d', $modifier);
+        return sprintf('%04d', $this->modifier_id);
     }
 }

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Component;
 
+use App\Model\Entity\Entity;
 use App\Model\Entity\Lammy;
 use Cake\Controller\Component;
-use Cake\Datasource\EntityInterface;
 
 class LammyComponent extends Component
 {
@@ -22,12 +22,12 @@ class LammyComponent extends Component
         $this->queueLammies([$lammy]);
     }
 
-    public function createLammy(EntityInterface $obj): Lammy
+    public function createLammy(Entity $obj): Lammy
     {
         $lammy = $this->getController()
                     ->fetchTable('Lammies')
                     ->newEmptyEntity();
-        $lammy->set('target', $obj);
+        $lammy->target = $obj;
 
         return $lammy;
     }
@@ -60,6 +60,7 @@ class LammyComponent extends Component
 
     protected function getLammy(int|array $id): Lammy
     {
+        /** @var \App\Model\Entity\Entity $obj */
         $obj = $this->getController()->fetchTable()->get($id, 'withContain');
 
         return $this->createLammy($obj);

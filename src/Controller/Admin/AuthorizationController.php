@@ -34,7 +34,7 @@ class AuthorizationController extends AdminController
                     ->where(['Players.role LIKE' => $role]);
             $permissions[$role->value] = [];
             foreach ($query->all() as $player) {
-                $permissions[$role->value][$player->get('plin')] = $player->get('name');
+                $permissions[$role->value][$player->plin] = $player->name;
             }
         }
         $this->set('permissions', $permissions);
@@ -66,7 +66,7 @@ class AuthorizationController extends AdminController
             return $response;
         }
 
-        if ($player->get('role') == $role) {
+        if ($player->role == $role) {
             $this->Flash->success(sprintf(
                 'Player#%d already has `%s` authorization',
                 $plin,

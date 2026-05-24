@@ -7,8 +7,12 @@ use App\Model\Entity\History;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\Locator\LocatorAwareTrait;
+use Cake\ORM\Table as CakeTable;
 
-class HistoryTable extends Table
+/**
+ * @extends \Cake\ORM\Table<array{}, \App\Model\Entity\History>
+ */
+class HistoryTable extends CakeTable
 {
     use LocatorAwareTrait;
 
@@ -30,10 +34,10 @@ class HistoryTable extends Table
         $lastChange = $this->logChange($entity);
 
         $history = $this->newEntity([]);
-        $history->set('entity', $lastChange->get('entity'));
-        $history->set('key1', $lastChange->get('key1'));
-        $history->set('key2', $lastChange->get('key2'));
-        $history->set('data', null);
+        $history->entity = $lastChange->entity;
+        $history->key1 = $lastChange->key1;
+        $history->key2 = $lastChange->key2;
+        $history->data = null;
 
         $this->save($history);
 
@@ -199,19 +203,19 @@ class HistoryTable extends Table
         }
 
         foreach ($entity->conditions as $condition) {
-            $relation = $condition->_joinData;
+            $relation = $condition->get('_joinData');
             $relation->condition = $condition;
             $list[] = History::fromEntity($relation);
         }
 
         foreach ($entity->powers as $power) {
-            $relation = $power->_joinData;
+            $relation = $power->get('_joinData');
             $relation->power = $power;
             $list[] = History::fromEntity($relation);
         }
 
         foreach ($entity->skills as $skill) {
-            $relation = $skill->_joinData;
+            $relation = $skill->get('_joinData');
             $relation->skill = $skill;
             $list[] = History::fromEntity($relation);
         }
@@ -238,7 +242,7 @@ class HistoryTable extends Table
             $list[] = History::fromEntity($entity);
 
             foreach ($entity->characters as $character) {
-                $relation = $character->_joinData;
+                $relation = $character->get('_joinData');
                 $relation->character = $character;
                 $list[] = History::fromEntity($relation);
             }
@@ -266,7 +270,7 @@ class HistoryTable extends Table
             $list[] = History::fromEntity($entity);
 
             foreach ($entity->characters as $character) {
-                $relation = $character->_joinData;
+                $relation = $character->get('_joinData');
                 $relation->character = $character;
                 $list[] = History::fromEntity($relation);
             }

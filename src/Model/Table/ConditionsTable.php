@@ -6,7 +6,11 @@ namespace App\Model\Table;
 use Cake\ORM\RulesChecker;
 
 /**
+ * @extends \App\Model\Table\Table<\App\Model\Entity\Condition>
+ *
+ * Relations:
  * @property \App\Model\Table\CharactersConditionsTable $CharactersConditions;
+ * @property \App\Model\Table\ManatypesTable            $Manatypes;
  */
 class ConditionsTable extends Table
 {

@@ -34,7 +34,7 @@ class PlayersSocialsController extends Controller
     public function playersView(int $plin, int $id): void
     {
         $obj = $this->fetchTable()->get($id, 'withContain');
-        if ($obj->get('user_id') != $plin) {
+        if ($obj->user_id != $plin) {
             throw new NotFoundException();
         }
         $this->Authorization->authorize($obj, 'view');

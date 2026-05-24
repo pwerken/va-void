@@ -3,6 +3,22 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+/**
+ * @property int                                $id
+ * @property string                             $name
+ * @property int                                $cost
+ * @property int                                $base_max
+ * @property int                                $times_max
+ * @property ?int                               $manatype_id
+ * @property ?int                               $mana_amount
+ * @property bool                               $loresheet
+ * @property bool                               $blanks
+ * @property int                                $sort_order
+ * @property bool                               $deprecated
+ *
+ * Relations:
+ * @property ?\App\Model\Entity\Manatype        $manatype
+ */
 class Skill extends Entity
 {
     protected array $_defaults = [

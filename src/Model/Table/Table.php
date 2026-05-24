@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Entity;
 use App\Model\Enum\CharacterStatus;
 use ArrayObject;
 use Cake\Database\Type\EnumType;
@@ -16,6 +17,10 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table as CakeTable;
 use Cake\Routing\Router;
 
+/**
+ * @template TEntity of \App\Model\Entity\Entity = \App\Model\Entity\Entity
+ * @extends \Cake\ORM\Table<array{}, TEntity>
+ */
 abstract class Table extends CakeTable
 {
     use LocatorAwareTrait;
@@ -114,7 +119,10 @@ abstract class Table extends CakeTable
         return $rules;
     }
 
-    public function getMaybe(mixed $id): ?EntityInterface
+    /**
+     * @return ?TEntity
+     */
+    public function getMaybe(mixed $id): ?Entity
     {
         if (is_null($id)) {
             return null;
@@ -134,6 +142,10 @@ abstract class Table extends CakeTable
         }
     }
 
+    /**
+     * @param \Cake\ORM\Query\SelectQuery<TEntity> $query
+     * @return \Cake\ORM\Query\SelectQuery<TEntity>
+     */
     public function findAll(SelectQuery $query): SelectQuery
     {
         $order = [];
@@ -144,11 +156,19 @@ abstract class Table extends CakeTable
         return parent::findAll($query)->orderBy($order);
     }
 
+    /**
+     * @param \Cake\ORM\Query\SelectQuery<TEntity> $query
+     * @return \Cake\ORM\Query\SelectQuery<TEntity>
+     */
     public function findIndex(SelectQuery $query): SelectQuery
     {
         return $this->findAll($query);
     }
 
+    /**
+     * @param \Cake\ORM\Query\SelectQuery<TEntity> $query
+     * @return \Cake\ORM\Query\SelectQuery<TEntity>
+     */
     public function findWithContain(SelectQuery $query): SelectQuery
     {
         $contain = $this->contain();
@@ -185,7 +205,7 @@ abstract class Table extends CakeTable
         }
 
         $character = $this->fetchTable('Characters')->get($plin);
-        if ($character->get('status') !== CharacterStatus::Concept) {
+        if ($character->status !== CharacterStatus::Concept) {
             return true;
         }
 

@@ -17,6 +17,8 @@ class EditComponent extends Component
     public function action(int|array $id): void
     {
         $controller = $this->getController();
+
+        /** @var \App\Model\Table\Table $model */
         $model = $controller->fetchTable();
 
         $obj = $model->get($id);

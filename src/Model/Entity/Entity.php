@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use Cake\Datasource\EntityInterface;
 use Cake\ORM\Entity as CakeEntity;
 use Cake\ORM\TableRegistry;
 use JeremyHarris\LazyLoad\ORM\LazyLoadEntityTrait;
@@ -72,8 +71,9 @@ abstract class Entity extends CakeEntity
         return $this->_compact;
     }
 
-    public static function refresh(EntityInterface $entity): self
+    public static function refresh(Entity $entity): Entity
     {
+        /** @var \App\Model\Table\Table $table */
         $table = TableRegistry::getTableLocator()->get($entity->getSource());
         $query = $table->find('withContain');
 

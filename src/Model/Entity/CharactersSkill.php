@@ -3,6 +3,17 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+/**
+ * @property int                                $character_id
+ * @property int                                $skill_id
+ * @property int                                $times
+ * @property ?\Cake\I18n\DateTime               $modified
+ * @property ?int                               $modifier_id
+ *
+ * Relations:
+ * @property ?\App\Model\Entity\Character       $character
+ * @property ?\App\Model\Entity\Skill           $skill
+ */
 class CharactersSkill extends Entity
 {
     public function __construct(array $properties = [], array $options = [])
@@ -20,19 +31,19 @@ class CharactersSkill extends Entity
 
     public function printableName(Skill $skill): string
     {
-        $name = $skill->get('name');
-        $times = $this->get('times');
+        $name = $skill->name;
+        $times = $this->times;
         if ($times > 1) {
             $name .= ' x' . $times;
         }
-        if ($skill->get('loresheet') && $skill->get('blanks')) {
+        if ($skill->loresheet && $skill->blanks) {
             $name .= ' (lore & blanks)';
-        } elseif ($skill->get('loresheet')) {
+        } elseif ($skill->loresheet) {
             $name .= ' (lore)';
-        } elseif ($skill->get('blanks')) {
+        } elseif ($skill->blanks) {
             $name .= ' (blanks)';
         }
-        $name .= ' (' . ($times * $skill->get('cost')) . ')';
+        $name .= ' (' . ($times * $skill->cost) . ')';
 
         return $name;
     }

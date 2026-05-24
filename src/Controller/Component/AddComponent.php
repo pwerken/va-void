@@ -17,6 +17,8 @@ class AddComponent extends Component
     public function action(bool $checkAuthorize = true): void
     {
         $controller = $this->getController();
+
+        /** @var \App\Model\Table\Table $model */
         $model = $controller->fetchTable();
 
         $obj = $model->newEmptyEntity();

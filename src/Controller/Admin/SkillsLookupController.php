@@ -19,11 +19,11 @@ class SkillsLookupController extends AdminController
         $skills_tbl = $this->fetchTable('Skills');
         $skills = [];
         foreach ($skills_tbl->find('all') as $skill) {
-            $name = $skill->get('name');
-            if ($skill->get('deprecated')) {
+            $name = $skill->name;
+            if ($skill->deprecated) {
                 $name .= ' (deprecated)';
             }
-            $skills[$skill->get('id')] = $name;
+            $skills[$skill->id] = $name;
         }
         $this->set('skills', $skills);
 
@@ -63,6 +63,7 @@ class SkillsLookupController extends AdminController
                 'CharactersSkills.times',
             ]);
 
+            /** @var array<string,mixed> $c */
             foreach ($query->all() as $c) {
                 $id = $c['id'];
                 $skill_id = $c['_matchingData']['CharactersSkills']['skill_id'];

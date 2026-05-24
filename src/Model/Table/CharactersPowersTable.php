@@ -8,6 +8,13 @@ use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
 
+/**
+ * @extends \App\Model\Table\Table<\App\Model\Entity\CharactersPower>
+ *
+ * Relations:
+ * @property \App\Model\Table\CharactersTable $Characters;
+ * @property \App\Model\Table\PowersTable     $Powers;
+ */
 class CharactersPowersTable extends Table
 {
     protected bool $allowSetPrimaryOnCreate = true;

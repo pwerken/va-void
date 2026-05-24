@@ -11,6 +11,9 @@ use Cake\Datasource\ResultSetInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\Query\SelectQuery;
 
+/**
+ * @extends \App\Model\Table\Table<\App\Model\Entity\Lammy>
+ */
 class LammiesTable extends Table
 {
     public function initialize(array $config): void
@@ -82,7 +85,7 @@ class LammiesTable extends Table
     public function setStatuses(ResultSetInterface $set, LammyStatus $status): void
     {
         foreach ($set as $lammy) {
-            $lammy->set('status', ($lammy->hasValue('lammy') ? $status : LammyStatus::Failed));
+            $lammy->status = ($lammy->hasValue('lammy') ? $status : LammyStatus::Failed);
             $this->save($lammy);
         }
     }

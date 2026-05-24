@@ -4,12 +4,20 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Entity\History;
+use App\Model\Entity\Item;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 
+/**
+ * @extends \App\Model\Table\Table<\App\Model\Entity\Item>
+ *
+ * Relations:
+ * @property \App\Model\Table\CharactersTable $Characters;
+ * @property \App\Model\Table\ManatypesTable  $Manatypes;
+ */
 class ItemsTable extends Table
 {
     public function initialize(array $config): void
@@ -95,9 +103,9 @@ class ItemsTable extends Table
         return $rules;
     }
 
-    public function ruleNoCharacter(EntityInterface $entity, array $options): bool
+    public function ruleNoCharacter(Item $entity, array $options): bool
     {
-        if (!empty($entity->get('character_id'))) {
+        if ($entity->hasValue('character_id')) {
             $entity->setError('character_id', $this->consistencyError);
 
             return false;

@@ -299,8 +299,8 @@ class SocialAuthComponent extends Component
         $profile = $this->_profileModel->patchEntity($profile, $data);
 
         // then try to find the related player
-        $id = $profile->get('user_id');
-        $email = $profile->get('email');
+        $id = $profile->user_id;
+        $email = $profile->email;
 
         if (!$email && !$id) {
             // Apple may omit email on subsequent sign-ins. If we already have
@@ -313,10 +313,8 @@ class SocialAuthComponent extends Component
                 ])
                 ->first();
             if ($existing) {
-                $email = $existing->get('email');
-                $id = $existing->get('user_id');
-                $profile->set('email', $email);
-                $profile->set('user_id', $id);
+                $profile->email = $existing->email;
+                $profile->user_id = $existing->user_id;
             }
         }
 
@@ -341,14 +339,14 @@ class SocialAuthComponent extends Component
             $result = $this->_profileModel
                 ->find()
                 ->select('user_id', true)
-                ->where(['email' => $profile->get('email'), 'user_id IS NOT NULL'])
+                ->where(['email' => $profile->email, 'user_id IS NOT NULL'])
                 ->disableHydration()
                 ->first();
             if ($result) {
                 $id = $result['user_id'];
             }
         }
-        $profile->set('user_id', $id);
+        $profile->user_id = $id;
         $this->Mailer->socialLogin($profile);
 
         if ($profile->isDirty()) {

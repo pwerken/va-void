@@ -3,13 +3,17 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Player;
 use App\Model\Enum\PlayerRole;
-use Cake\Datasource\EntityInterface;
 use Cake\ORM\RulesChecker;
 use Cake\Routing\Router;
 
 /**
- * @property \App\Model\Table\CharactersTable $Characters;
+ * @extends \App\Model\Table\Table<\App\Model\Entity\Player>
+ *
+ * Relations:
+ * @property \App\Model\Table\CharactersTable     $Characters;
+ * @property \App\Model\Table\SocialProfilesTable $SocialProfiles;
  */
 class PlayersTable extends Table
 {
@@ -42,7 +46,7 @@ class PlayersTable extends Table
         return $rules;
     }
 
-    public function ruleAuthCheck(EntityInterface $entity, array $options): bool
+    public function ruleAuthCheck(Player $entity, array $options): bool
     {
         if (!$entity->isDirty('role')) {
             return true;
@@ -56,7 +60,7 @@ class PlayersTable extends Table
             return false;
         }
 
-        if (!$user->hasAuth($entity->get('role')->toAuth())) {
+        if (!$user->hasAuth($entity->role->toAuth())) {
             $entity->setError('role', ['authorization' => 'Cannot promote user above your own authorization']);
 
             return false;

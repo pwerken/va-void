@@ -56,6 +56,7 @@ class AdminAuthCommand extends Command
             return $value->role->value;
         };
 
+        /** @var array<string, int[]> $perms */
         $perms = $this->fetchTable()
                     ->find('list', valueField: 'plin', groupField: $grouper)
                     ->all()
@@ -70,7 +71,7 @@ class AdminAuthCommand extends Command
 
             foreach ($perms[$role->value] as $plin) {
                 $player = $this->fetchTable()->get($plin);
-                $io->out(sprintf('<info>%4d</info> %s', $plin, $player->get('name')));
+                $io->out(sprintf('<info>%4d</info> %s', $plin, $player->name));
             }
         }
 
@@ -81,7 +82,7 @@ class AdminAuthCommand extends Command
     {
         $table = $this->fetchTable();
         $player = $table->getMaybe($plin);
-        if ($plin !== (string)$player?->get('plin')) {
+        if ($plin !== (string)$player?->plin) {
             $io->abort(sprintf('No player found with plin `%s`.', $plin));
         }
 
@@ -100,9 +101,9 @@ class AdminAuthCommand extends Command
 
         $io->out(sprintf(
             '<info>%04d</info> %s: <warning>%s</warning>',
-            $player->get('plin'),
-            $player->get('name'),
-            $player->get('role')->label(),
+            $player->plin,
+            $player->name,
+            $player->role->label(),
         ));
 
         return static::CODE_SUCCESS;

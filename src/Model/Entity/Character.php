@@ -6,6 +6,37 @@ namespace App\Model\Entity;
 use App\Model\Enum\CharacterStatus;
 use Cake\ORM\TableRegistry;
 
+/**
+ * @property int                                $id
+ * @property int                                $plin
+ * @property int                                $chin
+ * @property string                             $name
+ * @property float                              $xp
+ * @property int                                $faction_id
+ * @property ?string                            $belief
+ * @property ?string                            $group
+ * @property ?string                            $world
+ * @property ?\App\Model\Enum\CharacterStatus   $status
+ * @property ?string                            $referee_notes
+ * @property ?string                            $notes
+ * @property ?\Cake\I18n\DateTime               $modified
+ * @property ?int                               $modifier_id
+ *
+ * Virtual:
+ * @property string                             $faction
+ * @property array<string,int>                  $mana
+ * @property float                              $xp_available
+ *
+ * Relations:
+ * @property ?\App\Model\Entity\Player          $player
+ * @property ?\App\Model\Entity\Faction         $faction_object
+ * @property ?list<\App\Model\Entity\Skill>     $skills
+ * @property ?list<\App\Model\Entity\Condition> $conditions
+ * @property ?list<\App\Model\Entity\Power>     $powers
+ * @property ?list<\App\Model\Entity\Item>      $items
+ * @property ?\App\Model\Entity\Teaching        $teacher
+ * @property ?list<\App\Model\Entity\Teaching>  $students
+ */
 class Character extends Entity
 {
     protected array $_defaults = [
@@ -31,34 +62,34 @@ class Character extends Entity
 
     public function getUrl(): string
     {
-        return '/' . $this->getBaseUrl() . '/' . $this->get('plin') . '/' . $this->get('chin');
+        return '/' . $this->getBaseUrl() . '/' . $this->plin . '/' . $this->chin;
     }
 
     protected function _getFaction(): ?string
     {
-        return $this->get('faction_object')?->name;
+        return $this->faction_object?->name;
     }
 
     protected function _getMana(): array
     {
-        $sources = $this->get('skills');
-        $sources = array_merge($sources, $this->get('powers'));
-        $sources = array_merge($sources, $this->get('conditions'));
-        $sources = array_merge($sources, $this->get('items'));
+        $sources = $this->skills;
+        $sources = array_merge($sources, $this->powers);
+        $sources = array_merge($sources, $this->conditions);
+        $sources = array_merge($sources, $this->items);
 
         $mana = [];
         $manatypes = TableRegistry::getTableLocator()->get('Manatypes')->find();
         foreach ($manatypes as $manatype) {
-            $mana[$manatype->get('name')] = 0;
+            $mana[$manatype->name] = 0;
         }
 
         foreach ($sources as $source) {
-            $type = $source->get('manatype')?->get('name');
+            $type = $source->manatype?->name;
             if (is_null($type)) {
                 continue;
             }
-            $times = $source->_joinData?->get('times') ?? 1;
-            $mana[$type] += $times * $source->get('mana_amount');
+            $times = $source->get('_joinData')->times ?? 1;
+            $mana[$type] += $times * $source->mana_amount;
         }
 
         return $mana;
@@ -67,13 +98,13 @@ class Character extends Entity
     protected function _getXpAvailable(): float
     {
         $used = 0;
-        $skills = $this->get('skills') ?? [];
+        $skills = $this->skills ?? [];
         foreach ($skills as $skill) {
-            $times = $skill->_joinData->get('times');
-            $used += $times * $skill->get('cost');
+            $times = $skill->get('_joinData')->times;
+            $used += $times * $skill->cost;
         }
 
-        return $this->get('xp') - $used;
+        return $this->xp - $used;
     }
 
     protected function _setBelief(mixed $belief): mixed

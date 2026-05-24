@@ -8,6 +8,13 @@ use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
 
+/**
+ * @extends \App\Model\Table\Table<\App\Model\Entity\CharactersCondition>
+ *
+ * Relations:
+ * @property \App\Model\Table\CharactersTable $Characters;
+ * @property \App\Model\Table\ConditionsTable $Conditions;
+ */
 class CharactersConditionsTable extends Table
 {
     protected bool $allowSetPrimaryOnCreate = true;

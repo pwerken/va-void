@@ -123,7 +123,7 @@ class HistoryController extends AdminController
         foreach ($list as $row) {
             $key = $row->makeKey();
 
-            $modifier_id = $row->get('modifier_id');
+            $modifier_id = $row->modifier_id;
             if (is_int($modifier_id) && $modifier_id >= 0) {
                 $plins[] = $modifier_id;
             }
@@ -132,7 +132,7 @@ class HistoryController extends AdminController
                 // added
                 $row->set('prev', null);
                 $seen[$key] = $row;
-            } elseif (is_null($row->get('data'))) {
+            } elseif (is_null($row->data)) {
                 // removed
                 $row->set('prev', $seen[$key]);
                 unset($seen[$key]);
@@ -163,7 +163,7 @@ class HistoryController extends AdminController
 
         $lookup = [];
         foreach ($query->all() as $row) {
-            $lookup[$row->get('plin')] = $row;
+            $lookup[$row->plin] = $row;
         }
 
         return $lookup;

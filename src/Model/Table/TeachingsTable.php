@@ -8,6 +8,9 @@ use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
 
+/**
+ * @extends \App\Model\Table\Table<\App\Model\Entity\Teaching>
+ */
 class TeachingsTable extends Table
 {
     protected bool $allowSetPrimaryOnCreate = true;

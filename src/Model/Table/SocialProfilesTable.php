@@ -7,6 +7,9 @@ use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 
+/**
+ * @extends \App\Model\Table\Table<\App\Model\Entity\SocialProfile>
+ */
 class SocialProfilesTable extends Table
 {
     public function beforeDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void

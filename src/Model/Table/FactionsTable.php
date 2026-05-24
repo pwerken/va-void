@@ -6,6 +6,9 @@ namespace App\Model\Table;
 use Cake\ORM\RulesChecker;
 
 /**
+ * @extends \App\Model\Table\Table<\App\Model\Entity\Faction>
+ *
+ * Relations:
  * @property \App\Model\Table\CharactersTable $Characters;
  */
 class FactionsTable extends Table

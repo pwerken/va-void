@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Character;
 use App\Model\Enum\CharacterStatus;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
@@ -11,10 +12,13 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 
 /**
+ * @extends \App\Model\Table\Table<\App\Model\Entity\Character>
+ *
+ * Relations:
  * @property \App\Model\Table\CharactersConditionsTable $CharactersConditions;
- * @property \App\Model\Table\CharactersPowersTable $CharactersPowers;
- * @property \App\Model\Table\CharactersSkillsTable $CharactersSkills;
- * @property \App\Model\Table\ItemsTable $Items;
+ * @property \App\Model\Table\CharactersPowersTable     $CharactersPowers;
+ * @property \App\Model\Table\CharactersSkillsTable     $CharactersSkills;
+ * @property \App\Model\Table\ItemsTable                $Items;
  */
 class CharactersTable extends Table
 {
@@ -27,10 +31,10 @@ class CharactersTable extends Table
         $this->belongsTo('Players')->setForeignKey('plin');
         $this->belongsTo('Factions')->setProperty('faction_object');
 
-        $this->hasMany('Items');
         $this->belongsToManyThrough('Conditions', 'CharactersConditions');
         $this->belongsToManyThrough('Powers', 'CharactersPowers');
         $this->belongsToManyThrough('Skills', 'CharactersSkills');
+        $this->hasMany('Items');
 
         $this->hasOne('MyTeacher', [
             'className' => 'Teachings',
@@ -48,6 +52,8 @@ class CharactersTable extends Table
     {
         if (isset($data['plin']) && !isset($data['chin'])) {
             $query = $this->find();
+
+            /** @var array<string, int> $chin */
             $chin = $query->select(['maxChin' => $query->func()->max('chin')])
                         ->where(['plin' => $data['plin']])
                         ->enableHydration(false)
@@ -129,14 +135,15 @@ class CharactersTable extends Table
                     ->orderBy(['world'], true);
     }
 
-    public function ruleConceptCharFaction(EntityInterface $entity, array $options): bool
+    public function ruleConceptCharFaction(Character $entity, array $options): bool
     {
-        if ($entity->get('status') !== CharacterStatus::Concept) {
+        if ($entity->status !== CharacterStatus::Concept) {
             return true;
         }
 
-        $faction = $this->fetchTable('Factions')->get($entity->get('faction_id'));
-        if (!$faction->get('deprecated')) {
+        /** @var \App\Model\Entity\Faction $faction */
+        $faction = $this->fetchTable('Factions')->get($entity->faction_id);
+        if (!$faction->deprecated) {
             return true;
         }
 
@@ -145,14 +152,14 @@ class CharactersTable extends Table
         return false;
     }
 
-    public function ruleOnlyOneConcept(EntityInterface $entity, array $options): bool
+    public function ruleOnlyOneConcept(Character $entity, array $options): bool
     {
-        if ($entity->get('status') !== CharacterStatus::Concept) {
+        if ($entity->status !== CharacterStatus::Concept) {
             return true;
         }
 
         $query = $this->find();
-        $query->where(['plin' => $entity->get('plin')]);
+        $query->where(['plin' => $entity->plin]);
         $query->where(['status' => CharacterStatus::Concept]);
 
         if ($query->count() == 0) {
@@ -164,7 +171,7 @@ class CharactersTable extends Table
         return false;
     }
 
-    public function ruleDisallowSetPlinChin(EntityInterface $entity, array $options): bool
+    public function ruleDisallowSetPlinChin(Character $entity, array $options): bool
     {
         $allowed = true;
 
@@ -180,9 +187,9 @@ class CharactersTable extends Table
         return $allowed;
     }
 
-    public function ruleNoReturnToConcept(EntityInterface $entity, array $options): bool
+    public function ruleNoReturnToConcept(Character $entity, array $options): bool
     {
-        if ($entity->get('status') === CharacterStatus::Concept) {
+        if ($entity->status === CharacterStatus::Concept) {
             if ($entity->getOriginal('status') !== CharacterStatus::Concept) {
                 $entity->setError('status', ['concept' => 'Cannot set character back to concept']);
 

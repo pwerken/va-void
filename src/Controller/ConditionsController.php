@@ -54,8 +54,8 @@ class ConditionsController extends Controller
         }
 
         $objs = [];
-        foreach ($condition->get('characters') as $character) {
-            $c = $character->_joinData;
+        foreach ($condition->characters as $character) {
+            $c = $character->get('_joinData');
             $c->character = $character;
             $c->condition = $condition;
             $objs[] = $this->Lammy->createLammy($c);

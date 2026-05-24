@@ -23,7 +23,7 @@ trait PrintLammiesTrait
 
         $lammies = [];
         foreach ($queue as $queued) {
-            $lammies[] = $queued->get('lammy');
+            $lammies[] = $queued->lammy;
         }
 
         return (new PdfView())->createPdf($lammies, $double);

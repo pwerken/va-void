@@ -50,7 +50,7 @@ class AdminPasswordCommand extends Command
         $table = $this->fetchTable();
         $player = $table->getMaybe($plin);
 
-        if ($plin !== (string)$player?->get('plin')) {
+        if ($plin !== (string)$player?->plin) {
             $io->abort(sprintf('No player found with plin `%s`.', $plin));
         }
 
@@ -69,7 +69,7 @@ class AdminPasswordCommand extends Command
         if ($new_password === false) {
             $msg = 'Password unchanged';
         } else {
-            $player->set('password', $new_password);
+            $player->password = $new_password;
             $table->save($player);
             $errors = $player->getError('password');
             if (!empty($errors)) {
@@ -82,8 +82,8 @@ class AdminPasswordCommand extends Command
 
         $io->out(sprintf(
             '<info>%04d</info> %s: <warning>%s</warning>',
-            $player->get('plin'),
-            $player->get('name'),
+            $player->plin,
+            $player->name,
             $msg,
         ));
 

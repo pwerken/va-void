@@ -98,27 +98,25 @@ class CharactersController extends Controller
         $objs = [$this->Lammy->createLammy($char)];
 
         if ($all) {
-            if ($char->get('teacher')) {
-                $t = $char->get('teacher');
+            if ($char->hasValue('teacher')) {
+                $t = $char->teacher;
                 $t->student = $char;
                 $objs[] = $this->Lammy->createLammy($t);
             }
-            foreach ($char->get('powers') as $power) {
-                $c = $power->_joinData;
+            foreach ($char->powers as $power) {
+                $c = $power->get('_joinData');
                 $c->character = $char;
                 $c->power = $power;
                 $objs[] = $this->Lammy->createLammy($c);
             }
-            foreach ($char->get('conditions') as $condition) {
-                $c = $condition->_joinData;
+            foreach ($char->conditions as $condition) {
+                $c = $condition->get('_joinData');
                 $c->character = $char;
                 $c->condition = $condition;
                 $objs[] = $this->Lammy->createLammy($c);
             }
-            if ($items) {
-                foreach ($char->get('items') as $item) {
-                    $objs[] = $this->Lammy->createLammy($item);
-                }
+            foreach ($char->items as $item) {
+                $objs[] = $this->Lammy->createLammy($item);
             }
         }
 

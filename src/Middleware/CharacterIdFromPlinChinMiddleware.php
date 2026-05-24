@@ -21,11 +21,13 @@ class CharacterIdFromPlinChinMiddleware implements MiddlewareInterface
         $pass = $params['pass'];
         if ($hasPlinChin && count($pass) >= 2) {
             $table = TableRegistry::getTableLocator()->get('Characters');
-            $char = $table->findByPlinAndChin($pass[0], $pass[1])->first()?->id;
-            $params['character_id'] = $char;
+            /** @var ?\App\Model\Entity\Character $char */
+            $char = $table->findByPlinAndChin($pass[0], $pass[1])->first();
+
+            $params['character_id'] = $char?->id;
 
             array_shift($pass);
-            $pass[0] = $char;
+            $pass[0] = $char?->id;
         }
         foreach ($pass as $key => $value) {
             if (is_numeric($value)) {

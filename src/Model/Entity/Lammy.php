@@ -9,11 +9,28 @@ use Cake\Core\App;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\Utility\Inflector;
 
+/**
+ * @template T of \App\Model\Entity\Entity
+ *
+ * Properties:
+ * @property int                            $id
+ * @property \App\Model\Enum\LammyStatus    $status
+ * @property class-string<T>                $entity
+ * @property int                            $key1
+ * @property ?int                           $key2
+ * @property ?\Cake\I18n\DateTime           $created
+ * @property ?int                           $creator_id
+ * @property ?\Cake\I18n\DateTime           $modified
+ *
+ * Virtual:
+ * @property ?T                             $target
+ * @property ?\App\Lammy\LammyCard          $lammy
+ */
 class Lammy extends Entity
 {
     use LocatorAwareTrait;
 
-    private ?Entity $target = null;
+    private ?Entity $tEntity = null;
     private ?LammyCard $lammy = null;
 
     protected array $_defaults = [
@@ -29,13 +46,18 @@ class Lammy extends Entity
         $this->setHidden(['lammy'], true);
     }
 
+    /**
+     * @return T
+     */
     protected function _getTarget(): ?Entity
     {
-        if (is_null($this->target)) {
-            $name = Inflector::pluralize($this->get('entity'));
+        if (is_null($this->tEntity)) {
+            $name = Inflector::pluralize($this->entity);
+
+            /** @var \App\Model\Table\Table<T> $table */
             $table = $this->fetchTable($name);
 
-            $keys = [$this->get('key1'), $this->get('key2')];
+            $keys = [$this->key1, $this->key2];
             $primary = $table->getPrimaryKey();
             if (!is_array($primary)) {
                 $primary = [$primary];
@@ -46,20 +68,23 @@ class Lammy extends Entity
                 $where[$name . '.' . $id] = $keys[$i];
             }
 
-            $this->target = $table->find('withContain')->where($where)->first();
+            $this->tEntity = $table->find('withContain')->where($where)->first();
         }
 
-        return $this->target;
+        return $this->tEntity;
     }
 
-    protected function _setTarget(?Entity $target): void
+    /**
+     * @param T $target
+     */
+    protected function _setTarget(?Entity $target): ?Entity
     {
         if (is_null($target)) {
-            return;
+            return null;
         }
 
         $table = $this->fetchTable($target->getSource());
-        $this->set('entity', getShortClassName($table->getEntityClass()));
+        $this->entity = getShortClassName($table->getEntityClass());
 
         $primary = $table->getPrimaryKey();
         if (!is_array($primary)) {
@@ -69,15 +94,17 @@ class Lammy extends Entity
         foreach ($primary as $key => $field) {
             $this->set('key' . ($key + 1), $target->get($field));
         }
+
+        return $target;
     }
 
     protected function _getLammy(): ?LammyCard
     {
-        $target = $this->get('target');
+        $target = $this->target;
         if (is_null($this->lammy) && !is_null($target)) {
-            $class = App::className($this->get('entity'), 'Lammy', 'Lammy');
+            $class = App::className($this->entity, 'Lammy', 'Lammy');
             $this->lammy = new $class($target);
-            $this->lammy->printedBy($this->get('creator_id'));
+            $this->lammy->printedBy($this->creator_id);
         }
 
         return $this->lammy;

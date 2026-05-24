@@ -12,13 +12,13 @@ class MailerComponent extends Component
 {
     public function socialLogin(SocialProfile $profile): void
     {
-        if (!$profile->isNew() || $profile->get('user_id')) {
+        if (!$profile->isNew() || $profile->user_id) {
             return;
         }
 
-        $provider = $profile->get('provider');
-        $user = $profile->get('username') ?? $profile->get('full_name');
-        $email = $profile->get('email');
+        $provider = $profile->provider;
+        $user = $profile->username ?? $profile->full_name;
+        $email = $profile->email;
         $auth = Router::url('/admin/social', true);
 
         $mailer = new Mailer('default');

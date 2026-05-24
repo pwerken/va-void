@@ -7,7 +7,11 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 
 /**
+ * @extends \App\Model\Table\Table<\App\Model\Entity\Skill>
+ *
+ * Relations:
  * @property \App\Model\Table\CharactersSkillsTable $CharactersSkills;
+ * @property \App\Model\Table\ManatypesTable        $Manatypes;
  */
 class SkillsTable extends Table
 {

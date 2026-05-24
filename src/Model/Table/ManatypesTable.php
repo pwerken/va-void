@@ -7,6 +7,9 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 
 /**
+ * @extends \App\Model\Table\Table<\App\Model\Entity\Manatype>
+ *
+ * Relations:
  * @property \App\Model\Table\SkillsTable $Skills;
  */
 class ManatypesTable extends Table

@@ -24,16 +24,14 @@ class AdminHistoryHelper extends Helper
         if ($field === 'teacher_id' || $field === 'character_id') {
             $char = $this->getCharacter((int)$value);
             if ($char) {
-                $value .= ' = '
-                    . $char->get('plin') . '/' . $char->get('chin')
-                    . ' ' . $char->get('name');
+                $value .= " = {$char->plin}/{$char->chin} {$char->name}";
             }
         }
 
         if ($field === 'manatype_id') {
             $mana = $this->getManatype((int)$value);
             if ($mana) {
-                $value .= ' = ' . $mana->get('name');
+                $value .= " = {$mana->name}";
             }
         }
 
@@ -47,39 +45,39 @@ class AdminHistoryHelper extends Helper
         }
 
         $data = $h->decode();
-        $entity = $h->get('entity');
+        $entity = $h->entity;
 
-        if ($entity === 'Player') {
+        if ($h->entity === 'Player') {
             $fields = [$data['first_name'], $data['insertion'], $data['last_name']];
 
             return implode(' ', array_filter($fields));
         }
 
         if ($entity === 'Teaching' && !empty($data)) {
+            /** @var ?\App\Model\Entity\Skill $obj */
             $obj = $this->fetchTable('Skills')
                     ->find()
                     ->where(['id' => $data['skill_id']])
                     ->first();
 
-            return $obj?->get('name') ?? '(removed)';
+            return $obj->name ?? '(removed)';
         }
 
         if (str_starts_with($entity, 'Characters')) {
             if ($rhs) {
                 $table = $this->fetchTable(substr($entity, 10) . 's');
                 $key = $table->getPrimaryKey();
-                $obj = $table->find()->where([$key => $h->get('key2')])->first();
+                $obj = $table->find()->where([$key => $h->key2])->first();
 
                 return $obj?->get('name') ?? '(removed)';
             }
 
-            $obj = $this->getCharacter($h->get('key1'));
+            $obj = $this->getCharacter($h->key1);
             if (is_null($obj)) {
                 return '(removed)';
             }
 
-            return $obj->get('plin') . '/' . $obj->get('chin')
-                . ' ' . $obj->get('name');
+            return "{$obj->plin}/{$obj->chin} {$obj->name}";
         }
 
         return $data['name'] ?? '';
@@ -87,7 +85,7 @@ class AdminHistoryHelper extends Helper
 
     public function makeLink(History $h): array
     {
-        $entity = $h->get('entity');
+        $entity = $h->entity;
 
         $link = [];
         $link['controller'] = 'History';
@@ -97,7 +95,7 @@ class AdminHistoryHelper extends Helper
             $link[] = $data['plin'];
             $link[] = $data['chin'];
         } else {
-            $link[] = $h->get('key1');
+            $link[] = $h->key1;
         }
 
         return $link;
@@ -105,7 +103,7 @@ class AdminHistoryHelper extends Helper
 
     public function relationLink(History $h, bool $rhs = true): ?array
     {
-        $entity = $h->get('entity');
+        $entity = $h->entity;
 
         $link = [];
         $link['controller'] = 'History';
@@ -113,19 +111,19 @@ class AdminHistoryHelper extends Helper
         switch ($entity) {
             case 'CharactersItem':
                 $link['action'] = 'item';
-                $link[] = $h->get('key2');
+                $link[] = $h->key2;
 
                 return $link;
             case 'CharactersPower':
             case 'CharactersCondition':
                 if ($rhs) {
                     $link['action'] = strtolower(substr($entity, 10));
-                    $link[] = $h->get('key2');
+                    $link[] = $h->key2;
                 } else {
-                    $obj = $this->getCharacter($h->get('key1'));
+                    $obj = $this->getCharacter($h->key1);
                     $link['action'] = 'character';
-                    $link[] = $obj->get('plin');
-                    $link[] = $obj->get('chin');
+                    $link[] = $obj->plin;
+                    $link[] = $obj->chin;
                 }
 
                 return $link;

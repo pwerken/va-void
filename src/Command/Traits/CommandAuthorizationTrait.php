@@ -13,8 +13,8 @@ trait CommandAuthorizationTrait
     public function initialize(): void
     {
         $cli = new Player();
-        $cli->set('id', -2);
-        $cli->set('role', PlayerRole::Super);
+        $cli->id = -2;
+        $cli->role = PlayerRole::Super;
 
         $request = (new ServerRequest())->withAttribute('identity', $cli);
         Router::setRequest($request);

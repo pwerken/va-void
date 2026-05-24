@@ -12,6 +12,24 @@ use Authorization\AuthorizationServiceInterface;
 use Authorization\IdentityInterface as AuthorizationIdentity;
 use Authorization\Policy\ResultInterface;
 
+/**
+ * @property int                                    $plin
+ * @property \App\Model\Enum\PlayerRole             $role
+ * @property ?string                                $password
+ * @property ?string                                $first_name
+ * @property ?string                                $insertion
+ * @property ?string                                $last_name
+ * @property ?string                                $email
+ * @property ?\Cake\I18n\DateTime                   $modified
+ * @property ?int                                   $modifier_id
+ *
+ * Virtual:
+ * @property string                                 $name
+ *
+ * Relations:
+ * @property ?list<\App\Model\Entity\Character>     $characters
+ * @property ?list<\App\Model\Entity\SocialProfile> $socials
+ */
 class Player extends Entity implements AuthenticationIdentity, AuthorizationIdentity
 {
     protected array $_compact = ['plin', 'name'];
@@ -31,7 +49,7 @@ class Player extends Entity implements AuthenticationIdentity, AuthorizationIden
 
     public function getUrl(): string
     {
-        return '/' . $this->getBaseUrl() . '/' . $this->get('plin');
+        return '/' . $this->getBaseUrl() . '/' . $this->plin;
     }
 
     protected function _setPassword(?string $password): ?string
@@ -50,7 +68,7 @@ class Player extends Entity implements AuthenticationIdentity, AuthorizationIden
 
     protected function _getName(): string
     {
-        $name = [$this->get('first_name'), $this->get('insertion'), $this->get('last_name')];
+        $name = [$this->first_name, $this->insertion, $this->last_name];
 
         return implode(' ', array_filter($name));
     }
@@ -69,7 +87,7 @@ class Player extends Entity implements AuthenticationIdentity, AuthorizationIden
 
     public function getIdentifier(): int
     {
-        return $this->get('plin');
+        return $this->plin;
     }
 
     public function can(string $action, mixed $resource): bool

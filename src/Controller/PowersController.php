@@ -54,8 +54,8 @@ class PowersController extends Controller
         }
 
         $objs = [];
-        foreach ($power->get('characters') as $character) {
-            $c = $character->_joinData;
+        foreach ($power->characters as $character) {
+            $c = $character->get('_joinData');
             $c->character = $character;
             $c->power = $power;
             $objs[] = $this->Lammy->createLammy($c);

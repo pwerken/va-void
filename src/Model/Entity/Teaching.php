@@ -3,6 +3,21 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+/**
+ * @property int                            $student_id
+ * @property int                            $teacher_id
+ * @property int                            $skill_id
+ * @property ?\Cake\I18n\DateTime           $modified
+ * @property ?int                           $modifier_id
+ *
+ * Virtual:
+ * @property float                          $progress
+ *
+ * Relations:
+ * @property ?\App\Model\Entity\Character   $student
+ * @property ?\App\Model\Entity\Character   $teacher
+ * @property ?\App\Model\Entity\Skill       $skill
+ */
 class Teaching extends Entity
 {
     public function __construct(array $properties = [], array $options = [])
@@ -16,11 +31,11 @@ class Teaching extends Entity
 
     public function getUrl(): string
     {
-        return $this->get('student')->getUrl() . '/teacher';
+        return $this->student->getUrl() . '/teacher';
     }
 
     protected function _getProgress(): float
     {
-        return $this->get('student')->get('xp_available');
+        return $this->student->xp_available;
     }
 }

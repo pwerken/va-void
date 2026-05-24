@@ -90,7 +90,7 @@ class SocialController extends AdminController
             return null;
         }
 
-        $login->set('user_id', $player->get('plin'));
+        $login->set('user_id', $player->plin);
         $login->set('hidden', false);
         if (!$profiles->save($login)) {
             $this->Flash->error(sprintf('SocialProfile#%d failed to link', $social));
@@ -157,8 +157,8 @@ class SocialController extends AdminController
 
         // unlink login from plin
         if (!is_null($this->getRequest()->getData('unlink'))) {
-            $plin = $login->get('user_id');
-            $login->set('user_id', null);
+            $plin = $login->user_id;
+            $login->user_id = null;
             if (!$profiles->save($login)) {
                 $this->Flash->error(sprintf(
                     'SocialProfile#%d failed to unlink from Player#%d',
@@ -214,7 +214,7 @@ class SocialController extends AdminController
         }
 
         $user = $this->SocialAuth->loginCallback($providerName);
-        if ($user && $user->get('plin')) {
+        if ($user && $user->plin) {
             $this->request->getSession()->write('Auth', $user);
 
             // redirect back to page from before login
