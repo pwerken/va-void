@@ -5,11 +5,6 @@ namespace App\Lammy;
 
 class TeachingLammy extends LammyCard
 {
-    public function cards(): int
-    {
-        return 1;
-    }
-
     public function sides(): int
     {
         return 1;

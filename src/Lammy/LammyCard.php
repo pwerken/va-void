@@ -38,14 +38,6 @@ abstract class LammyCard
     /************************* USED BY PdfSheet ***************************/
 
     /***
-     *  Return the number of cards the lammy has.
-     */
-    public function cards(): int
-    {
-        return 1;
-    }
-
-    /***
      *  Return the number of sides the lammy has.
      *
      *  Side 2n is the front and 2n+1 is the back of a single card.
