@@ -30,7 +30,7 @@ namespace App\Model\Entity;
  */
 class Item extends Entity
 {
-    protected array $_compact = ['itin', 'name', 'expiry', 'character', 'deprecated'];
+    protected array $_compact = ['itin', 'name', 'expiry', 'character', 'deprecated', 'created'];
 
     public function __construct(array $properties = [], array $options = [])
     {
