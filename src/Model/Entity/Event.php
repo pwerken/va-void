@@ -11,4 +11,5 @@ namespace App\Model\Entity;
  */
 class Event extends Entity
 {
+    protected array $_compact = ['id', 'name', 'start', 'end'];
 }
