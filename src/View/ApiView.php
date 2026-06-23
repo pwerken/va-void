@@ -80,6 +80,8 @@ class ApiView extends View
                 if ($field === 'teacher') {
                     unset($value['teacher']);
                 }
+            } elseif ($field === 'mana') {
+                $value = array_filter($value);
             } elseif (is_array($value)) {
                 $value = $this->jsonArray($value, $obj, $field);
                 unset($value['parent']);

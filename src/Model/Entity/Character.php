@@ -56,7 +56,7 @@ class Character extends Entity
 
         $this->setVirtual(['faction', 'mana', 'xp_available']);
 
-        $this->setHidden(['id', 'mana', 'xp_available'], true);
+        $this->setHidden(['id', 'xp_available'], true);
         $this->setHidden(['faction_id', 'faction_object'], true);
     }
 
@@ -72,10 +72,10 @@ class Character extends Entity
 
     protected function _getMana(): array
     {
-        $sources = $this->skills;
-        $sources = array_merge($sources, $this->powers);
-        $sources = array_merge($sources, $this->conditions);
-        $sources = array_merge($sources, $this->items);
+        $sources = $this->skills ?? [];
+        $sources = array_merge($sources, $this->powers ?? []);
+        $sources = array_merge($sources, $this->conditions ?? []);
+        $sources = array_merge($sources, $this->items ?? []);
 
         $mana = [];
         $manatypes = TableRegistry::getTableLocator()->get('Manatypes')->find();
