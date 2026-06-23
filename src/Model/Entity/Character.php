@@ -88,6 +88,11 @@ class Character extends Entity
             if (is_null($type)) {
                 continue;
             }
+            $expiry = $source->expiry ?? $source->get('_joinData')?->expiry;
+            if (!is_null($expiry) && $expiry->isPast()) {
+                continue;
+            }
+
             $times = $source->get('_joinData')->times ?? 1;
             $mana[$type] += $times * $source->mana_amount;
         }
