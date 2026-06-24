@@ -115,8 +115,10 @@ class CharactersController extends Controller
                 $c->condition = $condition;
                 $objs[] = $this->Lammy->createLammy($c);
             }
-            foreach ($char->items as $item) {
-                $objs[] = $this->Lammy->createLammy($item);
+            if ($items) {
+                foreach ($char->items as $item) {
+                    $objs[] = $this->Lammy->createLammy($item);
+                }
             }
         }
 
